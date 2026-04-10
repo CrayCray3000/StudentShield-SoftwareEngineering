@@ -1,6 +1,6 @@
 # StudentShield
 
-StudentShield is a Machine Learning Framework for Student Vents, Bullying Detection, and Parent SMS Alerts, specifically designed for Junior High School.
+StudentShield is a Multilingual Machine Learning Framework for Student Sentiment Venting, Bullying Detection, and Automated Crisis Intervention at Saint Vincent Blessed School of Manila (SVBSM).
 
 The system is split into two main components:
 1. A CodeIgniter 4 Web Application for the user interface, reporting, and dashboard.
