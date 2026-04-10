@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Factor Authentication | StudentShield</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#0B5E2E',
+                        'primary-light': '#0F6A34',
+                        gold: '#F2C300',
+                        'gold-light': '#FFD233',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @media (max-width: 1440px) { html { font-size: 15px; } }
+        @media (max-width: 1280px) { html { font-size: 14px; } }
+        @media (max-width: 1024px) { html { font-size: 13px; } }
+        @media (max-width: 768px) { html { font-size: 16px; } }
+
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
+
+        .bg-admin {
+            background: linear-gradient(135deg, #0B5E2E 0%, #064a22 50%, #0B5E2E 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 12s ease infinite;
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+            position: absolute; inset: 0; z-index: 0;
+        }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4);
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Mobile responsive adjustments */
+        @media (max-width: 640px) {
+            .otp-input { width: 42px; height: 50px; font-size: 20px; }
+        }
+
+        .otp-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(242, 195, 0, 0.25);
+            border-color: #F2C300;
+            outline: none;
+        }
+
+        .glow-blob {
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.12; z-index: 0;
+            animation: pulseGlow 8s ease infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { opacity: 0.08; transform: scale(1); }
+            100% { opacity: 0.18; transform: scale(1.1); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+    </style>
+</head>
+<body class="bg-admin min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+
+<div class="bg-grid"></div>
+<div class="glow-blob bg-gold w-[500px] h-[500px] top-[-20%] right-[-10%]"></div>
+<div class="glow-blob bg-white w-[300px] h-[300px] bottom-[-10%] left-[10%]" style="animation-delay: 3s;"></div>
+
+<div class="w-full max-w-lg z-10 animate-[fadeInUp_0.7s_ease-out]">
+    <div class="admin-card rounded-3xl p-8 sm:p-10 text-center">
+
+        <!-- Header -->
+        <div class="mb-6">
+            <img src="<?= base_url('images/logo.png') ?>" alt="SVBSM Logo" class="w-40 h-40 object-contain mx-auto mb-5"
+                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\'/></svg>';">
+            <h1 class="text-3xl font-heading font-bold tracking-tight text-white mb-2">Security <span class="text-gold">Verification</span></h1>
+            <p class="text-white/60 text-sm font-medium">To protect student data, we've sent a 6-digit verification code to your registered counselor email.</p>
+        </div>
+
+        <!-- Error Flash -->
+        <?php if (session()->getFlashdata('error')): ?>
+            <div class="bg-red-500/10 border border-red-500/30 p-4 mb-6 rounded-xl animate-[shake_0.5s_ease-in-out]">
+                <div class="flex flex-col sm:flex-row items-center gap-2 justify-center">
+                    <i class="fas fa-exclamation-circle text-red-400"></i>
+                    <p class="text-sm font-medium text-red-200 text-center"><?= session()->getFlashdata('error') ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <!-- OTP Form -->
+        <form action="<?= base_url('admin/verify-otp') ?>" method="POST" id="otpForm" class="space-y-6">
+            <input type="hidden" name="otp" id="fullOtpInput">
+            
+            <div class="flex justify-center gap-2 sm:gap-3">
+                <input type="text" class="otp-input" maxlength="1" pattern="\d*" autocomplete="off" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d*" autocomplete="off" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d*" autocomplete="off" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d*" autocomplete="off" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d*" autocomplete="off" required>
+                <input type="text" class="otp-input" maxlength="1" pattern="\d*" autocomplete="off" required>
+            </div>
+
+            <div class="flex items-center justify-center mt-4 group">
+                <input type="checkbox" id="trust_device" name="trust_device" value="1"
+                       class="w-4 h-4 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity">
+                <label for="trust_device" class="ml-2 text-sm text-white/70 group-hover:text-white transition-colors cursor-pointer select-none">
+                    Trust this device for 30 days
+                </label>
+            </div>
+
+            <button type="submit" id="submitBtn"
+                class="w-full bg-gold hover:bg-gold-light text-primary font-bold py-4 px-4 rounded-xl shadow-lg shadow-gold/20 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 group mt-2">
+                <i class="fas fa-shield-alt text-primary group-hover:scale-110 transition-transform" id="btnIcon"></i>
+                <span id="btnText" class="font-heading text-lg tracking-wide">Verify & Secure Login</span>
+                <svg id="btnSpinner" class="animate-spin h-5 w-5 text-primary hidden ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            </button>
+        </form>
+        
+        <!-- Footer -->
+        <div class="mt-8 pt-5 border-t border-white/10 text-center space-y-2">
+            <span class="text-white/40 block text-xs">Didn't receive the email?</span>
+            <a href="<?= base_url('admin/login') ?>" class="inline-flex items-center gap-2 text-sm text-gold/80 hover:text-gold transition-colors font-semibold">
+                <i class="fas fa-arrow-left text-xs"></i>
+                Return to Login & Resend
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-focus logic for the 6 boxes
+    const inputs = document.querySelectorAll('.otp-input');
+    const fullOtpInput = document.getElementById('fullOtpInput');
+
+    inputs.forEach((input, index) => {
+        // Move to next box on input
+        input.addEventListener('input', (e) => {
+            if (e.target.value.length === 1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+            updateHiddenInput();
+        });
+
+        // Handle backspace to move back
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+        
+        // Handle pasting a full 6-digit code
+        input.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const pastedData = e.clipboardData.getData('text').slice(0, 6).replace(/\D/g, '');
+            for (let i = 0; i < pastedData.length; i++) {
+                if (i < inputs.length) {
+                    inputs[i].value = pastedData[i];
+                    if (i < inputs.length - 1) inputs[i + 1].focus();
+                }
+            }
+            updateHiddenInput();
+        });
+    });
+
+    function updateHiddenInput() {
+        fullOtpInput.value = Array.from(inputs).map(input => input.value).join('');
+    }
+
+    document.getElementById('otpForm').addEventListener('submit', function() {
+        const btn = document.getElementById('submitBtn');
+        const text = document.getElementById('btnText');
+        const icon = document.getElementById('btnIcon');
+        const spinner = document.getElementById('btnSpinner');
+        btn.disabled = true;
+        btn.classList.add('opacity-80', 'cursor-wait');
+        text.innerText = 'Verifying...';
+        icon.classList.add('hidden');
+        spinner.classList.remove('hidden');
+    });
+</script>
+
+</body>
+</html>

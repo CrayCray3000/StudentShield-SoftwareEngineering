@@ -1,0 +1,40 @@
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Logs
+logs/
+*.log
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Docs
+docs/
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Uploads/Artifacts
+InfinityFree_Uploads/
+production-upload/
+
+# Large models
+ml_service/models/
+*.safetensors
+
+# OS files
+.DS_Store
+Thumbs.db

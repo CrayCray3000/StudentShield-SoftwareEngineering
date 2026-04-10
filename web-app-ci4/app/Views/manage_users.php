@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentShield - User Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        primary: '#0B5E2E', 'primary-light': '#0F6A34',
+                        gold: '#F2C300', 'gold-light': '#FFD233',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Responsive scaling for smaller monitors/laptops */
+        @media (max-width: 1440px) { html { font-size: 15px; } }
+        @media (max-width: 1280px) { html { font-size: 14px; } }
+        @media (max-width: 1024px) { html { font-size: 13px; } }
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
+
+        body { font-family: 'Inter', sans-serif; background: #FAFDF5; }
+        h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
+        .modal-backdrop { background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
+        .glass-header {
+            background: linear-gradient(135deg, #0B5E2E 0%, #0F6A34 60%, #0d7538 100%);
+            border-bottom: 3px solid #F2C300;
+            box-shadow: 0 4px 24px -4px rgba(11, 94, 46, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="glass-header text-white sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img src="<?= base_url('images/logo.png') ?>" alt="SVBSM Logo" class="h-24 w-24 object-contain"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
+
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight font-heading">StudentShield</h1>
+                    <span class="text-[#F2C300] text-xs font-semibold tracking-widest uppercase">Super Admin Panel</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <a href="/counselor/dashboard" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
+                    Dashboard
+                </a>
+
+                <a href="/admin/users" class="flex items-center gap-2 text-sm font-medium text-[#F2C300] bg-white/10 px-3 py-2 rounded-lg transition-colors">
+                    <svg class="h-4 w-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    Users
+                </a>
+
+                <a href="/logout" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg transition-colors border-l border-white/20 ml-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-6 py-8">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h2 class="text-2xl font-heading font-bold text-gray-900">User Management</h2>
+                <p class="text-gray-500 text-sm mt-1">Manage students, counselors, and administrators</p>
+            </div>
+            <button onclick="openModal('addModal')" class="bg-primary hover:bg-primary-light text-white font-semibold px-5 py-2.5 rounded-xl shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                Add User
+            </button>
+        </div>
+
+        <!-- Flash Messages -->
+        <?php if (session()->getFlashdata('success')): ?>
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-r-xl flex items-center gap-3">
+                <svg class="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                <p class="text-sm font-medium text-green-700"><?= session()->getFlashdata('success') ?></p>
+            </div>
+        <?php endif; ?>
+        <?php if (session()->getFlashdata('error')): ?>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r-xl flex items-center gap-3">
+                <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                <p class="text-sm font-medium text-red-700"><?= session()->getFlashdata('error') ?></p>
+            </div>
+        <?php endif; ?>
+
+        <!-- Stats Cards -->
+        <?php
+            $totalStudents = 0; $totalCounselors = 0; $totalAdmins = 0;
+            foreach ($users as $u) {
+                if ($u['role'] == 0) $totalStudents++;
+                elseif ($u['role'] == 1) $totalCounselors++;
+                elseif ($u['role'] == 2) $totalAdmins++;
+            }
+        ?>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white border border-gray-100 rounded-xl p-5 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-gray-900"><?= $totalStudents ?></p>
+                    <p class="text-xs text-gray-500 font-medium">Students</p>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-100 rounded-xl p-5 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-gray-900"><?= $totalCounselors ?></p>
+                    <p class="text-xs text-gray-500 font-medium">Counselors</p>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-100 rounded-xl p-5 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-gray-900"><?= $totalAdmins ?></p>
+                    <p class="text-xs text-gray-500 font-medium">Super Admins</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users List -->
+        <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+            <!-- Desktop Table -->
+            <div class="hidden md:block overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-100">
+                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Name</th>
+                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Student ID</th>
+                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Section</th>
+                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Adviser Name</th>
+                            <th class="text-center px-6 py-4 font-semibold text-gray-600">Role</th>
+                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Parent Email</th>
+                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Parent Phone</th>
+                            <th class="text-center px-6 py-4 font-semibold text-gray-600">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $user): ?>
+                        <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                            <td class="px-6 py-4 font-medium text-gray-900"><?= esc($user['name']) ?></td>
+                            <td class="px-6 py-4 text-gray-500 font-mono text-xs"><?= esc($user['student_id'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-gray-500 font-medium text-xs"><?= esc($user['section'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-gray-500 font-medium text-xs"><?= esc($user['adviser_name'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-center">
+                                <?php if ($user['role'] == 0): ?>
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100">Student</span>
+                                <?php elseif ($user['role'] == 1): ?>
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100">Counselor</span>
+                                <?php else: ?>
+                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-gold/10 text-amber-700 border border-gold/30">Super Admin</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="px-6 py-4 text-gray-500 text-xs"><?= esc($user['parent_email'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-gray-500 text-xs"><?= esc($user['parent_phone'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    <button onclick='openEditModal(<?= json_encode($user) ?>)' class="p-2 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition-colors" title="Edit">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </button>
+                                    <?php if ($user['id'] != session()->get('user_id')): ?>
+                                    <form action="/admin/users/delete/<?= $user['id'] ?>" method="post" onsubmit="return confirm('Delete user <?= esc($user['name']) ?>? This cannot be undone.');">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors" title="Delete">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php if (empty($users)): ?>
+                        <tr><td colspan="6" class="px-6 py-12 text-center text-gray-400">No users found.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mobile Card View -->
+            <div class="md:hidden flex flex-col divide-y divide-gray-100">
+                <?php foreach ($users as $user): ?>
+                <div class="p-5 hover:bg-gray-50/50 transition-colors">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="pr-3">
+                            <h4 class="font-bold text-gray-900 border-b border-transparent leading-tight"><?= esc($user['name']) ?></h4>
+                            <span class="text-xs text-gray-400 font-mono inline-block mt-0.5"><?= esc($user['student_id'] ?: 'No ID') ?></span>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <?php if ($user['role'] == 0): ?>
+                                <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-600">Student</span>
+                            <?php elseif ($user['role'] == 1): ?>
+                                <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-600">Counselor</span>
+                            <?php else: ?>
+                                <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-gold/10 text-amber-700">Admin</span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 mb-4 bg-gray-50/50 p-3 rounded-lg border border-gray-100/50">
+                        <div>
+                            <span class="block text-[10px] uppercase font-bold text-gray-400 mb-0.5">Section</span>
+                            <span class="text-[12px] text-gray-700 font-medium truncate block"><?= esc($user['section'] ?: '—') ?></span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] uppercase font-bold text-gray-400 mb-0.5">Adviser Name</span>
+                            <span class="text-[12px] text-gray-700 font-medium truncate block"><?= esc($user['adviser_name'] ?: '—') ?></span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] uppercase font-bold text-gray-400 mb-0.5">Parent Email</span>
+                            <span class="text-[12px] text-gray-700 font-medium truncate block"><?= esc($user['parent_email'] ?: '—') ?></span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] uppercase font-bold text-gray-400 mb-0.5">Parent Phone</span>
+                            <span class="text-[12px] text-gray-700 font-medium truncate block"><?= esc($user['parent_phone'] ?: '—') ?></span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-2 border-t border-gray-100 pt-3">
+                        <button onclick='openEditModal(<?= json_encode($user) ?>)' class="px-4 py-2 bg-blue-50/50 hover:bg-blue-100 text-blue-600 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5" title="Edit">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Edit
+                        </button>
+                        <?php if ($user['id'] != session()->get('user_id')): ?>
+                        <form action="/admin/users/delete/<?= $user['id'] ?>" method="post" onsubmit="return confirm('Delete user <?= esc($user['name']) ?>?');">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="px-4 py-2 bg-red-50/50 hover:bg-red-100 text-red-600 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5" title="Delete">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg> Delete
+                            </button>
+                        </form>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+                <?php if (empty($users)): ?>
+                    <div class="px-6 py-12 text-center text-gray-400">No users found.</div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add User Modal -->
+    <div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
+        <div class="bg-white rounded-2xl p-5 sm:p-8 max-w-lg w-[95%] shadow-2xl relative">
+            <button onclick="closeModal('addModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <h3 class="text-xl font-heading font-bold text-gray-900 mb-6">Add New User</h3>
+            <form action="/admin/users/create" method="post" class="space-y-4">
+                <?= csrf_field() ?>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+                        <input type="text" name="name" required class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Student ID</label>
+                        <input type="text" name="student_id" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Role *</label>
+                        <select name="role" id="addRole" required onchange="toggleAddPassword()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 bg-white">
+                            <option value="0">Student</option>
+                            <option value="1">Counselor</option>
+                            <option value="2">Super Admin</option>
+                        </select>
+                    </div>
+                    <div id="addPassField" class="col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Password <span id="addPassReq">*</span></label>
+                        <input type="password" name="passcode" id="addPassInput" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Enter password">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
+                        <input type="email" name="parent_email" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
+                        <input type="text" name="parent_phone" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
+                    </div>
+                    <div class="col-span-2 grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Section <span class="text-red-500">*</span></label>
+                            <input type="text" name="section" id="addSection" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. 10-Rizal">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Adviser Name <span class="text-red-500">*</span></label>
+                            <input type="text" name="adviser_name" id="addAdviser" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. Mr. Juan Dela Cruz">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="w-full mt-4 bg-primary hover:bg-primary-light text-white font-bold py-3 rounded-xl shadow-md transition-all hover:-translate-y-0.5">Create User</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
+        <div class="bg-white rounded-2xl p-5 sm:p-8 max-w-lg w-[95%] shadow-2xl relative">
+            <button onclick="closeModal('editModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <h3 class="text-xl font-heading font-bold text-gray-900 mb-6">Edit User</h3>
+            <form id="editForm" method="post" class="space-y-4">
+                <?= csrf_field() ?>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
+                        <input type="text" name="name" id="editName" required class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Student ID</label>
+                        <input type="text" name="student_id" id="editStudentId" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Role *</label>
+                        <select name="role" id="editRole" required class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 bg-white">
+                            <option value="0">Student</option>
+                            <option value="1">Counselor</option>
+                            <option value="2">Super Admin</option>
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">New Password</label>
+                        <input type="password" name="passcode" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Leave blank to keep current">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
+                        <input type="email" name="parent_email" id="editParentEmail" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
+                        <input type="text" name="parent_phone" id="editParentPhone" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                    </div>
+                    <div class="col-span-2 grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Section <span class="text-red-500">*</span></label>
+                            <input type="text" name="section" id="editSection" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Adviser Name <span class="text-red-500">*</span></label>
+                            <input type="text" name="adviser_name" id="editAdviser" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="w-full mt-4 bg-primary hover:bg-primary-light text-white font-bold py-3 rounded-xl shadow-md transition-all hover:-translate-y-0.5">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+<script>
+    function openModal(id) {
+        const m = document.getElementById(id);
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+    }
+    function closeModal(id) {
+        const m = document.getElementById(id);
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+    }
+    function toggleFieldsForRole(prefix) {
+        const role = document.getElementById(prefix + 'Role').value;
+        const sectionInput = document.getElementById(prefix + 'Section');
+        const adviserInput = document.getElementById(prefix + 'Adviser');
+        
+        if (role == 0) {
+            if(sectionInput) sectionInput.required = true;
+            if(adviserInput) adviserInput.required = true;
+        } else {
+            if(sectionInput) sectionInput.required = false;
+            if(adviserInput) adviserInput.required = false;
+        }
+    }
+
+    function toggleAddPassword() {
+        const role = document.getElementById('addRole').value;
+        const req = document.getElementById('addPassReq');
+        const input = document.getElementById('addPassInput');
+        if (role >= 1) {
+            req.textContent = '*';
+            input.required = true;
+            input.placeholder = 'Required for staff';
+        } else {
+            req.textContent = '';
+            input.required = false;
+            input.placeholder = 'Enter passcode for student';
+        }
+        toggleFieldsForRole('add');
+    }
+
+    document.getElementById('editRole').addEventListener('change', function() {
+        toggleFieldsForRole('edit');
+    });
+    function openEditModal(user) {
+        document.getElementById('editForm').action = '/admin/users/update/' + user.id;
+        document.getElementById('editName').value = user.name;
+        document.getElementById('editStudentId').value = user.student_id || '';
+        document.getElementById('editRole').value = user.role;
+        document.getElementById('editParentEmail').value = user.parent_email || '';
+        document.getElementById('editParentPhone').value = user.parent_phone || '';
+        document.getElementById('editSection').value = user.section || '';
+        document.getElementById('editAdviser').value = user.adviser_name || '';
+        toggleFieldsForRole('edit');
+        openModal('editModal');
+    }
+    // Close modals on backdrop click
+    document.querySelectorAll('.modal-backdrop').forEach(m => {
+        m.addEventListener('click', function(e) {
+            if (e.target === this) closeModal(this.id);
+        });
+    });
+</script>
+</body>
+</html>
