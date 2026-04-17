@@ -58,14 +58,14 @@
 
         body {
             background-color: #f8faf6;
-            background-image: radial-gradient(circle at 25px 25px, rgba(11, 94, 46, 0.015) 2px, transparent 0);
+            background-image: radial-gradient(circle at 25px 25px, rgba(22, 101, 52, 0.02) 2px, transparent 0);
             background-size: 50px 50px;
         }
 
         .glass-header {
-            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
-            border-bottom: 3px solid #EAB308;
-            box-shadow: 0 4px 24px -4px rgba(22, 101, 52, 0.4);
+            background: #166534; /* Simple solid primary green */
+            border-bottom: 3px solid #EAB308; /* Solid gold accent */
+            /* Removed dark, heavy box-shadow */
         }
 
         .dashboard-card {
@@ -73,19 +73,19 @@
             border: 1px solid #e5ebe5;
             border-radius: 14px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02); /* Simple subtle shadow */
         }
         .dashboard-card:hover {
-            box-shadow: 0 8px 28px -6px rgba(11, 94, 46, 0.12), 0 2px 4px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.06); /* Lighter hover shadow */
             border-color: #cddacd;
         }
 
         .section-header {
             background: #ffffff;
-            color: #0B5E2E;
+            color: #166534;
             padding: 16px 24px;
             border-bottom: 1px solid #e5ebe5;
-            border-left: 4px solid #0B5E2E;
+            border-left: 4px solid #166534;
         }
 
         .stat-card {
@@ -94,7 +94,7 @@
             border-radius: 12px;
             padding: 20px 24px;
             transition: all 0.25s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
             position: relative;
             overflow: hidden;
         }
@@ -105,7 +105,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, transparent, #F2C300, transparent);
+            background: linear-gradient(90deg, transparent, #EAB308, transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -114,14 +114,14 @@
         }
         .stat-card:hover {
             border-color: #d4ddd4;
-            box-shadow: 0 6px 16px rgba(11, 94, 46, 0.08);
+            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.05); /* Soft shadow */
             transform: translateY(-1px);
         }
         .stat-card.gold-accent {
-            border-left: 4px solid #F2C300;
+            border-left: 4px solid #EAB308;
         }
         .stat-card.green-accent {
-            border-left: 4px solid #0B5E2E;
+            border-left: 4px solid #166534;
         }
 
         h1, h2, h3, h4, h5, h6 {

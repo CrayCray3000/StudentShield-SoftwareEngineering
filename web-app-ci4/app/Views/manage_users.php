@@ -30,9 +30,9 @@
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
         .modal-backdrop { background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
         .glass-header {
-            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
-            border-bottom: 3px solid #EAB308;
-            box-shadow: 0 4px 24px -4px rgba(22, 101, 52, 0.4);
+            background: #166534; /* Simple solid primary green */
+            border-bottom: 3px solid #EAB308; /* Solid gold accent */
+            /* Removed dark, heavy box-shadow */
         }
     </style>
 </head>
