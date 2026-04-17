@@ -13,9 +13,11 @@ class IpWhitelistFilter implements FilterInterface
      * You can add multiple IPs to this array.
      */
     protected $allowedIps = [
-        '136.158.58.234', // User's public IP
-        '127.0.0.1',      // Localhost (Laragon/XAMPP)
-        '::1',            // Localhost IPv6
+        '136.158.58.234',  // User's public IP
+        '112.209.179.217', // Whitelisted IP
+        '112.201.103.171', // Whitelisted IP
+        '127.0.0.1',       // Localhost (Laragon/XAMPP)
+        '::1',             // Localhost IPv6
     ];
 
     public function before(RequestInterface $request, $arguments = null)

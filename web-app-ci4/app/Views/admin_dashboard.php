@@ -210,8 +210,17 @@
             </div>
             
             <div class="flex items-center gap-3">
+                <!-- Live Philippine Clock -->
+                <div class="hidden md:flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/15">
+                    <svg class="w-4 h-4 text-[#F2C300] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <div class="flex flex-col leading-tight">
+                        <span id="liveDayDate" class="text-[10px] font-bold text-[#FFD233] uppercase tracking-wider"><?= date('l, M j, Y') ?></span>
+                        <span id="liveTime" class="text-xs font-semibold text-white/90 tabular-nums"><?= date('g:i:s A') ?></span>
+                    </div>
+                </div>
+
                 <!-- Status indicator -->
-                <div class="hidden md:flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/15">
+                <div class="hidden lg:flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/15">
                     <span class="w-2 h-2 rounded-full bg-[#F2C300] live-dot"></span>
                     <span class="text-xs font-semibold text-[#FFD233]">System Active</span>
                 </div>
@@ -665,10 +674,11 @@
                         let isResolved = vent.status === 'Resolved';
                         let statusColor = isResolved ? 'text-[#0B5E2E] bg-[#0B5E2E]/10' : 'text-gray-500 bg-gray-50';
                         
-                        // Formatting dates manually or use a lib, keeping it simple here
+                        // Formatting dates with day name for Philippine context
                         const dateObj = new Date(vent.created_at);
-                        const timeStr = dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                        const dateStr = dateObj.toLocaleDateString([], {month: 'short', day: 'numeric'});
+                        const timeStr = dateObj.toLocaleTimeString('en-PH', {hour: '2-digit', minute:'2-digit'});
+                        const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
+                        const dateStr = dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric'});
 
                         // Animation delay for new loads
                         const animDelay = isFirstLoadVents ? `style="animation-delay: ${index * 0.05}s"` : '';
@@ -681,7 +691,7 @@
                             </td>
                             <td data-label="Timestamp" class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-semibold text-gray-800">${timeStr}</div>
-                                <div class="text-xs text-gray-500">${dateStr}</div>
+                                <div class="text-xs text-gray-500">${dayName}, ${dateStr}</div>
                             </td>
                             <td data-label="Student" class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -800,7 +810,8 @@
                         let perpetratorName = incident.perpetrator_name ? incident.perpetrator_name : 'Unknown';
 
                         const dateObj = new Date(incident.created_at);
-                        const dateStr = dateObj.toLocaleDateString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+                        const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
+                        const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
 
                         let bgColor = 'bg-white hover:bg-gray-50';
 
@@ -878,7 +889,8 @@
                             let icon = alert.type.includes('SMS') ? '📱' : '✉️';
                             
                             const dateObj = new Date(alert.timestamp);
-                            const dateStr = dateObj.toLocaleDateString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+                            const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
+                            const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
 
                             html += `<tr class="transition-colors duration-200 bg-white hover:bg-gray-50">
                                 <td data-label="Timestamp" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">${dateStr}</td>
@@ -931,8 +943,8 @@
             const vent = window.ventsDataMap[id];
             if (!vent) return;
             const dateObj = new Date(vent.created_at);
-            const timeStr = dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            const dateStr = dateObj.toLocaleDateString([], {month: 'short', day: 'numeric'});
+            const timeStr = dateObj.toLocaleTimeString('en-PH', {hour: '2-digit', minute:'2-digit'});
+            const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric'});
             
             let senderInfo = vent.name || 'Anonymous';
             if (vent.section) senderInfo += `\nSection: ${vent.section}`;
@@ -948,7 +960,7 @@
             const reporter = inc.name || 'Anonymous';
             const perp = inc.perpetrator_name || 'Unknown';
             const dateObj = new Date(inc.created_at);
-            const dateStr = dateObj.toLocaleDateString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+            const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
             const isRes = inc.status === 'Resolved';
             const badgeClass = isRes ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
             
@@ -959,7 +971,7 @@
             const alert = window.alertsDataMap[index];
             if (!alert) return;
             const dateObj = new Date(alert.timestamp);
-            const dateStr = dateObj.toLocaleDateString([], {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+            const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
             const isSms = alert.type.includes('SMS');
             const badgeClass = isSms ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-purple-100 text-purple-700 border-purple-200';
             const icon = isSms ? '📱' : '✉️';
@@ -1009,6 +1021,27 @@
             setInterval(fetchLiveVents, 5000);
             setInterval(fetchLiveIncidents, 5000);
             setInterval(fetchAlertLogs, 10000);
+
+            // Live Philippine Clock — seeded from server (Manila timezone guaranteed)
+            const serverTimestamp = <?= (time() + 28800) * 1000 ?>; // +8 hours for Manila time (PHT) in ms
+            const clientLoadTime = Date.now();
+            const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+            function updateClock() {
+                const elapsed = Date.now() - clientLoadTime;
+                const phNow = new Date(serverTimestamp + elapsed);
+                const dayDate = days[phNow.getUTCDay()] + ', ' + months[phNow.getUTCMonth()] + ' ' + phNow.getUTCDate() + ', ' + phNow.getUTCFullYear();
+                const h = phNow.getUTCHours();
+                const ampm = h >= 12 ? 'PM' : 'AM';
+                const h12 = h % 12 || 12;
+                const m = String(phNow.getUTCMinutes()).padStart(2, '0');
+                const s = String(phNow.getUTCSeconds()).padStart(2, '0');
+                document.getElementById('liveDayDate').textContent = dayDate;
+                document.getElementById('liveTime').textContent = h12 + ':' + m + ':' + s + ' ' + ampm;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
         });
     </script>
 </body>

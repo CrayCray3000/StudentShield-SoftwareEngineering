@@ -1,0 +1,34 @@
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches:
+      - main
+      - master  # Adjust this depending on your default branch name
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2 # Required for the FTP Deploy action to know which files changed
+
+    - name: 📂 Sync files (web-app-ci4)
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./web-app-ci4/   # Only deploy the CI4 folder
+        server-dir: /htdocs/        # Target directory on InfinityFree
+        dangerous-clean-slate: false # Will NOT delete files on server that aren't in GitHub
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.env*
+          docs/**
+          ml_service/**

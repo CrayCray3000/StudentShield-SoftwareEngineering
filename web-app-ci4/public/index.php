@@ -1,5 +1,8 @@
 <?php
 
+// Force Philippine Standard Time (UTC+8) for ALL date/time functions
+date_default_timezone_set('Asia/Manila');
+
 use CodeIgniter\Boot;
 use Config\Paths;
 

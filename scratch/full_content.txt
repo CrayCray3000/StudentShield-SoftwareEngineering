@@ -1,0 +1,1353 @@
+
+
+
+National Teachers College
+
+
+
+BOSS: Blue Aura's Operational Smart System for Booking, Analytics, and Payroll
+
+
+A Capstone Project
+
+presented to the Faculty of the
+School of Arts, Science and Technology
+National Teachers College
+Quiapo, Manila
+
+
+In Partial Fulfillment of the
+Requirements for the Degree of
+Bachelor of Science in Information Technology
+
+
+By
+
+Ramos, Bianca Angela D.
+Caoile, Krystle Ayn
+Ortega, Randel M.
+Agojo, Elysha Ann Clarisse L.
+Navarrete, Jimuel T.
+
+
+June 2025
+
+
+National Teachers College
+629 J Nepomuceno, Quiapo, Manila, 1001 Metro Manila
+Bachelor of Science in Information Technology
+
+APPROVAL SHEET FOR TITLE DEFENSE
+
+In partial fulfillment of the requirements for the degree BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY, this Capstone project entitled "BOSS: Blue Aura's Operational Smart System for Booking, Analytics, and Payroll" has been prepared and submitted by Ramos, Bianca Angela D., Caoile, Krystle Ayn, Ortega, Randel M., Agojo, Elysha Ann Clarisse L., Navarrete, Jimuel T., who are hereby recommended for project presentation.
+
+
+
+Jay Vee L. Capiral
+Capstone Project Adviser
+
+Approved by the committee on Project presentation with a notation on March 22, 2025.
+
+
+Rodessa Bunag Perminola
+Panelist
+
+John Paulo L.
+Panelist
+
+Carlito L. Cunanan
+Panelist Chair
+
+Accepted and approved in partial fulfillment of the requirements for the degree BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY.
+
+
+Rheyven L. Fernando, LPT, MAEd
+Program Head of Information Technology
+
+Liezel A. Aguilar, LPT, MAEd
+Dean, School of Arts, Sciences and Technology
+
+
+National Teachers College
+629 J Nepomuceno, Quiapo, Manila, 1001 Metro Manila
+Bachelor of Science in Information Technology
+
+APPROVAL SHEET FOR FINAL DEFENSE
+
+In partial fulfillment of the requirements for the degree BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY, this Capstone project entitled "BOSS: Blue Aura's Operational Smart System for Booking, Analytics, and Payroll" has been prepared and submitted by Ramos, Bianca Angela D., Caoile, Krystle Ayn, Ortega, Randel M., Agojo, Elysha Ann Clarisse L., Navarrete, Jimuel T., who are hereby recommended for project presentation.
+
+
+
+Jay Vee L. Capiral
+Capstone Project Adviser
+
+Approved by the committee on Project presentation with a notation on November 29, 2025.
+
+
+Joshua B. Pacer
+Panelist
+
+Darwin C. Vargas
+Panelist
+
+Emelbe S. Meneses
+Panelist Chair
+
+Accepted and approved in partial fulfillment of the requirements for the degree BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY.
+
+
+Rheyven L. Fernando, LPT, MAEd
+Program Head of Information Technology
+
+Liezel A. Aguilar, LPT, MAEd
+Dean, School of Arts, Sciences and Technology
+
+
+ACKNOWLEDGMENT
+
+"It always seems impossible until it's done"
+--- Nelson Mandela.
+
+The proponents would like to thank the following:
+
+First and foremost, we would like to thank our Almighty God, who has been our constant source of strength and inspiration, especially during times when we were on the verge of giving up. Our group offers sincere thanks. To God Be The Glory. Amen.
+
+To our client, Mrs. Vielkha Dioneda, for granting us access to the Blue Aura's Hidden Paradise Resort for our capstone project, and to their staff for their cooperation in answering our questions and follow-up inquiries.
+
+To our capstone adviser, Sir Jayvee L. Capiral, for his dedication to mentor us throughout our study, which has been helpful in achieving the objectives of our system. His encouragement during our consultation and every defense and his reminders to always provide an honest answer to our panelists, have been really helpful.
+
+To our family, for their unwavering support, patience, and understanding during this difficult time. Your encouragement gave us the strength to persevere and succeed.
+
+To our friends, we would like to extend our heartfelt thanks for their full support from the beginning to end of our system and survey completion. We are truly grateful to have them by our side.
+
+To our panelists, thank you for your constructive feedback, insightful suggestions, and professional guidance during our defense. Your comments and recommendations greatly contributed to improving our system and strengthening our study. We deeply appreciate the time and expertise you shared with us.
+
+
+ABSTRACT
+
+This capstone project presents the development of BOSS: Blue Aura's Operational Smart System for Booking, Analytics, and Payroll, a web-based platform designed to streamline the daily operations of Blue Aura's Hidden Paradise Resort. The system addresses the limitations of manual processes by automating reservation handling, generating data-driven analytics, and accurately computing employee payroll. To enhance user interaction, the system integrates a built-in chatbot that responds to common client inquiries and guides users throughout the platform, with an option to connect with a live agent when additional support is needed.
+
+The system was developed with a modular structure comprising the Booking Module, Analytics Module, and Payroll Module. The Booking Module simplifies reservation creation and management, while the Analytics Module provides visual insights on business performance through dashboards and reports. The Payroll Module automates salary computation based on attendance and work hours, reducing manual workload and human error. Access control features ensure that only authorized staff and administrators can view sensitive information and perform administrative operations.
+
+To determine the system's effectiveness, the proponents conducted an evaluation using ISO-based criteria with two groups of respondents: users and IT experts. Results showed high levels of acceptance, with mean scores ranging from Good to Excellent for end users and Excellent for IT experts, indicating that the system meets key standards for functionality, reliability, usability, and performance.
+
+Overall, the BOSS system significantly improves operational efficiency, enhances staff productivity, and provides a more seamless experience for both clients and administrators. The implementation of this system positions Blue Aura's Hidden Paradise for improved service delivery and future organizational growth.
+
+
+TABLE OF CONTENTS
+
+APPROVAL SHEET FOR TITLE DEFENSE
+APPROVAL SHEET FOR FINAL DEFENSE
+ACKNOWLEDGEMENT
+ABSTRACT
+TABLE OF CONTENTS
+LIST OF FIGURES
+LIST OF TABLES
+Chapter I. Introduction
+1.0 Introduction
+1.1 Project Context
+1.2 Objective of the Study
+1.2.1 General Objective of the Study
+1.2.2 Specific Objectives of the Study
+1.3 Significance of the Study
+1.4 Scope and Delimitation of the Study
+1.4.1 Scope
+1.4.2 Limitation
+1.5 Review of Related Literature
+1.6 Review of Related Studies
+1.7 Technical Background
+1.7.1 Conceptual Framework
+1.8 Definition of Terms
+Chapter II. Methodology
+2.1 Design of Software, System, Product or Process
+2.1.1 Software Architecture
+2.1.2 Software Development Life Cycle
+2.1.3 System Flowchart
+2.1.4 Entity Relationship Diagram
+2.1.5 Use Case Diagram
+2.2 Requirements Analysis
+2.3 Requirements Documentation
+2.4 Development and Pre-Testing procedures
+2.5 Implementation Plan
+2.6 Statistical Treatment of data
+Chapter III. Results and Discussion
+3.1 System Test Plan
+3.1.1 Alpha Testing
+3.1.2 Beta Testing
+3.2 Statistical Analysis
+3.3 Implementation and Statistical Results Interpretation
+3.3.1 Project Description
+3.3.2 Project Structure
+3.4 System Capabilities and Limitations
+3.4.1 Test Result
+Chapter IV. Summary of Findings, Conclusion, and Recommendation
+4.1 Summary
+4.2 Recommendations
+4.3 Conclusions
+Bibliography
+Appendices
+
+
+LIST OF FIGURES
+
+Figure 1: Input, Process and Output (IPO) of the RMS
+Figure 2: Software Architecture
+Figure 3: Software Development Life Cycle - Agile Model
+Figure 4: Role-based Navigation Process
+Figure 5: Admin Flowchart of Resort Management System
+Figure 6: Staff Flowchart of Resort Management System
+Figure 7: User Flowchart of Resort Management System
+Figure 8: Entity Relationship Diagram
+Figure 9: Use Case Diagram
+Figure 10: Implementation Plan using Gantt Chart
+Figure 11: Home Page Section
+Figure 12: Reservation Page
+Figure 13: Analytics Dashboard Section
+Figure 14: Analytics Dashboard Section
+Figure 15: Analytics Dashboard Section
+Figure 16: Analytics Dashboard Section
+Figure 17: Payroll Dashboard Section
+Figure 18: Payroll Dashboard Section
+Figure 19: Payroll Dashboard Section
+Figure 20: Gantt Chart
+Figure 21: Consent Form
+Figure 22: Testing Document
+Figure 23: Personal Information Test Document
+Figure 24: Data Privacy Test Document
+Figure 25: Functionality Test Documents
+Figure 26: Reliability Test Document
+Figure 27: Usability Test Document
+Figure 28: Usability Test Document
+Figure 29: Compatibility Test Document
+Figure 30: Usability Test Document
+Figure 31: Security Test Document
+Figure 32: Maintainability Test Document
+Figure 33: Portability Test Document
+Figure 34: User Information Test Result
+Figure 35: User Functionality Test Result
+Figure 36: User Reliability Test Result
+Figure 37: User Usability Test Result
+Figure 38: User Usability Test Result
+Figure 39: Admin Information Test Result
+Figure 40: Admin Functionality Test Result
+Figure 41: Admin Reliability Test Result
+Figure 42: Admin Usability Test Result
+Figure 43: Admin Usability Test Result
+Figure 44: Admin Performance Efficiency Test Result
+Figure 45: Admin Compatibility Test Result
+Figure 46: Admin Security Test Result
+Figure 47: Admin Security Test Result
+Figure 48: Admin Maintainability Test Result
+Figure 49: Admin Maintainability Test Result
+Figure 50: Admin Portability Test Result
+Figure 51: User Site Landing Page
+Figure 52: User Site Landing Page
+Figure 53: User Site Landing Page
+Figure 54: User Site Landing Page
+Figure 55: User Site Landing Page
+Figure 56: User Site Rates and Facilities
+Figure 57: User Site Rates and Facilities
+Figure 58: User Site Rates and Facilities
+Figure 59: User Site Rates and Facilities
+Figure 60: User Site Special Offers
+Figure 61: User Site Special Offers
+Figure 62: User Site Special Offers
+Figure 63: User Site Contact Us
+Figure 64: User Site Reservation
+Figure 65: User Site Reservation
+Figure 66: User Site Reservation
+Figure 67: User Dashboard
+Figure 68: Admin Dashboard
+Figure 69: Reservation Management for Admin
+Figure 70: Customer Service Panel for Admin
+Figure 71: Customer Service Panel for Admin
+Figure 72: Agent Dashboard for Admin
+Figure 73: Analytics and Marketing for Admin
+Figure 74: Analytics and Marketing for Admin
+Figure 75: Analytics and Marketing for Admin
+Figure 76: Marketing Campaign for Admin
+Figure 77: Staff Management for Admin
+Figure 78: Payroll Management for Admin
+Figure 79: Payroll Management for Admin
+Figure 80: User Interface of the Staff Dashboard
+Figure 81: User Interface of the Staff Reservation Management
+Figure 82: User Interface of the Staff Customer Service Management
+Figure 83: User Interface of the Staff Agent Dashboard
+
+
+LIST OF TABLES
+
+Table 1: Data Dictionary of Security Audit Log
+Table 2: Data Dictionary for Password Reset Tokens
+Table 3: Data Dictionary for FAQ Entries
+Table 4: Data Dictionary for Announcements
+Table 5: Data Dictionary for Users
+Table 6: Data Dictionary for Promos
+Table 7: Data Dictionary for Customers
+Table 8: Data Dictionary for Staff
+Table 9: Data Dictionary for Analytics Data
+Table 10: Data Dictionary for Bookings
+Table 11: Data Dictionary for Payroll Records
+Table 12: Data Dictionary for Guest Users
+Table 13: Data Dictionary for Available Slots
+Table 14: Data Dictionary for Chat Sessions
+Table 15: Data Dictionary for Messages
+Table 16: Data Dictionary for Reservations
+Table 17: Data Dictionary for Agent Request
+Table 18: Test Case Scenario for Reservation Module
+Table 19: Test Case Scenario for Payroll Module
+Table 20: Test Case Scenario for Analytics Module
+Table 21: Test Case Scenario for Role-Based Access Control Module
+Table 22: Mean Interpretation
+Table 23: Standard Deviation Interpretation
+Table 24: Test Case Scenario for Reservation Module
+Table 25: Test Case Scenario for Payroll Module
+Table 26: Test Case Scenario for Analytics Module
+Table 27: Test Case Scenario for Role-Based Access Control Module
+Table 28: Statistical Result of User Functionality
+Table 29: Statistical Result of User Reliability
+Table 30: Statistical Result of User Usability
+Table 31: Statistical Result of User Performance Efficiency
+Table 32: Statistical Result of User Compatibility
+Table 33: Statistical Result of User Security
+Table 34: Statistical Result of User Maintainability
+Table 35: Statistical Result of User Portability
+Table 36: Statistical Result of Admin Functionality
+Table 37: Statistical Result of Admin Reliability
+Table 38: Statistical Result of Admin Reliability
+Table 39: Statistical Result of Admin Performance Efficiency
+Table 40: Statistical Result of Admin Compatibility
+Table 41: Statistical Result of Admin Security
+Table 42: Statistical Result of Admin Maintainability
+Table 43: Statistical Result of Admin Portability
+Table 44: Evaluation Summary for Users and IT Experts
+Table 45: Evaluation Tool
+Table 46: Summary of Evaluation
+
+
+CHAPTER I
+Introduction
+
+In today's fast-paced, technology-driven world, efficiency and convenience are essential to customer service, especially in the hospitality industry. However, many small businesses continue to rely on traditional, manual processes that no longer meet the expectations of modern travelers. Most guests now prefer a seamless, digital booking experience, and resorts that fail to adapt risk losing both customer trust and potential revenue.
+
+Blue Aura's Hidden Paradise, a privately managed resort renowned for its serene atmosphere and scenic environment, exemplifies this challenge. The resort currently uses manual systems for reservations, payroll, and other tasks, which are susceptible to human error and inefficiencies. These include frequent double bookings, delayed response times to customer inquiries, and inaccuracies in salary computations and sales documentation. Furthermore, the lack of a data-driven analytics system limits management's ability to make timely, informed decisions, hindering overall efficiency and long-term growth.
+
+This study aims to address these challenges by designing an integrated Resort Management System that automates key operational areas, including reservation management, customer service, payroll, and analytics. The primary goal is to enhance the resort's overall operations through digital transformation, providing both staff and guests with a more streamlined, reliable, and responsive service infrastructure. Specifically, the system will include an online reservation platform with real-time booking confirmations, a chatbot to handle guest inquiries, an analytics dashboard for monitoring trends and performance, and modules for automated payroll.
+
+Project Context
+Blue Aura's Hidden Paradise, a private resort in North Caloocan City, faces several operational challenges that hinder its efficiency and growth. The resort relies heavily on manual processes to manage key business functions, including reservations, payroll, and sales. The resort's manual reservation system increases the risk of double bookings, scheduling conflicts, and delayed customer responses, often taking more than an hour. These delays and errors result in poor customer satisfaction and lost bookings, which affect the resort's reputation and revenue.
+
+To address the challenges, this project proposes the development of a new system to ensure the business runs smoothly. The developed system will allow guests to book online, receive instant confirmation, and easily make changes to their reservations. The system will include a chatbot to quickly answer the most common questions, benefiting customers who won't have to wait long for a response. Another feature the system will have is helping the resort staff by tracking guest bookings, analytics trends, and payments. The payroll system will also simplify how staff salaries and resort agents' commissions are calculated, ensuring the process is accurate and faster.
+
+The improvements that the system will provide aim to reduce errors, save time, and improve the experience for both staff and guests. This will help Blue Aura's Hidden Paradise become more organized, efficient, and customer-friendly, supporting its long-term success and growth.
+
+Objective of the Study
+General Objective of the Study
+To develop and implement a comprehensive Resort Management System for Blue Aura's Hidden Paradise that enhances operational efficiency by integrating automation, analytics, and payroll management tools. This system aims to streamline reservations, improve customer service, optimize financial processes, and provide real-time insights to support effective decision-making.
+
+Specific Objectives of the Study
+A. Reservation and Customer Service
+
+a. Implement an online reservation system with instant booking confirmation to minimize scheduling conflicts and double bookings.
+b. Allow customers to reschedule and transfer booking contracts seamlessly within the system, ensuring a hassle-free experience without lengthy manual approval processes.
+c. Integrate a chatbot to automate responses to frequently asked questions, reducing response time and providing instant customer support.
+d. Ensure that complex customer inquiries are efficiently escalated to human staff for personalized assistance.
+
+B. Analytics and Marketing
+
+a. Develop an analytics module to track and analyze booking trends, occupancy rates, and promotional effectiveness.
+b. Provide real-time insights into customer engagement, sales performance, and staff responsiveness to aid in operational decision-making.
+c. Convert customer inquiries into measurable booking metrics to enhance marketing evaluation and strategic planning.
+
+C. Payroll Management System
+
+a. Automate payroll processing, including salary computation, agent commissions, and deductions.
+b. Implement an online salary disbursement system supporting GCash and bank transfers for seamless transactions.
+c. Automate the tracking and calculation of agent commissions and staff salaries to eliminate manual processes, ensuring accurate and timely payments while enhancing efficiency and reducing errors.
+
+This approach ensures that the Resort Management System effectively enhances efficiency, customer experience, and financial management while supporting data-driven business operations.
+
+Significance of the Study
+The significance of this study lies in its ability to enhance the overall operations of Blue Aura's Hidden Paradise by implementing a Resort Management System that automates essential operational processes. Currently, the resort relies on a manual system for handling customer service, booking, and reservation management. This manual approach presents several challenges, including time-consuming processes, a high volume of human errors, and difficulties in efficiently tracking reservations. These issues can lead to booking conflicts, delays in customer service, and inefficiencies in managing guest inquiries, ultimately affecting both the customer experience and the resort's operational productivity.
+
+By developing and integrating a streamlined, automated, and user-friendly digital platform, this study aims to optimize these processes, ensuring a more efficient, accurate, and convenient system for both the management team and guests. The proposed system will not only improve booking accuracy and customer satisfaction but will also allow resort staff to focus more on enhancing guest services rather than being burdened by repetitive administrative tasks. Additionally, this will also provide real-time data tracking, better resource allocation, and a structured approach to managing reservations, ultimately contributing to the long-term growth and sustainability of Blue Aura's Hidden Paradise.
+
+Scope and Delimitation of the Study
+Scope
+This study focuses on the design, development, and implementation of a Resort Management System specifically for Blue Aura's Hidden Paradise Resort. The system aims to automate and improve key operational areas such as:
+
+1.) Reservation and Customer Service Features:
+Online Booking: Customers can make real-time reservations through the system. The system will automatically check availability and confirm bookings instantly, helping avoid double bookings or scheduling conflicts.
+Booking Dashboard: Customers will have access to a personal dashboard where they can reschedule or transfer bookings without requiring manual approval from staff, and only once.
+Chatbot Integration: The chatbot will handle the frequently asked questions (FAQs) and provide quick, automated responses. For concerns that require more detailed or personal attention, the system will automatically forward the inquiry to a human staff member who can assist the guest directly.
+
+2.) Analytics and Marketing Features:
+Analytics Dashboard: The system will include an analytics dashboard that collects and presents data on bookings, occupancy rates, customer inquiries, and seasonal trends. Management can use this data to identify the most profitable months, determine which promotions are most effective, and assess how responsive the staff is to customer queries.
+Analytics Algorithm: The analytics algorithm will be exclusively designed to process and analyze historical data from Blue Aura's Hidden Paradise resort. This will include, but is not limited to, booking history, transaction records, and agent commission reports.
+
+3.) Payroll Management System Feature:
+Payroll System: The system will handle payroll automation, including the automatic computation of staff salaries, deductions, and agent commissions. This minimizes errors and saves time compared to manual payroll processing.
+Payout Options: Employees and agents will receive payments through integrated channels such as GCash or bank transfers, enabling faster, more convenient transactions.
+Income and Expense Tracking: The system will track and summarize all income from bookings and corkages, as well as expenses, ensuring accurate financial records.
+Financial Reporting: The system will generate reports showing the resort's capital, profit, and loss, providing management with a clear picture of its financial health. These insights are essential for planning budgets and setting financial goals.
+
+4.) User Access and Role Management:
+Role-Based Access: The Resort Management System will implement role-based access, granting different users varying levels of access based on their roles within the resort.
+User-Specific Controls: This ensures that each user only sees the features and information relevant to their responsibilities, helping keep the system secure, organized, and user-friendly.
+
+Limitations
+The Resort Management System for Blue Aura's Hidden Paradise Resort is designed specifically for the resort and cannot be used by other resorts.
+
+It requires a stable internet connection to function, as offline access is not supported.
+The system will not document payments made outside it, and external financial audits are not supported. Staff will need training to use the system's different user roles effectively.
+Basic security features are in place; further upgrades may be needed for stronger data protection, and regular updates will be necessary to maintain security and functionality.
+The system does not track guests' real-time presence or activities during their stay, and the chatbot will only provide pre-programmed responses, with an option to escalate complex inquiries to a human agent.
+The analytics module will not track bookings or interactions through external platforms like Facebook, and the system will not integrate with third-party booking sites such as Airbnb, Agoda, or Booking.com.
+The payment method will not rely on third-party payment APIs, which may introduce constraints related to integration, transaction processing, and external service availability.
+
+Review of Related Literature
+Online Reservation System
+According to Fernandes et al. (2023), the use of digital media in online accommodation booking has been examined, focusing on traditional websites, mobile platforms, and the potential of virtual reality. Their study reveals that while traditional and mobile websites remain popular for booking accommodations, virtual reality (VR) shows promise for enhancing the user experience and building trust during the decision-making process. This insight highlights the growing role of technology in transforming customer interactions and booking behaviors in the hospitality industry.
+
+Vukasović and Mihać (2021) explored trends and innovations in online hotel accommodation bookings in Croatia. The study focused on the technologies and systems used in hotel sales and marketing departments and revealed that the use of online platforms for booking was increasing. The research emphasized the importance of modern reservation systems to remain competitive, as tourists now use a range of online platforms, including hotel websites, third-party sites, and social media, to make booking decisions. Additionally, the growing influence of social media, especially Twitter, in shaping tourism business strategies was highlighted. The findings are particularly relevant to this study, as social media's role in influencing customer decisions and the use of technology in booking systems is an area of interest for the Philippine hospitality industry.
+
+Payroll System
+Murla et al. (2020) conducted an assessment of school-based payroll systems across fourteen schools in the Department of Education in Nueva Ecija, focusing on large institutions. The study, which used a descriptive research design, evaluated payroll systems in terms of accuracy, safety & security, efficiency, usability, and timeliness. The findings revealed that schools primarily used Microsoft Excel for payroll calculations. However, areas such as safety & security, efficiency, and timeliness were identified as needing improvement. The major issue highlighted was the significant time required to prepare payroll, pointing to the need for technological advancements to create a more accurate, secure, and efficient system. This study suggests that automated systems could improve the overall payroll process in schools, thus enhancing efficiency and reducing errors.
+
+Rusly et al. (2020) conducted a bibliometric analysis of 170 publications from 1937 to 2019, exploring the critical role of payroll systems in ensuring accurate compensation and regulatory compliance. The study found increasing scholarly interest in payroll systems, particularly in recent years. It noted that systems like Sage, MYOB, and MySQL have significantly improved payroll accuracy and efficiency in Malaysia. The study advocates for the continued development of automated payroll systems to better manage large-scale operations and suggests that further research is needed to support technological advancements in this area.
+
+Onuotu and Amaewhule (2024) explored the impact of automated accounting systems on payroll preparation among SMEs in Port Harcourt. Their survey of 400 SMEs found that tools such as Square Payroll and QuickBooks improved payroll efficiency by reducing errors and processing time. However, the adoption of these systems is hindered by software complexity, technical skill gaps, costs, and reliability concerns, which are issues also relevant to the Philippine context.
+
+Analytics and Trends
+This study explores the relationship between market orientation and firm performance in the Philippine hospitality industry. Using a desk study approach and secondary data from online journals, the research found a positive correlation between market orientation and improved business outcomes. According to Bautista (2024), Hotels that focus on customer needs, competitor analysis, and internal coordination are more likely to achieve higher customer satisfaction, financial success, and market share. The study emphasizes the importance of adopting customer-centric strategies and integrating market orientation theory, the resource-based view (RBV), and service quality theory. Bautista's findings suggest that adopting these approaches is crucial for hospitality firms aiming to strengthen competitiveness and ensure sustainable growth.
+
+Walocko (2021) conducted a literature review on the application of data analytics in the hospitality sector, particularly in hotels and integrated resorts. The study emphasizes the importance of using data analytics to optimize operational efficiency, enhance customer satisfaction, and make informed business decisions. Walocko advocates integrating predictive analytics and machine learning to forecast demand, improve customer relationship management, and streamline resource allocation. These advanced analytics tools are becoming increasingly vital for hospitality businesses looking to stay competitive and deliver personalized experiences to their customers.
+
+Customer Service and Chatbots
+Kalusivalingam et al. (2020) investigated integrating Natural Language Processing (NLP) and Reinforcement Learning (RL) algorithms to improve customer service automation. Their study proposed a framework combining NLP for understanding natural language and RL to enhance system performance via real-time feedback. The experimental results showed that this integrated approach outperformed traditional customer service models, particularly in multi-turn dialogues and handling complex user queries. The integration of these advanced technologies can significantly enhance chatbot efficiency and customer satisfaction, particularly in industries with complex customer service needs.
+
+Gumabay et al. (2021) developed an interactive chatbot for customer service with voice recognition at St. Paul University Philippines. The study demonstrates that chatbots can significantly improve customer service by offering real-time responses to frequently asked questions. This addresses traditional customer service challenges, such as delays in answering repetitive inquiries and providing 24/7 support. The integration of voice recognition technology makes the chatbot more accessible, enhancing user-friendliness for a broader range of customers.
+
+Garcia et al. (2024) investigated the impact of airline chatbots on consumer satisfaction with pre-flight assistance services. They found a strong positive relationship between chatbot use and increased customer satisfaction, emphasizing that chatbots' automation, personalization, emotional understanding, and decision-making features significantly enhance travelers' experiences. These studies underscore the growing importance of chatbot technology in various industries and its potential to improve service efficiency.
+
+Review of Related Studies
+Acharya (2024) emphasized that enabling users to reserve at their preferred time and date marks a significant step toward technological advancement. They pointed out that transitioning from paper-based transactions to an online platform poses no real challenge, as the main focus should be on building a reliable, effective system. The author noted that computer-based systems are more efficient, accurate, and faster than manual operations, helping resorts improve their services and expand their reach.
+
+Based on the study "Resort Management System", Islam (2020) discussed the benefits of an Online Resort Booking System, highlighting how it aids travelers who prefer to confirm reservations in advance to avoid hassles during their trip. Providing customers with online access to check room availability, pricing, and resort facilities makes the booking process more convenient and transparent, allowing for easy comparison with other resorts in the same area. From a management perspective, the system also helps track daily and monthly income, compare it with operational costs, and determine net profits more effectively. Islam also emphasized that such systems are designed to replace manual processes and eliminate third-party involvement, reducing paperwork and offering customers more accessible, efficient services.
+
+Conversations with chatbots are often seen as impersonal and unnatural. Liebrecht and Van Hooijdonk's (2020) research suggests that enhancing chatbots with an engaging communication style, similar to human interactions, can improve the effectiveness of online communication between organizations and customers. However, it is crucial to strike the right balance when designing chatbots that resemble humans, as overhumanizing them may lead to unrealistic user expectations of their capabilities. This insight will guide the development of our system by ensuring a natural yet clear communication style for chatbot interactions.
+
+Bassey and Gbenga (2023) propose a new system to streamline the process of staff salary advances in schools, aiming to achieve a more efficient, seamless approach. Traditionally, staff requests are submitted manually via written applications, which are then sent to the relevant department, resulting in delays and inefficiencies. The proposed system automates this process, simplifying and speeding it up. By successfully gathering user information and providing insights, the system offers a significant improvement over manual methods, enabling faster, more accurate management of salary advances in educational institutions. It was found that this system significantly improves the process's efficiency.
+
+Rekiek et al. (2024) highlight the transformative potential of AI-based models in demand forecasting within the tourism and hospitality sector. Accurate prediction of booking trends and customer demand is critical for maximizing revenue, optimizing operations, and enhancing customer satisfaction. By using data-driven decision-making, hotel managers can forecast demand more precisely, enabling better resource allocation and more effective pricing strategies. This results in higher profitability and an improved guest experience. The study further suggests that AI-driven forecasting has broader applications, offering valuable insights for other industries seeking to improve business-related forecasting through predictive analytics. According to Rekiek et al. (2024), this approach not only benefits the hospitality sector but also provides businesses across various domains with a competitive advantage.
+
+Technical Background
+The proposed BOSS: Resort Management and Reservation System will be developed using a combination of modern web technologies to ensure responsiveness, scalability, and functionality suited to the resort's operational needs. The system will be built using PHP as the backend language and MySQL as the database management system to handle and store reservation data, employee records, and financial transactions. For the frontend, HTML5, CSS3, and JavaScript will be used to structure and design the user interface, while Bootstrap 5 will ensure the layout is responsive and mobile-friendly. AJAX or the Fetch API will be used to enable asynchronous interactions, such as checking room availability without page reloads. To generate visual reports and analytics for admin users, Chart.js or APIs will be integrated into the dashboard module. PHPMailer will be used to send automated booking confirmations via email and text message, as some people do not check their email. Additionally, chatbot functionality will be implemented via a third-party API, such as Tidio or Dialogflow, to handle real-time customer inquiries. For local development and testing, XAMPP will be used as the server environment. The system will be deployed on a web hosting platform such as Hostinger or cPanel to ensure 24/7 online accessibility. These technologies will work together to build a complete, efficient, and user-friendly resort management platform.
+
+Conceptual Framework
+This IPO model outlines the technical foundation for developing the BOSS System. It starts with the inputs such as software tools (PHP, MySQL, Bootstrap, CSS) and hardware. The process includes planning, system development, testing, and validation through user feedback and evaluation tools. The final output is a fully functional and validated resort management system that automates booking, payroll, customer service, and reporting, enhancing operational efficiency and customer experience.
+
+[Figure 1: Conceptual Framework of the RMS]
+
+Input
+The project utilizes essential software and hardware tools to build and test the system. Development tools like XAMPP, PHP, MySQL, and Bootstrap enable efficient coding and responsive design. Additional tools such as Chart.js, PHPMailer, and chatbot APIs offer enhanced features, including analytics, email confirmation, and customer support. The hardware setup, including computers and mobile devices, ensures the system works across platforms.
+
+Process
+The development process involves planning system modules, coding both frontend and backend, and integrating APIs and responsive UI. Testing is done locally, and validation is conducted through questionnaires and feedback. Statistical analysis of testing data helps refine the system based on user experience and performance metrics.
+
+Output
+The final output is a fully functional Resort Management and Reservation System featuring real-time booking, automated payroll tracking, an admin analytics dashboard, role-based access, and chatbot integration. This streamlines resort operations and enhances customer service.
+
+Evaluation
+Evaluation is performed by collecting user feedback, monitoring system performance, and analyzing satisfaction and error rates. This data-driven approach ensures continuous improvement and validation of the system's effectiveness.
+
+Definition of Terms
+Analytics Dashboard – A real-time visual interface that displays the key performance indicators (KPIs) for a website, often in the form of interactive charts. This can show website traffic, booking trends, and finance tracking to help the business make better decisions.
+
+API (Application Programming Interface) – A set of protocols, routines, and tools that allow different software applications to communicate and interact with each other, enabling data exchange and functionality integration between systems.
+
+Bootstrap – An open-source front-end framework that provides pre-designed templates, components, and tools for building responsive and mobile-first websites. It simplifies website design by providing ready-to-use HTML, CSS, and JavaScript components.
+
+Chatbot – An automated assistant in the system that can reply to common questions from guests right away. If it gets a question it can't handle, it sends it to a real staff member for help.
+
+CSS (Cascading Style Sheets) – A stylesheet language used to describe the presentation and design of a web page, including layout, colors, fonts, and spacing. It works alongside HTML to create visually appealing and responsive web pages.
+
+Customer Service – The assistance and support provided to customers with their inquiries, ensuring satisfaction, addressing inquiries or concerns, and enhancing the overall customer experience.
+
+Data-driven analytics – The use of collected data (such as bookings, payments, and user behavior) to generate insights that help improve decision-making, enhance customer experience, and optimize operations.
+
+Double-bookings – A scheduling conflict where the same room, time slot, or resource is reserved by more than one person at the same time, often due to system or human errors.
+
+HTML (HyperText Markup Language) – The standard language used to create and design the structure of web pages. It uses a system of tags to define elements such as text, images, links, and other content that appear on a webpage.
+
+JavaScript – A dynamic programming language commonly used in web development to create interactive and dynamic content. It allows manipulating HTML and CSS, enabling features such as form validation, animations, and real-time updates without reloading the page.
+
+
+CHAPTER II
+Methodology
+
+Design of Software, System, Product or Process
+Software Architecture
+The Blue Aura Operational Smart System (BOSS) was designed using a multi-layered software architecture to ensure a modular, scalable, and efficient resort management solution. The system follows a standard web-based client-server model, utilizing a combination of frontend technologies, backend logic, and a centralized database to handle core operations such as booking, payroll, and analytics.
+
+Layered Architecture Overview
+
+1. Frontend (User Interface Layer):
+The user interface is built using HTML5, CSS3, JavaScript, and Bootstrap. This layer is responsible for providing a responsive and interactive experience for guests, staff, and administrators. It handles user inputs through web forms and displays real-time data from the backend.
+
+2. Backend (Logic Layer):
+The core logic of BOSS is implemented using PHP. This layer manages the processing of business rules, such as calculating payroll, processing room availability, and managing user roles. It communicates between the frontend and the database, ensuring that data is processed securely and accurately.
+
+3. Data Layer (Storage Layer):
+A MySQL database serves as the central repository for all system data. This includes guest information, booking records, employee payroll data, and content for the integrated chatbot. The database is structured to support relational data management and efficient query retrieval.
+
+4. Integration Layer:
+BOSS incorporates several external integrations to enhance functionality:
+PHPMailer: For sending automated email notifications to guests regarding their bookings and status.
+Tidio/Dialogflow: Used for the implementation of the intelligent chatbot, which handles customer inquiries.
+Chart.js: Utilized within the admin dashboard to visualize booking and financial data through interactive charts.
+
+Modules and User Interaction
+The system is compartmentalized into specific modules, each catering to different user roles:
+Guest Module: Allows users to view resort information, check room availability, and submit booking requests.
+Admin Module: Provides administrators with a comprehensive dashboard to manage reservations, monitor system performance, and access financial analytics.
+Staff Module: Enables resort employees to view assigned tasks, update work statuses, and access relevant operational data.
+Payroll Module: Specifically designed for HR and management to automate salary calculations based on commission, attendance, and tax deductions.
+
+This architectural design ensures that BOSS is not only robust and secure but also flexible enough to accommodate future updates and additional features as the resort's operational needs evolve.
+
+Architectural Diagram
+[Figure 2: Software Architecture Diagram]
+
+As shown in the architecture diagram, the system maintains a structured flow from user interaction to data storage. Guests and staff interact with the frontend interface, which sends requests to the PHP backend. The backend processes these requests by querying the MySQL database or interacting with third-party APIs like PHPMailer or Tidio. The results are then rendered back to the user through the interface. This decoupled design allows for independent scaling of the frontend and backend components, ensuring high availability and performance even during peak resort operations.
+
+The integration of the various modules—ranging from booking management to payroll and analytics—is managed through a secure central controller within the backend, which enforces role-based access control (RBAC). This ensures that sensitive information, such as financial data and employee records, is only accessible to authorized administrative users, while guests are restricted to their own booking and inquiry management. This architecture demonstrates how all components, users, modules, integrations, and data layers operate cohesively to support efficient resort operations.
+
+Software Development Life Cycle
+[Figure 3: Software Development Life Cycle - Agile Model]
+
+The Agile Software Development Life Cycle (SDLC) was used to ensure the system evolved in response to real feedback and operational needs. Agile was developed by a group of 17 software developers, Ken Schwaber and Jeff Sutherland, who are often credited with co-creating Scrum, a specific framework within the Agile methodology. The Agile cycle includes six core phases that are repeated in sprints, with each sprint focusing on a key module of the system.
+
+1. Planning
+The researchers conducted consultations with Blue Aura's management and staff to identify the resort's key operational challenges, including manual bookings, delayed payroll processing, slow response to inquiries, and inadequate data tracking. From these discussions, the team defined clear system goals and created a prioritized product backlog. Key features included online booking, automated payroll processing, chatbot support, and analytics dashboards.
+
+2. Requirements Analysis
+System requirements were gathered through interviews, surveys, and direct observation of resort operations. These were categorized into functional requirements (booking functionality, chatbot interaction, and payroll automation) and non-functional requirements (system performance, security, and usability). These requirements were transformed into user stories that guided sprint planning and feature development, ensuring alignment with the needs of admins, staff, and guests.
+
+3. System Design
+In this phase, the requirements were translated into technical and visual blueprints. The team created UI/UX mockups in Figma, while ER diagrams, use case diagrams, and flowcharts were created in Lucidchart to model system logic and data flow. The design emphasized scalability, responsive interfaces, and secure role-based access controls.
+
+4. Implementation (Coding)
+System development was executed in modular sprints, with each sprint focusing on a specific feature:
+Sprint 1: Online Booking System
+Sprint 2: Chatbot Integration
+Sprint 3: Payroll Automation
+Sprint 4: Analytics Dashboard
+Sprint 5: Security & Role-Based Access
+
+The frontend was built using HTML, CSS, JavaScript, and Bootstrap, while the backend used PHP and MySQL. Additional tools included PHPMailer for email notifications, Tidio/Dialogflow for chatbot functionality, and Chart.js for visualizing analytics. Core modules developed included the reservation system, payroll manager, analytics interface, and chatbot communication tool.
+
+5. Testing
+To ensure the system met quality standards, several testing stages were carried out:
+Unit Testing verified individual components, including the booking form and salary calculator.
+Integration Testing confirmed that interconnected modules (e.g., booking and analytics) functioned together smoothly.
+System Testing assessed the entire platform in simulated real-world conditions.
+User Acceptance Testing (UAT) was conducted by selected resort staff to validate usability and compliance with requirements.
+
+All detected issues and bugs were documented and resolved before final deployment.
+
+6. Deployment
+After successful testing and approval, the system was deployed to a live environment using a web hosting platform (e.g., Hostinger or cPanel). Deployment involved:
+Uploading the system to the production server
+Configuring the live database and backend scripts
+Enabling automated notifications through PHPMailer
+Assigning user roles and access permissions
+Conducting final system checks in the live environment
+
+Once live, the system became fully accessible, supporting real-time booking, payment, and administrative operations.
+
+7. Maintenance
+The maintenance phase ensures the system remains secure, efficient, and responsive to evolving needs. Ongoing activities include:
+Resolving bugs or issues reported by users
+Updating chatbot content and FAQs
+Incorporating new features based on user feedback
+Performing regular system backups
+Monitoring performance and uptime
+Installing software updates and security patches
+
+This phase supports the long-term usability and scalability of BOSS, allowing Blue Aura's Hidden Paradise to maintain streamlined operations and customer satisfaction.
+
+System Flowchart
+[Figure 4: Role-based Navigation Process]
+
+A role-based navigation process within the web application, beginning at the homepage. Upon accessing the system, the user is prompted to identify their role: Admin, Staff, or Customer. Based on the selected role, the system directs the user to the corresponding interface: Admin Page, Staff Page, or Customer Page. Each of these pages leads to a designated sub-process, represented by connector nodes labeled A, B, and C, respectively. If the user does not match any of the specified roles, the system terminates the session and directs the flow to the End node. This structured approach ensures that users are routed appropriately based on their access level, maintaining an organized and secure user experience.
+
+[Figure 5: Admin Flowchart of Resort Management System]
+
+The admin flowchart presents the complete operational workflow for administrators within the Resort Management System. The process begins with the Login step, where the system verifies the administrator's credentials before granting access. Once successfully authenticated, the user is directed to the Admin Dashboard, which serves as the central hub for all administrative functions.
+
+[Figure 6: Staff Flowchart of Resort Management System]
+
+The flowchart illustrates the operational workflow for staff within the resort management system. The process begins with the staff logging into the system. Upon successful authentication, they are directed to the Staff Dashboard, which serves as the central hub for various administrative tasks. From the dashboard, staff can navigate to Reservation Management, where they can initiate a New Reservation, which involves interacting with the database to store and retrieve reservation details. Staff also have access to Customer Service functions, allowing them to manage customer interactions and support.
+
+[Figure 7: User Flowchart of Resort Management System]
+
+The flowchart presents the structured process flow for the Admin role within the Resort Management System. The administrative workflow begins with the Admin logging into the system, which involves entering their credentials and undergoing authentication. Upon successful login, the Admin is directed to the Admin Dashboard, which provides access to various management modules. From the dashboard, the Admin can navigate to Reservation Management, Customer Management, User Management, Analytics module, and Chat Support. The workflow concludes with the Admin logging out of the system.
+
+Entity Relationship Diagram
+[Figure 8: Entity Relationship Diagram]
+
+Data Dictionary
+
+
+Table 1: Data Dictionary of Security Audit Log
+
+
+Table 2: Data Dictionary for Password Reset Tokens
+
+
+Table 3: Data Dictionary for FAQ Entries
+
+
+Table 4: Data Dictionary for Announcements
+
+
+Table 5: Data Dictionary for Users
+
+
+Table 6: Data Dictionary for Promos
+
+
+Table 7: Data Dictionary for Customers
+
+
+Table 8: Data Dictionary for Staff
+
+
+Table 9: Data Dictionary for Analytics Data
+
+
+Table 10: Data Dictionary for Bookings
+
+
+Table 11: Data Dictionary for Payroll Records
+
+
+Table 12: Data Dictionary for Guest Users
+
+
+Table 13: Data Dictionary for Available Slots
+
+
+Table 14: Data Dictionary for Chat Sessions
+
+
+Table 15: Data Dictionary for Messages
+
+
+Table 16: Data Dictionary for Reservations
+
+
+Table 17: Data Dictionary for Agent Request
+
+Use Case Diagram
+[Figure 9: Use Case Diagram]
+
+The Use Case Diagram for the BOSS: Blue Aura's Operational Smart System shows how the three main types of users, Admin, Staff, and Customer, interact with the system. Each role has its own set of features and access levels, based on its responsibilities within the resort.
+
+Customers can register by filling out a reservation form, receive login credentials via email, and log in using email, password, and OTP. They can manage bookings through a dashboard, modify or reschedule reservations, make payments, and use a chatbot for support. If needed, they can submit tickets, which may be escalated to staff.
+
+Staff members can log in to the system and access the home dashboard. They are responsible for managing reservations and providing customer service. This includes handling support tickets, escalating issues to human agents when necessary, and monitoring both the booking and analytics dashboards to ensure smooth operations.
+
+Admins have full access to all features available to staff members. In addition to managing reservations and support tasks, they can manage staff accounts by adding, editing, or deleting user data. Admins are also responsible for payroll management, which includes disbursing salaries and commissions. They have access to the analytics dashboard, which provides insights into booking trends, customer behavior, and overall system performance.
+
+Requirements Analysis
+1. Software Requirements
+These are the software tools and platforms required for developing, testing, deploying, and maintaining the website.
+
+Development Tools and Frameworks:
+
+a) Frontend Development
+HTML 5
+CSS 3
+Bootstrap 5
+Chart.js
+
+b) Backend Development
+PHP 8.1+ (CodeIgniter 4)
+MySQL
+XAMPP
+API Integration (Gmail API and Gemini AI API)
+Gmail SMTP
+
+c) Security and Authentication
+Gmail SMTP
+API Integration
+
+2. Hardware Requirements
+These are the physical resources required for the development, testing, and deployment of the application.
+
+Development Environment:
+a. Developer Machines (for coding and testing):
+Processor: Minimum: Intel Core i3 / AMD Ryzen 3.
+RAM: 4 GB minimum, 8 GB (Recommended or up) to handle multiple development tools, browsers, and emulators simultaneously.
+Storage: Minimum: 128 GB SSD; Recommended: 256 GB SSD for fast data access and enough space for source code, libraries, and applications. You can also use an HDD for additional storage.
+Graphics: Integrated graphics (Intel HD or AMD Radeon Vega) are sufficient for development, but a dedicated GPU (NVIDIA GTX or RTX) may be needed for heavy tasks like design and testing.
+Operating System: macOS, Linux, and Windows (10 or up).
+
+Testing Devices:
+Computer: Laptop or desktop monitor for testing large screen compatibility and responsiveness.
+Mobile Device: Mobile screen for testing small-screen compatibility and responsiveness.
+Test Network: Ensure that devices are connected to Wi-Fi or a mobile network to sync features.
+
+3. System Requirements for Users Sample
+Website Requirements:
+Operating System: Windows 10 or later; macOS Catalina 10.15 or later.
+Browser: Google Chrome, Microsoft Edge, Safari, Brave Browser, Opera GX, or other modern web browsers.
+Internet: Internet connection required for syncing financial data, accessing cloud features, and retrieving reports.
+
+Requirements Documentation
+Functional Requirements
+1. Role-Based Access Control
+The system shall assign different user roles (Admin, Staff, Customer) with corresponding access privileges.
+Each user shall only access features appropriate to their role.
+
+2. Account Management
+The Admin's account credentials will be provided by the system makers, while the Staff's account credentials will be provided by the Admin.
+Users (excluding admin and staff) must be able to reserve their bookings and will receive their log-in credentials and an automated password via email upon completing their reservation.
+Users must be able to log in securely using email and password.
+Users must be able to reset passwords.
+Users can edit their profile information.
+
+3. Reservation and Customer Service
+Users shall be able to make online bookings with real-time availability and instant confirmation.
+Users shall be able to reschedule or transfer bookings through their personal dashboard.
+The system shall integrate a chatbot to respond to frequently asked questions (FAQs) and escalate complex queries to human staff.
+Staff shall manage and monitor bookings, inquiries, and customer feedback through the admin dashboard.
+
+4. Payroll Management
+The system shall automatically compute staff salaries, agent commissions, and deductions.
+Payouts shall be processed via integrated channels (e.g., GCash or bank transfers).
+The system shall generate payslips and financial summaries per pay period.
+
+5. Analytics and Reports
+The system shall feature an analytics dashboard for visualizing booking trends, occupancy rates, sales performance, and customer engagement.
+The system shall generate financial reports including income, expenses, and profit.
+
+Non-Functional Requirements
+1. Performance
+The system shall process booking confirmations within seconds of submission.
+The chatbot shall respond to user inquiries in real time.
+
+2. Availability
+The system shall be accessible online 24/7 via web hosting.
+
+3. Security
+User data shall be protected via role-based access and basic input validation.
+Email confirmations shall be sent via PHPMailer for verification purposes.
+
+4. Usability
+The interface shall be responsive and mobile-friendly using Bootstrap 5.
+Customers shall complete the booking process in no more than 5 steps.
+
+Development and Pre-Testing Procedures
+This phase outlines the development process followed for the BOSS: Web-Based Resort Management System, guided by the established design specifications and functional requirements.
+
+
+Table 18: Test Case Scenario for Reservation Module
+
+
+Table 19: Test Case Scenario for Payroll Module
+
+
+Table 20: Test Case Scenario for Analytics Module
+
+
+Table 21: Test Case Scenario for Role-Based Access Control Module
+
+Implementation Plan
+The system's implementation is structured into distinct phases to ensure a smooth transition from development to deployment. This plan covers the technical infrastructure, deployment environment, and operational setup necessary for successful system rollout.
+
+[Figure 10: Implementation Plan using Gantt Chart]
+
+The Gantt chart outlines the timeline for the development and testing phases of the Resort Management System. The project commences with the Planning and Requirement Analysis phase in Month 1, encompassing the client interview, feasibility study, and requirements documentation. This is followed by the System Development phase from Months 2 to 6, which involves the sequential implementation of key modules: Reservation, Payroll, Analytics, Chatbot Integration, and User Role and Access Control. In Months 6 and 7, debugging activities are conducted through module unit testing and integration testing to ensure system stability. System Testing is performed in Month 8 under simulated live scenarios to evaluate functional reliability. The final phase, User Acceptance Testing, takes place in Months 9 and 10 and involves end-user validation for both general users and administrative staff. This phased approach ensures a comprehensive, methodical development process that results in a fully functional, user-ready system upon completion.
+
+Statistical Treatment of Data
+Data Gathering Technique
+The researchers employed a quantitative-descriptive approach using a structured questionnaire as the primary data collection tool. The instrument was designed based on the ISO 25010 Software Quality Model and utilized a five-point Likert Scale to evaluate key areas such as system functionality, efficiency, reliability, usability, and user satisfaction. Respondents were asked to rate their experiences after interacting with the system in a simulated or actual usage environment.
+
+Functional Suitability – The system meets the core needs, such as booking, payroll, and analytics.
+Performance Efficiency – Features such as real-time booking and automated computations respond quickly with minimal delay.
+Compatibility – Designed to work on both desktop and mobile platforms.
+Usability – Simple and intuitive UI for admins, staff, and customers.
+Reliability – Stable operations with reduced system errors or booking conflicts.
+Security – Includes user authentication, role-based access, and OTP verification.
+Maintainability – Modular code allows easy updates and debugging.
+Portability – Accessible online across different devices and browsers.
+
+Setting of the Study
+The study was conducted at Blue Aura's Hidden Paradise, a privately managed resort located in North Caloocan City, Metro Manila. As the primary site for system deployment and evaluation, the resort provided a realistic environment where the BOSS (Blue Aura's Operational Smart System for Booking, Analytics, and Payroll) could be tested under actual operational conditions. The system was demonstrated and used by resort staff and test users to assess key functionalities, including booking, payroll automation, and customer support, through live scenarios. This setting enabled the researchers to evaluate the system's performance, usability, and responsiveness while also identifying practical challenges relevant to real-world usage.
+
+Subject of the Study
+The development and implementation of an integrated online booking and payroll management system for Blue Aura's Hidden Paradise Resort. The study participants included selected resort staff, management personnel, and potential customers, all of whom represent actual end users of the system. These individuals were chosen based on their roles in the resort's day-to-day operations and their potential to interact with the system's major modules, including booking, analytics, and payroll functionalities.
+
+Sampling Technique
+This study employed a purposive sampling technique, in which participants were intentionally selected based on their direct involvement in the resort's operations and their anticipated interaction with the developed system. The sample included administrative staff responsible for reservations and payroll, as well as service personnel and prospective customers who would utilize the booking and inquiry features. This method was chosen to ensure feedback from individuals with relevant experience and responsibilities, thereby providing accurate, practical, and meaningful evaluations of the system's functionality, usability, and overall effectiveness.
+
+Statistical Treatment of Data
+The collected data were analyzed using a descriptive method, specifically the Weighted Mean, to measure the central tendency of responses for each evaluation criterion. This method allowed the researchers to determine the overall effectiveness of the system based on user perception.
+
+The formula for the weighted mean is as follows:
+
+X̄ = Σ(f · x) / n
+
+Where:
+f = frequency
+x = assigned weight of each scale point (1 to 5)
+n = total number of respondents
+
+The interpretation of the mean scores was based on the following scale:
+
+
+Table 22: Mean Interpretation
+
+The formula for the standard deviation is as follows:
+
+σ = √[Σf(x - x̄)² / Σf]
+
+
+Table 23: Standard Deviation Interpretation
+
+This statistical treatment provided a reliable basis for evaluating user acceptance and the overall quality of the developed system.
+
+
+CHAPTER III
+Results and Discussion
+
+System Test Plan
+This phase outlines the development process followed for the BOSS: Web-Based Resort Management System, guided by the established design specifications and functional requirements.
+
+Alpha Testing
+The system was initially developed using two separate devices. Each side of the (customer and admin site) system's UI and functionality was coded and built independently by two of our Developers. Later on, when the UI and functionality was complete, we merged them to complete the connections on both sides. When we combined the customer and admin modules, we encountered an issue where the customer system did not reflect on the admin system. This issue could potentially risk as it could cause inaccurate monitoring on the admin side and threaten the data consistency across the system. During debugging, we discovered that the system connections weren't properly linked to the databases. Since the system was created in different devices, each system had its own databases. To fix the issue, the Developers drop the previous databases and create a new database that unites the system. We also added table prefixes to easily identify which module (customer or admin) does the table belong to each set of data.
+
+The second testing was conducted next, to which the testing was focused on the Reservation Module, specifically on the reservation form. Upon checking if the reservation could be submitted properly, we found a problem where the system couldn't process the reservation and was showing an error message of "An error occurred while processing your reservation." The Developers tried to debug this issue and then they checked the reservation controller file, the browser interface, and the server logs in the writable/logs/ folder. There were also changes in the .env file that we looked over. After checking these directories, we found the problem was caused by the Gmail SMTP as it wasn't set up. As the Gmail SMTP wasn't set up, this also caused an issue to the email system and has caused the system to stop sending email confirmation because there is no App Password in the environment folder of the system. To fix this bug, we checked the Google Account that the system is using and then created an App Password for sending email use. Once the App Password was created, we added it on the .env file. And after applying the fix, we tried and tested the form again and then the system is now able to process the booking, send confirmation and save the data to the database.
+
+Third testing was focused on the chatbot, we found a lot of issues that seriously affects the system and the experience of the users. One of the developers found out that the issues was in the "Waiting for an Agent" status because it is not reflecting on the admin side, a JavaScript variable also conflicts the system which stopped the real-time chat updates, the chatbot also had an infinite refresh loop after closing a case, the input field also got disabled after the agent session closure, session expiration errors caused "Case not found" messages, and also the system performed very slowly and poorly due to the N+1 queries. The fixes we implemented in these issues improved the system accessibility, performance, and overall user experience. The fixes we did were that we added the correct accessibility tags, fixed the variable conflict and improved the case closing logic to stop the refresh loop. We also reset the input field properly and optimized the database queries using the batch loading, and added automatic session recovery.
+
+The fourth system testing was focused on the admin system. Several issues were identified specifically in the Payroll Module, Analytics Module and Role-based Module. When testing the system, we figured that these issues affected the functionality, performance and the security of the system. In the payroll module, the foreign key validation had an error when making payroll records. The validation rules that checks for the existence of staff IDs fail without warning if the staff records were deleted, especially with the inactive staff members. Another problem was that the payroll updates incorrectly automates the calculations of the gross pay, total deductions and the net pay. While in the Analytics Module, we saw a problem in the performance because of the N+1 query problems which results in longer page load times. Also the system would fail to log the errors during the data loading which caused a hardship in troubleshooting. And in the Role-Based Access Control Module, we encountered an issue that says "The action you requested is not allowed." which is a CSRF Token error, and this hindered the real user logins due to token validation failures. Also we found a security problem which could risk the hijacking because all the sessions were based on variables that could be changed, corrupted, or lost. These issues were fixed because we enhanced the payroll validation logic, and implemented the better and strong input and error handling, optimized the database queries for analytics, created a comprehensive error logging, improved the system CSRF token management, and then strengthened the role validation logics through session checks. These fixes resulted in more accurate payroll records, a lot of reduction in analytics queries count and improved the dashboard load time from several seconds to under one second, and a secured security measure which ensures the users data protection even if the data was compromised.
+
+Before the Developers deployed the system in the web host, we did another test along with the implementation of the ISO 25010 Software Quality Standard and the security compliance testing. A lot of errors were found regarding the CSRF (Cross-Site Request Forgery) Token which was spread across all the systems and it blocked the users from login attempts, form submissions, and AJAX requests with the error message of "The action you requested is not allowed." This issue was because the CSRF protection was enabled globally for all the POST requests, yet the token validation is still failing because of the tokens given in request headers or the bodies did not match the cookie tokens, or the CSRF cookies weren't correctly initialized or delivered with requests. And then the Identity verification, reservation submissions, chat messaging, payroll updates, and administrative operations were disrupted. The developers solved this by implementing an integrated CSRF token management system that uses multiple fallback methods for a token retrieval, sending the tokens in request headers and bodies. The Developers also configured a proper cookie setting including the SameSite policies and then added the CSRF token meta tags to all frontend pages then implemented the automatic token refresh mechanism. These fixes enabled all the users interactions and the ISO 25010 security compliance while the CSRF protection worked properly across all the system.
+
+Beta Testing
+The Developers then created a domain and uploaded the system through a web shared hosting through Namecheap domain and their own hosting which is Stellar. When we successfully uploaded the system to the web host we still encountered multiple issues that prevented the system from running fully. These issues were mostly the repeated HTTP 503 Service Unavailable errors that appeared after putting the system files to the Namecheap shared hosting server. There were a lot of "Unavailable" problems across the system, which we detected that the cause of the issue was the incorrect setup of the database to the web host. The main problem was that the .env file didn't have the right database setting and required tables which resulted in both the site for customers and the admin system getting HTTP 503 errors.
+
+The errors of HTTP 503 were present in the customer site when they tried to make interaction with the system such as making reservations, using the booking features like modify and transfer, and then the chatbot. This error also prevented control in the admin system which are the agent dashboard, customer service, payroll management, marketing campaign, and staff management. They couldn't view the logs, restart requests, get session information, manage escalated sessions, assign agents, and view the chat history. This error is also present in the reservation module, where booking confirmation couldn't be sent. All these errors across the system were caused by the same problem which is the database linking to the web host server as it wasn't set up correctly.
+
+After all these fixes, which are mostly about the database connections using the right cPanel prefixed credentials, and making sure that all the necessary database tables were present, all the modules that were severely affected are fully functional now. Users can now make reservations and access the features of the system again. And in the admin side, it is now functional again, it can now access the chat logs, agent request, payroll, marketing campaigns and the analytics, they all now function as it should.
+
+After all these changes, for the real-world testing, where the real people filled out our survey and used the system, we also tried to test the reservation being made at the same time and then we confirmed that the system handled this correctly. The first person whose screens were loaded was able to complete the booking, but the other user got an error message saying that the date is no longer available. This proved that the booking conflict logic worked correctly and that the HTTP 503 errors were gone. Finally, the system could work properly in the shared hosting and can handle multiple people at once, and get the chatbot working again, keeping the database stable during real-world usage. The system can be accessed through bosscapstone.me.
+
+
+Table 24: Test Case Scenario for Reservation Module
+
+
+Table 25: Test Case Scenario for Payroll Module
+
+
+Table 26: Test Case Scenario for Analytics Module
+
+
+Table 27: Test Case Scenario for Role-Based Access Control Module
+
+Statistical Analysis
+The following procedures were carried out to evaluate the acceptability and overall software quality of the BOSS system:
+
+1. A total of 55 system users and 7 IT experts were invited to participate in the system evaluation using an ISO 25010-based survey questionnaire.
+2. Before answering the survey, the respondents were given a brief orientation and a hands-on demonstration of the system's key features to ensure they understood how the Blue Aura's system works.
+3. The participants were then encouraged to explore and use the system freely, allowing them to experience its functionality, usability, and performance firsthand.
+4. After using the system, they completed the evaluation form. The completed surveys were collected, organized, and tallied by the researchers.
+5. To determine the acceptability of each indicator, the researchers used the Weighted Mean as the primary statistical tool.
+6. The resulting weighted means were interpreted using a five-point Likert Scale ranging from Poor to Excellent.
+7. In addition to the numerical ratings, the researchers reviewed respondents' comments and suggestions to identify areas where the system could be improved.
+
+User Dashboard
+
+
+Table 28: Statistical Result of User Functionality
+
+The results in Table 28 show that users positively evaluated the system's overall functionality. Functionality Appropriateness received the highest mean score of 4.403 with a standard deviation of 0.958, indicating strong user agreement that the system's features are helpful and suitable for accomplishing their tasks. This is followed by Functionality Completeness, which obtained a mean of 4.322 and a standard deviation of 1.012, showing that users agree the system includes the necessary features it was required to have. Functionality Correctness recorded the lowest mean among the three, 4.290 with a standard deviation of 0.973, but still falls under "Agree," suggesting that users find the system accurate and consistent in producing correct results. Overall, the data reflects that the system is functional, dependable, and meets user expectations effectively.
+
+
+Table 29: Statistical Result of User Reliability
+
+Based in Table 29, this indicates that users positively evaluated the system's reliability. Recoverability received the highest mean score of 4.274 with a standard deviation of 0.826, showing strong agreement that the system can quickly restore data and return to normal operation after a failure. This is followed by Availability, which obtained a mean of 4.241 and a standard deviation of 0.994, suggesting that users find the system consistently accessible whenever needed. Fault Tolerance recorded a mean of 4.016 with a standard deviation of 0.975, indicating that users agree the system can continue functioning or recover when internal issues occur. Maturity received the lowest mean score of 3.819 with a standard deviation of 1.123, yet still falls under "Agree," implying that users generally believe the system rarely crashes during normal use. Overall, the data shows that the system is reliable, resilient, and capable of maintaining stable operation from the users' perspective.
+
+
+Table 30: Statistical Result of User Usability
+
+The results in Table 30 show that users positively evaluated the system's usability. User Interface Aesthetics received the highest mean score of 4.474 with a standard deviation of 0.638, indicating that users strongly agree the interface is visually appealing and provides a satisfying experience. This is followed by Operability, which obtained a mean of 4.327 and a standard deviation of 1.014, suggesting that users find the system easy and intuitive to control during normal use. Accessibility recorded a mean of 4.306 with a standard deviation of 0.943, showing that users agree the system accommodates a wide range of user abilities. Both Appropriateness and Recognizability and Learnability received equal mean scores of 4.322, reflecting user agreement that the system's purpose is clear and that new users can learn it quickly and easily. User Error Protection obtained the lowest mean score of 4.125, but still falls under the Agree interpretation. Overall, the results suggest that the system is user-friendly, visually appealing, and accessible while supporting efficient and intuitive interaction.
+
+
+Table 31: Statistical Result of User Performance Efficiency
+
+The results in Table 31 indicate strong user agreement regarding the system's performance efficiency. Time Behavior received the highest mean score of 4.714 with a standard deviation of 0.451, showing that users strongly agree the system responds and processes data quickly enough to meet their needs. Both Resource Utilization and Capacity obtained equal mean scores of 4.571 with a standard deviation of 0.494, reflecting user agreement that the system efficiently uses CPU, memory, and bandwidth while also being capable of handling the required maximum number of users, data, or transactions. Overall, these findings demonstrate that the system performs efficiently, manages resources well, and delivers fast and reliable processing according to user feedback.
+
+
+Table 32: Statistical Result of User Compatibility
+
+The results in Table 32 show that users strongly agree with the system's compatibility performance. Both Co-existence and Interoperability received identical mean scores of 4.714 with a standard deviation of 0.451, indicating high user satisfaction. These scores suggest that the system can operate smoothly alongside other software without causing conflicts, and it can effectively exchange and use information with external systems or products. Overall, the findings reflect that the system is highly compatible, stable, and capable of integrating well within various computing environments.
+
+
+Table 33: Statistical Result of User Security
+
+The results in Table 33 indicate strong user agreement regarding the system's overall security. Confidentiality, Integrity, Non-repudiation, and Authenticity all received the highest mean score of 4.714 with a standard deviation of 0.451, showing that users strongly agree the system protects data from unauthorized access, prevents unauthorized changes, verifies that actions truly occurred, and accurately confirms user identities. Accountability obtained the lowest mean score of 3.6 with a standard deviation of 1.743, yet still falls under the "Agree" interpretation. Overall, the data reflects that the system is viewed as highly secure, effectively safeguarding information and verifying user actions.
+
+
+Table 34: Statistical Result of User Maintainability
+
+The results in Table 34 show strong user agreement regarding the system's maintainability. Reusability received the highest mean score of 4.857 with a standard deviation of 0.349, indicating that users strongly agree the system's assets can be easily reused to build or enhance other systems. This is followed by Modifiability, with a mean of 4.714 and a standard deviation of 0.451. Modularity, Analyzability, and Testability all share an identical mean score of 4.571. Overall, the findings show that the system is highly maintainable, flexible, and efficient to update, troubleshoot, and reuse.
+
+
+Table 35: Statistical Result of User Portability
+
+The results in Table 35 show strong user agreement regarding the system's portability. Adaptability and Installability both received the highest mean score of 4.714 with a standard deviation of 0.451. Replaceability obtained a slightly lower mean score of 4.571 with a standard deviation of 0.728, but still falls under the "Agree" interpretation. Overall, the findings demonstrate that the system is flexible, easy to install, and capable of functioning well across various platforms and environments.
+
+Admin Dashboard
+
+
+Table 36: Statistical Result of Admin Functionality
+
+The results in Table 36 show strong agreement among respondents regarding the system's functionality. Functionality Completeness received a mean score of 4.71 with a standard deviation of 0.45, indicating that users strongly agree the system includes all required features. Functionality Correctness obtained a mean of 4.43 and a standard deviation of 0.49, reflecting agreement that the system consistently produces accurate results. The Appropriateness of functionality scored 4.71 with a standard deviation of 0.45, showing that users find the system's features helpful, suitable, and aligned with their needs. Overall, the findings demonstrate that the system is comprehensive, accurate, and appropriate for administrative use.
+
+
+Table 37: Statistical Result of Admin Reliability
+
+The results presented in Table 37 indicate that users agree the system performs reliably under various conditions. Maturity received a mean score of 4.43 with a standard deviation of 0.73. Availability scored 4.71 with a standard deviation of 0.45, meaning users strongly agree that the system is accessible whenever needed. Fault Tolerance obtained a mean of 4.14 and Recoverability scored 4.29. Overall, the results demonstrate that the system is reliable, stable, and capable of handling unexpected disruptions.
+
+
+Table 38: Statistical Result of Admin Usability
+
+The results in Table 38 show very positive user perceptions of the system's usability. Appropriateness and Recognizability achieved a high mean score of 4.86. Operability received a similarly high mean of 4.86. User Error Protection scored 4.00, still within the "Agree" interpretation. User Interface Aesthetics achieved the highest rating of 5.00 with a standard deviation of 0.00, indicating unanimous agreement that the system is visually appealing. Accessibility scored 4.71. Overall, the results confirm that the system is user-friendly, visually well-designed, and easy to learn and operate.
+
+
+Table 39: Statistical Result of Admin Performance Efficiency
+
+The results in Table 39 reflect strong user agreement regarding the system's performance efficiency. Time Behavior scored 4.71 with a standard deviation of 0.45. Capacity received a mean score of 4.43. Resource Utilization obtained a lower mean of 3.86 with a standard deviation of 1.25, although still interpreted as "Agree." Overall, the findings indicate that the system performs well, responds quickly, and supports necessary operational demands.
+
+
+Table 40: Statistical Result of Admin Compatibility
+
+The results in Table 40 show that respondents agree the system is compatible with other software and external platforms. Co-existence achieved a mean of 4.71 with a standard deviation of 0.45. Interoperability scored 4.14 with a standard deviation of 0.64. Overall, the results confirm that the system performs well in shared environments and supports information exchange across different platforms.
+
+
+Table 41: Statistical Result of Admin Security
+
+The results in Table 41 indicate very strong user agreement regarding the system's security features. Confidentiality and Non-repudiation both scored 4.86 with a standard deviation of 0.35. Integrity received a mean of 4.43 with a standard deviation of 1.40. Accountability scored 4.57 and Authenticity received a mean of 4.43. Overall, users perceive the system as secure, trustworthy, and protective of sensitive data.
+
+
+Table 42: Statistical Result of Admin Maintainability
+
+The results in Table 42 reflect positive user agreement regarding the maintainability of the system. Modularity scored 4.43 with a standard deviation of 0.73. Reusability obtained a mean of 4.57 and a standard deviation of 0.49. Analyzability and Modifiability both scored 4.43 and Testability scored 4.29. Overall, the findings show that the system is well-structured for updates, analysis, and long-term maintenance.
+
+
+Table 43: Statistical Result of Admin Portability
+
+The results in Table 43 indicate strong user agreement regarding the system's portability. Adaptability and Installability received a mean score of 4.43 with a standard deviation of 0.73. Replaceability recorded a slightly lower mean score of 4.00 with a standard deviation of 0.76, still within the "Agree" interpretation. Overall, the results demonstrate that the system is adaptable, easy to deploy, and capable of functioning well across diverse environments.
+
+Implementation and Statistical Results Interpretation
+Project Description
+The BOSS: Blue Aura's Operational Smart System is a web-based system created to help Blue Aura manage three important tasks: booking, analytics, and payroll. Before this system was developed, most of these tasks were done manually, which often led to delays, errors, and difficulty keeping records up to date. BOSS was designed to make these processes faster, easier, and more organized by consolidating them into a single system.
+
+The system lets the admin handle bookings, review business reports, and compute payroll without using multiple tools. It aims to make work more efficient for staff and provide a smoother experience for clients. After the development phase, the system was tested by actual users and IT experts to assess its performance in real-world scenarios.
+
+Project Structure
+The BOSS: Blue Aura's Operational Smart System for Booking, Analytics, and Payroll is structured into three major modules designed to enhance resort operations and improve user experience:
+
+Booking Module – This module manages all reservation-related activities. It allows users to create, edit, and monitor bookings while ensuring scheduling accuracy and preventing overlapping appointments. It maintains an organized and reliable reservation process for both staff and guests.
+
+[Figure 11: Home Page Section]
+
+The home page serves as the main landing page for users, providing quick access to resort information, available facilities, and navigation options for booking and account management.
+
+[Figure 12: Reservation Page]
+
+The Reservation Page allows users to schedule their stay by selecting their preferred date, time, and services. In addition to booking, this page also serves as the account creation section, where users provide their personal information, such as name, email, and contact number. Once submitted, the system automatically stores the details and generates the user's account, enabling easier tracking and management of their reservations.
+
+Analytics Module – Provides an overview of how the business is performing. It displays graphs, summaries, and reports based on data recorded in the system, including booking volume and activity trends. This helps the management understand what's happening in the business and make better, data-driven decisions.
+
+[Figure 13: Analytics Dashboard Section]
+[Figure 14: Analytics Dashboard Section]
+[Figure 15: Analytics Dashboard Section]
+[Figure 16: Analytics Dashboard Section]
+
+The Analytics Dashboard provides a visual summary of the resort's operational performance, displaying graphs, metrics, and activity trends based on the recorded booking data. It helps the management monitor booking patterns, customer engagement, and overall system usage, enabling informed and data-driven decisions.
+
+Payroll Module – The Payroll Module automates salary computation based on employee attendance and work hours. It automatically calculates pay, deductions, and other necessary details.
+
+[Figure 17: Payroll Dashboard Section]
+[Figure 18: Payroll Dashboard Section]
+[Figure 19: Payroll Dashboard Section]
+
+The Payroll Dashboard displays a summary of employee salaries, commissions, and payroll activity for a selected period. It provides staff counts, total payroll amounts, and detailed breakdowns of individual employee records. This interface enables administrators to manage payroll generation, review salary components, and export reports efficiently, significantly reducing manual computation time and minimizing errors.
+
+System Capabilities and Limitations
+Test Result
+The Blue Aura's System was thoroughly evaluated to determine its level of acceptability based on ISO/IEC 25010 software quality standards. The respondents included resort administrators, IT professionals, and end-users who actively interacted with the system.
+
+
+Table 44: Evaluation Summary for Users Site
+
+The evaluation results show that the system demonstrates strong overall quality across all ISO 25010 criteria. Functionality, Usability, Performance Efficiency, Compatibility, Security, Maintainability, and Portability all received mean ratings ranging from 4.29 to 4.86, reflecting users' high satisfaction with the system's completeness, ease of use, responsiveness, integration capability, data protection, and adaptability. Although Maturity under Reliability scored slightly lower, the remaining reliability attributes were rated Excellent, indicating dependable system operation. Overall, the findings confirm that the system performs effectively, is user-friendly and secure, and meets expected software quality standards.
+
+
+CHAPTER IV
+Summary of Findings, Conclusion, and Recommendation
+
+Summary
+Based on test results and evaluations, the web-based system, "BOSS: Blue Aura's Operational Smart System for Booking, Analytics, and Payroll," was evaluated by 55 users and 7 IT experts. Based on the findings, 98% of users reported that all features worked properly, and 95% found the system easy to use. Staff and administrators were able to manage bookings, check analytics, and process payroll without confusion. Additionally, 92% of respondents said tasks were completed faster and with fewer errors than under the manual process. Guests could send queries, view their account dashboard, and pay for bookings via GCash or online banking. The system's live chat feature enabled staff to answer guest questions in real time, with 90% of users receiving prompt, helpful responses, making customer support more personal and responsive.
+
+Evaluators gave high ratings for the system's functionality, speed, and security, with 97% expressing satisfaction in these areas. It was also found that 96% of users experienced no issues using the system across various devices, including laptops and mobile phones. Overall, the feedback indicated that the BOSS system is likely to make work easier and improve the quality of service at the resort.
+
+Test Result
+
+1. Functional Suitability – The test results showed that all required features of the BOSS system are present, fully operational, and performing accurately. The booking, payroll, analytics, and chatbot features work as intended with correct outputs and responses. The system's functions enable users to complete queries more quickly, resulting in booking and monitoring processes that are significantly faster than the previous manual approach.
+
+2. Usability – The system was easy for users to understand and navigate. During testing, both staff and administrators were able to find the options they needed without any confusion. The buttons and labels were clear, and first-time users said they could use the system right away without needing much help. Overall, the system provided a smooth, comfortable experience for its users.
+
+Evaluation Result
+
+1. Functional Suitability – The evaluators rated the BOSS system as highly acceptable in terms of its overall functionality. They confirmed that the booking, payroll, analytics, and chatbot features are all working correctly and performing as expected. Users also noted that the system makes reservation tasks and information checks much faster than the previous manual process.
+
+2. Performance Efficiency – The evaluators found the BOSS system's performance highly acceptable. They observed that pages load quickly, bookings are processed smoothly, and payroll calculations are completed without delay. Even when several users accessed the system simultaneously, it remained stable and responsive.
+
+3. Usability – The evaluators rated the BOSS system as highly acceptable. They appreciated its simple and clean interface, which made it easy for both staff and administrators to navigate. They also noted that the buttons, labels, and menus were easy to understand, and that first-time users could operate the system without difficulty.
+
+4. Security – The evaluators rated the BOSS system as highly acceptable in terms of security. They recognized that user accounts, payroll information, and booking records were protected and accessible only to authorized users. This helped build trust and confidence among staff and administrators.
+
+5. Portability – The evaluators found the BOSS system highly acceptable in this regard. They noted that the system works smoothly across devices such as laptops, tablets, and mobile phones and remains functional across various browsers and operating systems.
+
+Recommendations
+
+1. To improve convenience and efficiency, it is recommended to integrate secure online payment options such as GCash, PayMaya, or debit/credit card processing. This will allow guests to complete their transactions and confirm reservations without manual follow-ups.
+
+2. The system should automatically send confirmations, reminders, and updates on reservations, cancellations, and payment status to improve communication between the resort and its guests.
+
+3. Since most guests use mobile devices, a fully optimized mobile interface or a dedicated mobile app is recommended to ensure smoother browsing, booking, and reservation tracking.
+
+4. A dynamic, real-time calendar will help users easily check room availability, reduce duplicate bookings, and improve overall reservation efficiency.
+
+5. A built-in rating or feedback system can help the management gather insights on guest satisfaction and identify areas for service improvement.
+
+6. It is recommended that the system include automatic database backups and a recovery mechanism to prevent data loss from system failures, corruption, or other unexpected issues.
+
+7. Regular updates, bug fixes, and usability testing should be conducted to ensure optimal performance and long-term system reliability.
+
+Conclusion
+In this project, the researchers developed the BOSS: Blue Aura's Operational Smart System for Booking, Analytics, and Payroll to support the efficient operation of Blue Aura's Hidden Paradise. By transitioning from manual procedures to a web-based platform, the resort now has a more streamlined, organized way to handle reservations, manage payroll, and monitor business performance.
+
+The system integrates a built-in chatbot that assists users by answering common inquiries and guiding them through the platform. When the chatbot cannot address a concern, clients may connect with a live agent for further assistance. Access to the analytics dashboard is restricted to authorized staff and administrators, ensuring secure viewing of operational data and business insights. Automated processes in both booking and payroll further enhance staff efficiency, reduce the likelihood of errors, and contribute to smoother day-to-day operations.
+
+Overall, the BOSS system provides Blue Aura with a more organized, responsive, and data-driven operational workflow. Implementing this system can significantly improve staff productivity, enhance guest support, and prepare the resort for future growth. By continuously updating and maintaining the system as the business evolves, Blue Aura can rely on BOSS to remain a valuable tool that supports both current operations and long-term development.
+
+
+BIBLIOGRAPHY
+References
+
+Acharya, K. (2024). Resort Management and Reservation System Project Report. Authorea. https://doi.org/10.22541/au.173016279.97900083/v1
+
+Bassey, U. P., & Gbenga, J. R. (2023). Online staff salary advances the management system for tertiary institutions.
+
+Bautista, J. E. (2024). Market orientation as a catalyst for success: Unveiling the dynamics in the Philippine hospitality industry. Asia-Africa Journal of Recent Scientific Research, 4(1). https://journals.iapaar.com/index.php/AAJRSR/article/view/212
+
+De Jesus, N. M., & Buenas, L. J. E. (2023). Descriptive analytics and interactive visualizations for performance monitoring of extension services programs, projects, and activities. International Journal of Advanced Computer Science and Applications, 14(1). https://doi.org/10.13140/RG.2.2.35296.10248
+
+Español, S. J., Fronda Jr., R., Villarica, M. R., & Intal, G. L. (2021). Shop Buddy enhanced automated chatbot for any e-commerce website with data analytics functionalities. In Proceedings of the International Conference on Industrial Engineering and Operations Management (pp. 2709–2721).
+
+Fernandes, P. O., Vaz, M., & Vaz, R. (2024, March 15). Present and future digital media experiences to support travellers' decision process during online accommodation booking: A systematic literature review and bibliometric analysis. In Advances in Tourism, Technology and Systems (ICOTTS 2023) (pp. 143–156). Springer.
+
+Garcia, L. E. G., Landicho, A. J. C., Magbalita, G. C., Maligaya, J. C., Vertucio, N. A. A., Gamoso, R. A., & Peralta, A. E. R. (2024). Airline chatbots as communication tool towards consumer satisfaction on pre-flight assistance services. In A. K. Othman et al. (Eds.), Industry-Academia Linkages for Business Sustainability (Vol. 133, pp. 162–180). European Publisher. https://doi.org/10.15405/epsbs.2024.05.14
+
+Gumabay, M. V., Jacobe, B., Pascua, M. L., & Tumbali, B. J. (2021). Interactive chatbot for customer service. International Journal of Advanced Trends in Computer Science and Engineering, 10(4). https://doi.org/10.30534/ijatcse/2021/141042021
+
+Kalusivalingam, A. K., Sharma, A., Patel, N., & Singh, V. (2020). Enhancing customer service automation with natural language processing and reinforcement learning algorithms. International Journal of AI and ML, 1(2).
+
+Mahmutović, K. (2020, June). From Google Analytics to digital marketing optimization in the hotel industry: Proposal of framework and empirical evaluation of hotel industry in Croatia, Bosnia and Herzegovina and Serbia. In Proceedings of FEB Zagreb International Odyssey Conference on Economics and Business (Vol. 2, No. 1, pp. 828–843).
+
+Murla, C. J. M., Roasa, J. A., Reyes, R. V., De Mesa, J. S., & Santos, M. D. (2020). Assessment of school-based payroll system: Basis for enhancement. International Journal of English Literature and Social Sciences, 5(1).
+
+Onuotu, R. N., & Amaewhule, W. A. (2024). Influence of automated accounting system on payroll preparation of small and medium scale enterprises in Rivers State. Rivers State University Journal of Education, 27(1), 212–220.
+
+Ramento, L. F., Dancel, D. M., Taberlo, E., & Anquillano, K. J. (2024). Web-based reservation and management system for Nature Spring Resort. Journal of Pure and Applied Sciences, 4(2).
+
+Rekiek, S., Jebari, H., & Reklaoui, K. (2024). Prediction of booking trends and customer demand in the tourism and hospitality sector using AI-based models. International Journal of Advanced Computer Science and Applications, 15(10).
+
+Rusly, F. H., Ahmi, A., Abdul Talib, Y. Y., & Rosli, K. (2018). Payroll system: A bibliometric analysis of the literature. AIP Conference Proceedings, 2016, 020124. https://doi.org/10.1063/1.5055526
+
+Vukasović, T., & Mihač, V. (2021). Trends in the online booking of hotel accommodation. International Journal of E-Services and Mobile Applications, 13(1), 60–76. https://doi.org/10.4018/IJESMA.2021010105
+
+Walocko, L. A. (2021). Data analytics in hotel and integrated resort brands: An evaluation of past literature and proposed research for the future (Master's thesis, University of Nevada, Las Vegas). UNLV Theses, Dissertations, Professional Papers, and Capstones. http://dx.doi.org/10.34917/28406642
+
+
+APPENDICES
+
+Appendix A: Gantt Chart
+
+[Figure 20: Gantt Chart]
+
+Figure 20 presents the Gantt chart illustrating the project timeline for the development of Blue Aura's Operational Smart System. The chart outlines the key project activities, including Implementation, Debugging, Testing, Survey, Documentation, Final Defense, and Revision, that were scheduled from September to December. Each task is plotted according to its actual duration, clearly showing its start and end points within the development period.
+
+Appendix C: Informed Consent
+
+[Figure 21: Consent Form]
+
+Appendix D: Evaluation Tool
+
+I. Respondent Information
+
+Name: ___________________________
+Email: ___________________________
+Sex: ___________________________
+Data Privacy Agreement: ___________________________
+
+II. Survey Questionnaire
+
+
+Table 45: Evaluation Tool
+
+Appendix E: Summary of Evaluation Responses
+
+
+Table 46: Summary of Evaluation
+
+Appendix F: Test Results
+
+[Figures 22–50: Various Test Result Documents]
+
+Appendix G: System Screenshots
+
+User Site
+
+[Figures 51–67: User Site Screenshots]
+
+Admin Site
+
+[Figures 68–79: Admin Site Screenshots]
+
+Staff Site
+
+[Figures 80–83: Staff Site Screenshots]
+
+Appendix H: User Manual
+
+Accessing the Website as a User:
+a. When you click the link you will be directed to the homepage of the system.
+b. Click Rates and Facilities to check the offer and learn more about the Resort.
+c. Click Special Offers to check recent announcements and promo codes.
+d. Click Contact Us for our communication channels.
+e. Click the Book Now to check the availability and create your account through the reservation form.
+
+If you login:
+a. Open your gmail account using the email address you used upon reservation.
+b. Click the Blue Aura's Hidden in your inbox to view your generated password.
+c. Click the Login in the website and input your email address and generated password.
+
+If you forgot password:
+a. Click the "Forgot Password" button under the login button.
+b. A verification code will be sent to your email address.
+c. Enter a 6-digit verification code and verify it.
+d. Create a new password and click "Reset Password".
+e. Click the "Back to Login".
+
+Once you logged in, you will be able to access the User Dashboard.
+
+On the Dashboard you can:
+a. Modify and make another booking.
+b. Proceed to Payment.
+c. Access the Chat Support and talk to the actual agent.
+d. Click "Account" to edit your profile or even update your password.
+
+Accessing the website as an Admin:
+a. When you click the link you will be directed to the homepage of the system.
+b. Input your email address and password and click "Login".
+
+If you forgot your password:
+a. Click the "Forgot Password" button below the login form.
+b. Enter your email address to receive a reset link.
+c. Check your email for the password reset instructions.
+d. Click "Change Password" and confirm your new password.
+
+Once you logged in, you will be able to access the Admin Dashboard.
+
+On the Dashboard you can:
+a. Access the Reservation Management.
+b. Access the Customer Service.
+c. Access the Agent Dashboard.
+d. Access the Analytics and Marketing.
+e. Access the Staff Management.
+f. Access the Payroll Management.
+g. Access your Account to edit your profile.
+
+
+Appendix I: Curriculum Vitae
+
+BIANCA ANGELA D. RAMOS
+Saniya St. Dela Costa II, Caloocan City, PH 1425 • biancaa.ramos26@gmail.com • 09990348394
+
+Education
+
+NATIONAL TEACHERS COLLEGE — Manila, Philippines
+Bachelor of Science in Information Technology — 2022 - 2026
+Honors: Dean's List, First Semester, First Year
+
+LAGRO SENIOR HIGH SCHOOL — Quezon City, Philippines
+TVL – Information, Communication and Technology — 2019 - 2022
+Honors: Graduated With Honors
+
+LAGRO HIGH SCHOOL — Quezon City, Philippines
+Junior High School — 2015 - 2019
+
+Experience
+
+Virtual Assistant — Baden-Württemberg, Germany (Remote)
+Part-time Content Creating and Graphic Designer — April 2025 – Present
+Conduct daily comment moderation on LinkedIn through Agorapulse, providing engaging responses that align with the client's brand guidelines.
+Create and repurpose designs and social media posts aligned with client branding in Canva and scheduled contents using Buffer.
+Organized data on engagement metrics and provide regular updates for performance tracking.
+
+Blue Aura's Hidden Paradise – Private Pool — Caloocan City, Philippines (Remote)
+Part-time Resort Administrator & Social Media Manager — February 2024 – Present
+Manage resort booking schedules, ensuring smooth operations and staff availability updates.
+Oversee social media marketing, including creating Facebook ads, posting content, and engaging with potential clients.
+Coordinate reservations, manage booking documents, and track agent commissions.
+
+MAV Virtual Assistance Services — Caloocan City, Philippines (Part-time Remote)
+Part-time General Virtual Assistant — January 2022 – August 2023
+Conducted lead generation and outreach to secure podcast guesting opportunities for the client while managing schedules, communications, and maintaining data in spreadsheets.
+Managed executives' calendars, scheduling meetings and appointments.
+Designed course materials and marketing materials, including brochures, and social media graphics.
+
+Skills & Interests
+Technical Skills: Intermediate proficiency in HTML and CSS; beginner in Python and Java.
+Software Proficiency: Notion, Microsoft Office, Google Workspace, Visual Studio Code.
+Design & Media: Canva, CapCut, Figma, Filmora, Premiere Pro, Photoshop.
+Languages: Native or bilingual proficiency in Filipino; full professional proficiency in English.
+Expertise: Data Entry, Lead Scrapping, Administrator, Social Media Management, Graphic Design, Calendar Management.
+
+Certifications
+Graphic Design Essentials — June 2025, Canva
+Email Marketing Professional Certificate — April 2025, Intuit Mailchimp
+Introduction to Cybersecurity — May 2024, Cisco Networking Academy
+The Fundamentals of Digital Marketing — September 2022, Google Digital Garage
+
+
+KRYSTLE AYN CAOILE
+14 Calavite Annex • Quezon City, 1114 • krystle.caoile17@gmail.com • 09636783005
+
+Education
+
+NATIONAL TEACHERS COLLEGE — Manila, Philippines
+Bachelor of Science in Information Technology — 2022 - 2026
+
+OUR LADY OF FATIMA UNIVERSITY — Quezon City, Philippines
+Senior High School — 2016-2018, General Academic Strand
+
+Experience
+
+McDonalds — Quezon City, Philippines
+Service Crew — May 2023 – Present
+As a service crew, being fast and accurate is important in order to learn and serve a customer.
+
+Jomars Lechon — Quezon City, Philippines
+Cashier — 2021-2023
+Managing a family business while attending school.
+
+Skills & Interests
+Technical: Basic knowledge in HTML and Bootstrap.
+Software Proficiency: Microsoft Office, Google Workspace, Visual Studio Code.
+Language: Filipino, Native language.
+Interests: Technology such as Mobile Phone and Working.
+Design & Media: Canva, CapCut and Figma.
+Expertise: Administering and Managing Data.
+
+
+RANDEL M. ORTEGA
+Pitong Gatang St • Tondo, Manila Philippines 1012 • s2200447-8@ntc.edu.ph • 09531938605
+
+Education
+
+NATIONAL TEACHERS COLLEGE — Manila, Philippines
+Bachelor of Science in Information Technology — 2022 - 2026
+
+STI COLLEGE RECTO — Manila, Philippines
+Senior High School — 2016 - 2018, Information and Communications Technology
+
+Experience
+
+Office of Congressman — Manila, Philippines
+Graphics Designer — June 2021 - December 2021
+Designed visual materials such as tarpaulins, calendars, posters, and other print assets.
+Edited photos and created layouts for marketing and informational content.
+Produced and edited video content for events and digital platforms.
+Served as Technical Director for live streaming, managing visuals, audio, and overall production flow.
+
+McDonald's P. Campa — Manila, Philippines
+Service Crew — November 2019 – March 2021
+Responsible for maintaining cleanliness and orderliness of the dining area.
+Assisted customers with seating, inquiries, and basic needs.
+Ensured proper sanitation standards and a pleasant dining environment.
+Supported front-of-house operations during peak hours.
+
+Skills & Interests
+Technical: Basic knowledge in HTML and CSS. Familiarity with Python, Java and Bootstrap.
+Software: Full professional proficiency in Adobe Photoshop, Adobe Premier, Canva, Figma.
+Language: Full professional proficiency in Filipino. Native or bilingual proficiency in English.
+Interests: Technology and Gadgets, Online Games, Watching Kdrama.
+
+
+ELYSHA ANN CLARISSE L. AGOJO
+231 Int. 37 Aguado St. San Miguel, Manila, Philippines 1005 • elyshaannagojo11@gmail.com • 09369933793
+
+Education
+
+NATIONAL TEACHERS COLLEGE — Manila, Philippines
+Bachelor of Science in Information Technology — 2022 - 2026
+
+NATIONAL TEACHERS COLLEGE – SENIOR HIGH SCHOOL
+Information and Communication Technology — 2020-2022
+Achiever: Graduated With Achiever
+
+Experience
+
+Youth Council — Manila, Philippines
+3rd SK Kagawad — November 2023 – Present
+Helped organize monthly feeding programs for children to support nutrition and wellness.
+Coordinated with fellow council members to plan and execute youth-related activities.
+Monitored participation and maintained records for school supply distribution and feeding activities.
+Contributed to creating youth-centered initiatives that improved community involvement.
+Supported logistics, documentation, and setup for community outreach events.
+Assisted in distributing school supplies to students across the community.
+
+Skills & Interests
+Technical: Basic knowledge in Python, Java, R Language.
+Interests: With a strong enjoyment for editing videos and pictures.
+
+
+JIMUEL T. NAVARRETE
+186-17 Kapiligan St. • Quezon City, Philippines 1113 • s22001691@ntc.edu.ph • 09386683878
+
+Education
+
+NATIONAL TEACHERS COLLEGE — Manila, Philippines
+Bachelor of Science in Information Technology — 2022 - 2026
+
+RAMON MAGSAYSAY CUBAO HIGH SCHOOL — Manila, Philippines
+Senior High School — 2019 - 2022, Information and Communications Technology
+
+Skills & Interests
+Technical: Basic knowledge in HTML and CSS. Familiarity with Python, Java and Bootstrap.
+Software: Full professional proficiency in Adobe Photoshop, Adobe Premier, Canva, Figma.
+Language: Full professional proficiency in Filipino. Native or bilingual proficiency in English.
+Interests: Technology and Gadgets, Online Games, Watching Kdrama.
+
+
+--- End of Document ---
