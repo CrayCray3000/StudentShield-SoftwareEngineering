@@ -146,13 +146,7 @@
         <div class="absolute bottom-[-20%] right-[-10%] w-[900px] h-[900px] rounded-full bg-gold-light/10 blur-3xl"></div>
     </div>
 
-    <!-- Desktop Only Emergency Exit (Hidden on mobile because it's in the top nav now) -->
-    <a href="https://www.google.com"
-       class="hidden sm:flex fixed sm:top-5 sm:right-5 items-center justify-center gap-2 bg-red-600 text-white border border-red-500 shadow-sm hover:shadow-xl hover:shadow-red-500/40 hover:bg-red-700 px-5 py-2.5 rounded-xl text-[13px] font-extrabold tracking-wide transition-all duration-300 z-[100]"
-       title="Emergency Exit">
-        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        <span>Emergency Exit</span>
-    </a>
+
 
     <!-- Main Fullscreen Glass Container (Edge-to-Edge Aesthetic) -->
     <div class="w-full h-full min-h-screen flex flex-col lg:flex-row relative z-10 bg-white">
@@ -256,11 +250,7 @@
                             </span>
                         </div>
                     </div>
-                    <!-- Right: Emergency Exit -->
-                    <a href="https://www.google.com" class="flex gap-2 items-center bg-red-600 hover:bg-red-700 text-white font-bold px-3 sm:px-4 py-2 rounded-lg shadow-sm text-[11px] sm:text-[12px] uppercase tracking-wide transition-colors border border-red-700">
-                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                        Exit
-                    </a>
+
                 </div>
             </nav>
 

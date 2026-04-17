@@ -152,10 +152,7 @@
             <i class="fas fa-arrow-left text-white/60 group-hover:text-gold transition-colors"></i> <span class="hidden sm:inline">Go Back</span>
         </a>
 
-        <a href="https://www.google.com" class="pointer-events-auto flex items-center gap-2 bg-red-500/20 backdrop-blur-xl text-red-200 border border-red-500/30 shadow-[0_10px_20px_-5px_rgba(239,68,68,0.2)] hover:bg-red-500 hover:text-white hover:border-red-500 hover:shadow-[0_15px_30px_-5px_rgba(239,68,68,0.4)] hover:scale-[1.02] px-4 sm:px-6 py-2.5 sm:py-3 rounded-[1rem] sm:rounded-2xl text-[12px] sm:text-[14px] font-black tracking-wide transition-all duration-300">
-            <i class="fas fa-times-circle"></i>
-            <span class="hidden sm:inline">Emergency Exit</span><span class="sm:hidden">Exit</span>
-        </a>
+
     </div>
 
     <!-- Main Container -->

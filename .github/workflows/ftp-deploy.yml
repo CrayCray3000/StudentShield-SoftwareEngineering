@@ -30,5 +30,13 @@ jobs:
           **/.git*/**
           **/node_modules/**
           **/.env*
-          docs/**
-          ml_service/**
+          **/writable/cache/**
+          **/writable/logs/**
+          **/writable/session/**
+          **/tests/**
+          **/*.md
+          **/*.txt
+          **/phpunit.xml.dist
+          **/spark
+          **/db_setup.php
+          **/test_alert.php
