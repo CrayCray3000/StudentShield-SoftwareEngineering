@@ -156,7 +156,7 @@
         }
 
         .thead-green {
-            background: #0B5E2E;
+            background: #166534;
             color: white;
         }
         .thead-green th {
@@ -173,7 +173,7 @@
         }
 
         .footer-bar {
-            background: #0B5E2E;
+            background: #166534;
             color: rgba(255,255,255,0.7);
             font-size: 0.75rem;
             padding: 12px 0;
@@ -212,27 +212,27 @@
                 <div class="hidden md:flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/15">
                     <svg class="w-4 h-4 text-[#F2C300] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <div class="flex flex-col leading-tight">
-                        <span id="liveDayDate" class="text-[10px] font-bold text-[#FFD233] uppercase tracking-wider"><?= date('l, M j, Y') ?></span>
+                        <span id="liveDayDate" class="text-[10px] font-bold text-[#FACC15] uppercase tracking-wider"><?= date('l, M j, Y') ?></span>
                         <span id="liveTime" class="text-xs font-semibold text-white/90 tabular-nums"><?= date('g:i:s A') ?></span>
                     </div>
                 </div>
 
                 <!-- Status indicator -->
                 <div class="hidden lg:flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/15">
-                    <span class="w-2 h-2 rounded-full bg-[#F2C300] live-dot"></span>
-                    <span class="text-xs font-semibold text-[#FFD233]">System Active</span>
+                    <span class="w-2 h-2 rounded-full bg-[#EAB308] live-dot"></span>
+                    <span class="text-xs font-semibold text-[#FACC15]">System Active</span>
                 </div>
 
                 <!-- Role Badge -->
                 <?php if (session()->get('role') == 2): ?>
-                    <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F2C300]/20 border border-[#F2C300]/30 text-[#FFD233] text-xs font-semibold">Super Admin</span>
+                    <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-semibold">Super Admin</span>
                 <?php else: ?>
                     <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
                 <?php endif; ?>
 
                 <!-- User Management (Super Admin Only) -->
                 <?php if (session()->get('role') == 2): ?>
-                <a href="/admin/users" class="flex items-center gap-2 text-sm font-medium text-[#F2C300]/80 hover:text-[#F2C300] hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
+                <a href="/admin/users" class="flex items-center gap-2 text-sm font-medium text-[#EAB308]/80 hover:text-[#EAB308] hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                     Users
                 </a>
