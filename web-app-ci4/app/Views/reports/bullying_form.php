@@ -14,10 +14,8 @@
                         heading: ['Outfit', 'sans-serif'] 
                     },
                     colors: {
-                        primary: '#0B5E2E', 
-                        'primary-light': '#0F6A34',
-                        gold: '#F2C300', 
-                        'gold-light': '#FFD233',
+                        primary: { DEFAULT: '#0B5E2E', light: '#107038', dark: '#084521', darker: '#06371A', darkest: '#03200F' },
+                        gold: { DEFAULT: '#F2C300', light: '#FFD633', bright: '#FFE880', dark: '#B39000' }
                     }
                 }
             }
@@ -36,7 +34,7 @@
         
         /* Dark Ambient Background */
         .bg-dark-mesh {
-            background: linear-gradient(135deg, #094F25 0%, #042E15 50%, #074520 100%);
+            background: linear-gradient(135deg, #0B5E2E 0%, #03200F 50%, #084521 100%);
             background-size: 200% 200%;
             animation: gradientShift 15s ease infinite alternate;
             position: fixed; inset: 0; z-index: -2;

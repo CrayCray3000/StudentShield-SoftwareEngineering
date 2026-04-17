@@ -18,10 +18,8 @@
                         heading: ['Outfit', 'sans-serif'],
                     },
                     colors: {
-                        primary: '#0B5E2E',
-                        'primary-light': '#0F6A34',
-                        gold: '#F2C300',
-                        'gold-light': '#FFD233',
+                        primary: { DEFAULT: '#0B5E2E', light: '#107038', dark: '#084521', darker: '#06371A', darkest: '#03200F' },
+                        gold: { DEFAULT: '#F2C300', light: '#FFD633', bright: '#FFE880', dark: '#B39000' },
                         lime: '#D4F000',
                         accent: '#F2C300',
                         'accent-blue': '#2A5DB0',
@@ -65,7 +63,7 @@
         }
 
         .glass-header {
-            background: linear-gradient(135deg, #0B5E2E 0%, #0F6A34 60%, #0d7538 100%);
+            background: linear-gradient(135deg, #0B5E2E 0%, #03200F 50%, #084521 100%);
             border-bottom: 3px solid #F2C300;
             box-shadow: 0 4px 24px -4px rgba(11, 94, 46, 0.4);
         }
