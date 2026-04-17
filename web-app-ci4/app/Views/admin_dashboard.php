@@ -18,8 +18,8 @@
                         heading: ['Outfit', 'sans-serif'],
                     },
                     colors: {
-                        primary: { DEFAULT: '#0B5E2E', light: '#107038', dark: '#084521', darker: '#06371A', darkest: '#03200F' },
-                        gold: { DEFAULT: '#F2C300', light: '#FFD633', bright: '#FFE880', dark: '#B39000' },
+                        primary: { DEFAULT: '#166534', light: '#15803d', dark: '#14532d', darker: '#064e3b', darkest: '#022c22' },
+                        gold: { DEFAULT: '#EAB308', light: '#FACC15', bright: '#FEF08A', dark: '#CA8A04' },
                         lime: '#D4F000',
                         accent: '#F2C300',
                         'accent-blue': '#2A5DB0',
@@ -63,9 +63,9 @@
         }
 
         .glass-header {
-            background: linear-gradient(135deg, #0B5E2E 0%, #03200F 50%, #084521 100%);
-            border-bottom: 3px solid #F2C300;
-            box-shadow: 0 4px 24px -4px rgba(11, 94, 46, 0.4);
+            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
+            border-bottom: 3px solid #EAB308;
+            box-shadow: 0 4px 24px -4px rgba(22, 101, 52, 0.4);
         }
 
         .dashboard-card {

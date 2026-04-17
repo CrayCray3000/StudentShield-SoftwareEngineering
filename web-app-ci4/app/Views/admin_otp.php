@@ -14,8 +14,8 @@
                         heading: ['Outfit', 'sans-serif'],
                     },
                     colors: {
-                        primary: { DEFAULT: '#0B5E2E', light: '#107038', dark: '#084521', darker: '#06371A', darkest: '#03200F' },
-                        gold: { DEFAULT: '#F2C300', light: '#FFD633', bright: '#FFE880', dark: '#B39000' }
+                        primary: { DEFAULT: '#166534', light: '#15803d', dark: '#14532d', darker: '#064e3b', darkest: '#022c22' },
+                        gold: { DEFAULT: '#EAB308', light: '#FACC15', bright: '#FEF08A', dark: '#CA8A04' }
                     }
                 }
             }
@@ -33,7 +33,7 @@
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-admin {
-            background: linear-gradient(135deg, #0B5E2E 0%, #03200F 50%, #084521 100%);
+            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
             background-size: 200% 200%;
             animation: gradientShift 12s ease infinite;
         }

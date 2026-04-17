@@ -11,8 +11,8 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Outfit', 'sans-serif'] },
                     colors: {
-                        primary: { DEFAULT: '#0B5E2E', light: '#107038', dark: '#084521', darker: '#06371A', darkest: '#03200F' },
-                        gold: { DEFAULT: '#F2C300', light: '#FFD633', bright: '#FFE880', dark: '#B39000' },
+                        primary: { DEFAULT: '#166534', light: '#15803d', dark: '#14532d', darker: '#064e3b', darkest: '#022c22' },
+                        gold: { DEFAULT: '#EAB308', light: '#FACC15', bright: '#FEF08A', dark: '#CA8A04' },
                         calm: { 50: '#F0F7F4', 100: '#DCF0E4', 200: '#B8E0C9', 500: '#4A9B6E', 700: '#2D6B47', 900: '#1A3D2A' },
                         warm: { 50: '#FEFCF3', 100: '#FDF6E0', 200: '#FAECBD' }
                     }
@@ -37,7 +37,7 @@
 
         /* Left Panel — Calming therapeutic feel */
         .brand-panel {
-            background: linear-gradient(170deg, #084521 0%, #0B5E2E 30%, #107038 60%, #157A3E 100%);
+            background: linear-gradient(170deg, #14532d 0%, #166534 30%, #15803d 60%, #16a34a 100%);
             position: relative; overflow: hidden;
         }
         .bg-ambient {

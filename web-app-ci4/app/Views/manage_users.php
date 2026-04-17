@@ -11,8 +11,8 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Outfit', 'sans-serif'] },
                     colors: {
-                        primary: { DEFAULT: '#0B5E2E', light: '#107038', dark: '#084521', darker: '#06371A', darkest: '#03200F' },
-                        gold: { DEFAULT: '#F2C300', light: '#FFD633', bright: '#FFE880', dark: '#B39000' }
+                        primary: { DEFAULT: '#166534', light: '#15803d', dark: '#14532d', darker: '#064e3b', darkest: '#022c22' },
+                        gold: { DEFAULT: '#EAB308', light: '#FACC15', bright: '#FEF08A', dark: '#CA8A04' }
                     }
                 }
             }
@@ -30,9 +30,9 @@
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
         .modal-backdrop { background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
         .glass-header {
-            background: linear-gradient(135deg, #0B5E2E 0%, #03200F 50%, #084521 100%);
-            border-bottom: 3px solid #F2C300;
-            box-shadow: 0 4px 24px -4px rgba(11, 94, 46, 0.4);
+            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
+            border-bottom: 3px solid #EAB308;
+            box-shadow: 0 4px 24px -4px rgba(22, 101, 52, 0.4);
         }
     </style>
 </head>
