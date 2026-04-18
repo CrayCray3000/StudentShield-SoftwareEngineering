@@ -81,39 +81,24 @@ class BullyReportController extends BaseController
             return redirect()->back()->with('error', 'Critical Error: Database failure. Report not saved.');
         }
 
-        // --- Execute 100% Automated Multi-SMS & Email Blast ---
+        // --- Stage 1: Instant Counselor Alert (Report Intake) ---
+        // Parent alerts are NOT sent here. They fire only after counselor verification (Stage 2)
+        // to prevent fake/malicious reports from triggering parent panic SMS blasts.
         
-        // 1. Alert the Reporter (Email)
+        // 1. Alert the Reporter (Email) — confirmation only, no sensitive details
         $reporter = $db->table('users')->where('id', $userId)->get()->getRow();
         if ($reporter && !empty($reporter->email)) {
-            $this->sendLocalEmail($reporter->email, "Thank you for speaking up. Your courageous report has been securely received by the SVBSM Counseling Team. You are safe.");
+            $this->sendLocalEmail($reporter->email, "Thank you for speaking up. Your courageous report has been securely received by the SVBSM Counseling Team. A counselor will review it shortly. You are safe.");
         }
 
-        // 2. Alert the Counselor (SMS & Email)
-        $this->sendLocalSms("09221234567", "StudentShield URGENT: A new Bullying Report was just filed. Please log into the admin dashboard immediately to investigate the evidence.");
-        $this->sendLocalEmail("svbsmcounseling@gmail.com", "StudentShield URGENT: A new Bullying Report was just filed. Please log into the admin dashboard immediately to investigate the evidence.");
+        // 2. Alert the Counselor Immediately (SMS & Email) — so they can investigate ASAP
+        $this->sendLocalSms("09221234567", "StudentShield URGENT: A new Bullying Report was just filed and requires your verification. Please log into the admin dashboard immediately to investigate and verify the report before parent alerts are sent.");
+        $this->sendLocalEmail("svbsmcounseling@gmail.com", "StudentShield URGENT: A new Bullying Report was just filed and requires your verification. Please log into the admin dashboard immediately to investigate and verify the report before parent alerts are sent.");
 
-        // 3. Alert the Victim's Parent (SMS & Email)
-        if ($victimStudentId) {
-            $victim = $db->table('users')->where('id', $victimStudentId)->get()->getRow();
-            if ($victim) {
-                $victimMsg = "SVBSM Guidance Alert: We have received a preliminary report that your child may be involved in a bullying incident as a victim. Please offer a warm check-in with your child tonight. Our counselors are currently investigating.";
-                if (!empty($victim->parent_phone)) $this->sendLocalSms($victim->parent_phone, $victimMsg);
-                if (!empty($victim->parent_email)) $this->sendLocalEmail($victim->parent_email, $victimMsg);
-            }
-        }
+        // NOTE: Parent SMS & Email alerts are now triggered via Stage 2 (Counselor Verification)
+        // See AdminController::verifyIncident() — counselor clicks "Verify & Alert Parents" on the dashboard
 
-        // 4. Alert the Bully's Parent (SMS & Email)
-        if ($bullyStudentId) {
-            $bully = $db->table('users')->where('id', $bullyStudentId)->get()->getRow();
-            if ($bully) {
-                $bullyMsg = "SVBSM Guidance Alert: We have received a preliminary report involving your child regarding a disciplinary incident. Our administration is currently investigating. Please contact the school office tomorrow.";
-                if (!empty($bully->parent_phone)) $this->sendLocalSms($bully->parent_phone, $bullyMsg);
-                if (!empty($bully->parent_email)) $this->sendLocalEmail($bully->parent_email, $bullyMsg);
-            }
-        }
-
-        return redirect()->to('/report/bullying')->with('message', 'Priority Alert: Report submitted securely. All emergency notifications have been transmitted automatically.');
+        return redirect()->to('/report/bullying')->with('message', 'Your report has been securely submitted. A school counselor has been alerted and will review it shortly.');
     }
 
     private function sendLocalSms($phone, $message)

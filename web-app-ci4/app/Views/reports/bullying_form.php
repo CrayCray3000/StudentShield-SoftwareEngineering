@@ -188,7 +188,7 @@
                 You are <span class="text-gold">safe</span> here.
             </h1>
             <p class="text-white/60 font-medium text-[14px] sm:text-[17px] max-w-[500px] mx-auto leading-relaxed px-4 sm:px-0">
-                This report is highly secure, encrypted, and completely confidential. We are here to listen and help.
+                Your report is securely encrypted and sent directly to the school counselor. After verification, automated safety alerts will be sent to the relevant parents.
             </p>
         </div>
 
@@ -289,8 +289,8 @@
             
             <!-- Trust Badges -->
             <div class="pt-6 sm:pt-8 mt-6 sm:mt-10 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 gap-y-3 sm:gap-y-4 text-[10px] sm:text-[12px] text-white/40 font-extrabold uppercase tracking-widest">
-                <span class="flex items-center gap-1.5 sm:gap-2"><i class="fas fa-user-secret text-gold/70 text-xs sm:text-sm"></i> 100% Anonymous</span>
-                <span class="flex items-center gap-1.5 sm:gap-2"><i class="fas fa-shield-alt text-gold/70 text-xs sm:text-sm"></i> Admin Only</span>
+                <span class="flex items-center gap-1.5 sm:gap-2"><i class="fas fa-user-shield text-gold/70 text-xs sm:text-sm"></i> Confidential Reporter</span>
+                <span class="flex items-center gap-1.5 sm:gap-2"><i class="fas fa-check-double text-gold/70 text-xs sm:text-sm"></i> Counselor-Verified Alerts</span>
             </div>
             
         </div>

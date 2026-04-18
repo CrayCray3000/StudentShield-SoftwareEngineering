@@ -862,12 +862,19 @@
                         window.incidentsDataMap[incident.id] = incident;
                         let textSnippet = incident.description.length > 55 ? incident.description.substring(0, 55) + '...' : incident.description;
                         let statusBadge = '';
-                        let isResolved = incident.status === 'Resolved';
+                        let isPending = incident.status === 'pending_review';
+                        let isVerified = incident.status === 'verified';
+                        let isRejected = incident.status === 'rejected_fake';
+                        let isResolved = incident.status === 'resolved' || incident.status === 'Resolved';
                         
-                        if (isResolved) {
+                        if (isVerified) {
+                            statusBadge = `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-green-200 block">✓ Verified</span>`;
+                        } else if (isRejected) {
+                            statusBadge = `<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-red-200 block">✗ Rejected</span>`;
+                        } else if (isResolved) {
                             statusBadge = `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-green-200 block">Resolved</span>`;
                         } else {
-                            statusBadge = `<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-yellow-200 block">Pending</span>`;
+                            statusBadge = `<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-yellow-200 animate-pulse block">⏳ Pending Review</span>`;
                         }
 
                         let reporterName = incident.name ? incident.name : 'Anonymous';
@@ -877,7 +884,7 @@
                         const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
                         const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
 
-                        let bgColor = 'bg-white hover:bg-gray-50';
+                        let bgColor = isPending ? 'bg-yellow-50/50 hover:bg-yellow-50 border-l-4 border-l-yellow-400' : (isRejected ? 'bg-red-50/30 hover:bg-red-50' : 'bg-white hover:bg-gray-50');
 
                         html += `<tr class="transition-colors duration-200 ${bgColor}">
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center">
@@ -897,13 +904,35 @@
                             </td>
                             <td data-label="Status" class="px-6 py-4 whitespace-nowrap text-center">${statusBadge}</td>
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
-                                ${!isResolved && !showArchivedIncidents ? `
-                                    <form action="<?= base_url('counselor/incident/resolve/') ?>${incident.id}" method="POST" class="block w-full mb-1">
-                                        <button type="submit" class="w-full text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-md transition-colors">
-                                            Mark Resolved
+                                ${isPending && !showArchivedIncidents ? `
+                                    <form action="<?= base_url('counselor/incident/verify/') ?>${incident.id}" method="POST" class="block w-full mb-1">
+                                        <button type="submit" onclick="return confirm('VERIFY this report and send automated SMS & Email alerts to parents?');" class="w-full text-xs font-bold text-white bg-[#0B5E2E] hover:bg-[#0F6A34] px-3 py-2 rounded-md transition-colors shadow-sm">
+                                            ✓ Verify & Alert Parents
                                         </button>
                                     </form>
-                                ` : (!showArchivedIncidents ? `<div class="h-8 mb-1"></div>` : '')}
+                                    <form action="<?= base_url('counselor/incident/reject/') ?>${incident.id}" method="POST" class="block w-full">
+                                        <button type="submit" onclick="return confirm('REJECT this report as fake/unverified? No parent alerts will be sent.');" class="w-full text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md transition-colors border border-red-200">
+                                            ✗ Reject (Fake)
+                                        </button>
+                                    </form>
+                                ` : ''}
+                                ${isVerified && !showArchivedIncidents ? `
+                                    <span class="text-xs font-semibold px-3 py-1.5 rounded-md text-[#0B5E2E] bg-[#0B5E2E]/10 border border-[#0B5E2E]/20 flex items-center justify-center gap-1 mx-auto w-full mb-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        Alerts Sent
+                                    </span>
+                                ` : ''}
+                                ${isRejected && !showArchivedIncidents ? `
+                                    <span class="text-xs font-semibold px-3 py-1.5 rounded-md text-red-500 bg-red-50 border border-red-200 flex items-center justify-center gap-1 mx-auto w-full mb-1">
+                                        No Alerts Sent
+                                    </span>
+                                ` : ''}
+                                ${isResolved && !showArchivedIncidents ? `
+                                    <span class="text-xs font-semibold px-3 py-1.5 rounded-md text-[#0B5E2E] bg-[#0B5E2E]/10 border border-[#0B5E2E]/20 flex items-center justify-center gap-1 mx-auto w-full mb-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        Resolved
+                                    </span>
+                                ` : ''}
                                 
                                 ${showArchivedIncidents ? `
                                 <form action="<?= base_url('counselor/incident/restore/') ?>${incident.id}" method="POST" class="block w-full">

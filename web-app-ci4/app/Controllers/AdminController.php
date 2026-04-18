@@ -209,6 +209,124 @@ class AdminController extends BaseController
         return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id resolved.");
     }
 
+    /**
+     * Stage 2: Counselor Verification — Triggers Automated Parent SMS & Email Blast
+     * 
+     * This is the thesis core feature: "Automated Parent SMS Alerts"
+     * The automation is counselor-gated to prevent fake/malicious reports from 
+     * triggering parent panic. The counselor clicks one button, and the entire
+     * notification pipeline fires automatically — no typing, no manual selection.
+     */
+    public function verifyIncident($id)
+    {
+        $db = \Config\Database::connect();
+        
+        // Update status to verified
+        $db->table('bully_reports')->where('id', $id)->update([
+            'status'     => 'verified',
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        $this->logAudit('VERIFY_AND_ALERT', 'incident', (int)$id);
+        
+        // Fetch the full report record
+        $report = $db->table('bully_reports')->where('id', $id)->get()->getRow();
+        if (!$report) {
+            return redirect()->to('/counselor/dashboard')->with('error', "Report #$id not found.");
+        }
+
+        // --- Execute Automated Parent SMS & Email Blast (Stage 2) ---
+        
+        // 1. Alert the Victim's Parent (SMS & Email)
+        if (!empty($report->victim_student_id)) {
+            $victim = $db->table('users')->where('id', $report->victim_student_id)->get()->getRow();
+            if ($victim) {
+                $victimMsg = "SVBSM Guidance Alert: A verified report indicates your child may be involved in a bullying incident as a victim. Please offer a warm check-in with your child tonight. Our counselors have confirmed the report and are actively investigating.";
+                if (!empty($victim->parent_phone)) $this->sendLocalSms($victim->parent_phone, $victimMsg);
+                if (!empty($victim->parent_email)) $this->sendLocalEmail($victim->parent_email, $victimMsg);
+            }
+        }
+        
+        // 2. Alert the Bully's Parent (SMS & Email)
+        if (!empty($report->bully_student_id)) {
+            $bully = $db->table('users')->where('id', $report->bully_student_id)->get()->getRow();
+            if ($bully) {
+                $bullyMsg = "SVBSM Guidance Alert: A verified report involving your child regarding a disciplinary incident has been confirmed by our guidance team. Our administration is currently investigating. Please contact the school office tomorrow.";
+                if (!empty($bully->parent_phone)) $this->sendLocalSms($bully->parent_phone, $bullyMsg);
+                if (!empty($bully->parent_email)) $this->sendLocalEmail($bully->parent_email, $bullyMsg);
+            }
+        }
+
+        return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id VERIFIED. Automated SMS & Email alerts have been sent to parents.");
+    }
+
+    /**
+     * Reject a fake/malicious report without sending any parent alerts.
+     */
+    public function rejectIncident($id)
+    {
+        $db = \Config\Database::connect();
+        $db->table('bully_reports')->where('id', $id)->update([
+            'status'     => 'rejected_fake',
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        $this->logAudit('REJECT_FAKE', 'incident', (int)$id);
+        return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id marked as unverified/fake. No parent alerts were sent.");
+    }
+
+    private function sendLocalSms($phone, $message)
+    {
+        if (empty($phone)) return false;
+
+        $cleanPhone = ltrim($phone, '+');
+        if (str_starts_with($cleanPhone, '63') && strlen($cleanPhone) == 12) {
+            $cleanPhone = '0' . substr($cleanPhone, 2);
+        }
+
+        $payload = json_encode(['phone' => $cleanPhone, 'message' => $message]);
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "http://192.168.1.3:8080/send-sms",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => ["Content-Type: application/json", "Connection: close"],
+        ]);
+        curl_exec($curl);
+        curl_close($curl);
+        
+        return true;
+    }
+    
+    private function sendLocalEmail($emailAddress, $messageBody)
+    {
+        if(empty($emailAddress)) return false;
+        try {
+            $email = \Config\Services::email();
+            
+            $smtpUser = env('email.SMTPUser', 'svbsmcounseling@gmail.com');
+            $smtpPass = env('email.SMTPPass', '');
+            
+            $email->initialize([
+                'protocol' => 'smtp',
+                'SMTPHost' => env('email.SMTPHost', 'smtp.gmail.com'),
+                'SMTPUser' => $smtpUser,
+                'SMTPPass' => $smtpPass,
+                'SMTPPort' => (int)env('email.SMTPPort', 587),
+                'SMTPCrypto' => env('email.SMTPCrypto', 'tls'),
+                'SMTPTimeout' => 5,
+                'mailType' => 'html',
+                'charset' => 'utf-8',
+            ]);
+            
+            $email->setFrom($smtpUser, 'SVBSM Wellness Team');
+            $email->setTo($emailAddress);
+            $email->setSubject('StudentShield: Protective Services Notification');
+            $email->setMessage("<div style='font-family: Arial; padding: 20px; background: #f9f9f9; border: 1px solid #ddd;'><h3>Counseling Alert</h3><p>{$messageBody}</p></div>");
+            $email->send(false);
+        } catch (\Exception $e) {}
+    }
+
     public function deleteIncident($id)
     {
         $db = \Config\Database::connect();
