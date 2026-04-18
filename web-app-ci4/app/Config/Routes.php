@@ -47,6 +47,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('/report-bullying/submit', 'BullyReportController::submit');
 
     // Student Routes
+    $routes->get('/student/dashboard', 'StudentDashboardController::index');
     $routes->get('/student/vent', 'VentController::index');
     $routes->post('/student/vent/submit', 'VentController::submit');
 });

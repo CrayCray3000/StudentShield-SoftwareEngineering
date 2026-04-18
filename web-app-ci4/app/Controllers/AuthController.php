@@ -9,7 +9,7 @@ class AuthController extends BaseController
     {
         if (session()->get('isLoggedIn')) {
             $role = (int) session()->get('role');
-            if ($role === 0) return redirect()->to('/student/vent');
+            if ($role === 0) return redirect()->to('/student/dashboard');
             if ($role === 1 || $role === 2) return redirect()->to('/counselor/dashboard');
         }
         return view('login');
@@ -71,7 +71,7 @@ class AuthController extends BaseController
                 'role_name'  => 'student',
                 'isLoggedIn' => true,
             ]);
-            return redirect()->to('/student/vent');
+            return redirect()->to('/student/dashboard');
         }
         return redirect()->back()->with('error', 'Invalid Student credentials.');
     }
