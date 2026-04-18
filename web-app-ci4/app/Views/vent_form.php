@@ -139,7 +139,7 @@
     <div class="blob bg-white w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] rounded-full bottom-[-5%] left-[-5%] mix-blend-screen" style="animation-delay: -5s; animation-direction: alternate-reverse;"></div>
 
     <!-- Main Container -->
-    <div class="w-full max-w-3xl mx-auto relative z-20 flex flex-col justify-center">
+    <div class="w-full max-w-4xl mx-auto px-5 sm:px-8 relative z-20 flex flex-col justify-center">
         <div class="w-full relative z-20">
         
         <!-- Header Section -->
