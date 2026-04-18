@@ -162,7 +162,7 @@
             <div class="relative z-10 anim-1">
                 <div class="flex items-center gap-3.5 mb-14">
                     <div class="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/10">
-                        <img src="<?= base_url('images/logo.png') ?>" alt="SVBSM Logo" class="h-20 w-20 object-contain"
+                        <img src="<?= base_url('images/logo.png?v=3') ?>" alt="SVBSM Logo" class="h-20 w-20 object-contain"
                              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
                     </div>
                     <div>
@@ -238,7 +238,7 @@
                 <div class="px-5 py-3.5 flex items-center justify-between">
                     <!-- Left: Branding -->
                     <div class="flex items-center gap-3">
-                        <img src="<?= base_url('images/logo.png') ?>" alt="Logo" class="h-10 w-10 object-contain">
+                        <img src="<?= base_url('images/logo.png?v=3') ?>" alt="Logo" class="h-10 w-10 object-contain">
                         <div class="flex flex-col">
                             <span class="font-heading font-extrabold text-gray-900 text-[14px] leading-none">StudentShield</span>
                             <span class="text-[9px] text-emerald-500 font-bold uppercase tracking-wider flex items-center gap-1.5 mt-1">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Student Portal - Secure Login</title>
-    <link rel="preload" as="image" href="<?= base_url('images/logo.png') ?>">
+    <link rel="preload" as="image" href="<?= base_url('images/logo.png?v=3') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -158,7 +158,7 @@
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-student transition-opacity duration-1000">
         <div class="relative flex flex-col items-center z-10">
             <!-- Animated Logo -->
-            <img src="<?= base_url('images/logo.png') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mb-6 animate-[scaleIn_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards] opacity-0"
+            <img src="<?= base_url('images/logo.png?v=3') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mb-6 animate-[scaleIn_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards] opacity-0"
                  style="animation-delay: 0.2s;"
                  onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
             
@@ -190,7 +190,7 @@
             
             <div class="text-center mb-8 sm:mb-10">
                 <!-- Logo: smaller on mobile, larger on larger screens -->
-                <img src="<?= base_url('images/logo.png') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mx-auto mb-5 sm:mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+                <img src="<?= base_url('images/logo.png?v=3') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mx-auto mb-5 sm:mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
                      onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
                 
                 <h1 class="text-[1.75em] sm:text-[2rem] font-heading font-black tracking-tight text-white mb-2 leading-tight">Student <span class="text-gold">Portal</span></h1>
