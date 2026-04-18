@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>StudentShield - Incident Report</title>
+    <link rel="preload" as="image" href="<?= base_url('images/logo.png') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -137,7 +138,11 @@
     </div>
 
     <!-- Main Container -->
-    <div class="w-full max-w-[800px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 mt-8 sm:mt-0">
+    <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 mt-8 sm:mt-0">
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 xl:gap-14 items-start">
+            
+            <!-- Left: Form Column -->
+            <div class="xl:col-span-12 2xl:col-span-7">
         
         <!-- Header Section -->
         <div class="text-center mb-8 sm:mb-12 anim-fade-up">
@@ -235,16 +240,78 @@
             
         </div>
         
-        <!-- Universal Emergency Hotline -->
-        <div class="mt-6 sm:mt-8 mb-12 sm:mb-16 px-5 sm:px-6 py-5 sm:py-6 font-medium text-center bg-white/5 backdrop-blur-lg rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.3)] anim-fade-up hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] transition-shadow duration-500" style="animation-delay: 0.3s;">
+        <!-- Universal Emergency Hotline (Mobile only or at bottom) -->
+        <div class="xl:hidden mt-6 sm:mt-8 mb-12 sm:mb-16 px-5 sm:px-6 py-5 sm:py-6 font-medium text-center bg-white/5 backdrop-blur-lg rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.3)] anim-fade-up hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] transition-shadow duration-500" style="animation-delay: 0.3s;">
             <p class="text-[14px] sm:text-[16px] font-black text-red-400 mb-1.5 sm:mb-2 font-heading tracking-wide flex items-center justify-center gap-2">
                 <i class="fas fa-exclamation-circle animate-pulse"></i> Is this a physical emergency?
             </p>
             <p class="text-[12px] sm:text-[14px] text-white/60 leading-relaxed max-w-lg mx-auto font-medium">
-                Please do not wait. Call emergency services immediately at <a href="tel:911" class="font-black text-white hover:text-red-400 transition-colors bg-white/10 px-2 py-0.5 rounded-lg border border-white/20">911</a> or notify campus security at <a href="tel:09123456789" class="font-black text-white hover:text-red-400 transition-colors bg-white/10 px-2 py-0.5 rounded-lg border border-white/20">0912-345-6789</a>.
+                Please do not wait. Call emergency services immediately at <a href="tel:911" class="font-black text-white hover:text-red-400 transition-colors bg-white/10 px-2 py-0.5 rounded-lg border border-white/20">911</a>.
             </p>
         </div>
-        
+
+        <!-- Right: Contextual Widgets (Visible on XL screens) -->
+        <div class="xl:col-span-5 2xl:col-span-5 hidden xl:flex flex-col gap-6 mt-20 animate-[fadeInUp_1s_ease-out]">
+            
+            <!-- Privacy Security Widget -->
+            <div class="bg-white/5 backdrop-blur-3xl rounded-[2rem] p-8 border border-white/10 shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-gold rounded-full opacity-5 blur-3xl"></div>
+                <h3 class="text-lg font-heading font-black text-gold mb-4 flex items-center gap-3">
+                    <i class="fas fa-user-shield"></i> Secure & Anonymous
+                </h3>
+                <div class="space-y-5">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0 border border-gold/10">
+                            <i class="fas fa-mask text-gold"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white mb-1">Your Identity is Hidden</h4>
+                            <p class="text-[12px] text-white/40 leading-relaxed font-medium">Unless you choose to provide your name, this report is 100% anonymous.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0 border border-gold/10">
+                            <i class="fas fa-lock text-gold"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white mb-1">End-to-End Encryption</h4>
+                            <p class="text-[12px] text-white/40 leading-relaxed font-medium">Data is encrypted before it reaches our servers, keeping your voice secure.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Breathing Tool Widget -->
+            <div class="bg-white rounded-[2rem] p-10 flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                <h4 class="text-gray-800 font-heading font-black text-lg mb-1 z-10">Breathe with us</h4>
+                <p class="text-[12px] text-gray-400 font-bold mb-8 uppercase tracking-widest z-10 transition-opacity">Calm your thoughts first</p>
+                
+                <div class="relative w-44 h-44 flex items-center justify-center z-10 mb-2">
+                    <div class="absolute inset-0 rounded-full border-[3px] border-emerald-50"></div>
+                    <div id="sideBreatheCircle" class="w-full h-full rounded-full bg-gradient-to-tr from-emerald-100 to-teal-100 border border-emerald-200 shadow-[0_0_40px_rgba(52,211,153,0.3)] flex items-center justify-center transition-all duration-[4000ms] ease-in-out">
+                         <span id="sideBreatheText" class="text-emerald-700 font-black text-[10px] tracking-widest uppercase transition-opacity duration-700">Inhale</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Card -->
+            <div class="bg-red-500/10 border border-red-500/20 backdrop-blur-xl rounded-[1.5rem] p-6 group hover:bg-red-500/15 transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="px-3 py-1 bg-red-500/20 border border-red-500/30 rounded-full text-red-300 text-[10px] font-black tracking-widest uppercase">Immediate Threat?</span>
+                    <i class="fas fa-phone-alt text-red-500 animate-bounce"></i>
+                </div>
+                <h4 class="text-lg font-heading font-black text-red-200 mb-2">Campus Security SOS</h4>
+                <p class="text-[12px] text-red-100/60 font-medium mb-6 leading-relaxed">If there is immediate physical danger, do not wait for a counselor to read this report.</p>
+                <div class="flex gap-3">
+                    <a href="tel:911" class="flex-1 bg-red-500 text-white font-black py-3 rounded-xl text-center shadow-lg shadow-red-500/20 hover:scale-[1.02] transition-transform">Call 911</a>
+                    <a href="tel:09123456789" class="flex-1 bg-white/10 text-white font-black py-3 rounded-xl text-center border border-white/10 hover:bg-white/20 transition-all text-xs flex items-center justify-center">Security</a>
+                </div>
+            </div>
+
+        </div>
+
+        </div>
     </div>
 
     <script>
@@ -259,6 +326,28 @@
             icon.classList.add('hidden');
             spinner.classList.remove('hidden');
         });
+
+        // Interactive Breathing Tool Script
+        const circle = document.getElementById('sideBreatheCircle');
+        const text = document.getElementById('sideBreatheText');
+        if(circle && text) {
+            const stages = [
+                { text: 'Inhale', scale: 'scale-100', opacity: 'opacity-100' },
+                { text: 'Hold', scale: 'scale-100', opacity: 'opacity-100' },
+                { text: 'Exhale', scale: 'scale-50', opacity: 'opacity-100' },
+                { text: 'Hold', scale: 'scale-50', opacity: 'opacity-100' }
+            ];
+            let idx = 0;
+            setInterval(() => {
+                text.style.opacity = '0';
+                setTimeout(() => {
+                    idx = (idx + 1) % stages.length;
+                    text.innerText = stages[idx].text;
+                    circle.className = `w-full h-full rounded-full bg-gradient-to-tr from-emerald-100 to-teal-100 border border-emerald-200 shadow-[0_0_40px_rgba(52,211,153,0.3)] flex items-center justify-center transition-all duration-[4000ms] ease-in-out ${stages[idx].scale}`;
+                    text.style.opacity = '1';
+                }, 500);
+            }, 4000);
+        }
     </script>
 </body>
 </html>
