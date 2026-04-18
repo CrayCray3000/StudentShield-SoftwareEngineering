@@ -144,6 +144,22 @@
             background: #0B5E2E;
         }
 
+        /* Entry animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        .animate-slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
         .live-dot {
             box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
             animation: pulse-live 2s infinite;
