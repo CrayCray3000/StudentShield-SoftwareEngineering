@@ -154,8 +154,8 @@
 <body class="bg-student min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden" onmousemove="updateSpotlight(event)">
 
     <!-- Intro Splash Screen -->
-    <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#06401E] transition-opacity duration-1000">
-        <div class="relative flex flex-col items-center">
+    <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-student transition-opacity duration-1000">
+        <div class="relative flex flex-col items-center z-10">
             <!-- Animated Logo -->
             <img src="<?= base_url('images/logo.png') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mb-6 animate-[scaleIn_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards] opacity-0"
                  style="animation-delay: 0.2s;"
