@@ -152,7 +152,7 @@
     <div class="w-full h-full min-h-screen flex flex-col lg:flex-row relative z-10 bg-white">
 
         <!-- ===== LEFT — Calming Branding Panel (Expanded) ===== -->
-        <div class="brand-panel hidden lg:flex w-full lg:w-[480px] xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between p-8 sm:p-10 xl:p-16 relative bg-[#0B5E2E] bg-gradient-to-br from-[#0B5E2E] via-[#0A4A24] to-[#0D3820]">
+        <div class="brand-panel hidden lg:flex w-full lg:w-[480px] xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 pt-6 lg:pt-10 pb-8 lg:pb-10 relative bg-[#0B5E2E] bg-gradient-to-br from-[#0B5E2E] via-[#0A4A24] to-[#0D3820]">
 
             <!-- Breathing circle — calming ambient element -->
             <div class="breath-circle absolute w-[280px] h-[280px] rounded-full bg-gold/10 top-[20%] right-[-60px] pointer-events-none"></div>
@@ -255,7 +255,7 @@
             </nav>
 
             <!-- Form Area (Stretched to top and bottom to eat up whitespace, max-capped for extreme ultrawides) -->
-            <div class="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 xl:px-24 pt-6 pb-6 lg:pb-10 lg:pt-10 relative flex flex-col flex-1">
+            <div class="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 xl:px-24 pt-6 pb-6 lg:pb-10 lg:pt-12 xl:pt-12 relative flex flex-col flex-1">
                 <div class="w-full relative z-20 flex flex-col flex-1">
                 <!-- Mobile Action Links (Compact for max visibility of form) -->
                 <div class="lg:hidden flex items-center justify-between gap-3 mb-4">
