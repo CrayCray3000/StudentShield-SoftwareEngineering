@@ -231,7 +231,7 @@
         </div>
 
         <!-- ===== RIGHT — Vent Form Panel (Fullscreen Expanded) ===== -->
-        <div class="flex flex-col lg:min-h-screen flex-1 bg-[#FAFDF5] relative items-center justify-center">
+        <div class="flex flex-col lg:min-h-screen flex-1 bg-[#FAFDF5] relative items-center justify-start lg:justify-stretch">
 
             <!-- Mobile Top Bar — Visible only on mobile since branding is hidden -->
             <nav class="lg:hidden sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm support-backdrop-blur:bg-white/60">
@@ -254,9 +254,9 @@
                 </div>
             </nav>
 
-            <!-- Form Area (Centered and expanded to eat up whitespace) -->
-            <div class="w-full max-w-full px-6 md:px-12 lg:px-16 xl:px-24 py-6 lg:py-8 relative flex flex-col">
-                <div class="w-full relative z-20 my-auto">
+            <!-- Form Area (Stretched to top and bottom to eat up whitespace) -->
+            <div class="w-full max-w-full px-6 md:px-12 lg:px-16 xl:px-24 pt-6 pb-0 lg:pt-10 relative flex flex-col flex-1">
+                <div class="w-full relative z-20 flex flex-col flex-1">
                 <!-- Mobile Action Links (Compact for max visibility of form) -->
                 <div class="lg:hidden flex items-center justify-between gap-3 mb-4">
                     <a href="<?= base_url('report-bullying') ?>" class="flex-1 bg-red-50 text-red-700 border border-red-200 shadow-sm rounded-xl py-2 px-3 flex items-center justify-center gap-2 font-bold text-[12px] hover:bg-red-100 transition-colors">
@@ -275,11 +275,11 @@
                 <!-- Desktop Header -->
                 <div class="hidden lg:flex items-start justify-between mb-4 anim-form">
                     <div>
-                        <div class="flex items-center gap-2 mb-1.5">
+                        <div class="flex items-center gap-2 mb-2">
                             <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                            <span class="text-[10px] font-semibold text-emerald-600 tracking-wide uppercase">Safe Space Active</span>
+                            <span class="text-[12px] font-bold text-emerald-600 tracking-wider uppercase">Safe Space Active</span>
                         </div>
-                        <h2 class="text-2xl xl:text-3xl font-heading font-extrabold text-gray-900 tracking-tight">How are you feeling today?</h2>
+                        <h2 class="text-3xl lg:text-4xl xl:text-[2.6rem] font-heading font-extrabold text-gray-900 tracking-tight">How are you feeling today?</h2>
                     </div>
                     <div class="flex items-center gap-2 flex-shrink-0">
                         <a href="<?= base_url('report-bullying') ?>" class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-500 hover:text-white px-4 py-2.5 rounded-xl hover:bg-red-500 transition-all duration-300 border border-red-100 hover:border-red-500 hover:shadow-lg hover:shadow-red-500/15">
@@ -294,8 +294,8 @@
                 </div>
 
                 <!-- Daily Affirmation Banner -->
-                <div class="bg-calm-50/50 rounded-xl p-4 border border-calm-100/60 relative mb-6 anim-form">
-                    <p id="dailyAffirmation" class="text-[13.5px] font-medium text-calm-800 text-center leading-relaxed italic font-serif">
+                <div class="bg-calm-50/50 rounded-xl p-5 border border-calm-100/60 relative mb-6 anim-form shadow-sm">
+                    <p id="dailyAffirmation" class="text-[16px] xl:text-[18px] font-medium text-calm-800 text-center leading-relaxed italic font-serif">
                         "Your current situation is not your final destination. Take it one day at a time."
                     </p>
                 </div>
@@ -328,16 +328,16 @@
                 <form action="<?= base_url('student/vent/submit') ?>" method="POST" id="ventForm" class="flex-1 flex flex-col space-y-5 anim-form">
 
                     <!-- Textarea — grows to fill space -->
-                    <div class="flex-1 flex flex-col">
-                        <div class="flex items-center justify-between mb-3 bg-calm-50/60 p-3 rounded-xl border border-calm-100/50">
-                            <label for="vent_text" class="text-sm font-bold text-calm-800 flex items-center gap-2.5">
-                                <div id="breathDot" class="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)] transition-transform duration-[3000ms] ease-in-out"></div>
+                    <div class="flex-1 flex flex-col pb-6">
+                        <div class="flex items-center justify-between mb-4 bg-calm-50/60 p-4 rounded-xl border border-calm-100/50">
+                            <label for="vent_text" class="text-[16px] font-bold text-calm-800 flex items-center gap-3">
+                                <div id="breathDot" class="w-4 h-4 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)] transition-transform duration-[3000ms] ease-in-out"></div>
                                 <span id="breathText" class="transition-opacity duration-1000 tracking-wide font-medium">Breathe in deeply...</span>
                             </label>
-                            <span id="charCount" class="char-count text-[11px] font-mono font-bold text-gray-500 bg-white px-2.5 py-1 rounded-[6px] shadow-sm border border-gray-100">0 / 2000</span>
+                            <span id="charCount" class="char-count text-[13px] font-mono font-bold text-gray-500 bg-white px-3 py-1.5 rounded-[8px] shadow-sm border border-gray-100">0 / 2000</span>
                         </div>
                         <textarea id="vent_text" name="vent_text" maxlength="2000"
-                                  class="w-full flex-1 min-h-[140px] lg:min-h-[180px] px-5 sm:px-6 py-4 textarea-field rounded-2xl outline-none resize-none text-gray-900 placeholder-transparent focus:placeholder-gray-400/50 leading-[1.8] text-[15px] sm:text-[16px] shadow-sm"
+                                  class="w-full flex-1 min-h-[180px] lg:min-h-[200px] xl:min-h-[250px] px-6 py-6 textarea-field rounded-2xl outline-none resize-none text-gray-900 placeholder-transparent focus:placeholder-gray-400/50 leading-[1.8] text-[18px] lg:text-[20px] shadow-sm"
                                   placeholder="Start typing whenever you feel ready..." required></textarea>
                     </div>
 
@@ -389,10 +389,10 @@
 
                     <!-- Submit -->
                     <button type="submit" id="submitBtn"
-                        class="submit-btn w-full text-white font-bold py-3 px-6 rounded-2xl shadow-[0_8px_20px_-6px_rgba(11,94,46,0.25)] focus:outline-none focus:ring-4 focus:ring-calm-200 flex items-center justify-center gap-2 lg:gap-3 h-11 lg:h-12 group transition-transform mt-2">
-                        <span id="btnText" class="font-heading text-[14.5px] lg:text-[15.5px] tracking-wide">Submit Securely</span>
-                        <svg id="btnIcon" class="h-4 w-4 text-gold/80 group-hover:-translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" /></svg>
-                        <svg id="btnSpinner" class="animate-spin h-4 w-4 text-white hidden" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        class="submit-btn w-full text-white font-bold py-4 px-6 rounded-2xl shadow-[0_8px_20px_-6px_rgba(11,94,46,0.25)] focus:outline-none focus:ring-4 focus:ring-calm-200 flex items-center justify-center gap-3 h-14 lg:h-16 group transition-transform mb-6">
+                        <span id="btnText" class="font-heading text-[18px] lg:text-[20px] tracking-wide inline-block pt-1">Submit Securely</span>
+                        <svg id="btnIcon" class="h-5 w-5 text-gold/80 group-hover:-translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" /></svg>
+                        <svg id="btnSpinner" class="animate-spin h-5 w-5 text-white hidden" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     </button>
                 </form>
 
