@@ -130,7 +130,7 @@
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-4px); } }
     </style>
 </head>
-<body class="text-white antialiased min-h-screen relative flex flex-col justify-center py-16 sm:py-20 lg:py-24">
+<body class="text-white antialiased min-h-screen relative flex flex-col justify-center p-4 sm:p-6 lg:p-8">
 
     <!-- Dark Ambient Elements -->
     <div class="bg-dark-mesh"></div>
@@ -139,27 +139,27 @@
     <div class="blob bg-white w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] rounded-full bottom-[-5%] left-[-5%] mix-blend-screen" style="animation-delay: -5s; animation-direction: alternate-reverse;"></div>
 
     <!-- Main Container -->
-    <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 mt-8 min-h-[80vh] flex flex-col justify-center">
+    <div class="w-full max-w-3xl mx-auto relative z-20 flex flex-col justify-center">
         <div class="w-full relative z-20">
         
         <!-- Header Section -->
-        <div class="text-center mb-8 sm:mb-12 anim-fade-up">
-            <div class="flex items-center justify-center gap-2 mb-3">
+        <div class="text-center mb-6 anim-fade-up flex flex-col items-center">
+            <div class="flex items-center justify-center gap-2 mb-2">
                 <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                <span class="text-[11px] font-semibold text-emerald-300 tracking-wider uppercase">Safe Space Active</span>
+                <span class="text-[10px] sm:text-[11px] font-semibold text-emerald-300 tracking-wider uppercase">Safe Space Active</span>
             </div>
-            <h1 class="text-[1.75rem] sm:text-[3rem] lg:text-[3.5rem] font-heading font-black text-white tracking-tight leading-[1.1] mb-3 sm:mb-4">
+            <h1 class="text-[1.5rem] sm:text-[2.25rem] lg:text-[2.75rem] font-heading font-black text-white tracking-tight leading-[1.1] mb-2 sm:mb-3">
                 How are you <span class="text-gold">feeling?</span>
             </h1>
-            <p class="text-white/60 font-medium text-[14px] sm:text-[17px] max-w-[500px] mx-auto leading-relaxed px-4 sm:px-0">
+            <p class="text-white/60 font-medium text-[13px] sm:text-[15px] max-w-[500px] leading-relaxed">
                 Take your time. There are no wrong answers here. You are completely safe.
             </p>
         </div>
 
-        <div class="flex items-center justify-center gap-3 sm:gap-4 mb-8 anim-fade-up">
+        <div class="flex items-center justify-center gap-3 sm:gap-4 mb-6 anim-fade-up">
             <!-- Daily Affirmation Banner -->
-            <div class="bg-white/5 backdrop-blur-xl rounded-[1.25rem] px-5 sm:px-8 py-3 border border-white/10 shadow-lg text-center max-w-[90%]">
-                <p id="dailyAffirmation" class="text-[13px] sm:text-[14.5px] font-medium text-gold/90 italic font-serif">
+            <div class="bg-white/5 backdrop-blur-xl rounded-[1rem] px-5 sm:px-6 py-2.5 border border-white/10 shadow-lg text-center max-w-[90%]">
+                <p id="dailyAffirmation" class="text-[12px] sm:text-[13.5px] font-medium text-gold/90 italic font-serif">
                     "Your current situation is not your final destination. Take it one day at a time."
                 </p>
             </div>
@@ -186,8 +186,8 @@
         </div>
 
         <!-- Glass Form Card -->
-        <div class="glass-panel p-5 sm:p-8 lg:p-10 anim-fade-up" style="animation-delay: 0.2s;">
-            <form action="<?= base_url('student/vent/submit') ?>" method="POST" id="ventForm" class="space-y-6 sm:space-y-8">
+        <div class="glass-panel p-5 sm:p-6 lg:p-8 anim-fade-up" style="animation-delay: 0.2s;">
+            <form action="<?= base_url('student/vent/submit') ?>" method="POST" id="ventForm" class="space-y-4 sm:space-y-5">
                 
                 <!-- Textarea -->
                 <div class="space-y-2">
@@ -198,7 +198,7 @@
                         <span id="charCount" class="text-[11px] font-mono font-bold text-white/40 bg-white/5 px-2 py-1 rounded-[6px] border border-white/10">0 / 2000</span>
                     </div>
                     <textarea id="vent_text" name="vent_text" maxlength="2000" required
-                              class="w-full px-4 sm:px-6 py-4 sm:py-5 input-dark rounded-xl sm:rounded-[1.5rem] text-[15px] sm:text-[16px] font-medium leading-relaxed resize-none min-h-[160px] md:min-h-[200px]" 
+                              class="w-full px-4 sm:px-5 py-3 sm:py-4 input-dark rounded-xl sm:rounded-2xl text-[14px] sm:text-[15px] font-medium leading-relaxed resize-none min-h-[120px] md:min-h-[150px]" 
                               placeholder="Start typing whenever you feel ready..."></textarea>
                 </div>
 
@@ -221,7 +221,7 @@
                 </div>
 
                 <!-- Confidentiality Toggle Card -->
-                <label for="hide_from_parents" class="group relative flex items-start gap-4 p-5 rounded-[1.25rem] bg-white/5 border border-white/10 hover:bg-white/10 hover:border-gold/30 transition-all cursor-pointer overflow-hidden mt-4">
+                <label for="hide_from_parents" class="group relative flex items-start gap-3 sm:gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-gold/30 transition-all cursor-pointer overflow-hidden mt-2">
                     <div class="relative flex items-center justify-center mt-0.5 z-10 flex-shrink-0">
                         <input type="checkbox" id="hide_from_parents" name="hide_from_parents" value="1" 
                                class="peer appearance-none w-5 h-5 rounded-[6px] border-2 border-white/30 bg-transparent checked:bg-gold checked:border-gold focus:outline-none focus:ring-4 focus:ring-gold/20 transition-all cursor-pointer">
@@ -240,21 +240,21 @@
                 </label>
 
                 <!-- SUBMIT BUTTON -->
-                <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-4 px-6 rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-3 h-[54px] sm:h-[64px] mt-8 group/btn bg-gold">
-                    <span id="btnText" class="font-heading text-[16px] sm:text-[18px] tracking-wide text-[#042E15] drop-shadow-sm mix-blend-multiply pt-0.5">Let It Out Securely</span>
-                    <i id="btnIcon" class="fas fa-paper-plane text-[#042E15] text-[14px] sm:text-[16px] mix-blend-multiply group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300"></i>
-                    <svg id="btnSpinner" class="animate-spin h-5 w-5 sm:h-6 sm:w-6 text-[#042E15] hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 h-11 sm:h-12 mt-4 group/btn bg-gold">
+                    <span id="btnText" class="font-heading text-[15px] sm:text-[16px] tracking-wide text-[#042E15] drop-shadow-sm mix-blend-multiply pt-0.5">Let It Out Securely</span>
+                    <i id="btnIcon" class="fas fa-paper-plane text-[#042E15] text-[13px] sm:text-[14px] mix-blend-multiply group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300"></i>
+                    <svg id="btnSpinner" class="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-[#042E15] hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </form>
             
             <!-- Trust Badges -->
-            <div class="pt-6 sm:pt-8 mt-6 sm:mt-10 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[11px] sm:text-[12px] text-white/40 font-extrabold uppercase tracking-widest">
+            <div class="pt-4 sm:pt-5 mt-4 sm:mt-5 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] sm:text-[11px] text-white/40 font-extrabold uppercase tracking-widest">
                 <span class="flex items-center gap-2"><i class="fas fa-lock text-gold/70 text-xs sm:text-sm"></i> Encrypted</span>
                 <span class="flex items-center gap-2"><i class="fas fa-shield-alt text-gold/70 text-xs sm:text-sm"></i> Protected Space</span>
             </div>
         </div>
 
-        <div class="flex items-center justify-center gap-4 mt-8 sm:mt-12 anim-fade-up" style="animation-delay: 0.3s;">
+        <div class="flex items-center justify-center gap-4 mt-6 sm:mt-8 anim-fade-up" style="animation-delay: 0.3s;">
             <a href="<?= base_url('report-bullying') ?>" class="text-xs font-bold text-red-400 hover:text-red-300 px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 transition-colors uppercase tracking-wider flex items-center gap-2">
                 <i class="fas fa-exclamation-triangle"></i> Report Incident
             </a>
