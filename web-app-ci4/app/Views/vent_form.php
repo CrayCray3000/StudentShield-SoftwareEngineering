@@ -152,7 +152,7 @@
     <div class="w-full h-full min-h-screen flex flex-col lg:flex-row relative z-10 bg-white">
 
         <!-- ===== LEFT — Calming Branding Panel (Expanded) ===== -->
-        <div class="brand-panel hidden lg:flex w-full lg:w-[480px] xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 pt-6 lg:pt-10 pb-8 lg:pb-10 relative bg-[#0B5E2E] bg-gradient-to-br from-[#0B5E2E] via-[#0A4A24] to-[#0D3820]">
+        <div class="brand-panel hidden lg:flex w-full lg:w-[480px] xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 py-8 lg:py-12 relative bg-[#0B5E2E] bg-gradient-to-br from-[#0B5E2E] via-[#0A4A24] to-[#0D3820]">
 
             <!-- Breathing circle — calming ambient element -->
             <div class="breath-circle absolute w-[280px] h-[280px] rounded-full bg-gold/10 top-[20%] right-[-60px] pointer-events-none"></div>
@@ -255,7 +255,7 @@
             </nav>
 
             <!-- Form Area (Stretched to top and bottom to eat up whitespace, max-capped for extreme ultrawides) -->
-            <div class="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 xl:px-24 pt-6 pb-6 lg:pb-10 lg:pt-12 xl:pt-12 relative flex flex-col flex-1">
+            <div class="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 xl:px-24 py-8 lg:py-12 relative flex flex-col flex-1">
                 <div class="w-full relative z-20 flex flex-col flex-1">
                 <!-- Mobile Action Links (Compact for max visibility of form) -->
                 <div class="lg:hidden flex items-center justify-between gap-3 mb-4">
@@ -397,7 +397,7 @@
                 </form>
 
                 <!-- Footer -->
-                <div class="mt-5 flex items-center justify-center gap-4 text-[11px] text-gray-400">
+                <div class="mt-4 flex items-center justify-center gap-4 text-[11px] text-gray-400">
                     <span class="flex items-center gap-1">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         Protected by StudentShield
