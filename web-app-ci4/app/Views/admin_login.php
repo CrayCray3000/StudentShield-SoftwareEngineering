@@ -90,6 +90,28 @@
             75% { transform: translateX(-5px); }
         }
         
+        /* Splash Screen Animations */
+        @keyframes scaleIn {
+            0% { transform: translateY(20px) scale(0.9); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes typing {
+            from { width: 0; opacity: 1; }
+            to { width: 100%; opacity: 1; }
+        }
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        @keyframes fadeInSplash {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes progress {
+            0% { width: 0%; }
+            40% { width: 60%; }
+            100% { width: 100%; }
+        }
+
         /* Accessibility: Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
             *, ::before, ::after { animation-play-state: paused !important; transition: none !important; }
@@ -97,6 +119,26 @@
     </style>
 </head>
 <body class="bg-admin min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden">
+
+    <!-- Intro Splash Screen -->
+    <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#06401E] transition-opacity duration-1000">
+        <div class="relative flex flex-col items-center">
+            <!-- Animated Logo -->
+            <img src="<?= base_url('images/logo.png') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mb-6 animate-[scaleIn_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards] opacity-0"
+                 style="animation-delay: 0.2s;"
+                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
+            
+            <!-- Animated Text -->
+            <h1 class="text-3xl sm:text-4xl font-heading font-black tracking-tight text-white mb-8 overflow-hidden whitespace-nowrap border-r-[3px] border-gold animate-[typing_1s_steps(13,end)_forwards,blink_0.8s_step-end_infinite] opacity-0 w-0" style="animation-delay: 0.8s;">
+                Student<span class="text-gold">Shield</span>
+            </h1>
+            
+            <!-- Loading Progress -->
+            <div class="w-48 sm:w-64 h-1.5 bg-white/10 rounded-full overflow-hidden animate-[fadeInSplash_0.5s_ease_forwards] opacity-0" style="animation-delay: 1.8s;">
+                <div class="h-full bg-gold rounded-full animate-[progress_1s_ease-in-out_forwards]" style="animation-delay: 1.8s; width: 0%;"></div>
+            </div>
+        </div>
+    </div>
 
 <div class="bg-grid"></div>
 <!-- Scaled absolute blobs so they don't break flex alignments on tiny phones -->
@@ -179,6 +221,20 @@
 </div>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const splash = document.getElementById('splashScreen');
+        if (!sessionStorage.getItem('adminIntroPlayed')) {
+            setTimeout(() => {
+                splash.classList.add('opacity-0');
+                splash.style.pointerEvents = 'none';
+                setTimeout(() => { splash.style.display = 'none'; }, 1000);
+                sessionStorage.setItem('adminIntroPlayed', 'true');
+            }, 3200);
+        } else {
+            splash.style.display = 'none';
+        }
+    });
+
     document.querySelector('form').addEventListener('submit', function() {
         const btn = document.getElementById('submitBtn');
         const text = document.getElementById('btnText');
