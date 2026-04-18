@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>StudentShield - Path Selection</title>
-    <link rel="preload" as="image" href="<?= base_url('images/logo-sm.png?v=4') ?>">
+    <link rel="preload" as="image" href="<?= base_url('images/logo.png?v=6') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -53,7 +53,7 @@
     <nav class="absolute top-0 w-full z-50 px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/10">
-                <img src="<?= base_url('images/logo-sm.png?v=4') ?>" alt="Logo" class="h-10 w-10 object-contain">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="Logo" class="h-10 w-10 object-contain">
             </div>
             <div class="flex flex-col">
                 <span class="font-heading font-extrabold text-white text-[16px] leading-none tracking-wide">StudentShield</span>

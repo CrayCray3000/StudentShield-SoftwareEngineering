@@ -116,7 +116,7 @@
 
         <!-- Header -->
         <div class="mb-6">
-            <img src="<?= base_url('images/logo-sm.png?v=5') ?>" alt="SVBSM Logo" class="w-40 h-40 object-contain mx-auto mb-5"
+            <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-40 h-40 object-contain mx-auto mb-5"
                  onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\'/></svg>';">
             <h1 class="text-3xl font-heading font-bold tracking-tight text-white mb-2">Security <span class="text-gold">Verification</span></h1>
             <p class="text-white/60 text-sm font-medium">To protect student data, we've sent a 6-digit verification code to your registered counselor email.</p>
