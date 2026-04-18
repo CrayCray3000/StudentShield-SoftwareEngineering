@@ -6,17 +6,40 @@
     <title>Student Portal - Secure Login</title>
     <link rel="preload" as="image" href="<?= base_url('images/logo.png?v=6') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+        <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        heading: ['Outfit', 'sans-serif'] 
                     },
                     colors: {
-                        primary: { DEFAULT: '#166534', light: '#15803d', dark: '#14532d', darker: '#064e3b', darkest: '#022c22' },
-                        gold: { DEFAULT: '#EAB308', light: '#FACC15', bright: '#FEF08A', dark: '#CA8A04' }
+                        white: '#FBFDFB', // Anti-glare soft white
+                        black: '#131A15', // Softened black
+                        gray: {
+                            50: '#F4F7F5',
+                            100: '#E6EBE8',
+                            200: '#CFD9D4',
+                            300: '#AAB8B1',
+                            400: '#82958B',
+                            500: '#61756B',
+                            600: '#4D5D55',
+                            700: '#3D4943',
+                            800: '#2E3833',
+                            900: '#212825', // Replaces harsh text-gray-900 with deep sage
+                        },
+                        red: {
+                            50: '#FDF7F7',
+                            100: '#FAEDED',
+                            200: '#F4D6D6',
+                            500: '#D95A5A', // Less neon, softer warning red
+                            600: '#C24545',
+                            700: '#A33535',
+                        },
+                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
+                        calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
                 }
             }

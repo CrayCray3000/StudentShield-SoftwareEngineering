@@ -9,41 +9,40 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <script>
+        <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'], 
+                        heading: ['Outfit', 'sans-serif'] 
                     },
                     colors: {
-                        primary: { DEFAULT: '#166534', light: '#15803d', dark: '#14532d', darker: '#064e3b', darkest: '#022c22' },
-                        gold: { DEFAULT: '#EAB308', light: '#FACC15', bright: '#FEF08A', dark: '#CA8A04' },
-                        lime: '#D4F000',
-                        accent: '#F2C300',
-                        'accent-blue': '#2A5DB0',
-                        'accent-red': '#E04B3F',
-                        background: '#FAFDF5',
-                        surface: '#FFFFFF',
-                    },
-                    boxShadow: {
-                        'card': '0 1px 3px 0 rgba(11, 94, 46, 0.06), 0 1px 2px -1px rgba(11, 94, 46, 0.06)',
-                        'card-hover': '0 10px 25px -5px rgba(11, 94, 46, 0.1), 0 4px 6px -2px rgba(11, 94, 46, 0.05)',
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
-                        'slide-up': 'slideUp 0.4s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
+                        white: '#FBFDFB', // Anti-glare soft white
+                        black: '#131A15', // Softened black
+                        gray: {
+                            50: '#F4F7F5',
+                            100: '#E6EBE8',
+                            200: '#CFD9D4',
+                            300: '#AAB8B1',
+                            400: '#82958B',
+                            500: '#61756B',
+                            600: '#4D5D55',
+                            700: '#3D4943',
+                            800: '#2E3833',
+                            900: '#212825', // Replaces harsh text-gray-900 with deep sage
                         },
-                        slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(10px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
+                        red: {
+                            50: '#FDF7F7',
+                            100: '#FAEDED',
+                            200: '#F4D6D6',
+                            500: '#D95A5A', // Less neon, softer warning red
+                            600: '#C24545',
+                            700: '#A33535',
+                        },
+                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
+                        calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
                 }
             }
