@@ -152,7 +152,7 @@
         }
     </style>
 </head>
-<body class="bg-student min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden" onmousemove="updateSpotlight(event)">
+<body class="bg-student min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 py-10 lg:py-16 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
 
     <!-- Intro Splash Screen -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-student transition-opacity duration-1000">

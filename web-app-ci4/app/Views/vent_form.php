@@ -255,12 +255,8 @@
             </nav>
 
             <!-- Form Area (Centered in full height) -->
-            <div class="w-full max-w-6xl px-5 sm:px-10 md:px-12 py-8 sm:py-12 lg:py-16 relative h-full flex flex-col justify-center mx-auto overflow-y-auto">
-                <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 xl:gap-14 w-full">
-                    
-                    <!-- Left: Form Column -->
-                    <div class="xl:col-span-7 flex flex-col relative z-20">
-                
+            <div class="w-full max-w-3xl px-5 sm:px-8 md:px-10 py-10 sm:py-12 lg:py-16 relative min-h-screen flex flex-col mx-auto">
+                <div class="w-full relative z-20 my-auto">
                 <!-- Mobile Action Links (Compact for max visibility of form) -->
                 <div class="lg:hidden flex items-center justify-between gap-3 mb-5">
                     <a href="<?= base_url('report-bullying') ?>" class="flex-1 bg-red-50 text-red-700 border border-red-200 shadow-sm rounded-xl py-2.5 px-3 flex items-center justify-center gap-2 font-bold text-[13px] hover:bg-red-100 transition-colors">
@@ -277,14 +273,13 @@
                 <div class="absolute top-[10%] right-[-15%] w-80 h-80 bg-primary/5 rounded-full blur-[60px] lg:hidden pointer-events-none"></div>
 
                 <!-- Desktop Header -->
-                <div class="hidden lg:flex items-start justify-between mb-7 anim-form">
+                <div class="hidden lg:flex items-start justify-between mb-6 anim-form">
                     <div>
                         <div class="flex items-center gap-2 mb-2">
                             <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
                             <span class="text-[11px] font-semibold text-emerald-600 tracking-wide uppercase">Safe Space Active</span>
                         </div>
                         <h2 class="text-3xl xl:text-[2.2rem] font-heading font-extrabold text-gray-900 tracking-tight">How are you feeling today?</h2>
-                        <p class="text-gray-400 mt-1.5 text-[14px] font-medium">Take your time. There are no wrong answers here.</p>
                     </div>
                     <div class="flex items-center gap-2 flex-shrink-0">
                         <a href="<?= base_url('report-bullying') ?>" class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-500 hover:text-white px-4 py-2.5 rounded-xl hover:bg-red-500 transition-all duration-300 border border-red-100 hover:border-red-500 hover:shadow-lg hover:shadow-red-500/15">
@@ -296,6 +291,13 @@
                             Sign Out
                         </a>
                     </div>
+                </div>
+
+                <!-- Daily Affirmation Banner -->
+                <div class="bg-calm-50/50 rounded-xl p-4 border border-calm-100/60 relative mb-6 anim-form">
+                    <p id="dailyAffirmation" class="text-[13.5px] font-medium text-calm-800 text-center leading-relaxed italic font-serif">
+                        "Your current situation is not your final destination. Take it one day at a time."
+                    </p>
                 </div>
 
                 <!-- Mobile Header -->
@@ -405,54 +407,9 @@
                 </div>
             </div>
 
-            <!-- Right: Contextual Widgets Column -->
-            <div class="xl:col-span-5 hidden xl:flex flex-col gap-6 mt-16 2xl:mt-24 anim-form px-4">
-                
-                <!-- Breathing Widget -->
-                <div class="bg-white rounded-[24px] p-8 border border-gray-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] relative overflow-hidden flex flex-col items-center text-center">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-10 -mt-10"></div>
-                    
-                    <h3 class="text-lg font-heading font-bold text-gray-800 mb-1 z-10">Box Breathing</h3>
-                    <p class="text-sm text-gray-400 font-medium mb-8 z-10">Follow the circle to calm your mind.</p>
-                    
-                    <!-- Breathing Circle -->
-                    <div class="relative w-40 h-40 flex items-center justify-center mb-4 z-10">
-                        <div class="absolute inset-0 rounded-full border-[3px] border-emerald-100 opacity-50"></div>
-                        <div id="breatheGuide" class="w-full h-full rounded-full bg-gradient-to-tr from-emerald-100 to-teal-50 border border-emerald-200 shadow-[0_0_30px_rgba(52,211,153,0.3)] flex items-center justify-center transition-all duration-[4000ms] ease-in-out scale-50">
-                            <span id="breatheInstruction" class="text-emerald-700 font-bold text-xs tracking-widest uppercase transition-opacity duration-500">Inhale</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Affirmation Widget -->
-                <div class="bg-calm-50/50 rounded-[20px] p-6 border border-calm-100/60 relative mt-2">
-                    <svg class="absolute top-4 left-4 w-6 h-6 text-calm-200" fill="currentColor" viewBox="0 0 32 32"><path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H8c0-2.2 1.8-4 4-4V8zm16 0c-3.3 0-6 2.7-6 6v10h10V14h-6c0-2.2 1.8-4 4-4V8z"/></svg>
-                    <p id="dailyAffirmation" class="text-[14.5px] font-medium text-calm-800 text-center leading-relaxed px-6 py-2 italic font-serif">
-                        "Your current situation is not your final destination. Take it one day at a time."
-                    </p>
-                </div>
-                
-                <!-- Emergency SOS Mini Card -->
-                <div class="bg-red-50/60 border border-red-100 rounded-[20px] p-5 flex items-center justify-between group hover:bg-red-50 transition-colors mt-2">
-                    <div>
-                        <h4 class="text-sm font-bold text-red-700 font-heading mb-1.5 flex items-center gap-2">
-                            <span class="relative flex h-2 w-2">
-                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                              <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                            </span>
-                            Emergency SOS
-                        </h4>
-                        <p class="text-[11px] text-red-500/80 font-medium">Physical or immediate danger.</p>
-                    </div>
-                    <a href="tel:911" aria-label="Call Emergency Services" class="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-sm">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-                    </a>
-                </div>
             </div>
-
-          </div> <!-- End Grid -->
-        </div> <!-- End Content Area -->
-    </div> <!-- End Main Container -->
+        </div>
+    </div>
 
     <!-- Empathy Modal -->
     <div id="empathyModal" class="fixed inset-0 z-[100] hidden items-center justify-center">
@@ -524,35 +481,9 @@
             }, 1000);
         }, 4000);
 
-        // Box Breathing Widget Logic for Right Panel
-        const guide = document.getElementById('breatheGuide');
-        const instruction = document.getElementById('breatheInstruction');
-        
-        if(guide && instruction) {
-            const stages = [
-                { text: "INHALE", scale: "scale-100" },
-                { text: "HOLD", scale: "scale-100" },
-                { text: "EXHALE", scale: "scale-50" },
-                { text: "HOLD", scale: "scale-50" }
-            ];
-            let guideIdx = 0;
-            
-            setInterval(() => {
-                instruction.style.opacity = 0;
-                setTimeout(() => {
-                    guideIdx = (guideIdx + 1) % stages.length;
-                    instruction.innerText = stages[guideIdx].text;
-                    instruction.style.opacity = 1;
-                    
-                    guide.className = "w-full h-full rounded-full bg-gradient-to-tr from-emerald-100 to-teal-50 border border-emerald-200 shadow-[0_0_30px_rgba(52,211,153,0.3)] flex items-center justify-center transition-all duration-[4000ms] ease-in-out " + stages[guideIdx].scale;
-                }, 500);
-            }, 4000);
-        }
-
         const affirmations = [
             '"Your current situation is not your final destination."',
             '"You survive 100% of your bad days. Keep going."',
-            '"It is okay to put yourself first and set boundaries."',
             '"Healing is not linear, and that is perfectly okay."',
             '"You are stronger than the challenges you are facing."'
         ];
