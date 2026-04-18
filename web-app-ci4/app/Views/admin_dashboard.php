@@ -325,6 +325,10 @@
                     Live Intelligence Feed
                 </h2>
                 <div class="flex items-center gap-4">
+                    <label class="flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 transition-colors" for="toggleArchivedVents">
+                        <input type="checkbox" id="toggleArchivedVents" class="rounded border-gray-300 text-[#0B5E2E] shadow-sm w-3.5 h-3.5" onchange="toggleVentsView(this.checked)">
+                        <span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Show Archived</span>
+                    </label>
                     <div class="flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 live-dot"></span>
                         <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">Live Syncing</span>
@@ -376,6 +380,12 @@
                     </svg>
                     Bullying Incident Reports
                 </h2>
+                <div class="flex items-center gap-4">
+                    <label class="flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 transition-colors" for="toggleArchivedIncidents">
+                        <input type="checkbox" id="toggleArchivedIncidents" class="rounded border-gray-300 text-[#0B5E2E] shadow-sm w-3.5 h-3.5" onchange="toggleIncidentsView(this.checked)">
+                        <span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Show Archived</span>
+                    </label>
+                </div>
             </div>
             
             <form action="<?= base_url('counselor/incident/delete-multiple') ?>" method="POST" id="bulkDeleteIncidentsForm" class="overflow-x-auto custom-scrollbar flex flex-col">
@@ -610,7 +620,7 @@
             today.setHours(0,0,0,0);
             
             data.forEach(v => {
-                let vDate = new Date(v.created_at);
+                let vDate = parsePHDate(v.created_at);
                 vDate.setHours(0,0,0,0);
                 let diffTime = Math.abs(today - vDate);
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -622,6 +632,15 @@
             areaChart.updateSeries([{ data: daysData }]);
         }
 
+        // Bulletproof Date parsing for Safari & mobile browsers turning PHT times into UTC
+        function parsePHDate(dateStr) {
+            if (!dateStr) return new Date();
+            if (typeof dateStr === 'string' && dateStr.includes(' ') && !dateStr.includes('+')) {
+                return new Date(dateStr.replace(' ', 'T') + '+08:00');
+            }
+            return new Date(dateStr);
+        }
+
         function escapeHtml(unsafe) {
             return (unsafe || '').toString()
                  .replace(/&/g, "&amp;")
@@ -631,9 +650,48 @@
                  .replace(/'/g, "&#039;");
         }
 
+        let showArchivedVents = false;
+        let showArchivedIncidents = false;
+
+        function toggleVentsView(isArchived) {
+            showArchivedVents = isArchived;
+            previousVentsDataString = ""; 
+            fetchLiveVents();
+            
+            let form = document.getElementById('bulkDeleteVentsForm');
+            let btn = form.querySelector('.delete-btn-vents');
+            if (isArchived) {
+                form.action = "<?= base_url('counselor/vent/restore-multiple') ?>";
+                btn.innerHTML = "⟲ Restore Selected";
+                btn.className = "text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg border border-blue-200 transition-colors shadow-sm delete-btn-vents " + (btn.classList.contains('hidden') ? 'hidden' : '');
+            } else {
+                form.action = "<?= base_url('counselor/vent/delete-multiple') ?>";
+                btn.innerHTML = "📦 Archive Selected";
+                btn.className = "text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents " + (btn.classList.contains('hidden') ? 'hidden' : '');
+            }
+        }
+
+        function toggleIncidentsView(isArchived) {
+            showArchivedIncidents = isArchived;
+            previousIncidentsDataString = ""; 
+            fetchLiveIncidents();
+            
+            let form = document.getElementById('bulkDeleteIncidentsForm');
+            let btn = form.querySelector('.delete-btn-incidents');
+            if (isArchived) {
+                form.action = "<?= base_url('counselor/incident/restore-multiple') ?>";
+                btn.innerHTML = "⟲ Restore Selected";
+                btn.className = "text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg border border-blue-200 transition-colors shadow-sm delete-btn-incidents " + (btn.classList.contains('hidden') ? 'hidden' : '');
+            } else {
+                form.action = "<?= base_url('counselor/incident/delete-multiple') ?>";
+                btn.innerHTML = "📦 Archive Selected";
+                btn.className = "text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents " + (btn.classList.contains('hidden') ? 'hidden' : '');
+            }
+        }
+
         function fetchLiveVents() {
             $.ajax({
-                url: API_URL,
+                url: API_URL + (showArchivedVents ? "?archived=1" : ""),
                 dataType: 'json',
                 success: function(data) {
                     let currentDataString = JSON.stringify(data);
@@ -673,7 +731,7 @@
                         let statusColor = isResolved ? 'text-[#0B5E2E] bg-[#0B5E2E]/10' : 'text-gray-500 bg-gray-50';
                         
                         // Formatting dates with day name for Philippine context
-                        const dateObj = new Date(vent.created_at);
+                        const dateObj = parsePHDate(vent.created_at);
                         const timeStr = dateObj.toLocaleTimeString('en-PH', {hour: '2-digit', minute:'2-digit'});
                         const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
                         const dateStr = dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric'});
@@ -734,23 +792,32 @@
                                 </span>
                             </td>
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
-                                ${!isResolved ? `
+                                ${!isResolved && !showArchivedVents ? `
                                     <form action="<?= base_url('counselor/vent/resolve/') ?>${vent.id}" method="POST" class="block w-full mb-1">
                                         <button type="submit" class="w-full text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-md transition-colors">
                                             Mark Resolved
                                         </button>
                                     </form>
-                                ` : `
+                                ` : (!showArchivedVents ? `
                                     <span class="text-xs font-semibold px-3 py-1.5 rounded-md ${statusColor} border border-[#0B5E2E]/20 flex items-center justify-center gap-1 mx-auto w-full mb-1">
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                         Resolved
                                     </span>
-                                `}
+                                ` : '')}
+                                
+                                ${showArchivedVents ? `
+                                <form action="<?= base_url('counselor/vent/restore/') ?>${vent.id}" method="POST" class="block w-full">
+                                    <button type="submit" onclick="return confirm('Restore this vent to the active dashboard?');" class="w-full text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-md transition-colors">
+                                        ⟲ Unarchive
+                                    </button>
+                                </form>
+                                ` : `
                                 <form action="<?= base_url('counselor/vent/delete/') ?>${vent.id}" method="POST" class="block w-full">
                                     <button type="submit" onclick="return confirm('Archive this vent?');" class="w-full text-xs font-semibold text-gray-500 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-md transition-colors">
                                         Archive
                                     </button>
                                 </form>
+                                `}
                             </td>
                         </tr>`;
                     });
@@ -779,7 +846,7 @@
 
         function fetchLiveIncidents() {
             $.ajax({
-                url: INCIDENTS_API_URL,
+                url: INCIDENTS_API_URL + (showArchivedIncidents ? "?archived=1" : ""),
                 dataType: 'json',
                 success: function(data) {
                     let currentDataString = JSON.stringify(data);
@@ -807,7 +874,7 @@
                         let reporterName = incident.name ? incident.name : 'Anonymous';
                         let perpetratorName = incident.perpetrator_name ? incident.perpetrator_name : 'Unknown';
 
-                        const dateObj = new Date(incident.created_at);
+                        const dateObj = parsePHDate(incident.created_at);
                         const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
                         const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
 
@@ -831,18 +898,27 @@
                             </td>
                             <td data-label="Status" class="px-6 py-4 whitespace-nowrap text-center">${statusBadge}</td>
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
-                                ${!isResolved ? `
+                                ${!isResolved && !showArchivedIncidents ? `
                                     <form action="<?= base_url('counselor/incident/resolve/') ?>${incident.id}" method="POST" class="block w-full mb-1">
                                         <button type="submit" class="w-full text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-md transition-colors">
                                             Mark Resolved
                                         </button>
                                     </form>
-                                ` : `<div class="h-8 mb-1"></div>`}
+                                ` : (!showArchivedIncidents ? `<div class="h-8 mb-1"></div>` : '')}
+                                
+                                ${showArchivedIncidents ? `
+                                <form action="<?= base_url('counselor/incident/restore/') ?>${incident.id}" method="POST" class="block w-full">
+                                    <button type="submit" onclick="return confirm('Restore this incident report to the active dashboard?');" class="w-full text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-md transition-colors">
+                                        ⟲ Unarchive
+                                    </button>
+                                </form>
+                                ` : `
                                 <form action="<?= base_url('counselor/incident/delete/') ?>${incident.id}" method="POST" class="block w-full">
                                     <button type="submit" onclick="return confirm('Archive this incident report?');" class="w-full text-xs font-semibold text-gray-500 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-md transition-colors">
                                         Archive
                                     </button>
                                 </form>
+                                `}
                             </td>
                         </tr>`;
                     });
@@ -886,7 +962,7 @@
                             let badgeClass = alert.type.includes('SMS') ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-purple-100 text-purple-700 border-purple-200';
                             let icon = alert.type.includes('SMS') ? '📱' : '✉️';
                             
-                            const dateObj = new Date(alert.timestamp);
+                            const dateObj = parsePHDate(alert.timestamp);
                             const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
                             const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
 
@@ -940,7 +1016,7 @@
         function openVentModal(id) {
             const vent = window.ventsDataMap[id];
             if (!vent) return;
-            const dateObj = new Date(vent.created_at);
+            const dateObj = parsePHDate(vent.created_at);
             const timeStr = dateObj.toLocaleTimeString('en-PH', {hour: '2-digit', minute:'2-digit'});
             const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric'});
             
@@ -957,7 +1033,7 @@
             if (!inc) return;
             const reporter = inc.name || 'Anonymous';
             const perp = inc.perpetrator_name || 'Unknown';
-            const dateObj = new Date(inc.created_at);
+            const dateObj = parsePHDate(inc.created_at);
             const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
             const isRes = inc.status === 'Resolved';
             const badgeClass = isRes ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
@@ -968,7 +1044,7 @@
         function openAlertModal(index) {
             const alert = window.alertsDataMap[index];
             if (!alert) return;
-            const dateObj = new Date(alert.timestamp);
+            const dateObj = parsePHDate(alert.timestamp);
             const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
             const isSms = alert.type.includes('SMS');
             const badgeClass = isSms ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-purple-100 text-purple-700 border-purple-200';

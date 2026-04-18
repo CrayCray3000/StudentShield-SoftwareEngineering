@@ -22,12 +22,18 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('/counselor/vent/resolve/(:num)', 'AdminController::resolveVent/$1');
     $routes->post('/counselor/vent/delete/(:num)', 'AdminController::deleteVent/$1');
     $routes->post('/counselor/vent/delete-multiple', 'AdminController::deleteMultipleVents');
+    $routes->post('/counselor/vent/restore/(:num)', 'AdminController::restoreVent/$1');
+    $routes->post('/counselor/vent/restore-multiple', 'AdminController::restoreMultipleVents');
+    
     $routes->get('/counselor/api/vents', 'AdminController::fetchVents');
     $routes->get('/counselor/api/incidents', 'AdminController::fetchIncidents');
     $routes->get('/counselor/api/alerts', 'AdminController::fetchAlertLogs');
+    
     $routes->post('/counselor/incident/resolve/(:num)', 'AdminController::resolveIncident/$1');
     $routes->post('/counselor/incident/delete/(:num)', 'AdminController::deleteIncident/$1');
     $routes->post('/counselor/incident/delete-multiple', 'AdminController::deleteMultipleIncidents');
+    $routes->post('/counselor/incident/restore/(:num)', 'AdminController::restoreIncident/$1');
+    $routes->post('/counselor/incident/restore-multiple', 'AdminController::restoreMultipleIncidents');
 
     // Super Admin — User Management
     $routes->get('/admin/users', 'UserController::index');

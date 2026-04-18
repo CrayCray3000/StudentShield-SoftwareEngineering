@@ -75,13 +75,15 @@ class VentController extends BaseController
         $db = \Config\Database::connect();
         $emotions = $this->request->getPost('emotions') ?? '';
 
+        date_default_timezone_set('Asia/Manila');
         $db->table('vent_logs')->insert([
             'user_id' => $userId,
             'raw_text' => $encryptedText,
             'emotions' => $emotions,
             'risk_percent' => $sentimentScore,
             'risk_level' => $riskLevel,
-            'status' => 'Pending'
+            'status' => 'Pending',
+            'created_at' => date('Y-m-d H:i:s')
         ]);
 
         $hideFromParents = $this->request->getPost('hide_from_parents') === '1';

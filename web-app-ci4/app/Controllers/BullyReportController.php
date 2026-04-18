@@ -54,6 +54,7 @@ class BullyReportController extends BaseController
             if (count($bUsers) === 1) $bullyStudentId = $bUsers[0]->id;
         }
 
+        date_default_timezone_set('Asia/Manila');
         $reportData = [
             'reporter_student_id' => $userId,
             'reporter_type'       => $reporterType,
@@ -61,7 +62,8 @@ class BullyReportController extends BaseController
             'bully_student_id'    => $bullyStudentId,
             // Prepend the typed names into the details so the counselor always knows who it was, even if the DB lookup couldn't find an exact match
             'incident_details'    => "TARGETED STUDENT: " . ($victimName ?: 'Self') . "\nREPORTED AGGRESSOR(S): " . ($bullyName ?: 'N/A') . "\n\n" . $details,
-            'status'             => 'pending_review'
+            'status'             => 'pending_review',
+            'created_at'         => date('Y-m-d H:i:s')
         ];
 
         $db = \Config\Database::connect();

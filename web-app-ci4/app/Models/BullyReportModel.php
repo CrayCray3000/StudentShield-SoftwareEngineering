@@ -19,12 +19,13 @@ class BullyReportModel extends Model
         'bully_student_id',
         'incident_details',
         'status',
+        'created_at'
     ];
 
     protected bool $allowEmptyInserts = false;
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
