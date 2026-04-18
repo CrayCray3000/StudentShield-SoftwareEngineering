@@ -32,6 +32,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('/counselor/incident/resolve/(:num)', 'AdminController::resolveIncident/$1');
     $routes->post('/counselor/incident/verify/(:num)', 'AdminController::verifyIncident/$1');
     $routes->post('/counselor/incident/reject/(:num)', 'AdminController::rejectIncident/$1');
+    $routes->post('/counselor/incident/undo/(:num)', 'AdminController::undoIncident/$1');
     $routes->post('/counselor/incident/delete/(:num)', 'AdminController::deleteIncident/$1');
     $routes->post('/counselor/incident/delete-multiple', 'AdminController::deleteMultipleIncidents');
     $routes->post('/counselor/incident/restore/(:num)', 'AdminController::restoreIncident/$1');

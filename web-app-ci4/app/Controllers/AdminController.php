@@ -273,6 +273,21 @@ class AdminController extends BaseController
         return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id marked as unverified/fake. No parent alerts were sent.");
     }
 
+    /**
+     * Undo a verification or rejection — resets the report back to pending_review.
+     * This lets counselors fix accidental button clicks.
+     */
+    public function undoIncident($id)
+    {
+        $db = \Config\Database::connect();
+        $db->table('bully_reports')->where('id', $id)->update([
+            'status'     => 'pending_review',
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        $this->logAudit('UNDO_TO_PENDING', 'incident', (int)$id);
+        return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id has been reset to Pending Review.");
+    }
+
     private function sendLocalSms($phone, $message)
     {
         if (empty($phone)) return false;

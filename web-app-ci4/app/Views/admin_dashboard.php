@@ -904,49 +904,63 @@
                             </td>
                             <td data-label="Status" class="px-6 py-4 whitespace-nowrap text-center">${statusBadge}</td>
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
+                                <div class="flex flex-col gap-2 min-w-[140px]">
                                 ${isPending && !showArchivedIncidents ? `
-                                    <form action="<?= base_url('counselor/incident/verify/') ?>${incident.id}" method="POST" class="block w-full mb-1">
-                                        <button type="submit" onclick="return confirm('VERIFY this report and send automated SMS & Email alerts to parents?');" class="w-full text-xs font-bold text-white bg-[#0B5E2E] hover:bg-[#0F6A34] px-3 py-2 rounded-md transition-colors shadow-sm">
+                                    <form action="<?= base_url('counselor/incident/verify/') ?>${incident.id}" method="POST">
+                                        <button type="submit" onclick="return confirm('VERIFY this report and send automated SMS & Email alerts to parents?');" class="w-full text-xs font-bold text-white bg-[#0B5E2E] hover:bg-[#0F6A34] px-3 py-2.5 rounded-lg transition-colors shadow-sm">
                                             ✓ Verify & Alert Parents
                                         </button>
                                     </form>
-                                    <form action="<?= base_url('counselor/incident/reject/') ?>${incident.id}" method="POST" class="block w-full">
-                                        <button type="submit" onclick="return confirm('REJECT this report as fake/unverified? No parent alerts will be sent.');" class="w-full text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md transition-colors border border-red-200">
+                                    <form action="<?= base_url('counselor/incident/reject/') ?>${incident.id}" method="POST">
+                                        <button type="submit" onclick="return confirm('REJECT this report as fake/unverified? No parent alerts will be sent.');" class="w-full text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-2 rounded-lg transition-colors border border-red-200">
                                             ✗ Reject (Fake)
                                         </button>
                                     </form>
                                 ` : ''}
                                 ${isVerified && !showArchivedIncidents ? `
-                                    <span class="text-xs font-semibold px-3 py-1.5 rounded-md text-[#0B5E2E] bg-[#0B5E2E]/10 border border-[#0B5E2E]/20 flex items-center justify-center gap-1 mx-auto w-full mb-1">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <span class="text-xs font-semibold px-3 py-2 rounded-lg text-[#0B5E2E] bg-[#0B5E2E]/10 border border-[#0B5E2E]/20 flex items-center justify-center gap-1.5 w-full">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                         Alerts Sent
                                     </span>
+                                    <form action="<?= base_url('counselor/incident/undo/') ?>${incident.id}" method="POST">
+                                        <button type="submit" onclick="return confirm('Undo verification and reset to Pending Review? (Note: alerts already sent cannot be unsent)');" class="w-full text-[10px] font-semibold text-gray-500 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-200 hover:border-orange-200">
+                                            ↩ Undo (Nagkamali?)
+                                        </button>
+                                    </form>
                                 ` : ''}
                                 ${isRejected && !showArchivedIncidents ? `
-                                    <span class="text-xs font-semibold px-3 py-1.5 rounded-md text-red-500 bg-red-50 border border-red-200 flex items-center justify-center gap-1 mx-auto w-full mb-1">
+                                    <span class="text-xs font-semibold px-3 py-2 rounded-lg text-red-500 bg-red-50 border border-red-200 flex items-center justify-center gap-1 w-full">
                                         No Alerts Sent
                                     </span>
+                                    <form action="<?= base_url('counselor/incident/undo/') ?>${incident.id}" method="POST">
+                                        <button type="submit" onclick="return confirm('Undo rejection and reset to Pending Review so you can re-evaluate?');" class="w-full text-[10px] font-semibold text-gray-500 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-200 hover:border-orange-200">
+                                            ↩ Undo (Nagkamali?)
+                                        </button>
+                                    </form>
                                 ` : ''}
                                 ${isResolved && !showArchivedIncidents ? `
-                                    <span class="text-xs font-semibold px-3 py-1.5 rounded-md text-[#0B5E2E] bg-[#0B5E2E]/10 border border-[#0B5E2E]/20 flex items-center justify-center gap-1 mx-auto w-full mb-1">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    <span class="text-xs font-semibold px-3 py-2 rounded-lg text-[#0B5E2E] bg-[#0B5E2E]/10 border border-[#0B5E2E]/20 flex items-center justify-center gap-1.5 w-full">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                         Resolved
                                     </span>
                                 ` : ''}
                                 
+                                <hr class="border-gray-100 my-0.5">
+                                
                                 ${showArchivedIncidents ? `
-                                <form action="<?= base_url('counselor/incident/restore/') ?>${incident.id}" method="POST" class="block w-full">
-                                    <button type="submit" onclick="return confirm('Restore this incident report to the active dashboard?');" class="w-full text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-md transition-colors">
+                                <form action="<?= base_url('counselor/incident/restore/') ?>${incident.id}" method="POST">
+                                    <button type="submit" onclick="return confirm('Restore this incident report to the active dashboard?');" class="w-full text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors">
                                         ⟲ Unarchive
                                     </button>
                                 </form>
                                 ` : `
-                                <form action="<?= base_url('counselor/incident/delete/') ?>${incident.id}" method="POST" class="block w-full">
-                                    <button type="submit" onclick="return confirm('Archive this incident report?');" class="w-full text-xs font-semibold text-gray-500 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-md transition-colors">
+                                <form action="<?= base_url('counselor/incident/delete/') ?>${incident.id}" method="POST">
+                                    <button type="submit" onclick="return confirm('Archive this incident report?');" class="w-full text-xs font-semibold text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-colors">
                                         Archive
                                     </button>
                                 </form>
                                 `}
+                                </div>
                             </td>
                         </tr>`;
                     });
