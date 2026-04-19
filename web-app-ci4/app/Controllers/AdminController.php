@@ -413,72 +413,71 @@ class AdminController extends BaseController
 
         return $this->response->setJSON($logs);
     }
-    public function getStudentProfile()
+    public function getStudentProfile($id)
     {
         if (!session()->get('isLoggedIn') || !in_array((int)session()->get('role'), [1, 2])) {
-            return ->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
+            return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
         }
 
-         = \Config\Database::connect();
+        $db = \Config\Database::connect();
         
         // 1. Fetch User Data
-         = ->table('users')->where('id', )->get()->getRowArray();
-        if (!) {
-            return ->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
+        $user = $db->table('users')->where('id', $id)->get()->getRowArray();
+        if (!$user) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
         }
 
         // Remove sensitive info
-        unset(['passcode']);
+        unset($user['passcode']);
         
         // 2. Fetch Vents (FAISS tracking data)
-         = ->table('vent_logs')
-            ->where('user_id', )
+        $vents = $db->table('vent_logs')
+            ->where('user_id', $id)
             ->where('deleted_at IS NULL')
-            ->orderBy('created_at', 'ASC') // ASC for chart rendering over time
+            ->orderBy('created_at', 'ASC')
             ->limit(30)
             ->get()->getResultArray();
             
-         = \Config\Services::encrypter();
-         = [];
-        foreach ( as &) {
+        $encrypter = \Config\Services::encrypter();
+        $timelineData = [];
+        foreach ($vents as &$vent) {
             try {
-                if (ctype_xdigit(['raw_text'])) {
-                    ['raw_text'] = ->decrypt(hex2bin(['raw_text']));
+                if (ctype_xdigit($vent['raw_text'])) {
+                    $vent['raw_text'] = $encrypter->decrypt(hex2bin($vent['raw_text']));
                 }
-            } catch (\Exception ) {}
+            } catch (\Exception $e) {}
             
             // Format for ApexCharts
-            if (['ml_risk_level'] === 'Critical')  = 90;
-            elseif (['ml_risk_level'] === 'High')  = 75;
-            elseif (['ml_risk_level'] === 'Medium')  = 50;
-            else  = 20; // Low
+            if ($vent['ml_risk_level'] === 'Critical') $y = 90;
+            elseif ($vent['ml_risk_level'] === 'High') $y = 75;
+            elseif ($vent['ml_risk_level'] === 'Medium') $y = 50;
+            else $y = 20;
 
-            [] = [
-                'x' => date('M d', strtotime(['created_at'])),
-                'y' => ,
-                'sentiment' => ['ml_sentiment_score']
+            $timelineData[] = [
+                'x' => date('M d', strtotime($vent['created_at'])),
+                'y' => $y,
+                'sentiment' => $vent['ml_sentiment_score']
             ];
         }
 
-        // 3. Fetch Invovled Incidents
-         = ->table('bully_reports')
+        // 3. Fetch Involved Incidents
+        $incidents = $db->table('bully_reports')
             ->select('id, incident_type, status, created_at, reporter_student_id, victim_student_id, bully_student_id')
             ->where('deleted_at IS NULL')
             ->groupStart()
-                ->where('reporter_student_id', )
-                ->orWhere('victim_student_id', )
-                ->orWhere('bully_student_id', )
+                ->where('reporter_student_id', $id)
+                ->orWhere('victim_student_id', $id)
+                ->orWhere('bully_student_id', $id)
             ->groupEnd()
             ->orderBy('created_at', 'DESC')
             ->limit(15)
             ->get()->getResultArray();
 
-        return ->response->setJSON([
-            'user' => ,
-            'timeline' => ,
-            'vents' => array_reverse(), // DESC for reading feed
-            'incidents' => 
+        return $this->response->setJSON([
+            'user' => $user,
+            'timeline' => $timelineData,
+            'vents' => array_reverse($vents),
+            'incidents' => $incidents
         ]);
     }
 }
-
