@@ -79,13 +79,25 @@
         document.getElementById('studentProfileModal').classList.remove('hidden');
         document.getElementById('studentProfileModal').classList.add('flex');
         
-        // Reset UI
-        document.getElementById('spName').innerText = 'Loading...';
-        document.getElementById('spId').innerText = '...';
-        document.getElementById('spSection').innerText = '...';
-        document.getElementById('spParentEmail').innerText = '...';
-        document.getElementById('spParentPhone').innerText = '...';
-        document.getElementById('spHistoryFeed').innerHTML = '<div class="text-center py-6 text-gray-400 text-xs font-semibold animate-pulse">Analyzing neural trajectory...</div>';
+        // Provide a premium skeleton loading experience
+        document.getElementById('spInitials').innerHTML = '<div class="h-8 w-8 bg-white/20 rounded-full animate-pulse"></div>';
+        document.getElementById('spName').innerHTML = '<div class="h-8 bg-white/20 rounded w-48 animate-pulse"></div>';
+        document.getElementById('spId').innerHTML = '<div class="h-4 bg-white/20 rounded w-20 animate-pulse"></div>';
+        document.getElementById('spSection').innerHTML = '<div class="h-4 bg-white/20 rounded w-24 animate-pulse"></div>';
+        document.getElementById('spParentEmail').innerHTML = '<div class="h-5 bg-gray-200 rounded w-40 animate-pulse"></div>';
+        document.getElementById('spParentPhone').innerHTML = '<div class="h-5 bg-gray-200 rounded w-32 animate-pulse"></div>';
+        
+        // Skeleton for the history feed (3 fake cards)
+        document.getElementById('spHistoryFeed').innerHTML = `
+            <div class="space-y-4">
+                <div class="h-24 bg-gray-100 rounded-xl w-full animate-pulse border border-gray-200"></div>
+                <div class="h-24 bg-gray-100 rounded-xl w-full animate-pulse border border-gray-200"></div>
+            </div>
+        `;
+        
+        // Skeleton for the FAISS chart
+        document.getElementById('studentRiskChart').innerHTML = '<div class="h-full w-full bg-gray-100 rounded-xl animate-pulse border border-gray-200 flex items-center justify-center text-gray-400 font-medium text-sm">Building Neural Graph...</div>';
+        
         document.getElementById('spCriticalBadge').classList.add('hidden');
 
         const PROFILE_API_BASE = "<?= base_url('counselor/api/student-profile') ?>";
