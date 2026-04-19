@@ -258,25 +258,26 @@
             
             if(item.type === 'vent') {
                 const v = item.data;
-                const riskColor = v.ml_risk_level === 'Critical' ? 'bg-red-50 text-red-700 border-red-200' : 
-                                v.ml_risk_level === 'High' ? 'bg-orange-50 text-orange-700 border-orange-200' : 
-                                v.ml_risk_level === 'Medium' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-green-50 text-green-700 border-green-200';
+                const rl = (v.risk_level || 'LOW').toUpperCase();
+                const riskColor = rl === 'CRITICAL' ? 'bg-red-50 text-red-700 border-red-200' : 
+                                rl === 'HIGH' ? 'bg-orange-50 text-orange-700 border-orange-200' : 
+                                rl === 'MEDIUM' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-green-50 text-green-700 border-green-200';
                                 
-                const dotColor = v.ml_risk_level === 'Critical' ? 'bg-red-500' : 
-                                v.ml_risk_level === 'High' ? 'bg-orange-500' : 
-                                v.ml_risk_level === 'Medium' ? 'bg-yellow-500' : 'bg-green-500';
+                const dotColor = rl === 'CRITICAL' ? 'bg-red-500' : 
+                                rl === 'HIGH' ? 'bg-orange-500' : 
+                                rl === 'MEDIUM' ? 'bg-yellow-500' : 'bg-green-500';
 
                 html += `
                 <div class="relative pl-6 pb-6 border-l-2 border-gray-100 last:border-0 last:pb-0">
                     <div class="absolute -left-[5px] top-1 w-2 h-2 rounded-full ${dotColor} ring-4 ring-white"></div>
                     <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hovered:shadow-md transition-shadow">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${riskColor}">Internal Vent - ${v.ml_risk_level} Risk</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${riskColor}">Internal Vent - ${rl} Risk</span>
                             <span class="text-xs text-gray-400 font-medium">${dateStr}</span>
                         </div>
                         <p class="text-sm text-gray-700 line-clamp-3">"${v.raw_text}"</p>
                         <div class="mt-3 flex items-center justify-between border-t border-gray-50 pt-2">
-                            <span class="text-[10px] text-gray-400">FAISS Sentiment: ${v.ml_sentiment_score}</span>
+                            <span class="text-[10px] text-gray-400">FAISS Risk Score: ${v.risk_percent || '0'}%</span>
                             <span class="text-[10px] uppercase font-bold tracking-wider ${v.status === 'Resolved' ? 'text-emerald-600' : 'text-amber-500'}">
                                 ${v.status === 'Resolved' ? '✓ Resolved' : '• Pending Review'}
                             </span>
