@@ -157,7 +157,7 @@
 
         <!-- OTP Form -->
         <form action="<?= base_url('admin/verify-otp') ?>" method="POST" id="otpForm" class="space-y-6">
-            <?= csrf_field() ?>
+            <div class="hidden"><?= csrf_field() ?></div>
             <input type="hidden" name="otp" id="fullOtpInput">
             
             <div class="flex justify-center gap-2 sm:gap-3">

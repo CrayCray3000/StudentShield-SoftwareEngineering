@@ -329,7 +329,7 @@
 
                 <!-- Vent Form -->
                 <form action="<?= base_url('student/vent/submit') ?>" method="POST" id="ventForm" class="flex-1 flex flex-col space-y-5 anim-form">
-                    <?= csrf_field() ?>
+                    <div class="hidden"><?= csrf_field() ?></div>
 
                     <!-- Textarea — grows to fill space -->
                     <div class="flex-1 flex flex-col pb-6">
