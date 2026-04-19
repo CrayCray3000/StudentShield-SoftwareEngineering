@@ -158,7 +158,7 @@
         }
     </style>
 </head>
-<body class="text-white antialiased min-h-screen relative flex flex-col justify-center py-8 lg:py-12">
+<body class="text-white antialiased min-h-screen relative flex flex-col justify-center py-4 lg:py-6 overflow-x-hidden">
 
     <!-- Dark Ambient Elements -->
     <div class="bg-dark-mesh"></div>
@@ -176,8 +176,11 @@
 
     </div>
 
-    <!-- Main Container -->
-    <div class="w-[95%] md:w-[85%] lg:w-[75%] xl:w-[65%] max-w-[1200px] mx-auto relative z-20 mt-4 sm:mt-0 flex flex-col justify-center">
+    <!-- Main Container: 2-column layout on desktop to eliminate vertical scroll -->
+    <div class="w-[95%] md:w-[90%] xl:w-[85%] max-w-[1400px] mx-auto relative z-20 mt-4 lg:mt-0 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-12">
+        
+        <!-- Left Column: Header & Emergency -->
+        <div class="w-full lg:w-5/12 flex flex-col justify-center">
         
         <!-- Header Section -->
         <div class="text-center mb-6 sm:mb-8 anim-fade-up">
@@ -187,10 +190,25 @@
             <h1 class="text-[1.75rem] sm:text-[3rem] lg:text-[3.5rem] font-heading font-black text-white tracking-tight leading-[1.1] mb-3 sm:mb-4">
                 You are <span class="text-gold">safe</span> here.
             </h1>
-            <p class="text-white/60 font-medium text-[14px] sm:text-[17px] max-w-[500px] mx-auto leading-relaxed px-4 sm:px-0">
+            <p class="text-white/60 font-medium text-[14px] sm:text-[16px] xl:text-[17px] max-w-[500px] mx-auto leading-relaxed px-4 sm:px-0">
                 Your report is securely encrypted and sent directly to the school counselor. After verification, automated safety alerts will be sent to the relevant parents.
             </p>
         </div>
+
+        <!-- Universal Emergency Hotline (Moved under header on Desktop) -->
+        <div class="hidden lg:block mt-2 mb-6 px-5 py-5 font-medium text-center bg-white/5 backdrop-blur-lg rounded-[2rem] border border-white/10 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.3)] anim-fade-up hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] transition-shadow duration-500" style="animation-delay: 0.3s;">
+            <p class="text-[15px] xl:text-[16px] font-black text-red-400 mb-2 font-heading tracking-wide flex items-center justify-center gap-2">
+                <i class="fas fa-exclamation-circle animate-pulse"></i> Is this a physical emergency?
+            </p>
+            <p class="text-[13px] xl:text-[14px] text-white/60 leading-relaxed max-w-lg mx-auto font-medium">
+                Please do not wait. Call emergency services immediately at <a href="tel:911" class="font-black text-white hover:text-red-400 transition-colors bg-white/10 px-2 py-0.5 rounded-lg border border-white/20">911</a> or notify campus security at <a href="tel:09123456789" class="font-black text-white hover:text-red-400 transition-colors bg-white/10 px-2 py-0.5 rounded-lg border border-white/20">0912-345-6789</a>.
+            </p>
+        </div>
+        
+        </div> <!-- End Left Column -->
+
+        <!-- Right Column: Form -->
+        <div class="w-full lg:w-7/12">
 
         <!-- Alerts -->
         <div class="anim-fade-up" style="animation-delay: 0.1s;">
@@ -296,8 +314,8 @@
             
         </div>
         
-        <!-- Universal Emergency Hotline -->
-        <div class="mt-4 sm:mt-6 mb-6 sm:mb-8 px-5 sm:px-6 py-4 sm:py-5 font-medium text-center bg-white/5 backdrop-blur-lg rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.3)] anim-fade-up hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] transition-shadow duration-500" style="animation-delay: 0.3s;">
+        <!-- Universal Emergency Hotline (Mobile Only) -->
+        <div class="block lg:hidden mt-4 sm:mt-6 mb-6 sm:mb-8 px-5 sm:px-6 py-4 sm:py-5 font-medium text-center bg-white/5 backdrop-blur-lg rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.3)] anim-fade-up hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] transition-shadow duration-500" style="animation-delay: 0.3s;">
             <p class="text-[14px] sm:text-[16px] font-black text-red-400 mb-1 sm:mb-2 font-heading tracking-wide flex items-center justify-center gap-2">
                 <i class="fas fa-exclamation-circle animate-pulse"></i> Is this a physical emergency?
             </p>
@@ -305,6 +323,8 @@
                 Please do not wait. Call emergency services immediately at <a href="tel:911" class="font-black text-white hover:text-red-400 transition-colors bg-white/10 px-2 py-0.5 rounded-lg border border-white/20">911</a> or notify campus security at <a href="tel:09123456789" class="font-black text-white hover:text-red-400 transition-colors bg-white/10 px-2 py-0.5 rounded-lg border border-white/20">0912-345-6789</a>.
             </p>
         </div>
+        
+        </div> <!-- End Right Column -->
         
     </div>
 
