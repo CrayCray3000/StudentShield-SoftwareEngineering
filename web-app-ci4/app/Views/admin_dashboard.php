@@ -72,10 +72,10 @@
             border: 1px solid #e5ebe5;
             border-radius: 14px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02); /* Simple subtle shadow */
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
         }
         .dashboard-card:hover {
-            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.06); /* Lighter hover shadow */
+            box-shadow: 0 12px 36px rgba(0,0,0,0.12);
             border-color: #cddacd;
         }
 
@@ -93,9 +93,7 @@
             border-radius: 12px;
             padding: 20px 24px;
             transition: all 0.25s ease;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
         }
         .stat-card::after {
             content: '';
@@ -113,8 +111,8 @@
         }
         .stat-card:hover {
             border-color: #d4ddd4;
-            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.05); /* Soft shadow */
-            transform: translateY(-1px);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
         }
         .stat-card.gold-accent {
             border-left: 4px solid #EAB308;
@@ -474,7 +472,7 @@
         <!-- Universal Detail Modal -->
         <div id="detailModal" class="fixed inset-0 z-[100] hidden items-center justify-center">
             <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" id="detailBackdrop" onclick="closeDetailModal()"></div>
-            <div class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-2xl relative z-10 flex flex-col max-h-[90vh] border border-[#e5ebe5]">
+            <div class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[90vh] border border-[#e5ebe5]">
                 <div class="flex justify-between items-start mb-4">
                     <div>
                         <div id="modalBadge" class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border"></div>
@@ -1180,3 +1178,5 @@
     </script>
 </body>
 </html>
+
+
