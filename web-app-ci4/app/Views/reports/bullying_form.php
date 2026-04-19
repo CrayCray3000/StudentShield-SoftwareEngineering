@@ -300,8 +300,8 @@
                 <div class="hidden lg:flex items-center justify-between mb-4 anim-form">
                     <div>
                         <div class="flex items-center gap-2 mb-2">
-                            <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                            <span class="text-[12px] font-bold text-emerald-600 tracking-wider uppercase">Safe Space Active</span>
+                            <svg class="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span class="text-[12px] font-bold text-amber-600 tracking-wider uppercase">Secure Reporting</span>
                         </div>
                         <h2 class="text-3xl lg:text-4xl xl:text-[2.6rem] font-heading font-extrabold text-gray-900 tracking-tight">Report an Incident</h2>
                     </div>
@@ -327,8 +327,8 @@
                 <!-- Mobile Header -->
                 <div class="lg:hidden mb-5">
                     <div class="flex items-center gap-2 mb-2">
-                        <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                        <span class="text-[11px] font-semibold text-emerald-600 tracking-wide uppercase">Safe Space Active</span>
+                        <svg class="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        <span class="text-[11px] font-semibold text-amber-600 tracking-wide uppercase">Secure Reporting</span>
                     </div>
                     <h2 class="text-2xl font-heading font-extrabold text-gray-900">Report an Incident</h2>
                     <p class="text-gray-400 mt-1 text-sm">Your report is strictly confidential.</p>
@@ -358,36 +358,49 @@
                         
                         <!-- Role Toggle -->
                         <div>
-                            <p class="text-xs font-semibold text-gray-500 mb-2.5">I am reporting as a:</p>
+                            <p class="text-xs font-semibold text-gray-700 mb-2.5">I am reporting as a:</p>
                             <input type="hidden" name="reporter_type" id="roleInput" value="self">
                             <div class="flex gap-2">
-                                <button type="button" data-role="self" class="role-btn active px-4 py-2.5 rounded-xl border border-calm-300 bg-calm-50 text-[13px] font-bold text-calm-700 transition-all shadow-[0_2px_10px_rgba(74,155,110,0.12)]">🙋 I am the victim</button>
-                                <button type="button" data-role="bystander" class="role-btn px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-[13px] font-semibold text-gray-500 transition-all hover:bg-gray-50">👁️ I am a bystander</button>
+                                <button type="button" data-role="self" class="role-btn active px-4 py-2.5 rounded-xl border border-calm-300 bg-calm-50 text-[13px] font-bold text-calm-700 transition-all shadow-[0_2px_10px_rgba(74,155,110,0.12)] flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                    I am the victim
+                                </button>
+                                <button type="button" data-role="bystander" class="role-btn px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-[13px] font-semibold text-gray-500 transition-all hover:bg-gray-50 flex items-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    I am a bystander
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Who is involved? (2 Columns) -->
+                        <!-- Who is involved? -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div id="victimNameBox" class="hidden">
-                                <label class="block text-xs font-semibold text-gray-500 mb-2">Who is being bullied?</label>
-                                <input type="text" id="victim_name" name="victim_name" class="w-full bg-white/80 border border-gray-200 rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Victim's name">
+                            <div id="victimNameBox" class="hidden" style="display:none;">
+                                <label class="block text-xs font-semibold text-gray-700 mb-2">Who is being bullied? <span class="text-red-400">*</span></label>
+                                <input type="text" id="victim_name" name="victim_name" class="w-full bg-white/80 border border-gray-200 rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Full name of the victim">
                             </div>
                             <div id="aggressorNameBox" class="md:col-span-2">
-                                <label class="block text-xs font-semibold text-gray-500 mb-2">Who is the aggressor? <span class="text-red-400">*</span></label>
-                                <input type="text" id="aggressor_name" name="bully_name" required class="w-full bg-white/80 border border-gray-200 rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Aggressor's name">
+                                <label class="block text-xs font-semibold text-gray-700 mb-2">Who is the aggressor? <span class="text-red-400">*</span></label>
+                                <input type="text" id="aggressor_name" name="bully_name" required class="w-full bg-white/80 border border-gray-200 rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Full name of the aggressor">
                             </div>
                         </div>
 
                         <!-- Incident Details -->
                         <div class="flex flex-col flex-1 pb-4 pt-2">
-                            <label class="block text-xs font-semibold text-gray-500 mb-2">What happened? <span class="text-red-400">*</span></label>
-                            <textarea id="incident_details" name="incident_details" class="w-full flex-1 min-h-[140px] px-5 py-4 textarea-field rounded-2xl outline-none resize-none text-gray-900 placeholder-gray-400/60 leading-[1.6] text-[15px] shadow-sm font-medium" placeholder="Please describe the incident in detail... Where did it happen? When?" required></textarea>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-xs font-semibold text-gray-700">What happened? <span class="text-red-400">*</span></label>
+                                <span id="charCount" class="char-count text-[11px] font-mono font-semibold text-gray-400 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">0 / 2000</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mb-2 flex items-center gap-1.5">
+                                <svg class="w-3 h-3 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Include who was involved, what happened, where and when it occurred.
+                            </p>
+                            <textarea id="incident_details" name="incident_details" maxlength="2000" class="w-full flex-1 min-h-[140px] px-5 py-4 textarea-field rounded-2xl outline-none resize-none text-gray-900 placeholder-gray-400/60 leading-[1.6] text-[15px] shadow-sm font-medium" placeholder="Take your time describing what happened..." required></textarea>
                         </div>
                     </div>
 <!-- Submit -->
                     <button type="submit" id="submitBtn"
                         class="submit-btn w-full text-white font-bold py-4 px-6 rounded-2xl shadow-[0_8px_20px_-6px_rgba(11,94,46,0.25)] focus:outline-none focus:ring-4 focus:ring-calm-200 flex items-center justify-center gap-3 h-14 lg:h-16 group transition-transform mb-2">
-                        <span id="btnText" class="font-heading text-[18px] lg:text-[20px] tracking-wide">Submit Securely</span>
+                        <span id="btnText" class="font-heading text-[18px] lg:text-[20px] tracking-wide">Submit Report Securely</span>
                         <svg id="btnIcon" class="h-5 w-5 text-gold/80 group-hover:-translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" /></svg>
                         <svg id="btnSpinner" class="animate-spin h-5 w-5 text-white hidden" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     </button>
@@ -447,10 +460,12 @@
                 const victimInput = document.getElementById('victim_name');
                 if(role === 'bystander') {
                     victimBox.classList.remove('hidden');
+                    victimBox.style.display = '';
                     aggBox.classList.remove('md:col-span-2');
                     victimInput.required = true;
                 } else {
                     victimBox.classList.add('hidden');
+                    victimBox.style.display = 'none';
                     aggBox.classList.add('md:col-span-2');
                     victimInput.required = false;
                     victimInput.value = '';
@@ -458,14 +473,32 @@
             });
         });
 
+        // Character Counter
+        const textarea = document.getElementById('incident_details');
+        const charCount = document.getElementById('charCount');
+        textarea.addEventListener('input', function() {
+            const len = this.value.length;
+            charCount.innerText = len + ' / 2000';
+            if (len > 1800) {
+                charCount.style.color = '#D95A5A';
+            } else if (len > 1000) {
+                charCount.style.color = '#B5881D';
+            } else {
+                charCount.style.color = '';
+            }
+        });
+
+        // Affirmations — report-appropriate
         const affirmations = [
             '"You are brave for speaking up."',
             '"Your voice can make a difference."',
             '"We are here to protect you."',
-            '"Safety is your fundamental right."'
+            '"Safety is your fundamental right."',
+            '"Silence protects the bully, not the victim."'
         ];
         document.getElementById('dailyAffirmation').innerText = affirmations[Math.floor(Math.random() * affirmations.length)];
 
+        // Form Submit Handler
         document.getElementById('bullyingForm').addEventListener('submit', function(e) {
             const btn = document.getElementById('submitBtn');
             const text = document.getElementById('btnText');
@@ -489,6 +522,6 @@
             icon.classList.add('hidden');
             spinner.classList.remove('hidden');
         });
-</script>
+    </script>
 </body>
 </html>
