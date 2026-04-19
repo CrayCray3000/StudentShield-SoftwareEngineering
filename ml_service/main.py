@@ -79,11 +79,6 @@ except Exception as e:
 logger.info("Loading Multilingual Sentence-Transformer model...")
 semantic_model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 
-logger.info("Loading Zero-Shot Classifier...")
-zero_shot_classifier = pipeline(
-    "zero-shot-classification", model="facebook/bart-large-mnli", device=-1
-)
-
 CRISIS_PHRASES = [
     "I want to kill myself", "I wish I could disappear", "I shouldn't exist",
     "maybe life would be easier without me", "there's no point in living",
@@ -150,7 +145,7 @@ class TextPayload(BaseModel):
     student_id: Optional[str] = None
 
 class MLResponse(BaseModel):
-    risk_percent: float
+    risk_score: float
     risk_level: str
     flag_reason: Optional[str] = None
 
@@ -227,16 +222,7 @@ def get_risk_components(text: str) -> tuple[float, float]:
 
         for chunk in chunks:
             if not chunk.strip(): continue
-            try:
-                normalized_chunk = normalize_slang(chunk)
-                chunk_en = GoogleTranslator(source='auto', target='en').translate(normalized_chunk)
-                if not chunk_en or chunk_en.strip() == '':
-                    chunk_en = normalized_chunk
-            except Exception as e:
-                logger.warning(f"Translation failed, falling back to normalized: {e}")
-                chunk_en = normalize_slang(chunk)
-
-            emo_result     = emotion_classifier(chunk_en)[0]
+            emo_result     = emotion_classifier(chunk)[0]
             emo_label      = emo_result['label']
             emo_confidence = emo_result['score']
 
@@ -797,20 +783,28 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
         raise HTTPException(status_code=400, detail="Text payload cannot be empty")
 
     # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 0: SLANG NORMALIZATION                           │
+    # │  STAGE 0: SLANG NORMALIZATION & GLOBAL TRANSLATION      │
     # └──────────────────────────────────────────────────────────┘
     normalized_text = normalize_slang(text)
-    logger.info(f"Normalized: '{text[:80]}' → '{normalized_text[:80]}'")
+    try:
+        translated_text = GoogleTranslator(source='auto', target='en').translate(normalized_text)
+        if not translated_text or translated_text.strip() == '':
+            translated_text = normalized_text
+    except Exception as e:
+        logger.warning(f"Translation failed, falling back to normalized: {e}")
+        translated_text = normalized_text
+
+    logger.info(f"Normalized/Translated: '{text[:80]}' → '{translated_text[:80]}'")
 
     # ┌──────────────────────────────────────────────────────────┐
     # │  STAGE 1: SCORE COMPONENTS                              │
     # └──────────────────────────────────────────────────────────┘
-    distress_conf, neg_emo_conf = get_risk_components(normalized_text)
+    distress_conf, neg_emo_conf = get_risk_components(translated_text)
 
     # ┌──────────────────────────────────────────────────────────┐
     # │  STAGE 2: SEMANTIC SIMILARITY                           │
     # └──────────────────────────────────────────────────────────┘
-    semantic_score = get_semantic_similarity(normalized_text)
+    semantic_score = get_semantic_similarity(translated_text)
 
     risk_score = (0.40 * distress_conf) + (0.40 * neg_emo_conf) + (0.20 * semantic_score)
 
@@ -970,64 +964,21 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
 
     # ── RULE 4: Physical violence / bullying ─────────────────
     elif has_cat2:
-        if risk_score < 0.35 and not is_joke:
-            risk   = "LOW"
-            reason = "NLP Context Override: Bullying keyword matched but ML model indicates safe usage."
-            if expert_reasoning: reason += " " + " ".join(expert_reasoning)
-        elif is_joke:
+        if is_joke:
             risk       = "MEDIUM"
             risk_score = max(0.5, risk_score)
             reason     = "Bullying keywords found but context indicates sarcasm."
         else:
             risk       = "HIGH"
             risk_score = max(0.80, risk_score)
-            try:
-                disambig  = zero_shot_classifier(
-                    text,
-                    candidate_labels=[
-                        "self-harm directed at myself",
-                        "violence directed at others",
-                        "being bullied by others",
-                    ]
-                )
-                if disambig['labels'][0] == "self-harm directed at myself":
-                    reason     = "HIGH: Disambiguation classified as SELF-HARM."
-                    risk_score = max(0.90, risk_score)
-                else:
-                    reason = "HIGH: Physical bullying or threat detected."
-            except Exception:
-                reason = "HIGH: Physical bullying or threat detected."
+            reason     = "HIGH: Physical bullying or threat detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
     # ── RULE 4.5: Sexual harassment / assault ────────────────
     elif has_sexual:
-        risk_score = max(0.85, risk_score)
-        try:
-            disambig  = zero_shot_classifier(
-                text,
-                candidate_labels=[
-                    "I was sexually assaulted or raped",
-                    "I witnessed or heard about sexual harassment",
-                    "someone sent me inappropriate content",
-                ]
-            )
-            top_label = disambig['labels'][0]
-            if top_label == "I was sexually assaulted or raped":
-                risk       = "CRITICAL"
-                risk_score = max(0.95, risk_score)
-                reason     = "CRITICAL: Sexual assault or rape disclosed."
-            elif top_label == "someone sent me inappropriate content":
-                risk       = "HIGH"
-                risk_score = max(0.85, risk_score)
-                reason     = "HIGH: Unsolicited explicit content or online sexual harassment."
-            else:
-                risk       = "HIGH"
-                risk_score = max(0.85, risk_score)
-                reason     = "HIGH: Sexual harassment or inappropriate conduct reported."
-        except Exception:
-            risk       = "HIGH"
-            risk_score = max(0.85, risk_score)
-            reason     = "HIGH: Sexual harassment or inappropriate conduct detected."
+        risk       = "CRITICAL"
+        risk_score = max(0.95, risk_score)
+        reason     = "CRITICAL: Sexual harassment, assault, or inappropriate conduct detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
     # ── RULE 5: Emotional distress, Anhedonia, or Isolation ──
@@ -1180,7 +1131,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
     risk_percent = int(round(max(lo, min(hi, risk_percent))))
 
     return {
-        "risk_percent": float(risk_percent),
+        "risk_score": float(risk_percent),
         "risk_level":   risk,
         "flag_reason":  reason,
     }

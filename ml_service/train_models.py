@@ -29,14 +29,13 @@ def fine_tune_model(model_name, output_dir, dataset):
     
     # 2. Tokenize Dataset
     def tokenize_function(examples):
-        return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=128)
+        return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=512)
         
     tokenized_datasets = dataset.map(tokenize_function, batched=True)
     
-    # Split the dataset into 80% train / 20% validation
-    train_test_split = tokenized_datasets["train"].train_test_split(test_size=0.2, seed=42)
-    train_dataset = train_test_split["train"]
-    eval_dataset = train_test_split["test"]
+    # Pre-split subsets from generate_dataset.py
+    train_dataset = tokenized_datasets["train"]
+    eval_dataset = tokenized_datasets["validation"]
 
     # 3. Hyperparameter Configuration
     # We use max_steps=4 strictly to circumvent hardware timeouts on non-GPU CPU hosts.
@@ -87,13 +86,13 @@ def fine_tune_model(model_name, output_dir, dataset):
     return eval_results
 
 if __name__ == "__main__":
-    if not os.path.exists("data/student_vents.csv"):
-        print("Error: data/student_vents.csv not found. Please run generate_dataset.py first.")
+    if not os.path.exists("data/train_vents.csv") or not os.path.exists("data/val_vents.csv"):
+        print("Error: train_vents.csv or val_vents.csv not found. Please run generate_dataset.py first.")
         exit(1)
         
-    print("Loading Augmented Synthetic Dataset (1,000 samples)...")
-    # Load raw CSV dataset exported from the internal generation script
-    raw_dataset = load_dataset('csv', data_files='data/student_vents.csv')
+    print("Loading Leak-free Augmented Synthetic Dataset...")
+    # Load raw CSV datasets exported from the internal generation script safely split beforehand
+    raw_dataset = load_dataset('csv', data_files={'train': 'data/train_vents.csv', 'validation': 'data/val_vents.csv'})
     
     # Run mDeBERTa Primary Model Fine-Tuning
     mdeberta_metrics = fine_tune_model("microsoft/mdeberta-v3-base", "./models/mdeberta_finetuned", raw_dataset)

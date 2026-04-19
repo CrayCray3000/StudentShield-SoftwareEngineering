@@ -54,7 +54,7 @@ class VentController extends BaseController
         $riskLevel = 'LOW';
 
         if ($mlResult && isset($mlResult['risk_level'])) {
-            $sentimentScore = $mlResult['risk_percent'];
+            $sentimentScore = isset($mlResult['risk_score']) ? $mlResult['risk_score'] : (isset($mlResult['risk_percent']) ? $mlResult['risk_percent'] : 0.0);
             $riskLevel = $mlResult['risk_level'];
         }
         else {

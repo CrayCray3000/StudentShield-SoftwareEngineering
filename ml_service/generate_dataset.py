@@ -7,7 +7,7 @@ import nltk
 print("Downloading NLP Wordnet synonyms...")
 try:
     nltk.download('wordnet')
-    nltk.download('averaged_perceptron_tagger_eng') # New NLTK tagger requirement
+    nltk.download('averaged_perceptron_tagger_eng')
     nltk.download('omw-1.4')
 except Exception as e:
     print(f"NLTK Download Warning: {e}")
@@ -61,47 +61,36 @@ seed_data = [
 
     # ---- ENGLISH (Neutral & Sarcastic / False Positives) ----
     ("I finally finished that history project.", 0),
-    ("This homework is literally killing me.", 0), # Complex False Positive
-    ("I died laughing at that joke lmao 😂", 0), # Complex False Positive
-    ("Kms after this math test it was so hard lol", 0), # Complex False Positive
+    ("This homework is literally killing me.", 0),
+    ("I died laughing at that joke lmao 😂", 0),
+    ("Kms after this math test it was so hard lol", 0),
     ("The cafeteria food was actually good today.", 0),
     ("Just studying for the math exam tonight.", 0),
     ("I got a B+ on my essay, which is okay.", 0),
     ("Trying to figure out this coding assignment.", 0),
 
     # ---- TAGALOG / TAGLISH (Neutral & Sarcastic / False Positives) ----
-    ("nakakapagod mag-aral pero sige lang", 0), # Neutral complaining
-    ("mamatay ako sa kakatawa sa ginawa mo gago", 0), # Sarcasm
-    ("depressed na depressed ako sa grades ko charot", 0), # Sarcastic downgrade
-    ("laslas na kase bagsak sa exam lol", 0), # Sarcastic downgrade
-    ("ang hirap ng exam sirang sira ulo ko", 0), # Neutral
-    ("nakakainis yung traffic kanina", 0), # Neutral
-    ("bobo ko sa math talaga haha", 0), # Self-deprecation, but neutral risk
+    ("nakakapagod mag-aral pero sige lang", 0),
+    ("mamatay ako sa kakatawa sa ginawa mo gago", 0),
+    ("depressed na depressed ako sa grades ko charot", 0),
+    ("laslas na kase bagsak sa exam lol", 0),
+    ("ang hirap ng exam sirang sira ulo ko", 0),
+    ("nakakainis yung traffic kanina", 0),
+    ("bobo ko sa math talaga haha", 0),
 
     # ---- BISAYA (Neutral) ----
-    ("gikapoy nako sigeg tuon", 0), # Tired of studying (Neutral)
-    ("atay kalisod sa exam", 0), # Exam is hard (Neutral)
-    ("lami e-kaog lami ron", 0), # Want to eat good food (Neutral)
+    ("gikapoy nako sigeg tuon", 0),
+    ("atay kalisod sa exam", 0),
+    ("lami e-kaog lami ron", 0),
 
     # ---- ILOCANO (Neutral) ----
-    ("mabannogakon nga agadal", 0), # Tired of studying (Neutral)
-    ("narigat jay exam me tatta", 0), # Exam was hard (Neutral)
+    ("mabannogakon nga agadal", 0),
+    ("narigat jay exam me tatta", 0),
 ]
 
-def generate_dataset(num_samples=1000):
-    print("Initializing Synonym Augmenter...")
-    try:
-        # Use simple synonym substitution.
-        aug = naw.SynonymAug(aug_src='wordnet', aug_p=0.4) 
-    except Exception as e:
-        print(f"Failed to load SynonymAug: {e}")
-        return
-
-    print("Generating dataset...")
+def generate_split(seeds, num_samples, aug, filename):
     dataset = []
-    
-    # Add original seed data
-    for text, label in seed_data:
+    for text, label in seeds:
         dataset.append({"text": text, "label": label})
         
     counts = {0: 0, 1: 0}
@@ -113,44 +102,57 @@ def generate_dataset(num_samples=1000):
     retries = 0
     
     while (counts[0] < target_per_class or counts[1] < target_per_class) and retries < max_retries:
-        seed_idx = random.randint(0, len(seed_data) - 1)
-        text, label = seed_data[seed_idx]
+        seed_idx = random.randint(0, len(seeds) - 1)
+        text, label = seeds[seed_idx]
         
         if counts[label] < target_per_class:
             try:
                 augmented = aug.augment(text)
-                if isinstance(augmented, list):
-                    augmented_text = augmented[0]
-                else:
-                    augmented_text = augmented
+                augmented_text = augmented[0] if isinstance(augmented, list) else augmented
                     
                 if augmented_text and augmented_text not in [d["text"] for d in dataset]:
                     dataset.append({"text": augmented_text, "label": label})
                     counts[label] += 1
                 else:
                     retries += 1
-            except Exception as e:
+            except Exception:
                 retries += 1
                 
-    if retries >= max_retries:
-        print("Warning: Max continuous aug retries reached. The dataset may be slightly smaller than requested to preserve uniqueness.")
-        
-    # Shuffle the dataset
     random.shuffle(dataset)
-    
     df = pd.DataFrame(dataset)
-    print(f"\nDataset generated with {len(df)} samples.")
-    print("\nClass distribution:")
-    print(df['label'].value_counts())
-    
-    # Display sample
-    print("\nSamples:")
-    print(df.head(5))
     
     os.makedirs('data', exist_ok=True)
-    df.to_csv('data/student_vents.csv', index=False)
-    print("\nSaved synthetic dataset to data/student_vents.csv")
+    df.to_csv(filename, index=False)
+    print(f"Saved {len(df)} samples to {filename}")
+
+def generate_dataset(total_samples=1000):
+    print("Initializing Synonym Augmenter...")
+    try:
+        aug = naw.SynonymAug(aug_src='wordnet', aug_p=0.4) 
+    except Exception as e:
+        print(f"Failed to load SynonymAug: {e}")
+        return
+
+    # STRUCTURAL FIX: Split the seeds BEFORE augmentation to prevent Train/Val leakage
+    random.seed(42)
+    random.shuffle(seed_data)
+    
+    # 80/20 Seed Split
+    split_idx = int(len(seed_data) * 0.8)
+    train_seeds = seed_data[:split_idx]
+    val_seeds = seed_data[split_idx:]
+    
+    # Allocate samples (800 for train, 200 for validation)
+    train_target = int(total_samples * 0.8)
+    val_target = total_samples - train_target
+    
+    print("\nGenerating Train Split...")
+    generate_split(train_seeds, train_target, aug, 'data/train_vents.csv')
+    
+    print("\nGenerating Validation Split...")
+    generate_split(val_seeds, val_target, aug, 'data/val_vents.csv')
+    
+    print("\nSuccessfully generated leak-free synthetic datasets.")
 
 if __name__ == "__main__":
     generate_dataset(1000)
-
