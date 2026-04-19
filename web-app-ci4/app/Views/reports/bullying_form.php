@@ -177,7 +177,7 @@
     </div>
 
     <!-- Main Container -->
-    <div class="w-full max-w-4xl lg:max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 mt-8 sm:mt-0">
+    <div class="w-[95%] md:w-[85%] lg:w-[75%] xl:w-[65%] max-w-[1200px] mx-auto relative z-20 mt-4 sm:mt-0 flex flex-col justify-center">
         
         <!-- Header Section -->
         <div class="text-center mb-6 sm:mb-8 anim-fade-up">
