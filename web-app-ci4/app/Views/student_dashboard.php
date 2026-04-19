@@ -118,7 +118,7 @@
                     Empty your mind and let it out. This is an encrypted, judgment-free zone where you can write out your feelings, anxieties, or daily struggles. Only connected counselors can read what you write.
                 </p>
                 
-                <div class="mt-auto flex items-center text-primary font-bold text-[13px] tracking-wide uppercase border-t border-gray-100 pt-5">
+                <div class="mt-auto flex items-center text-primary font-bold text-[13px] tracking-wide uppercase border-t border-gray-200 pt-5">
                     Enter Safe Space
                     <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </div>
@@ -137,7 +137,7 @@
                     Formal report for urgent matters. If you or someone you know is experiencing <strong>bullying, severe harassment, threats, or danger</strong>, use this path. This alerts personnel immediately for action.
                 </p>
                 
-                <div class="mt-auto flex items-center text-red-600 font-bold text-[13px] tracking-wide uppercase border-t border-gray-100 pt-5">
+                <div class="mt-auto flex items-center text-red-600 font-bold text-[13px] tracking-wide uppercase border-t border-gray-200 pt-5">
                     File a Formal Report
                     <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </div>

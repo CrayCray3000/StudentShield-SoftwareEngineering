@@ -485,7 +485,7 @@
                     </button>
                 </div>
                 
-                <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-100">
+                <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-200">
                     <div>
                         <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Involved Party / Sender</p>
                         <p id="modalSender" class="text-sm font-semibold text-gray-800">--</p>
@@ -503,7 +503,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end">
+                <div class="mt-6 pt-4 border-t border-gray-200 flex justify-end">
                     <button onclick="closeDetailModal()" class="px-6 py-3 bg-[#0B5E2E] hover:bg-[#0F6A34] text-white text-sm font-bold rounded-xl transition-colors shadow-sm">Confirm & Close</button>
                 </div>
             </div>
@@ -775,7 +775,7 @@
                                         <span class="text-sm font-medium text-gray-900 block">${escapeHtml(vent.name)}</span>
                                         ${vent.section ? `<span class="text-[11px] text-gray-600 font-bold block mt-0.5">Section: <span class="font-normal text-gray-600">${escapeHtml(vent.section)}</span></span>` : ''}
                                         ${vent.adviser_name ? `<span class="text-[11px] text-gray-600 font-bold block mb-1">Adviser: <span class="font-normal text-gray-600">${escapeHtml(vent.adviser_name)}</span></span>` : ''}
-                                        ${vent.parent_phone ? `<span class="text-[10px] text-gray-500 block pt-0.5 border-t border-gray-100 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
+                                        ${vent.parent_phone ? `<span class="text-[10px] text-gray-500 block pt-0.5 border-t border-gray-200 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
                                         ${vent.parent_email ? `<span class="text-[10px] text-gray-500 block">✉️ ${escapeHtml(vent.parent_email)}</span>` : ''}
                                     </div>
                                 </div>
@@ -963,7 +963,7 @@
                                     </span>
                                 ` : ''}
                                 
-                                <hr class="border-gray-100 my-0.5">
+                                <hr class="border-gray-200 my-0.5">
                                 
                                 ${showArchivedIncidents ? `
                                 <form action="<?= base_url('counselor/incident/restore/') ?>${incident.id}" method="POST">
