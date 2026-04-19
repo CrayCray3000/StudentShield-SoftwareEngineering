@@ -902,7 +902,7 @@
                         const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
                         const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
 
-                        let bgColor = isPending ? 'bg-yellow-50/50 hover:bg-yellow-50 border-l-4 border-l-yellow-400' : (isRejected ? 'bg-red-50/30 hover:bg-red-50' : 'bg-white hover:bg-gray-50');
+                        let bgColor = isPending ? 'bg-white hover:bg-gray-50 border-l-4 border-l-amber-400' : (isRejected ? 'bg-white hover:bg-gray-50 border-l-4 border-l-red-500' : 'bg-white hover:bg-gray-50 border-l-4 border-l-transparent');
 
                         html += `<tr class="transition-colors duration-200 ${bgColor}">
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center">
