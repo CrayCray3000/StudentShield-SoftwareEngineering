@@ -394,8 +394,9 @@
                         <!-- Custom Animated Checkbox -->
                         <div class="relative flex items-center justify-center mt-0.5 z-10 flex-shrink-0">
                             <input type="checkbox" id="hide_from_parents" name="hide_from_parents" value="1" 
-                                   class="peer appearance-none w-4 h-4 lg:w-5 lg:h-5 rounded-[4px] lg:rounded-[6px] border-2 border-calm-200/80 bg-white checked:bg-calm-500 checked:border-calm-500 focus:outline-none focus:ring-4 focus:ring-calm-500/15 transition-all duration-200 cursor-pointer">
-                            <svg class="absolute w-3 h-3 lg:w-3.5 lg:h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-all duration-200 transform scale-50 peer-checked:scale-100 pointer-events-none stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                   onchange="document.getElementById('checkSvg').style.opacity = this.checked ? '1' : '0'; document.getElementById('hide_from_parents').style.backgroundColor = this.checked ? '#10B981' : 'white'; document.getElementById('hide_from_parents').style.borderColor = this.checked ? '#10B981' : 'rgb(167 243 208 / 0.8)';"
+                                   class="appearance-none w-4 h-4 lg:w-5 lg:h-5 rounded-[4px] lg:rounded-[6px] border-2 border-calm-200/80 bg-white focus:outline-none transition-all duration-200 cursor-pointer">
+                            <svg id="checkSvg" style="opacity: 0;" class="absolute w-3 h-3 lg:w-3.5 lg:h-3.5 text-white transition-all duration-200 transform pointer-events-none stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
                         </div>
