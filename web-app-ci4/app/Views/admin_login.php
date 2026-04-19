@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -144,24 +144,22 @@
 </head>
 <body class="bg-admin min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 py-4 lg:py-8 relative overflow-x-hidden overflow-y-auto">
 
-    <!-- Intro Splash Screen -->
-    <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-admin transition-opacity duration-1000">
-        <div class="relative flex flex-col items-center z-10">
-            <!-- Animated Logo -->
-            <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mb-6 animate-[scaleIn_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards] opacity-0"
-                 style="animation-delay: 0.2s;"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
-            
-            <!-- Animated Text -->
-            <h1 class="text-3xl sm:text-4xl font-heading font-black tracking-tight text-white mb-8 overflow-hidden whitespace-nowrap border-r-[3px] border-gold animate-[typing_1s_steps(13,end)_forwards,blink_0.8s_step-end_infinite] opacity-0 w-0" style="animation-delay: 0.8s;">
-                Student<span class="text-gold">Shield</span>
-            </h1>
-            
-            <!-- Loading Progress -->
-            <div class="w-48 sm:w-64 h-1.5 bg-white/10 rounded-full overflow-hidden animate-[fadeInSplash_0.5s_ease_forwards] opacity-0" style="animation-delay: 1.8s;">
-                <div class="h-full bg-gold rounded-full animate-[progress_1s_ease-in-out_forwards]" style="animation-delay: 1.8s; width: 0%;"></div>
+        <!-- Premium Fast-Load Splash Screen -->
+    <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-admin backdrop-blur-xl transition-all duration-700 ease-in-out pb-10">
+        <div class="relative flex flex-col items-center z-10 w-full max-w-sm px-6">
+            <div class="relative mb-6 flex items-center justify-center w-28 h-28 sm:w-36 sm:h-36">
+                <!-- Premium Ripple Effect -->
+                <div class="absolute inset-0 bg-gold/10 rounded-full animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
+                <div class="absolute inset-2 bg-gold/20 rounded-full animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]" style="animation-delay: 0.5s;"></div>
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="relative w-20 h-20 sm:w-28 sm:h-28 object-contain z-10 drop-shadow-[0_0_20px_rgba(242,195,0,0.5)] animate-pulse" id="splashLogoImg">
+            </div>
+            <!-- Secure Connection Status -->
+            <div class="flex flex-col items-center gap-3">
+                <svg class="animate-spin h-5 w-5 text-gold drop-shadow-md" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <p class="text-gold/90 text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase font-mono bg-black/20 px-4 py-1.5 rounded-full border border-gold/10 backdrop-blur-md">Establishing Secure Connection...</p>
             </div>
         </div>
+    </div>
     </div>
 
 <div class="bg-grid"></div>
@@ -222,7 +220,7 @@
                     </div>
                     <input type="password" name="password" id="password" required
                            class="w-full pl-10 sm:pl-11 pr-4 py-3 sm:py-3.5 input-admin rounded-xl text-[14px] sm:text-base font-medium outline-none tracking-widest"
-                           placeholder="••••••••">
+                           placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
                 </div>
             </div>
 
@@ -245,15 +243,30 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function() {
         const splash = document.getElementById('splashScreen');
         if (!sessionStorage.getItem('adminIntroPlayed')) {
-            setTimeout(() => {
-                splash.classList.add('opacity-0');
+            let hasLoaded = false;
+            let minTimePassed = false;
+            
+            const hideSplash = () => {
+                splash.classList.add('opacity-0', 'backdrop-blur-none');
                 splash.style.pointerEvents = 'none';
-                setTimeout(() => { splash.style.display = 'none'; }, 1000);
+                setTimeout(() => { splash.style.display = 'none'; }, 700);
                 sessionStorage.setItem('adminIntroPlayed', 'true');
-            }, 3200);
+            };
+
+            setTimeout(() => {
+                minTimePassed = true;
+                if(hasLoaded) hideSplash();
+            }, 800); // 0.8s minimum
+            
+            window.addEventListener('load', () => {
+                hasLoaded = true;
+                if(minTimePassed) hideSplash();
+            });
+
+            setTimeout(hideSplash, 3500);
         } else {
             splash.style.display = 'none';
         }
@@ -273,3 +286,4 @@
 </script>
 </body>
 </html>
+
