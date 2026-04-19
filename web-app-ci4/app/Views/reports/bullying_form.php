@@ -314,7 +314,7 @@
                         <span class="text-[11px] sm:text-[13px] font-bold text-white/50 uppercase tracking-widest" id="stepCounter">Step 1 of 3</span>
                     </div>
                     <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                        <div class="bg-gold h-full w-1/3 transition-all duration-500 ease-out" id="progressBar"></div>
+                        <div class="h-full w-1/3 transition-all duration-500 ease-out shadow-[0_0_10px_rgba(242,195,0,0.5)]" style="background-color: #F2C300;" id="progressBar"></div>
                     </div>
                 </div>
 
