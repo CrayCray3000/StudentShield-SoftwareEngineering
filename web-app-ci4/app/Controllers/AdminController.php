@@ -448,15 +448,16 @@ class AdminController extends BaseController
             } catch (\Exception $e) {}
             
             // Format for ApexCharts
-            if ($vent['ml_risk_level'] === 'Critical') $y = 90;
-            elseif ($vent['ml_risk_level'] === 'High') $y = 75;
-            elseif ($vent['ml_risk_level'] === 'Medium') $y = 50;
+            $risk = $vent['ml_risk_level'] ?? 'Low';
+            if ($risk === 'Critical') $y = 90;
+            elseif ($risk === 'High') $y = 75;
+            elseif ($risk === 'Medium') $y = 50;
             else $y = 20;
 
             $timelineData[] = [
                 'x' => date('M d', strtotime($vent['created_at'])),
                 'y' => $y,
-                'sentiment' => $vent['ml_sentiment_score']
+                'sentiment' => $vent['ml_sentiment_score'] ?? '0.00'
             ];
         }
 
