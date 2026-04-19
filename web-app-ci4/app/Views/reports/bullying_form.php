@@ -5,43 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>StudentShield - Incident Report</title>
     <script src="https://cdn.tailwindcss.com"></script>
-        <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { 
-                        sans: ['Inter', 'sans-serif'], 
-                        heading: ['Outfit', 'sans-serif'] 
-                    },
-                    colors: {
-                        white: '#FBFDFB', // Anti-glare soft white
-                        black: '#131A15', // Softened black
-                        gray: {
-                            50: '#F4F7F5',
-                            100: '#E6EBE8',
-                            200: '#CFD9D4',
-                            300: '#AAB8B1',
-                            400: '#82958B',
-                            500: '#61756B',
-                            600: '#4D5D55',
-                            700: '#3D4943',
-                            800: '#2E3833',
-                            900: '#212825', // Replaces harsh text-gray-900 with deep sage
-                        },
-                        red: {
-                            50: '#FDF7F7',
-                            100: '#FAEDED',
-                            200: '#F4D6D6',
-                            500: '#D95A5A', // Less neon, softer warning red
-                            600: '#C24545',
-                            700: '#A33535',
-                        },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
-                        gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
-                        calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
-                    }
+            <script>
+        let currentStep = 1;
+
+        function toggleVictim() {
+            const bystander = document.querySelector('input[value="bystander"]').checked;
+            const victimDiv = document.getElementById('victimDiv');
+            const victimInput = document.getElementById('victimName');
+            
+            if(bystander) {
+                victimDiv.classList.remove('hidden');
+                void victimDiv.offsetWidth; 
+                victimDiv.style.opacity = '1';
+                victimInput.setAttribute('required', 'required');
+            } else {
+                victimDiv.style.opacity = '0';
+                setTimeout(() => {
+                    victimDiv.classList.add('hidden');
+                }, 300);
+                victimInput.removeAttribute('required');
+                victimInput.value = '';
+            }
+        }
+
+        function validateStep(step) {
+            if (step === 1) {
+                const bystander = document.querySelector('input[value="bystander"]').checked;
+                const victimName = document.getElementById('victimName').value.trim();
+                if (bystander && victimName === '') {
+                    alert('Please enter the victim\'s name.');
+                    document.getElementById('victimName').focus();
+                    return false;
+                }
+            } else if (step === 2) {
+                const bullyName = document.getElementById('bullyName').value.trim();
+                if (bullyName === '') {
+                    alert('Please enter the name of the aggressor.');
+                    document.getElementById('bullyName').focus();
+                    return false;
+                }
+            } else if (step === 3) {
+                const details = document.getElementById('incidentDetails').value.trim();
+                if (details === '') {
+                    alert('Please describe what happened.');
+                    document.getElementById('incidentDetails').focus();
+                    return false;
                 }
             }
+            return true;
+        }
+
+        function nextStep(current) {
+            if (!validateStep(current)) return;
+
+            const currentPane = document.getElementById('step' + current);
+            const nextPane = document.getElementById('step' + (current + 1));
+            
+            currentPane.style.opacity = '0';
+            setTimeout(() => {
+                currentPane.classList.add('hidden');
+                currentPane.classList.remove('active');
+                
+                nextPane.classList.remove('hidden');
+                void nextPane.offsetWidth; // trigger reflow
+                nextPane.classList.add('active');
+                nextPane.style.opacity = '1';
+                
+                updateProgress(current + 1);
+            }, 300);
+        }
+
+        function prevStep(current) {
+            const currentPane = document.getElementById('step' + current);
+            const prevPane = document.getElementById('step' + (current - 1));
+            
+            currentPane.style.opacity = '0';
+            setTimeout(() => {
+                currentPane.classList.add('hidden');
+                currentPane.classList.remove('active');
+                
+                prevPane.classList.remove('hidden');
+                void prevPane.offsetWidth;
+                prevPane.classList.add('active');
+                prevPane.style.opacity = '1';
+                
+                updateProgress(current - 1);
+            }, 300);
+        }
+
+        function updateProgress(step) {
+            currentStep = step;
+            const percentages = { 1: '33.33%', 2: '66.66%', 3: '100%' };
+            document.getElementById('progressBar').style.width = percentages[step];
+            document.getElementById('stepCounter').innerText = `Step ${step} of 3`;
+        }
+
+        function submitWizard() {
+            if (!validateStep(3)) return;
+            
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnSpinner = document.getElementById('btnSpinner');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            btnText.innerText = 'Encrypting & Sending...';
+            btnIcon.classList.add('hidden');
+            btnSpinner.classList.remove('hidden');
+
+            document.getElementById('bullyingForm').submit();
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -232,78 +305,108 @@
 
         <!-- Glass Form Card -->
         <div class="glass-panel p-5 sm:p-8 anim-fade-up" style="animation-delay: 0.2s;">
-            <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="bullyingForm" class="space-y-4 sm:space-y-6">
+                        <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="bullyingForm" class="relative min-h-[320px] pb-4">
                 <div class="hidden"><?= csrf_field() ?></div>
                 
-                <!-- Reporter Type -->
-                <div class="space-y-3 sm:space-y-4">
-                    <label class="block text-[13px] sm:text-[15px] font-bold text-white/80 uppercase tracking-widest flex items-center gap-2.5 sm:gap-3">
-                        <span class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gold/10 text-gold border border-gold/20"><i class="fas fa-user-shield text-[10px] sm:text-xs"></i></span>
-                        Your connection to the incident
-                    </label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        <label class="radio-card flex items-start gap-3 sm:gap-4 cursor-pointer p-4 sm:p-5 rounded-xl sm:rounded-[1.25rem]">
-                            <input type="radio" name="reporter_type" value="self" checked class="mt-0.5 sm:mt-1 w-4 h-4 sm:w-5 sm:h-5 text-gold border-white/20 bg-transparent focus:ring-gold focus:ring-opacity-50 cursor-pointer transition-colors" onclick="toggleVictim()">
-                            <div class="flex flex-col">
-                                <span class="text-[14px] sm:text-[16px] font-bold text-white mb-0.5">I am the Victim</span>
-                                <span class="text-[12px] sm:text-[13px] text-white/50 font-medium leading-tight">I am reporting what happened to me directly.</span>
-                            </div>
-                        </label>
-                        <label class="radio-card flex items-start gap-3 sm:gap-4 cursor-pointer p-4 sm:p-5 rounded-xl sm:rounded-[1.25rem]">
-                            <input type="radio" name="reporter_type" value="bystander" class="mt-0.5 sm:mt-1 w-4 h-4 sm:w-5 sm:h-5 text-gold border-white/20 bg-transparent focus:ring-gold focus:ring-opacity-50 cursor-pointer transition-colors" onclick="toggleVictim()">
-                            <div class="flex flex-col">
-                                <span class="text-[14px] sm:text-[16px] font-bold text-white mb-0.5">I am a Bystander</span>
-                                <span class="text-[12px] sm:text-[13px] text-white/50 font-medium leading-tight">I saw or heard about this happening to someone else.</span>
-                            </div>
-                        </label>
+                <!-- Progress Indicator -->
+                <div class="mb-8 relative">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[11px] sm:text-[13px] font-bold text-white/50 uppercase tracking-widest" id="stepCounter">Step 1 of 3</span>
+                    </div>
+                    <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-gold h-full w-1/3 transition-all duration-500 ease-out" id="progressBar"></div>
                     </div>
                 </div>
 
-                <!-- VICTIM TEXT (Hidden by default) -->
-                <div id="victimDiv" class="hidden overflow-hidden transition-all duration-500 ease-in-out">
-                    <div class="pt-1 sm:pt-2 pb-1">
-                        <label class="block text-[12px] sm:text-[13px] font-bold text-white/80 mb-1.5 sm:mb-2 ml-1 uppercase tracking-wider">
-                            Who is the Victim? <span class="text-red-400 text-sm">*</span>
+                <!-- Step 1: Reporter Type & Victim (if bystander) -->
+                <div class="step-pane active transition-opacity duration-300" id="step1">
+                    <div class="space-y-4 sm:space-y-6">
+                        <label class="block text-[15px] sm:text-[18px] font-black text-white leading-tight mb-2">
+                            What is your connection to the incident?
                         </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                            <label class="radio-card flex items-start gap-4 cursor-pointer p-4 sm:p-5 rounded-[1.25rem]">
+                                <input type="radio" name="reporter_type" value="self" checked class="mt-1 w-5 h-5 text-gold border-white/20 bg-transparent focus:ring-gold focus:ring-opacity-50 cursor-pointer" onclick="toggleVictim()">
+                                <div class="flex flex-col">
+                                    <span class="text-[15px] sm:text-[16px] font-bold text-white">I am the Victim</span>
+                                    <span class="text-[13px] text-white/50 font-medium">I'm reporting what happened to me.</span>
+                                </div>
+                            </label>
+                            <label class="radio-card flex items-start gap-4 cursor-pointer p-4 sm:p-5 rounded-[1.25rem]">
+                                <input type="radio" name="reporter_type" value="bystander" class="mt-1 w-5 h-5 text-gold border-white/20 bg-transparent focus:ring-gold focus:ring-opacity-50 cursor-pointer" onclick="toggleVictim()">
+                                <div class="flex flex-col">
+                                    <span class="text-[15px] sm:text-[16px] font-bold text-white">I am a Bystander</span>
+                                    <span class="text-[13px] text-white/50 font-medium">I saw it happen to someone else.</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div id="victimDiv" class="hidden overflow-hidden transition-all duration-500 ease-in-out mt-4 sm:mt-6">
+                            <label class="block text-[12px] sm:text-[13px] font-bold text-white/80 mb-2 uppercase tracking-wider">
+                                Who is the Victim? <span class="text-red-400 text-sm">*</span>
+                            </label>
+                            <div class="relative group/input">
+                                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                                    <i class="fas fa-user-friends text-white/30 text-[16px]"></i>
+                                </div>
+                                <input type="text" name="victim_name" id="victimName" class="w-full pl-14 pr-5 py-4 input-dark rounded-[1.25rem] text-[15px] font-semibold" placeholder="Enter the victim's full name">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end mt-8">
+                            <button type="button" onclick="nextStep(1)" class="bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 px-8 rounded-xl transition-colors flex items-center gap-2">
+                                Next <i class="fas fa-arrow-right text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Aggressor -->
+                <div class="step-pane hidden opacity-0 transition-opacity duration-300" id="step2">
+                    <div class="space-y-4 sm:space-y-6">
+                        <label class="block text-[15px] sm:text-[18px] font-black text-white leading-tight mb-2">
+                            Who was the Aggressor? <span class="text-red-400">*</span>
+                        </label>
+                        <p class="text-[13px] text-white/50 font-medium mb-4">If there were multiple people, separate their names with commas.</p>
+                        
                         <div class="relative group/input">
-                            <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-gold">
-                                <i class="fas fa-user-friends text-white/30 group-focus-within/input:text-gold transition-colors text-[14px] sm:text-[16px]"></i>
+                            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                                <i class="fas fa-users-slash text-white/30 text-[16px]"></i>
                             </div>
-                            <input type="text" name="victim_name" id="victimName" class="w-full pl-11 sm:pl-14 pr-4 sm:pr-5 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[15px] font-semibold" placeholder="Enter the victim's full name">
+                            <input type="text" name="bully_name" id="bullyName" class="w-full pl-14 pr-5 py-4 input-dark rounded-[1.25rem] text-[15px] font-semibold focus:border-red-400" placeholder="Who did this?">
+                        </div>
+
+                        <div class="flex justify-between mt-8">
+                            <button type="button" onclick="prevStep(2)" class="text-white/50 hover:text-white font-bold py-3.5 px-4 rounded-xl transition-colors flex items-center gap-2 cursor-pointer">
+                                <i class="fas fa-arrow-left text-sm"></i> Back
+                            </button>
+                            <button type="button" onclick="nextStep(2)" class="bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 px-8 rounded-xl transition-colors flex items-center gap-2">
+                                Next <i class="fas fa-arrow-right text-sm"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- BULLY TEXT -->
-                <div class="space-y-1.5 sm:space-y-2">
-                    <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between ml-1 gap-1">
-                        <label class="block text-[12px] sm:text-[13px] font-bold text-white/80 uppercase tracking-wider">
-                            Who was the Aggressor? <span class="text-red-400 text-sm">*</span>
+                <!-- Step 3: Details -->
+                <div class="step-pane hidden opacity-0 transition-opacity duration-300" id="step3">
+                    <div class="space-y-4 sm:space-y-6">
+                        <label class="block text-[15px] sm:text-[18px] font-black text-white leading-tight mb-2">
+                            Please describe what happened. <span class="text-red-400 text-sm">*</span>
                         </label>
-                        <span class="text-[10px] sm:text-[12px] text-white/50 font-semibold bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 sm:px-2.5 sm:py-1 w-max">Separate multiple names with commas</span>
-                    </div>
-                    <div class="relative group/input">
-                        <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-red-400">
-                            <i class="fas fa-users-slash text-white/30 group-focus-within/input:text-red-400 transition-colors text-[14px] sm:text-[16px]"></i>
+                        <textarea name="incident_details" id="incidentDetails" rows="4" class="w-full px-6 py-5 input-dark rounded-[1.5rem] text-[15px] font-medium leading-relaxed resize-none" placeholder="Where did it happen? When? Describe exactly what was said or done. Take your time, there is no rush."></textarea>
+
+                        <div class="flex justify-between items-center mt-8 gap-4">
+                            <button type="button" onclick="prevStep(3)" class="text-white/50 hover:text-white font-bold py-3.5 px-2 rounded-xl transition-colors flex items-center gap-2 cursor-pointer shrink-0">
+                                <i class="fas fa-arrow-left text-sm"></i> Back
+                            </button>
+                            <button type="button" onclick="submitWizard()" id="submitBtn" class="submit-btn font-black py-3.5 px-6 rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-3 bg-gold text-[#042E15] group/btn w-full sm:w-auto">
+                                <span id="btnText" class="tracking-wide drop-shadow-sm mix-blend-multiply">Send Secure Report</span>
+                                <i id="btnIcon" class="fas fa-lock mix-blend-multiply group-hover/btn:scale-110 transition-transform hidden sm:inline"></i>
+                                <svg id="btnSpinner" class="animate-spin h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            </button>
                         </div>
-                        <input type="text" name="bully_name" required class="w-full pl-11 sm:pl-14 pr-4 sm:pr-5 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[15px] font-semibold focus:border-red-400 focus:shadow-[0_0_0_4px_rgba(248,113,113,0.2)]" placeholder="Who did this?">
                     </div>
                 </div>
-
-                <!-- DETAILS -->
-                <div class="space-y-1.5 sm:space-y-2">
-                    <label class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">
-                        Please describe what happened <span class="text-red-400 text-sm">*</span>
-                    </label>
-                    <textarea name="incident_details" required rows="4" class="w-full px-4 sm:px-6 py-4 sm:py-5 input-dark rounded-xl sm:rounded-[1.5rem] text-[14px] sm:text-[15px] font-medium leading-relaxed resize-none" placeholder="Where did it happen? When? Describe exactly what was said or done. Take your time, there is no rush."></textarea>
-                </div>
-
-                <!-- SUBMIT BUTTON -->
-                <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3 sm:py-3.5 px-4 sm:px-6 rounded-xl sm:rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 sm:gap-3 h-[48px] sm:h-[56px] mt-4 sm:mt-6 group/btn bg-gold">
-                    <span id="btnText" class="font-heading text-[16px] sm:text-[18px] tracking-wide text-[#042E15] drop-shadow-sm mix-blend-multiply pt-0.5">Send Secure Report</span>
-                    <i id="btnIcon" class="fas fa-lock text-[#042E15] text-[13px] sm:text-[15px] mix-blend-multiply group-hover/btn:scale-110 transition-transform duration-300"></i>
-                    <svg id="btnSpinner" class="animate-spin h-5 w-5 sm:h-6 sm:w-6 text-[#042E15] hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                </button>
             </form>
             
             <!-- Trust Badges -->
