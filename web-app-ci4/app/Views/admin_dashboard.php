@@ -273,7 +273,7 @@
                     <svg class="w-6 h-6 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                     Overview
                 </h2>
-                <p class="text-gray-500 text-sm mt-1">Real-time monitoring and analytics from the student portal.</p>
+                <p class="text-gray-600 text-sm mt-1">Real-time monitoring and analytics from the student portal.</p>
             </div>
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
                 <div class="stat-card green-accent flex items-center gap-4">
@@ -281,7 +281,7 @@
                         <svg class="w-5 h-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Total Active</span>
+                        <span class="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Total Active</span>
                         <span class="text-2xl font-bold text-[#0B5E2E] leading-tight" id="stat-total">--</span>
                     </div>
                 </div>
@@ -290,7 +290,7 @@
                         <svg class="w-5 h-5 text-[#B89100]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">Critical Pending</span>
+                        <span class="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Critical Pending</span>
                         <span class="text-2xl font-bold text-[#E04B3F] leading-tight" id="stat-critical">--</span>
                     </div>
                 </div>
@@ -340,7 +340,7 @@
                     Live Intelligence Feed
                 </h2>
                 <div class="flex items-center gap-4">
-                    <label class="flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 transition-colors" for="toggleArchivedVents">
+                    <label class="flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-300 transition-colors" for="toggleArchivedVents">
                         <input type="checkbox" id="toggleArchivedVents" class="rounded border-gray-300 text-[#0B5E2E] shadow-sm w-3.5 h-3.5" onchange="toggleVentsView(this.checked)">
                         <span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Show Archived</span>
                     </label>
@@ -374,7 +374,7 @@
                     <tbody id="ventsTableBody" class="divide-y divide-gray-100">
                         <!-- Populated by AJAX -->
                         <tr>
-                            <td colspan="7" class="px-6 py-12 text-center text-gray-400">
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-500">
                                 <svg class="animate-spin h-8 w-8 mx-auto mb-4 text-[#0B5E2E]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -397,7 +397,7 @@
                     Bullying Incident Reports
                 </h2>
                 <div class="flex items-center gap-4">
-                    <label class="flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200 transition-colors" for="toggleArchivedIncidents">
+                    <label class="flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-300 transition-colors" for="toggleArchivedIncidents">
                         <input type="checkbox" id="toggleArchivedIncidents" class="rounded border-gray-300 text-[#0B5E2E] shadow-sm w-3.5 h-3.5" onchange="toggleIncidentsView(this.checked)">
                         <span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Show Archived</span>
                     </label>
@@ -426,7 +426,7 @@
                     </thead>
                     <tbody id="incidentsTableBody" class="divide-y divide-gray-100">
                         <tr>
-                            <td colspan="8" class="px-6 py-12 text-center text-gray-400">
+                            <td colspan="8" class="px-6 py-12 text-center text-gray-500">
                                 <p>Loading reports...</p>
                             </td>
                         </tr>
@@ -462,7 +462,7 @@
                     </thead>
                     <tbody id="alertsTableBody" class="divide-y divide-gray-100">
                         <tr>
-                            <td colspan="4" class="px-6 py-12 text-center text-gray-400">
+                            <td colspan="4" class="px-6 py-12 text-center text-gray-500">
                                 <p>Loading delivery logs...</p>
                             </td>
                         </tr>
@@ -480,18 +480,18 @@
                         <div id="modalBadge" class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border"></div>
                         <h2 id="modalTitle" class="text-2xl font-heading font-extrabold text-[#0B5E2E] tracking-tight">Report Details</h2>
                     </div>
-                    <button onclick="closeDetailModal()" class="text-gray-400 hover:text-red-500 transition-colors p-2 bg-gray-50 hover:bg-red-50 rounded-full">
+                    <button onclick="closeDetailModal()" class="text-gray-500 hover:text-red-500 transition-colors p-2 bg-gray-50 hover:bg-red-50 rounded-full">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
                 
                 <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-100">
                     <div>
-                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1">Involved Party / Sender</p>
+                        <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Involved Party / Sender</p>
                         <p id="modalSender" class="text-sm font-semibold text-gray-800">--</p>
                     </div>
                     <div>
-                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1">Timestamp</p>
+                        <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Timestamp</p>
                         <p id="modalTime" class="text-sm font-semibold text-gray-800">--</p>
                     </div>
                 </div>
@@ -719,7 +719,7 @@
                     window.ventsDataMap = {};
 
                     if (data.length === 0) {
-                        html = `<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No entries found yet.</td></tr>`;
+                        html = `<tr><td colspan="7" class="px-6 py-8 text-center text-gray-600">No entries found yet.</td></tr>`;
                     } else {
                     data.forEach((vent, index) => {
                         window.ventsDataMap[vent.id] = vent;
@@ -745,7 +745,7 @@
 
                         // Status formatting
                         let isResolved = vent.status === 'Resolved';
-                        let statusColor = isResolved ? 'text-[#0B5E2E] bg-[#0B5E2E]/10' : 'text-gray-500 bg-gray-50';
+                        let statusColor = isResolved ? 'text-[#0B5E2E] bg-[#0B5E2E]/10' : 'text-gray-600 bg-gray-50';
                         
                         // Formatting dates with day name for Philippine context
                         const dateObj = parsePHDate(vent.created_at);
@@ -764,7 +764,7 @@
                             </td>
                             <td data-label="Timestamp" class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-semibold text-gray-800">${timeStr}</div>
-                                <div class="text-xs text-gray-500">${dayName}, ${dateStr}</div>
+                                <div class="text-xs text-gray-600">${dayName}, ${dateStr}</div>
                             </td>
                             <td data-label="Student" class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -773,10 +773,10 @@
                                     </div>
                                     <div>
                                         <span class="text-sm font-medium text-gray-900 block">${escapeHtml(vent.name)}</span>
-                                        ${vent.section ? `<span class="text-[11px] text-gray-500 font-bold block mt-0.5">Section: <span class="font-normal text-gray-600">${escapeHtml(vent.section)}</span></span>` : ''}
-                                        ${vent.adviser_name ? `<span class="text-[11px] text-gray-500 font-bold block mb-1">Adviser: <span class="font-normal text-gray-600">${escapeHtml(vent.adviser_name)}</span></span>` : ''}
-                                        ${vent.parent_phone ? `<span class="text-[10px] text-gray-400 block pt-0.5 border-t border-gray-100 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
-                                        ${vent.parent_email ? `<span class="text-[10px] text-gray-400 block">✉️ ${escapeHtml(vent.parent_email)}</span>` : ''}
+                                        ${vent.section ? `<span class="text-[11px] text-gray-600 font-bold block mt-0.5">Section: <span class="font-normal text-gray-600">${escapeHtml(vent.section)}</span></span>` : ''}
+                                        ${vent.adviser_name ? `<span class="text-[11px] text-gray-600 font-bold block mb-1">Adviser: <span class="font-normal text-gray-600">${escapeHtml(vent.adviser_name)}</span></span>` : ''}
+                                        ${vent.parent_phone ? `<span class="text-[10px] text-gray-500 block pt-0.5 border-t border-gray-100 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
+                                        ${vent.parent_email ? `<span class="text-[10px] text-gray-500 block">✉️ ${escapeHtml(vent.parent_email)}</span>` : ''}
                                     </div>
                                 </div>
                             </td>
@@ -830,7 +830,7 @@
                                 </form>
                                 ` : `
                                 <form action="<?= base_url('counselor/vent/delete/') ?>${vent.id}" method="POST" class="block w-full">
-                                    <button type="submit" onclick="return confirm('Archive this vent?');" class="w-full text-xs font-semibold text-gray-500 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-md transition-colors">
+                                    <button type="submit" onclick="return confirm('Archive this vent?');" class="w-full text-xs font-semibold text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-md transition-colors">
                                         Archive
                                     </button>
                                 </form>
@@ -874,7 +874,7 @@
                     window.incidentsDataMap = {};
                     
                     if (data.length === 0) {
-                        html = `<tr><td colspan="8" class="px-6 py-8 text-center text-gray-500">No incident reports available.</td></tr>`;
+                        html = `<tr><td colspan="8" class="px-6 py-8 text-center text-gray-600">No incident reports available.</td></tr>`;
                     } else {
                     data.forEach((incident, index) => {
                         window.incidentsDataMap[incident.id] = incident;
@@ -908,11 +908,11 @@
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center">
                                 <input type="checkbox" name="incident_ids[]" value="${incident.id}" class="incident-checkbox rounded border-gray-300 text-primary h-4 w-4">
                             </td>
-                            <td data-label="Date" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${dateStr}</td>
+                            <td data-label="Date" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${dateStr}</td>
                             <td data-label="Reporter" class="px-6 py-4 whitespace-nowrap">
                                 <span class="text-sm font-medium text-gray-900 block">${escapeHtml(reporterName)}</span>
-                                ${incident.parent_phone ? `<span class="text-xs text-gray-500 block">📞 ${escapeHtml(incident.parent_phone)}</span>` : ''}
-                                ${incident.parent_email ? `<span class="text-xs text-gray-500 block">✉️ ${escapeHtml(incident.parent_email)}</span>` : ''}
+                                ${incident.parent_phone ? `<span class="text-xs text-gray-600 block">📞 ${escapeHtml(incident.parent_phone)}</span>` : ''}
+                                ${incident.parent_email ? `<span class="text-xs text-gray-600 block">✉️ ${escapeHtml(incident.parent_email)}</span>` : ''}
                             </td>
                             <td data-label="Perpetrator" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${escapeHtml(perpetratorName)}</td>
                             <td data-label="Type" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-semibold">${escapeHtml(incident.incident_type)}</td>
@@ -941,7 +941,7 @@
                                         Alerts Sent
                                     </span>
                                     <form action="<?= base_url('counselor/incident/undo/') ?>${incident.id}" method="POST">
-                                        <button type="submit" onclick="return confirm('Undo verification and reset to Pending Review? (Note: alerts already sent cannot be unsent)');" class="w-full text-[10px] font-semibold text-gray-500 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-200 hover:border-orange-200">
+                                        <button type="submit" onclick="return confirm('Undo verification and reset to Pending Review? (Note: alerts already sent cannot be unsent)');" class="w-full text-[10px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
                                             ↩ Undo (Nagkamali?)
                                         </button>
                                     </form>
@@ -951,7 +951,7 @@
                                         No Alerts Sent
                                     </span>
                                     <form action="<?= base_url('counselor/incident/undo/') ?>${incident.id}" method="POST">
-                                        <button type="submit" onclick="return confirm('Undo rejection and reset to Pending Review so you can re-evaluate?');" class="w-full text-[10px] font-semibold text-gray-500 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-200 hover:border-orange-200">
+                                        <button type="submit" onclick="return confirm('Undo rejection and reset to Pending Review so you can re-evaluate?');" class="w-full text-[10px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
                                             ↩ Undo (Nagkamali?)
                                         </button>
                                     </form>
@@ -973,7 +973,7 @@
                                 </form>
                                 ` : `
                                 <form action="<?= base_url('counselor/incident/delete/') ?>${incident.id}" method="POST">
-                                    <button type="submit" onclick="return confirm('Archive this incident report?');" class="w-full text-xs font-semibold text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-colors">
+                                    <button type="submit" onclick="return confirm('Archive this incident report?');" class="w-full text-xs font-semibold text-gray-500 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-colors">
                                         Archive
                                     </button>
                                 </form>
@@ -1015,7 +1015,7 @@
                     window.alertsDataMap = {};
                     
                     if (data.length === 0) {
-                        html = `<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500">No automated alerts have been sent yet.</td></tr>`;
+                        html = `<tr><td colspan="4" class="px-6 py-8 text-center text-gray-600">No automated alerts have been sent yet.</td></tr>`;
                     } else {
                         data.forEach((alert, index) => {
                             window.alertsDataMap[index] = alert;
@@ -1027,7 +1027,7 @@
                             const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
 
                             html += `<tr class="transition-colors duration-200 bg-white hover:bg-gray-50">
-                                <td data-label="Timestamp" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">${dateStr}</td>
+                                <td data-label="Timestamp" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">${dateStr}</td>
                                 <td data-label="Method" class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-md border ${badgeClass}">
                                         ${icon} ${escapeHtml(alert.type)}

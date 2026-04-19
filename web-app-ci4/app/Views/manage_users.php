@@ -103,7 +103,7 @@
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h2 class="text-2xl font-heading font-bold text-gray-900">User Management</h2>
-                <p class="text-gray-500 text-sm mt-1">Manage students, counselors, and administrators</p>
+                <p class="text-gray-600 text-sm mt-1">Manage students, counselors, and administrators</p>
             </div>
             <button onclick="openModal('addModal')" class="bg-primary hover:bg-primary-light text-white font-semibold px-5 py-2.5 rounded-xl shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
@@ -141,7 +141,7 @@
                 </div>
                 <div>
                     <p class="text-2xl font-bold text-gray-900"><?= $totalStudents ?></p>
-                    <p class="text-xs text-gray-500 font-medium">Students</p>
+                    <p class="text-xs text-gray-600 font-medium">Students</p>
                 </div>
             </div>
             <div class="bg-white border border-gray-100 rounded-xl p-5 flex items-center gap-4">
@@ -150,7 +150,7 @@
                 </div>
                 <div>
                     <p class="text-2xl font-bold text-gray-900"><?= $totalCounselors ?></p>
-                    <p class="text-xs text-gray-500 font-medium">Counselors</p>
+                    <p class="text-xs text-gray-600 font-medium">Counselors</p>
                 </div>
             </div>
             <div class="bg-white border border-gray-100 rounded-xl p-5 flex items-center gap-4">
@@ -159,7 +159,7 @@
                 </div>
                 <div>
                     <p class="text-2xl font-bold text-gray-900"><?= $totalAdmins ?></p>
-                    <p class="text-xs text-gray-500 font-medium">Super Admins</p>
+                    <p class="text-xs text-gray-600 font-medium">Super Admins</p>
                 </div>
             </div>
         </div>
@@ -185,9 +185,9 @@
                         <?php foreach ($users as $user): ?>
                         <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
                             <td class="px-6 py-4 font-medium text-gray-900"><?= esc($user['name']) ?></td>
-                            <td class="px-6 py-4 text-gray-500 font-mono text-xs"><?= esc($user['student_id'] ?: '—') ?></td>
-                            <td class="px-6 py-4 text-gray-500 font-medium text-xs"><?= esc($user['section'] ?: '—') ?></td>
-                            <td class="px-6 py-4 text-gray-500 font-medium text-xs"><?= esc($user['adviser_name'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-gray-600 font-mono text-xs"><?= esc($user['student_id'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-gray-600 font-medium text-xs"><?= esc($user['section'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-gray-600 font-medium text-xs"><?= esc($user['adviser_name'] ?: '—') ?></td>
                             <td class="px-6 py-4 text-center">
                                 <?php if ($user['role'] == 0): ?>
                                     <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-100">Student</span>
@@ -197,17 +197,17 @@
                                     <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-gold/10 text-amber-700 border border-gold/30">Super Admin</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="px-6 py-4 text-gray-500 text-xs"><?= esc($user['parent_email'] ?: '—') ?></td>
-                            <td class="px-6 py-4 text-gray-500 text-xs"><?= esc($user['parent_phone'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-gray-600 text-xs"><?= esc($user['parent_email'] ?: '—') ?></td>
+                            <td class="px-6 py-4 text-gray-600 text-xs"><?= esc($user['parent_phone'] ?: '—') ?></td>
                             <td class="px-6 py-4 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    <button onclick='openEditModal(<?= json_encode($user) ?>)' class="p-2 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition-colors" title="Edit">
+                                    <button onclick='openEditModal(<?= json_encode($user) ?>)' class="p-2 rounded-lg hover:bg-blue-50 text-gray-500 hover:text-blue-600 transition-colors" title="Edit">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                     </button>
                                     <?php if ($user['id'] != session()->get('user_id')): ?>
                                     <form action="/admin/users/delete/<?= $user['id'] ?>" method="post" onsubmit="return confirm('Delete user <?= esc($user['name']) ?>? This cannot be undone.');">
                                         <?= csrf_field() ?>
-                                        <button type="submit" class="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors" title="Delete">
+                                        <button type="submit" class="p-2 rounded-lg hover:bg-red-50 text-gray-500 hover:text-red-600 transition-colors" title="Delete">
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                         </button>
                                     </form>
@@ -217,7 +217,7 @@
                         </tr>
                         <?php endforeach; ?>
                         <?php if (empty($users)): ?>
-                        <tr><td colspan="6" class="px-6 py-12 text-center text-gray-400">No users found.</td></tr>
+                        <tr><td colspan="6" class="px-6 py-12 text-center text-gray-500">No users found.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -230,7 +230,7 @@
                     <div class="flex justify-between items-start mb-3">
                         <div class="pr-3">
                             <h4 class="font-bold text-gray-900 border-b border-transparent leading-tight"><?= esc($user['name']) ?></h4>
-                            <span class="text-xs text-gray-400 font-mono inline-block mt-0.5"><?= esc($user['student_id'] ?: 'No ID') ?></span>
+                            <span class="text-xs text-gray-500 font-mono inline-block mt-0.5"><?= esc($user['student_id'] ?: 'No ID') ?></span>
                         </div>
                         <div class="flex-shrink-0">
                             <?php if ($user['role'] == 0): ?>
@@ -245,19 +245,19 @@
                     
                     <div class="grid grid-cols-2 gap-3 mb-4 bg-gray-50/50 p-3 rounded-lg border border-gray-100/50">
                         <div>
-                            <span class="block text-[10px] uppercase font-bold text-gray-400 mb-0.5">Section</span>
+                            <span class="block text-[10px] uppercase font-bold text-gray-500 mb-0.5">Section</span>
                             <span class="text-[12px] text-gray-700 font-medium truncate block"><?= esc($user['section'] ?: '—') ?></span>
                         </div>
                         <div>
-                            <span class="block text-[10px] uppercase font-bold text-gray-400 mb-0.5">Adviser Name</span>
+                            <span class="block text-[10px] uppercase font-bold text-gray-500 mb-0.5">Adviser Name</span>
                             <span class="text-[12px] text-gray-700 font-medium truncate block"><?= esc($user['adviser_name'] ?: '—') ?></span>
                         </div>
                         <div>
-                            <span class="block text-[10px] uppercase font-bold text-gray-400 mb-0.5">Parent Email</span>
+                            <span class="block text-[10px] uppercase font-bold text-gray-500 mb-0.5">Parent Email</span>
                             <span class="text-[12px] text-gray-700 font-medium truncate block"><?= esc($user['parent_email'] ?: '—') ?></span>
                         </div>
                         <div>
-                            <span class="block text-[10px] uppercase font-bold text-gray-400 mb-0.5">Parent Phone</span>
+                            <span class="block text-[10px] uppercase font-bold text-gray-500 mb-0.5">Parent Phone</span>
                             <span class="text-[12px] text-gray-700 font-medium truncate block"><?= esc($user['parent_phone'] ?: '—') ?></span>
                         </div>
                     </div>
@@ -278,7 +278,7 @@
                 </div>
                 <?php endforeach; ?>
                 <?php if (empty($users)): ?>
-                    <div class="px-6 py-12 text-center text-gray-400">No users found.</div>
+                    <div class="px-6 py-12 text-center text-gray-500">No users found.</div>
                 <?php endif; ?>
             </div>
         </div>
@@ -287,7 +287,7 @@
     <!-- Add User Modal -->
     <div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
         <div class="bg-white rounded-2xl p-5 sm:p-8 max-w-lg w-[95%] shadow-2xl relative">
-            <button onclick="closeModal('addModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+            <button onclick="closeModal('addModal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-600">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
             <h3 class="text-xl font-heading font-bold text-gray-900 mb-6">Add New User</h3>
@@ -296,15 +296,15 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
-                        <input type="text" name="name" required class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        <input type="text" name="name" required class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Student ID</label>
-                        <input type="text" name="student_id" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
+                        <input type="text" name="student_id" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Role *</label>
-                        <select name="role" id="addRole" required onchange="toggleAddPassword()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 bg-white">
+                        <select name="role" id="addRole" required onchange="toggleAddPassword()" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 bg-white">
                             <option value="0">Student</option>
                             <option value="1">Counselor</option>
                             <option value="2">Super Admin</option>
@@ -312,24 +312,24 @@
                     </div>
                     <div id="addPassField" class="col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Password <span id="addPassReq">*</span></label>
-                        <input type="password" name="passcode" id="addPassInput" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Enter password">
+                        <input type="password" name="passcode" id="addPassInput" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Enter password">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
-                        <input type="email" name="parent_email" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
+                        <input type="email" name="parent_email" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
-                        <input type="text" name="parent_phone" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
+                        <input type="text" name="parent_phone" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
                     </div>
                     <div class="col-span-2 grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Section <span class="text-red-500">*</span></label>
-                            <input type="text" name="section" id="addSection" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. 10-Rizal">
+                            <input type="text" name="section" id="addSection" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. 10-Rizal">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Adviser Name <span class="text-red-500">*</span></label>
-                            <input type="text" name="adviser_name" id="addAdviser" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. Mr. Juan Dela Cruz">
+                            <input type="text" name="adviser_name" id="addAdviser" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. Mr. Juan Dela Cruz">
                         </div>
                     </div>
                 </div>
@@ -341,7 +341,7 @@
     <!-- Edit User Modal -->
     <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
         <div class="bg-white rounded-2xl p-5 sm:p-8 max-w-lg w-[95%] shadow-2xl relative">
-            <button onclick="closeModal('editModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+            <button onclick="closeModal('editModal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-600">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
             <h3 class="text-xl font-heading font-bold text-gray-900 mb-6">Edit User</h3>
@@ -350,15 +350,15 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
-                        <input type="text" name="name" id="editName" required class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        <input type="text" name="name" id="editName" required class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Student ID</label>
-                        <input type="text" name="student_id" id="editStudentId" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        <input type="text" name="student_id" id="editStudentId" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Role *</label>
-                        <select name="role" id="editRole" required class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 bg-white">
+                        <select name="role" id="editRole" required class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 bg-white">
                             <option value="0">Student</option>
                             <option value="1">Counselor</option>
                             <option value="2">Super Admin</option>
@@ -366,24 +366,24 @@
                     </div>
                     <div class="col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-1">New Password</label>
-                        <input type="password" name="passcode" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Leave blank to keep current">
+                        <input type="password" name="passcode" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Leave blank to keep current">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
-                        <input type="email" name="parent_email" id="editParentEmail" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        <input type="email" name="parent_email" id="editParentEmail" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
-                        <input type="text" name="parent_phone" id="editParentPhone" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        <input type="text" name="parent_phone" id="editParentPhone" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                     </div>
                     <div class="col-span-2 grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Section <span class="text-red-500">*</span></label>
-                            <input type="text" name="section" id="editSection" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                            <input type="text" name="section" id="editSection" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                         </div>
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Adviser Name <span class="text-red-500">*</span></label>
-                            <input type="text" name="adviser_name" id="editAdviser" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                            <input type="text" name="adviser_name" id="editAdviser" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                         </div>
                     </div>
                 </div>

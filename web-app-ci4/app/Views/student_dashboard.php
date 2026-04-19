@@ -79,7 +79,7 @@
             </div>
             <div class="flex flex-col">
                 <span class="font-heading font-extrabold text-white text-[16px] leading-none tracking-wide">StudentShield</span>
-                <span class="text-[10px] text-white/50 font-bold uppercase tracking-widest mt-1">Mental Wellness Portal</span>
+                <span class="text-[10px] text-white/80 font-bold uppercase tracking-widest mt-1">Mental Wellness Portal</span>
             </div>
         </div>
         <a href="<?= base_url('logout') ?>" class="text-[13px] font-bold text-white/60 hover:text-white transition-colors flex items-center gap-2">
