@@ -88,7 +88,8 @@
         document.getElementById('spHistoryFeed').innerHTML = '<div class="text-center py-6 text-gray-400 text-xs font-semibold animate-pulse">Analyzing neural trajectory...</div>';
         document.getElementById('spCriticalBadge').classList.add('hidden');
 
-        fetch(`/counselor/api/student-profile/${userId}`)
+        const PROFILE_API_BASE = "<?= base_url('counselor/api/student-profile') ?>";
+        fetch(`${PROFILE_API_BASE}/${userId}`)
             .then(res => res.json())
             .then(data => {
                 const u = data.user;
