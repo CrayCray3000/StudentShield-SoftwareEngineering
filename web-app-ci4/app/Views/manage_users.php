@@ -229,6 +229,12 @@
                     <svg class="h-5 w-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                     System Directory
                 </h2>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterUsers('all')" id="filter-all" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#166534] text-white">All</button>
+                    <button onclick="filterUsers('0')" id="filter-0" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors">Students</button>
+                    <button onclick="filterUsers('1')" id="filter-1" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Counselors</button>
+                    <button onclick="filterUsers('2')" id="filter-2" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-amber-50 hover:text-amber-700 transition-colors">Admins</button>
+                </div>
             </div>
             <!-- Desktop Table -->
             <div class="hidden md:block overflow-x-auto">
@@ -247,7 +253,7 @@
                     </thead>
                     <tbody>
                         <?php foreach ($users as $user): ?>
-                        <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                        <tr class="user-row border-b border-gray-50 hover:bg-gray-50/50 transition-colors" data-role="<?= $user['role'] ?>">
                             <td class="px-6 py-4 font-medium text-gray-900">
                                 <button onclick="openStudentProfile(<?= $user['id'] ?>)" class="hover:text-[#166534] hover:underline underline-offset-2 transition-colors">
                                     <?= esc($user['name']) ?>
@@ -294,7 +300,7 @@
             <!-- Mobile Card View -->
             <div class="md:hidden flex flex-col divide-y divide-gray-100">
                 <?php foreach ($users as $user): ?>
-                <div class="p-5 hover:bg-gray-50/50 transition-colors">
+                <div class="user-card p-5 hover:bg-gray-50/50 transition-colors" data-role="<?= $user['role'] ?>">
                     <div class="flex justify-between items-start mb-3">
                         <div class="pr-3">
                             <button onclick="openStudentProfile(<?= $user['id'] ?>)" class="font-bold text-gray-900 hover:text-[#166534] hover:underline transition-colors text-left leading-tight"><?= esc($user['name']) ?></button>
@@ -522,6 +528,32 @@
             if (e.target === this) closeModal(this.id);
         });
     });
+
+    // Filtering logic
+    function filterUsers(role) {
+        // Reset button styles
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('bg-[#166534]', 'text-white', 'bg-blue-50', 'text-blue-600', 'bg-emerald-50', 'text-emerald-600', 'bg-amber-50', 'text-amber-700');
+            btn.classList.add('bg-gray-100', 'text-gray-600');
+        });
+
+        // Set active button style
+        const activeBtn = document.getElementById('filter-' + role);
+        activeBtn.classList.remove('bg-gray-100', 'text-gray-600');
+        if (role === 'all') activeBtn.classList.add('bg-[#166534]', 'text-white');
+        else if (role === '0') activeBtn.classList.add('bg-blue-50', 'text-blue-600');
+        else if (role === '1') activeBtn.classList.add('bg-emerald-50', 'text-emerald-600');
+        else if (role === '2') activeBtn.classList.add('bg-amber-50', 'text-amber-700');
+
+        // Filter rows and cards
+        document.querySelectorAll('.user-row, .user-card').forEach(el => {
+            if (role === 'all' || el.getAttribute('data-role') === role) {
+                el.style.display = '';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
 </script>
 
     <?= view('reports/modals/student_profile') ?>
