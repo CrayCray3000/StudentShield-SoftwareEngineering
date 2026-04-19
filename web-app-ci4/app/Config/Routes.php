@@ -28,6 +28,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/counselor/api/vents', 'AdminController::fetchVents');
     $routes->get('/counselor/api/incidents', 'AdminController::fetchIncidents');
     $routes->get('/counselor/api/alerts', 'AdminController::fetchAlertLogs');
+    $routes->get('/counselor/api/student-profile/(:num)', 'AdminController::getStudentProfile/$1');
     
     $routes->post('/counselor/incident/resolve/(:num)', 'AdminController::resolveIncident/$1');
     $routes->post('/counselor/incident/verify/(:num)', 'AdminController::verifyIncident/$1');

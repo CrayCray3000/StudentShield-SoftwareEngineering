@@ -58,7 +58,65 @@
         .glass-header {
             background: #166534; /* Simple solid primary green */
             border-bottom: 3px solid #EAB308; /* Solid gold accent */
-            /* Removed dark, heavy box-shadow */
+        }
+        
+        .dashboard-card {
+            background: #ffffff;
+            border: 1px solid #e5ebe5;
+            border-radius: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); /* Premium distinguished shadow */
+        }
+        
+        .section-header {
+            background: #ffffff;
+            color: #166534;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5ebe5;
+            border-left: 4px solid #166534;
+            border-radius: 14px 14px 0 0;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e5ebe5;
+            border-radius: 12px;
+            padding: 20px 24px;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); /* Premium depth shadow */
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #EAB308, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .stat-card:hover::after { opacity: 1; }
+        .stat-card:hover {
+            border-color: #d4ddd4;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12); /* Lift hover shadow */
+            transform: translateY(-2px);
+        }
+        .stat-card.blue-accent { border-left: 4px solid #3B82F6; }
+        .stat-card.emerald-accent { border-left: 4px solid #10B981; }
+        .stat-card.gold-accent { border-left: 4px solid #F59E0B; }
+        
+        .thead-green {
+            background: #166534;
+            color: white;
+        }
+        .thead-green th {
+            color: rgba(255,255,255,0.92);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            font-size: 0.75rem;
         }
     </style>
 </head>
@@ -134,57 +192,67 @@
                 elseif ($u['role'] == 2) $totalAdmins++;
             }
         ?>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            <div class="bg-white border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 mt-6">
+            <div class="stat-card blue-accent flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
                     <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-gray-900"><?= $totalStudents ?></p>
-                    <p class="text-xs text-gray-600 font-medium">Students</p>
+                    <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider block mb-0.5">Students</span>
+                    <p class="text-2xl font-heading font-bold text-gray-900 leading-none"><?= $totalStudents ?></p>
                 </div>
             </div>
-            <div class="bg-white border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+            <div class="stat-card emerald-accent flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
                     <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-gray-900"><?= $totalCounselors ?></p>
-                    <p class="text-xs text-gray-600 font-medium">Counselors</p>
+                    <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider block mb-0.5">Counselors</span>
+                    <p class="text-2xl font-heading font-bold text-gray-900 leading-none"><?= $totalCounselors ?></p>
                 </div>
             </div>
-            <div class="bg-white border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="stat-card gold-accent flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-[#F59E0B]/10 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-[#F59E0B]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
                 <div>
-                    <p class="text-2xl font-bold text-gray-900"><?= $totalAdmins ?></p>
-                    <p class="text-xs text-gray-600 font-medium">Super Admins</p>
+                    <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider block mb-0.5">Super Admins</span>
+                    <p class="text-2xl font-heading font-bold text-gray-900 leading-none"><?= $totalAdmins ?></p>
                 </div>
             </div>
         </div>
 
         <!-- Users List -->
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+        <div class="dashboard-card overflow-hidden mt-8">
+            <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
+                <h2 class="text-lg font-bold flex items-center gap-3">
+                    <svg class="h-5 w-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    System Directory
+                </h2>
+            </div>
             <!-- Desktop Table -->
             <div class="hidden md:block overflow-x-auto">
-                <table class="w-full text-sm">
+                <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-gray-50 border-b border-gray-100">
-                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Name</th>
-                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Student ID</th>
-                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Section</th>
-                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Adviser Name</th>
-                            <th class="text-center px-6 py-4 font-semibold text-gray-600">Role</th>
-                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Parent Email</th>
-                            <th class="text-left px-6 py-4 font-semibold text-gray-600">Parent Phone</th>
-                            <th class="text-center px-6 py-4 font-semibold text-gray-600">Actions</th>
+                        <tr class="thead-green text-xs uppercase tracking-wider">
+                            <th class="px-6 py-4 border-b border-gray-200">Name</th>
+                            <th class="px-6 py-4 border-b border-gray-200">Student ID</th>
+                            <th class="px-6 py-4 border-b border-gray-200">Section</th>
+                            <th class="px-6 py-4 border-b border-gray-200">Adviser Name</th>
+                            <th class="text-center px-6 py-4 border-b border-gray-200">Role</th>
+                            <th class="px-6 py-4 border-b border-gray-200">Parent Email</th>
+                            <th class="px-6 py-4 border-b border-gray-200">Parent Phone</th>
+                            <th class="text-center px-6 py-4 border-b border-gray-200">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($users as $user): ?>
                         <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                            <td class="px-6 py-4 font-medium text-gray-900"><?= esc($user['name']) ?></td>
+                            <td class="px-6 py-4 font-medium text-gray-900">
+                                <button onclick="openStudentProfile(<?= $user['id'] ?>)" class="hover:text-[#166534] hover:underline underline-offset-2 transition-colors">
+                                    <?= esc($user['name']) ?>
+                                </button>
+                            </td>
                             <td class="px-6 py-4 text-gray-600 font-mono text-xs"><?= esc($user['student_id'] ?: '—') ?></td>
                             <td class="px-6 py-4 text-gray-600 font-medium text-xs"><?= esc($user['section'] ?: '—') ?></td>
                             <td class="px-6 py-4 text-gray-600 font-medium text-xs"><?= esc($user['adviser_name'] ?: '—') ?></td>
@@ -229,7 +297,7 @@
                 <div class="p-5 hover:bg-gray-50/50 transition-colors">
                     <div class="flex justify-between items-start mb-3">
                         <div class="pr-3">
-                            <h4 class="font-bold text-gray-900 border-b border-transparent leading-tight"><?= esc($user['name']) ?></h4>
+                            <button onclick="openStudentProfile(<?= $user['id'] ?>)" class="font-bold text-gray-900 hover:text-[#166534] hover:underline transition-colors text-left leading-tight"><?= esc($user['name']) ?></button>
                             <span class="text-xs text-gray-500 font-mono inline-block mt-0.5"><?= esc($user['student_id'] ?: 'No ID') ?></span>
                         </div>
                         <div class="flex-shrink-0">
@@ -455,6 +523,8 @@
         });
     });
 </script>
+
+    <?= view('reports/modals/student_profile') ?>
 </body>
 </html>
 

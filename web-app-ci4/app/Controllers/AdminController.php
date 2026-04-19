@@ -413,4 +413,72 @@ class AdminController extends BaseController
 
         return $this->response->setJSON($logs);
     }
+    public function getStudentProfile()
+    {
+        if (!session()->get('isLoggedIn') || !in_array((int)session()->get('role'), [1, 2])) {
+            return ->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
+        }
+
+         = \Config\Database::connect();
+        
+        // 1. Fetch User Data
+         = ->table('users')->where('id', )->get()->getRowArray();
+        if (!) {
+            return ->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
+        }
+
+        // Remove sensitive info
+        unset(['passcode']);
+        
+        // 2. Fetch Vents (FAISS tracking data)
+         = ->table('vent_logs')
+            ->where('user_id', )
+            ->where('deleted_at IS NULL')
+            ->orderBy('created_at', 'ASC') // ASC for chart rendering over time
+            ->limit(30)
+            ->get()->getResultArray();
+            
+         = \Config\Services::encrypter();
+         = [];
+        foreach ( as &) {
+            try {
+                if (ctype_xdigit(['raw_text'])) {
+                    ['raw_text'] = ->decrypt(hex2bin(['raw_text']));
+                }
+            } catch (\Exception ) {}
+            
+            // Format for ApexCharts
+            if (['ml_risk_level'] === 'Critical')  = 90;
+            elseif (['ml_risk_level'] === 'High')  = 75;
+            elseif (['ml_risk_level'] === 'Medium')  = 50;
+            else  = 20; // Low
+
+            [] = [
+                'x' => date('M d', strtotime(['created_at'])),
+                'y' => ,
+                'sentiment' => ['ml_sentiment_score']
+            ];
+        }
+
+        // 3. Fetch Invovled Incidents
+         = ->table('bully_reports')
+            ->select('id, incident_type, status, created_at, reporter_student_id, victim_student_id, bully_student_id')
+            ->where('deleted_at IS NULL')
+            ->groupStart()
+                ->where('reporter_student_id', )
+                ->orWhere('victim_student_id', )
+                ->orWhere('bully_student_id', )
+            ->groupEnd()
+            ->orderBy('created_at', 'DESC')
+            ->limit(15)
+            ->get()->getResultArray();
+
+        return ->response->setJSON([
+            'user' => ,
+            'timeline' => ,
+            'vents' => array_reverse(), // DESC for reading feed
+            'incidents' => 
+        ]);
+    }
 }
+

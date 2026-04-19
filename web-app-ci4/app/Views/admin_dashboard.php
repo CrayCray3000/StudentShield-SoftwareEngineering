@@ -1176,6 +1176,8 @@
             setInterval(updateClock, 1000);
         });
     </script>
+
+    <?= view('reports/modals/student_profile') ?>
 </body>
 </html>
 
