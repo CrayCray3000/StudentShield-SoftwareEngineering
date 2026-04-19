@@ -56,18 +56,16 @@
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .split-layout { display: grid; grid-template-columns: 420px 1fr; min-height: 100vh; }
+        @media (max-width: 1366px) { .split-layout { grid-template-columns: 360px 1fr; } }
         @media (max-width: 1024px) { .split-layout { grid-template-columns: 1fr; } }
         @media (min-width: 1400px) { .split-layout { grid-template-columns: 480px 1fr; } }
 
         /* Left Panel — Calming therapeutic feel */
         .brand-panel {
-            background: linear-gradient(170deg, #14532d 0%, #166534 30%, #15803d 60%, #16a34a 100%);
-            position: relative; overflow: hidden;
-        }
-        .bg-ambient {
-            background: linear-gradient(-45deg, #F0F7F4, #FFFCE8, #E8F5E9, #f4fcf6);
+            background: linear-gradient(-45deg, #14532d, #064e3b, #15803d, #14532d);
             background-size: 400% 400%;
             animation: gradientBG 20s ease infinite;
+            position: relative; overflow: hidden;
         }
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
@@ -176,7 +174,7 @@
     <div class="w-full h-full min-h-screen flex flex-col lg:flex-row relative z-10 bg-white">
 
         <!-- ===== LEFT — Calming Branding Panel (Expanded) ===== -->
-        <div class="brand-panel hidden lg:flex w-full lg:w-[480px] xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 py-8 lg:py-12 relative bg-primary-dark bg-gradient-to-br from-primary-dark via-primary-darker to-primary-darkest">
+        <div class="brand-panel hidden lg:flex w-full lg:w-full lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 py-8 lg:py-12 relative">
 
             <!-- Breathing circle — calming ambient element -->
             <div class="breath-circle absolute w-[280px] h-[280px] rounded-full bg-gold/10 top-[20%] right-[-60px] pointer-events-none"></div>
@@ -404,6 +402,13 @@
                         <svg id="btnIcon" class="h-5 w-5 text-gold/80 group-hover:-translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" /></svg>
                         <svg id="btnSpinner" class="animate-spin h-5 w-5 text-white hidden" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     </button>
+                    
+                    <!-- Save as Draft -->
+                    <button type="button" id="saveDraftBtn" class="group flex items-center justify-center gap-2 w-full text-center py-2 text-[12px] font-semibold text-calm-600 hover:text-calm-800 transition-colors bg-transparent border-0 cursor-pointer">
+                        <svg class="w-4 h-4 text-calm-500 group-hover:text-calm-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                        <span id="saveDraftText">Save as Draft to continue later</span>
+                    </button>
+
                 </form>
 
                 <!-- Footer -->
@@ -441,6 +446,56 @@
     </div>
 
     <script>
+        // --- Save As Draft LocalStorage Implementation ---
+        const DRAFT_KEY = 'studentshield_bullying_report_draft';
+        
+        function loadDraft() {
+            const draft = localStorage.getItem(DRAFT_KEY);
+            if (draft) {
+                try {
+                    const data = JSON.parse(draft);
+                    if (data.role) {
+                        const btn = document.querySelector(`.role-btn[data-role="${data.role}"]`);
+                        if (btn) btn.click();
+                    }
+                    if (data.victimName) document.getElementById('victim_name').value = data.victimName;
+                    if (data.aggressorName) document.getElementById('aggressor_name').value = data.aggressorName;
+                    if (data.incidentDetails) {
+                        const ta = document.getElementById('incident_details');
+                        ta.value = data.incidentDetails;
+                        // Trigger input event to update char counter
+                        ta.dispatchEvent(new Event('input'));
+                    }
+                    console.log('Draft loaded successfully');
+                } catch (e) {
+                    console.error('Failed to parse draft', e);
+                }
+            }
+        }
+
+        document.getElementById('saveDraftBtn').addEventListener('click', function() {
+            const data = {
+                role: document.getElementById('roleInput').value,
+                victimName: document.getElementById('victim_name').value,
+                aggressorName: document.getElementById('aggressor_name').value,
+                incidentDetails: document.getElementById('incident_details').value
+            };
+            localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+            
+            const btnText = document.getElementById('saveDraftText');
+            const originalText = btnText.innerText;
+            btnText.innerText = 'Draft Saved Securely! ✓';
+            btnText.classList.add('text-emerald-600');
+            
+            setTimeout(() => {
+                btnText.innerText = originalText;
+                btnText.classList.remove('text-emerald-600');
+            }, 3000);
+        });
+
+        // Load draft on page load
+        document.addEventListener('DOMContentLoaded', loadDraft);
+
         // Role Toggle Logic
         document.querySelectorAll('.role-btn').forEach(btn => {
             btn.addEventListener('click', function() {
