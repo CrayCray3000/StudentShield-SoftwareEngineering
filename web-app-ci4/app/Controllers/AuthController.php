@@ -60,7 +60,13 @@ class AuthController extends BaseController
                     'remember_token' => password_hash($token, PASSWORD_BCRYPT)
                 ]);
                 $cookieValue = base64_encode($user['id'] . ':' . $token);
-                setcookie('student_remember', $cookieValue, time() + (86400 * 30), '/'); // 30 days
+                setcookie('student_remember', $cookieValue, [
+                    'expires' => time() + (86400 * 30),
+                    'path' => '/',
+                    'secure' => true,
+                    'httponly' => true,
+                    'samesite' => 'Strict'
+                ]);
             }
 
             session()->regenerate();
@@ -230,7 +236,13 @@ class AuthController extends BaseController
                     'remember_token' => password_hash($token, PASSWORD_BCRYPT)
                 ]);
                 $cookieValue = base64_encode(session()->get('temp_user_id') . ':' . $token);
-                setcookie('admin_trusted_device', $cookieValue, time() + (86400 * 30), '/'); // 30 days
+                setcookie('admin_trusted_device', $cookieValue, [
+                    'expires' => time() + (86400 * 30),
+                    'path' => '/',
+                    'secure' => true,
+                    'httponly' => true,
+                    'samesite' => 'Strict'
+                ]);
             }
 
             session()->regenerate();

@@ -39,7 +39,7 @@ class BullyReportController extends BaseController
         if ($reporterType === 'self') {
             $victimStudentId = $userId;
         } else if (!empty($victimName)) {
-            $vUsers = $db->table('users')->like('name', $victimName)->get()->getResult();
+            $vUsers = $db->table('users')->where('name', $victimName)->get()->getResult();
             // ONLY associate if there is exactly 1 match to prevent wrong-parent notification panics.
             if (count($vUsers) === 1) $victimStudentId = $vUsers[0]->id;
         }

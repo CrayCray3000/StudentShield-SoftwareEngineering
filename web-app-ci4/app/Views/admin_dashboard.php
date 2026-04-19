@@ -353,6 +353,7 @@
             
             <!-- Table Container -->
             <form action="<?= base_url('counselor/vent/delete-multiple') ?>" method="POST" id="bulkDeleteVentsForm" class="overflow-x-auto custom-scrollbar flex flex-col">
+                <?= csrf_field() ?>
                 <div class="px-6 py-2 flex justify-end bg-white">
                     <button type="submit" onclick="return confirm('Archive selected vents?');" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents hidden">
                         📦 Archive Selected
@@ -404,6 +405,7 @@
             </div>
             
             <form action="<?= base_url('counselor/incident/delete-multiple') ?>" method="POST" id="bulkDeleteIncidentsForm" class="overflow-x-auto custom-scrollbar flex flex-col">
+                <?= csrf_field() ?>
                 <div class="px-6 py-2 flex justify-end bg-white">
                     <button type="submit" onclick="return confirm('Archive selected incident reports?');" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents hidden">
                         📦 Archive Selected
@@ -1149,10 +1151,10 @@
             fetchLiveIncidents();
             fetchAlertLogs();
             
-            // Poll every 5 seconds for a snappy, real-time presentation feel
-            setInterval(fetchLiveVents, 5000);
-            setInterval(fetchLiveIncidents, 5000);
-            setInterval(fetchAlertLogs, 10000);
+            // Poll every 30 seconds for a snappy, real-time presentation feel while reducing server load
+            setInterval(fetchLiveVents, 30000);
+            setInterval(fetchLiveIncidents, 30000);
+            setInterval(fetchAlertLogs, 30000);
 
             // Live Philippine Clock — seeded from server (Manila timezone guaranteed)
             const serverTimestamp = <?= (time() + 28800) * 1000 ?>; // +8 hours for Manila time (PHT) in ms

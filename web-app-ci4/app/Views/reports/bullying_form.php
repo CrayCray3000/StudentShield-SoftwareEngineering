@@ -215,6 +215,7 @@
         <!-- Glass Form Card -->
         <div class="glass-panel p-5 sm:p-10 lg:p-12 anim-fade-up" style="animation-delay: 0.2s;">
             <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="bullyingForm" class="space-y-6 sm:space-y-8 lg:space-y-10">
+                <?= csrf_field() ?>
                 
                 <!-- Reporter Type -->
                 <div class="space-y-3 sm:space-y-4">

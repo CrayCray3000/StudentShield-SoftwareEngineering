@@ -76,14 +76,14 @@ class AdminController extends BaseController
             }
             
             $vents = $query->orderBy('created_at', 'DESC')
-                ->limit(50)
+                ->limit(500)
                 ->get()->getResultArray();
         } catch (\Exception $e) {
             $vents = $db->table('vent_logs')
                 ->select('vent_logs.*, users.name, users.student_id, users.parent_phone, users.parent_email, users.section, users.adviser_name')
                 ->join('users', 'users.id = vent_logs.user_id', 'left')
                 ->orderBy('created_at', 'DESC')
-                ->limit(50)
+                ->limit(500)
                 ->get()->getResultArray();
         }
             
@@ -176,14 +176,14 @@ class AdminController extends BaseController
             }
             
             $incidents = $query->orderBy('created_at', 'DESC')
-                ->limit(50)
+                ->limit(500)
                 ->get()->getResultArray();
         } catch (\Exception $e) {
             $incidents = $db->table('bully_reports')
                 ->select('bully_reports.*, bully_reports.incident_details as description, bully_reports.reporter_student_id as reporter_id, users.name, users.parent_phone, users.parent_email')
                 ->join('users', 'users.id = bully_reports.reporter_student_id', 'left')
                 ->orderBy('created_at', 'DESC')
-                ->limit(50)
+                ->limit(500)
                 ->get()->getResultArray();
         }
             

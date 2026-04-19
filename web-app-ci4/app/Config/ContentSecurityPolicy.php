@@ -59,7 +59,14 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $scriptSrc = 'self';
+    public array|string $scriptSrc = [
+        'self',
+        'https://cdn.tailwindcss.com',
+        'https://cdnjs.cloudflare.com',
+        'https://code.jquery.com',
+        'https://cdn.jsdelivr.net',
+        'https://unpkg.com'
+    ];
 
     /**
      * Specifies valid sources for JavaScript <script> elements.
@@ -81,7 +88,13 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $styleSrc = 'self';
+    public array|string $styleSrc = [
+        'self',
+        'https://fonts.googleapis.com',
+        'https://cdnjs.cloudflare.com',
+        'https://cdn.jsdelivr.net',
+        "'unsafe-inline'" // Needed for Tailwind config in <script> and style tags
+    ];
 
     /**
      * Specifies valid sources for stylesheets <link> elements.
@@ -103,7 +116,10 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $imageSrc = 'self';
+    public array|string $imageSrc = [
+        'self',
+        'data:' // Needed for inline SVGs/logos
+    ];
 
     /**
      * Restricts the URLs that can appear in a page's `<base>` element.
@@ -134,7 +150,12 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $fontSrc;
+    public array|string $fontSrc = [
+        'self',
+        'https://fonts.gstatic.com',
+        'https://cdnjs.cloudflare.com',
+        'data:' // Some FontAwesome versions use data URIs
+    ];
 
     /**
      * Lists valid endpoints for submission from `<form>` tags.
