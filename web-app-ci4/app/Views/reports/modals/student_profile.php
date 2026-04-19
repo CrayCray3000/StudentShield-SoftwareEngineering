@@ -90,7 +90,12 @@
 
         const PROFILE_API_BASE = "<?= base_url('counselor/api/student-profile') ?>";
         fetch(`${PROFILE_API_BASE}/${userId}`)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    return res.text().then(txt => { throw new Error('HTTP ' + res.status + ': ' + txt.substring(0, 200)); });
+                }
+                return res.json();
+            })
             .then(data => {
                 const u = data.user;
                 document.getElementById('spName').innerText = u.name;
@@ -122,8 +127,8 @@
                 renderHistoryFeed(data.vents, data.incidents);
             })
             .catch(err => {
-                console.error(err);
-                document.getElementById('spHistoryFeed').innerHTML = '<div class="text-center py-6 text-red-500 text-xs">Error loading student profile data.</div>';
+                console.error('Profile API Error:', err);
+                document.getElementById('spHistoryFeed').innerHTML = '<div class="text-center py-6 text-red-500 text-xs font-mono break-all px-4">' + err.message + '</div>';
             });
     }
 
