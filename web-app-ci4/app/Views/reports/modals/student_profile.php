@@ -294,7 +294,7 @@
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200">Incident Associated</span>
                             <span class="text-xs text-gray-500 font-medium">${dateStr}</span>
                         </div>
-                        <p class="text-sm font-semibold text-gray-800 mb-1">Type: ${i.incident_type}</p>
+                        <p class="text-sm font-semibold text-gray-800 mb-1">Bullying Report</p>
                         <p class="text-xs text-gray-600">This student was marked as involved in this reported incident.</p>
                         <div class="mt-3 flex justify-end">
                             <span class="text-[10px] uppercase font-bold tracking-wider text-blue-600">ID: #${i.id} - ${i.status.replace('_', ' ')}</span>

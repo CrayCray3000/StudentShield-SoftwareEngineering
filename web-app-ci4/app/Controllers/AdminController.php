@@ -464,8 +464,7 @@ class AdminController extends BaseController
 
         // 3. Fetch Involved Incidents
         $incidents = $db->table('bully_reports')
-            ->select('id, incident_type, status, created_at, reporter_student_id, victim_student_id, bully_student_id')
-            ->where('deleted_at IS NULL')
+            ->select('id, status, created_at, reporter_student_id, victim_student_id, bully_student_id')
             ->groupStart()
                 ->where('reporter_student_id', $id)
                 ->orWhere('victim_student_id', $id)
