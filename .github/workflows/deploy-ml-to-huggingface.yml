@@ -22,4 +22,4 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           # The new HF CLI replaces the deprecated huggingface-cli
-          hf upload ashlogg/student-shield-official ./ml_service . --repo-type space --token $HF_TOKEN
+          hf upload ashlogg/student_shield_official ./ml_service . --repo-type space --token $HF_TOKEN
