@@ -61,7 +61,9 @@
 
         /* Left Panel — Calming therapeutic feel */
         .brand-panel {
-            background: linear-gradient(170deg, #14532d 0%, #166534 30%, #15803d 60%, #16a34a 100%);
+            background: linear-gradient(-45deg, #14532d, #064e3b, #15803d, #14532d);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
             position: relative; overflow: hidden;
         }
         .bg-ambient {
@@ -176,7 +178,7 @@
     <div class="w-full h-full min-h-screen flex flex-col lg:flex-row relative z-10 bg-white">
 
         <!-- ===== LEFT — Calming Branding Panel (Expanded) ===== -->
-        <div class="brand-panel hidden lg:flex w-full lg:w-[480px] xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 py-8 lg:py-12 relative bg-primary-dark bg-gradient-to-br from-primary-dark via-primary-darker to-primary-darkest">
+        <div class="brand-panel hidden lg:flex w-full lg:w-[420px] 2xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 py-8 lg:py-12 relative">
 
             <!-- Breathing circle — calming ambient element -->
             <div class="breath-circle absolute w-[280px] h-[280px] rounded-full bg-gold/10 top-[20%] right-[-60px] pointer-events-none"></div>
