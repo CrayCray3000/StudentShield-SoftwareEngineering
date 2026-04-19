@@ -191,7 +191,7 @@
                     </div>
                     <div>
                         <h1 class="text-white font-heading font-bold text-lg tracking-tight">StudentShield</h1>
-                        <p class="text-white/35 text-[10px] font-semibold tracking-[0.2em] uppercase">Mental Wellness Portal</p>
+                        <p class="text-white/70 text-[10px] font-semibold tracking-[0.2em] uppercase">Mental Wellness Portal</p>
                     </div>
                 </div>
 
@@ -200,7 +200,7 @@
                     <h2 class="text-white font-heading font-extrabold text-[2.2rem] sm:text-[2.6rem] xl:text-[3.2rem] leading-[1.08] tracking-tight">
                         It's okay to<br>not be okay.
                     </h2>
-                    <p class="text-white/50 text-[14px] sm:text-[15px] leading-relaxed max-w-sm">
+                    <p class="text-white/80 text-[14px] sm:text-[15px] leading-relaxed max-w-sm">
                         Your feelings are valid. This is a judgment-free space where you can express yourself freely and get the support you need.
                     </p>
                 </div>
@@ -214,7 +214,7 @@
                     </div>
                     <div>
                         <h3 class="text-white/90 font-medium text-[13px]">End-to-End Encrypted</h3>
-                        <p class="text-white/30 text-[11px] mt-0.5">Your entries are encrypted and secure.</p>
+                        <p class="text-white/60 text-[11px] mt-0.5">Your entries are encrypted and secure.</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3.5 group">
@@ -223,7 +223,7 @@
                     </div>
                     <div>
                         <h3 class="text-white/90 font-medium text-[13px]">Confidential & Private</h3>
-                        <p class="text-white/30 text-[11px] mt-0.5">Stored securely for counselor review.</p>
+                        <p class="text-white/60 text-[11px] mt-0.5">Stored securely for counselor review.</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3.5 group">
@@ -232,7 +232,7 @@
                     </div>
                     <div>
                         <h3 class="text-white/90 font-medium text-[13px]">Professional Counselor Support</h3>
-                        <p class="text-white/30 text-[11px] mt-0.5">Our trained counselors are ready to help.</p>
+                        <p class="text-white/60 text-[11px] mt-0.5">Our trained counselors are ready to help.</p>
                     </div>
                 </div>
             </div>
@@ -240,13 +240,13 @@
             <!-- Bottom — Helpline + Footer -->
             <div class="relative z-10 space-y-5 anim-3">
                 <div class="helpline-card rounded-xl p-4">
-                    <p class="text-white/50 text-[11px] font-semibold uppercase tracking-wider mb-1.5">Crisis Helpline</p>
+                    <p class="text-white/80 text-[11px] font-semibold uppercase tracking-wider mb-1.5">Crisis Helpline</p>
                     <p class="text-white/80 text-sm font-medium">National Mental Health Crisis Hotline</p>
                     <p class="text-gold text-lg font-heading font-bold mt-1">0917-899-USAP (8727)</p>
                 </div>
                 <div class="border-t border-white/8 pt-4 flex items-center justify-between">
-                    <p class="text-white/25 text-[11px]">© 2026 StudentShield · SVBSM</p>
-                    <div class="flex items-center gap-1.5 text-white/25 text-[11px]">
+                    <p class="text-white/60 text-[11px]">© 2026 StudentShield · SVBSM</p>
+                    <div class="flex items-center gap-1.5 text-white/60 text-[11px]">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         Protected
                     </div>
@@ -310,7 +310,7 @@
                             <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
                             Report Incident
                         </a>
-                        <a href="/logout" class="text-xs font-medium text-gray-400 hover:text-primary px-3 py-2.5 rounded-xl hover:bg-primary/5 transition-colors flex items-center gap-1.5">
+                        <a href="/logout" class="text-xs font-medium text-gray-500 hover:text-primary px-3 py-2.5 rounded-xl hover:bg-primary/5 transition-colors flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                             Sign Out
                         </a>
@@ -331,7 +331,7 @@
                         <span class="text-[11px] font-semibold text-emerald-600 tracking-wide uppercase">Safe Space Active</span>
                     </div>
                     <h2 class="text-2xl font-heading font-extrabold text-gray-900">How are you feeling?</h2>
-                    <p class="text-gray-400 mt-1 text-sm">Take your time. There are no wrong answers.</p>
+                    <p class="text-gray-500 mt-1 text-sm">Take your time. There are no wrong answers.</p>
                 </div>
 
                 <!-- Flash Messages -->
@@ -369,19 +369,19 @@
                     <!-- Mood Quick-Select -->
                     <div>
                         <p class="text-xs font-semibold text-gray-500 mb-2.5 flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             What best describes how you feel right now? (Select all that apply)
                         </p>
                         <input type="hidden" name="emotions" id="emotionsInput" value="">
                         <div class="flex flex-wrap gap-2.5" id="moodSelect">
-                            <button type="button" data-mood="Sad" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-200 bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😔 Sad</button>
-                            <button type="button" data-mood="Angry" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-200 bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😠 Angry</button>
-                            <button type="button" data-mood="Anxious" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-200 bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😰 Anxious</button>
-                            <button type="button" data-mood="Lonely" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-200 bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😞 Lonely</button>
-                            <button type="button" data-mood="Overwhelmed" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-200 bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😵 Overwhelmed</button>
-                            <button type="button" data-mood="Hurt" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-200 bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">🤕 Hurt</button>
-                            <button type="button" data-mood="Numb" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-200 bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😶 Numb</button>
-                            <button type="button" data-mood="Scared" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-200 bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😨 Scared</button>
+                            <button type="button" data-mood="Sad" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😔 Sad</button>
+                            <button type="button" data-mood="Angry" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😠 Angry</button>
+                            <button type="button" data-mood="Anxious" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😰 Anxious</button>
+                            <button type="button" data-mood="Lonely" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😞 Lonely</button>
+                            <button type="button" data-mood="Overwhelmed" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😵 Overwhelmed</button>
+                            <button type="button" data-mood="Hurt" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">🤕 Hurt</button>
+                            <button type="button" data-mood="Numb" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😶 Numb</button>
+                            <button type="button" data-mood="Scared" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😨 Scared</button>
                         </div>
                     </div>
 
@@ -423,7 +423,7 @@
                 </form>
 
                 <!-- Footer -->
-                <div class="mt-4 flex items-center justify-center gap-4 text-[11px] text-gray-400">
+                <div class="mt-4 flex items-center justify-center gap-4 text-[11px] text-gray-500">
                     <span class="flex items-center gap-1">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         Protected by StudentShield

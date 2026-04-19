@@ -189,7 +189,7 @@
                     </div>
                     <div>
                         <h1 class="text-white font-heading font-bold text-lg tracking-tight">StudentShield</h1>
-                        <p class="text-white/35 text-[10px] font-semibold tracking-[0.2em] uppercase">Incident Report Portal</p>
+                        <p class="text-white/70 text-[10px] font-semibold tracking-[0.2em] uppercase">Incident Report Portal</p>
                     </div>
                 </div>
 
@@ -198,7 +198,7 @@
                     <h2 class="text-white font-heading font-extrabold text-[2.2rem] sm:text-[2.6rem] xl:text-[3.2rem] leading-[1.08] tracking-tight">
                         Stand Up,<br>Speak Out.
                     </h2>
-                    <p class="text-white/50 text-[14px] sm:text-[15px] leading-relaxed max-w-sm">
+                    <p class="text-white/80 text-[14px] sm:text-[15px] leading-relaxed max-w-sm">
                         This is a safe, completely confidential space to report an incident. Our counseling team is here to protect and support you.
                     </p>
                 </div>
@@ -212,7 +212,7 @@
                     </div>
                     <div>
                         <h3 class="text-white/90 font-medium text-[13px]">End-to-End Encrypted</h3>
-                        <p class="text-white/30 text-[11px] mt-0.5">Your entries are encrypted and secure.</p>
+                        <p class="text-white/60 text-[11px] mt-0.5">Your entries are encrypted and secure.</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3.5 group">
@@ -221,7 +221,7 @@
                     </div>
                     <div>
                         <h3 class="text-white/90 font-medium text-[13px]">Confidential & Private</h3>
-                        <p class="text-white/30 text-[11px] mt-0.5">Stored securely for counselor review.</p>
+                        <p class="text-white/60 text-[11px] mt-0.5">Stored securely for counselor review.</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3.5 group">
@@ -230,7 +230,7 @@
                     </div>
                     <div>
                         <h3 class="text-white/90 font-medium text-[13px]">Professional Counselor Support</h3>
-                        <p class="text-white/30 text-[11px] mt-0.5">Our trained counselors are ready to help.</p>
+                        <p class="text-white/60 text-[11px] mt-0.5">Our trained counselors are ready to help.</p>
                     </div>
                 </div>
             </div>
@@ -238,13 +238,13 @@
             <!-- Bottom — Helpline + Footer -->
             <div class="relative z-10 space-y-5 anim-3">
                 <div class="helpline-card rounded-xl p-4">
-                    <p class="text-white/50 text-[11px] font-semibold uppercase tracking-wider mb-1.5">Crisis Helpline</p>
+                    <p class="text-white/80 text-[11px] font-semibold uppercase tracking-wider mb-1.5">Crisis Helpline</p>
                     <p class="text-white/80 text-sm font-medium">National Mental Health Crisis Hotline</p>
                     <p class="text-gold text-lg font-heading font-bold mt-1">0917-899-USAP (8727)</p>
                 </div>
                 <div class="border-t border-white/8 pt-4 flex items-center justify-between">
-                    <p class="text-white/25 text-[11px]">© 2026 StudentShield · SVBSM</p>
-                    <div class="flex items-center gap-1.5 text-white/25 text-[11px]">
+                    <p class="text-white/60 text-[11px]">© 2026 StudentShield · SVBSM</p>
+                    <div class="flex items-center gap-1.5 text-white/60 text-[11px]">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         Protected
                     </div>
@@ -308,7 +308,7 @@
                             <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                             Safe Space
                         </a>
-                        <a href="/logout" class="text-xs font-medium text-gray-400 hover:text-primary px-3 py-2.5 rounded-xl hover:bg-primary/5 transition-colors flex items-center gap-1.5">
+                        <a href="/logout" class="text-xs font-medium text-gray-500 hover:text-primary px-3 py-2.5 rounded-xl hover:bg-primary/5 transition-colors flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                             Sign Out
                         </a>
@@ -329,7 +329,7 @@
                         <span class="text-[11px] font-semibold text-amber-600 tracking-wide uppercase">Secure Reporting</span>
                     </div>
                     <h2 class="text-2xl font-heading font-extrabold text-gray-900">Report an Incident</h2>
-                    <p class="text-gray-400 mt-1 text-sm">Your report is strictly confidential.</p>
+                    <p class="text-gray-500 mt-1 text-sm">Your report is strictly confidential.</p>
                 </div>
 
                 <!-- Flash Messages -->
@@ -356,14 +356,14 @@
                         
                         <!-- Role Toggle -->
                         <div>
-                            <p class="text-xs font-semibold text-gray-700 mb-2.5">I am reporting as a:</p>
+                            <p class="text-xs font-semibold text-gray-800 mb-2.5">I am reporting as a:</p>
                             <input type="hidden" name="reporter_type" id="roleInput" value="self">
                             <div class="flex gap-2">
                                 <button type="button" data-role="self" class="role-btn active px-4 py-2.5 rounded-xl border border-calm-300 bg-calm-50 text-[13px] font-bold text-calm-700 transition-all shadow-[0_2px_10px_rgba(74,155,110,0.12)] flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                                     I am the victim
                                 </button>
-                                <button type="button" data-role="bystander" class="role-btn px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-[13px] font-semibold text-gray-500 transition-all hover:bg-gray-50 flex items-center gap-2">
+                                <button type="button" data-role="bystander" class="role-btn px-4 py-2.5 rounded-xl border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white text-[13px] font-semibold text-gray-500 transition-all hover:bg-gray-50 flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     I am a bystander
                                 </button>
@@ -373,22 +373,22 @@
                         <!-- Who is involved? -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div id="victimNameBox" class="hidden" style="display:none;">
-                                <label class="block text-xs font-semibold text-gray-700 mb-2">Who is being bullied? <span class="text-red-400">*</span></label>
-                                <input type="text" id="victim_name" name="victim_name" class="w-full bg-white/80 border border-gray-200 rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Full name of the victim">
+                                <label class="block text-xs font-semibold text-gray-800 mb-2">Who is being bullied? <span class="text-red-400">*</span></label>
+                                <input type="text" id="victim_name" name="victim_name" class="w-full bg-white/80 border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Full name of the victim">
                             </div>
                             <div id="aggressorNameBox" class="md:col-span-2">
-                                <label class="block text-xs font-semibold text-gray-700 mb-2">Who is the aggressor? <span class="text-red-400">*</span></label>
-                                <input type="text" id="aggressor_name" name="bully_name" required class="w-full bg-white/80 border border-gray-200 rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Full name of the aggressor">
+                                <label class="block text-xs font-semibold text-gray-800 mb-2">Who is the aggressor? <span class="text-red-400">*</span></label>
+                                <input type="text" id="aggressor_name" name="bully_name" required class="w-full bg-white/80 border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Full name of the aggressor">
                             </div>
                         </div>
 
                         <!-- Incident Details -->
                         <div class="flex flex-col flex-1 pb-4 pt-2">
                             <div class="flex items-center justify-between mb-2">
-                                <label class="block text-xs font-semibold text-gray-700">What happened? <span class="text-red-400">*</span></label>
-                                <span id="charCount" class="char-count text-[11px] font-mono font-semibold text-gray-400 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">0 / 2000</span>
+                                <label class="block text-xs font-semibold text-gray-800">What happened? <span class="text-red-400">*</span></label>
+                                <span id="charCount" class="char-count text-[11px] font-mono font-semibold text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">0 / 2000</span>
                             </div>
-                            <p class="text-[11px] text-gray-400 mb-2 flex items-center gap-1.5">
+                            <p class="text-[11px] text-gray-500 mb-2 flex items-center gap-1.5">
                                 <svg class="w-3 h-3 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Include who was involved, what happened, where and when it occurred.
                             </p>
@@ -412,7 +412,7 @@
                 </form>
 
                 <!-- Footer -->
-                <div class="mt-4 flex items-center justify-center gap-4 text-[11px] text-gray-400">
+                <div class="mt-4 flex items-center justify-center gap-4 text-[11px] text-gray-500">
                     <span class="flex items-center gap-1">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         Protected by StudentShield
@@ -501,10 +501,10 @@
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.role-btn').forEach(b => {
                     b.classList.remove('active', 'bg-calm-50', 'border-calm-300', 'text-calm-700', 'shadow-[0_2px_10px_rgba(74,155,110,0.12)]');
-                    b.classList.add('bg-white', 'border-gray-200', 'text-gray-500', 'hover:bg-gray-50');
+                    b.classList.add('bg-white', 'border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]', 'text-gray-500', 'hover:bg-gray-50');
                 });
                 
-                this.classList.remove('bg-white', 'border-gray-200', 'text-gray-500', 'hover:bg-gray-50');
+                this.classList.remove('bg-white', 'border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]', 'text-gray-500', 'hover:bg-gray-50');
                 this.classList.add('active', 'bg-calm-50', 'border-calm-300', 'text-calm-700', 'shadow-[0_2px_10px_rgba(74,155,110,0.12)]');
                 
                 const role = this.getAttribute('data-role');
