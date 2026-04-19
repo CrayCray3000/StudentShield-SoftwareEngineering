@@ -279,8 +279,8 @@
             </nav>
 
             <!-- Form Area (Stretched to top and bottom to eat up whitespace, max-capped for extreme ultrawides) -->
-            <div class="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 xl:px-24 py-8 lg:py-12 relative flex flex-col flex-1">
-                <div class="w-full relative z-20 flex flex-col flex-1">
+            <div class="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 xl:px-24 py-4 lg:py-6 xl:py-8 relative flex flex-col flex-1 justify-center">
+                <div class="w-full relative z-20 flex flex-col flex-1 justify-center">
                 <!-- Mobile Action Links (Compact for max visibility of form) -->
                 <div class="lg:hidden flex items-center justify-between gap-3 mb-4">
                     <a href="<?= base_url('report-bullying') ?>" class="flex-1 bg-red-50 text-red-700 border border-red-200 shadow-sm rounded-xl py-2 px-3 flex items-center justify-center gap-2 font-bold text-[12px] hover:bg-red-100 transition-colors">

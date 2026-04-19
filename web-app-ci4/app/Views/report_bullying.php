@@ -143,7 +143,7 @@
         }
     </style>
 </head>
-<body class="text-white antialiased min-h-screen relative flex flex-col justify-center py-16 sm:py-20 lg:py-24">
+<body class="text-white antialiased min-h-screen relative flex flex-col justify-center py-8 lg:py-12">
 
     <!-- Dark Ambient Elements -->
     <div class="bg-dark-mesh"></div>
