@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -267,13 +267,13 @@
                         </div>
                         <input type="password" name="password" id="password" required
                                class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[15px] sm:text-[16px] font-bold outline-none tracking-[0.1em]"
-                               placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
+                               placeholder="••••••••">
                     </div>
                 </div>
 
                 <div class="flex items-center mt-2 group">
                     <input id="remember" name="remember" type="checkbox"
-                           class="w-4 h-4 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['âœ“'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity">
+                           class="w-4 h-4 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity">
                     <label for="remember" class="ml-2.5 text-[13px] sm:text-[14px] font-semibold text-white/70 group-hover:text-white transition-colors cursor-pointer select-none">
                         Remember me on this device
                     </label>

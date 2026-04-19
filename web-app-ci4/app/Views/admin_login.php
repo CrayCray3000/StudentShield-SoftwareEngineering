@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -227,7 +227,7 @@
                     </div>
                     <input type="password" name="password" id="password" required
                            class="w-full pl-10 sm:pl-11 pr-4 py-3 sm:py-3.5 input-admin rounded-xl text-[14px] sm:text-base font-medium outline-none tracking-widest"
-                           placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
+                           placeholder="••••••••">
                 </div>
             </div>
 
