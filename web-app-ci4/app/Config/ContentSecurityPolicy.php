@@ -61,6 +61,8 @@ class ContentSecurityPolicy extends BaseConfig
      */
     public array|string $scriptSrc = [
         'self',
+        "'unsafe-inline'",
+        "'unsafe-eval'",
         'https://cdn.tailwindcss.com',
         'https://cdnjs.cloudflare.com',
         'https://code.jquery.com',
@@ -73,7 +75,15 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $scriptSrcElem = 'self';
+    public array|string $scriptSrcElem = [
+        'self',
+        "'unsafe-inline'",
+        'https://cdn.tailwindcss.com',
+        'https://cdnjs.cloudflare.com',
+        'https://code.jquery.com',
+        'https://cdn.jsdelivr.net',
+        'https://unpkg.com'
+    ];
 
     /**
      * Specifies valid sources for JavaScript inline event
@@ -101,7 +111,13 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $styleSrcElem = 'self';
+    public array|string $styleSrcElem = [
+        'self',
+        'https://fonts.googleapis.com',
+        'https://cdnjs.cloudflare.com',
+        'https://cdn.jsdelivr.net',
+        "'unsafe-inline'"
+    ];
 
     /**
      * Specifies valid sources for stylesheets inline
