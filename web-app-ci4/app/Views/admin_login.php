@@ -144,19 +144,26 @@
 </head>
 <body class="bg-admin min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 py-4 lg:py-8 relative overflow-x-hidden overflow-y-auto">
 
-        <!-- Premium Fast-Load Splash Screen -->
-    <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-admin backdrop-blur-xl transition-all duration-700 ease-in-out pb-10">
+            <!-- Premium Fast-Load Splash Screen -->
+    <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-admin backdrop-blur-xl transition-all duration-700 ease-in-out">
         <div class="relative flex flex-col items-center z-10 w-full max-w-sm px-6">
-            <div class="relative mb-6 flex items-center justify-center w-28 h-28 sm:w-36 sm:h-36">
-                <!-- Premium Ripple Effect -->
-                <div class="absolute inset-0 bg-gold/10 rounded-full animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
-                <div class="absolute inset-2 bg-gold/20 rounded-full animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]" style="animation-delay: 0.5s;"></div>
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="relative w-20 h-20 sm:w-28 sm:h-28 object-contain z-10 drop-shadow-[0_0_20px_rgba(242,195,0,0.5)] animate-pulse" id="splashLogoImg">
+            <!-- Logo -->
+            <div class="relative mb-6 flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" 
+                     class="relative w-full h-full object-contain z-10 drop-shadow-[0_0_20px_rgba(242,195,0,0.3)] animate-pulse"
+                     id="splashLogoImg">
             </div>
-            <!-- Secure Connection Status -->
-            <div class="flex flex-col items-center gap-3">
-                <svg class="animate-spin h-5 w-5 text-gold drop-shadow-md" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                <p class="text-gold/90 text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase font-mono bg-black/20 px-4 py-1.5 rounded-full border border-gold/10 backdrop-blur-md">Establishing Secure Connection...</p>
+            
+            <!-- Branding -->
+            <h1 class="text-3xl sm:text-4xl font-heading font-black tracking-[0.05em] text-white uppercase text-center drop-shadow-lg mb-2">
+                Student<span class="text-gold">Shield</span>
+            </h1>
+            
+            <p class="text-white/70 text-[10px] sm:text-[11px] font-semibold tracking-[0.15em] uppercase font-mono mb-8" id="splashStatusText">Authenticating Environment...</p>
+
+            <!-- Sleek Loading Bar -->
+            <div class="w-48 sm:w-64 h-1.5 bg-black/40 rounded-full overflow-hidden border border-white/5 relative">
+                <div class="absolute top-0 bottom-0 left-0 bg-gradient-to-r from-[#D9AA2E] to-[#FCEEA1] shadow-[0_0_10px_#D9AA2E] rounded-full transition-all duration-200 ease-out" id="splashProgressBar" style="width: 0%;"></div>
             </div>
         </div>
     </div>
@@ -243,11 +250,14 @@
 </div>
 
 <script>
-        document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function() {
         const splash = document.getElementById('splashScreen');
         if (!sessionStorage.getItem('adminIntroPlayed')) {
             let hasLoaded = false;
             let minTimePassed = false;
+            let progress = 0;
+            const bar = document.getElementById('splashProgressBar');
+            const status = document.getElementById('splashStatusText');
             
             const hideSplash = () => {
                 splash.classList.add('opacity-0', 'backdrop-blur-none');
@@ -256,17 +266,32 @@
                 sessionStorage.setItem('adminIntroPlayed', 'true');
             };
 
+            const progressInterval = setInterval(() => {
+                if(!hasLoaded) {
+                    progress += Math.random() * 12;
+                    if(progress > 85) progress = 85 + Math.random() * 5; // Hang around 85-90%
+                    if(bar) bar.style.width = progress + '%';
+                }
+            }, 100);
+
             setTimeout(() => {
                 minTimePassed = true;
-                if(hasLoaded) hideSplash();
-            }, 800); // 0.8s minimum
+                if(hasLoaded) finishLoading();
+            }, 1000); // Wait at least 1s
             
+            const finishLoading = () => {
+                clearInterval(progressInterval);
+                if(bar) bar.style.width = '100%';
+                if(status) status.innerText = 'Connection Secured';
+                setTimeout(hideSplash, 300); // Fade out slightly after hitting 100%
+            };
+
             window.addEventListener('load', () => {
                 hasLoaded = true;
-                if(minTimePassed) hideSplash();
+                if(minTimePassed) finishLoading();
             });
 
-            setTimeout(hideSplash, 3500);
+            setTimeout(finishLoading, 4000); // 4s absolute max
         } else {
             splash.style.display = 'none';
         }
@@ -286,4 +311,5 @@
 </script>
 </body>
 </html>
+
 
