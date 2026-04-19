@@ -180,8 +180,8 @@
     <div class="w-full max-w-4xl lg:max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 mt-8 sm:mt-0">
         
         <!-- Header Section -->
-        <div class="text-center mb-8 sm:mb-12 anim-fade-up">
-            <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-20 h-20 sm:w-28 sm:h-28 object-contain mx-auto mb-5 sm:mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+        <div class="text-center mb-6 sm:mb-8 anim-fade-up">
+            <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mx-auto mb-3 sm:mb-4 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
                  onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
             
             <h1 class="text-[1.75rem] sm:text-[3rem] lg:text-[3.5rem] font-heading font-black text-white tracking-tight leading-[1.1] mb-3 sm:mb-4">
@@ -213,8 +213,8 @@
         </div>
 
         <!-- Glass Form Card -->
-        <div class="glass-panel p-5 sm:p-10 lg:p-12 anim-fade-up" style="animation-delay: 0.2s;">
-            <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="bullyingForm" class="space-y-6 sm:space-y-8 lg:space-y-10">
+        <div class="glass-panel p-5 sm:p-8 anim-fade-up" style="animation-delay: 0.2s;">
+            <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="bullyingForm" class="space-y-4 sm:space-y-6">
                 <div class="hidden"><?= csrf_field() ?></div>
                 
                 <!-- Reporter Type -->
@@ -277,11 +277,11 @@
                     <label class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">
                         Please describe what happened <span class="text-red-400 text-sm">*</span>
                     </label>
-                    <textarea name="incident_details" required rows="5" class="w-full px-4 sm:px-6 py-4 sm:py-5 input-dark rounded-xl sm:rounded-[1.5rem] text-[14px] sm:text-[15px] font-medium leading-relaxed resize-none" placeholder="Where did it happen? When? Describe exactly what was said or done. Take your time, there is no rush."></textarea>
+                    <textarea name="incident_details" required rows="4" class="w-full px-4 sm:px-6 py-4 sm:py-5 input-dark rounded-xl sm:rounded-[1.5rem] text-[14px] sm:text-[15px] font-medium leading-relaxed resize-none" placeholder="Where did it happen? When? Describe exactly what was said or done. Take your time, there is no rush."></textarea>
                 </div>
 
                 <!-- SUBMIT BUTTON -->
-                <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 sm:gap-3 h-[54px] sm:h-[64px] mt-6 sm:mt-8 group/btn bg-gold">
+                <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3 sm:py-3.5 px-4 sm:px-6 rounded-xl sm:rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 sm:gap-3 h-[48px] sm:h-[56px] mt-4 sm:mt-6 group/btn bg-gold">
                     <span id="btnText" class="font-heading text-[16px] sm:text-[18px] tracking-wide text-[#042E15] drop-shadow-sm mix-blend-multiply pt-0.5">Send Secure Report</span>
                     <i id="btnIcon" class="fas fa-lock text-[#042E15] text-[13px] sm:text-[15px] mix-blend-multiply group-hover/btn:scale-110 transition-transform duration-300"></i>
                     <svg id="btnSpinner" class="animate-spin h-5 w-5 sm:h-6 sm:w-6 text-[#042E15] hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -297,8 +297,8 @@
         </div>
         
         <!-- Universal Emergency Hotline -->
-        <div class="mt-6 sm:mt-8 mb-12 sm:mb-16 px-5 sm:px-6 py-5 sm:py-6 font-medium text-center bg-white/5 backdrop-blur-lg rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.3)] anim-fade-up hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] transition-shadow duration-500" style="animation-delay: 0.3s;">
-            <p class="text-[14px] sm:text-[16px] font-black text-red-400 mb-1.5 sm:mb-2 font-heading tracking-wide flex items-center justify-center gap-2">
+        <div class="mt-4 sm:mt-6 mb-6 sm:mb-8 px-5 sm:px-6 py-4 sm:py-5 font-medium text-center bg-white/5 backdrop-blur-lg rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.3)] anim-fade-up hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] transition-shadow duration-500" style="animation-delay: 0.3s;">
+            <p class="text-[14px] sm:text-[16px] font-black text-red-400 mb-1 sm:mb-2 font-heading tracking-wide flex items-center justify-center gap-2">
                 <i class="fas fa-exclamation-circle animate-pulse"></i> Is this a physical emergency?
             </p>
             <p class="text-[12px] sm:text-[14px] text-white/60 leading-relaxed max-w-lg mx-auto font-medium">
