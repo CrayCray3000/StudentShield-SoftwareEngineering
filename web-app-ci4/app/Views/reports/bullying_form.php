@@ -359,12 +359,12 @@
                             <p class="text-xs font-semibold text-gray-800 mb-2.5">I am reporting as a:</p>
                             <input type="hidden" name="reporter_type" id="roleInput" value="self">
                             <div class="flex gap-2">
-                                <button type="button" data-role="self" class="role-btn active px-4 py-2.5 rounded-xl border border-calm-300 bg-calm-50 text-[13px] font-bold text-calm-700 transition-all shadow-[0_2px_10px_rgba(74,155,110,0.12)] flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                <button type="button" onclick="setRole('self', this)" data-role="self" class="role-btn active px-4 py-2.5 rounded-xl border border-calm-300 bg-calm-50 text-[13px] font-bold text-calm-700 transition-all shadow-[0_2px_10px_rgba(74,155,110,0.12)] flex items-center gap-2">
+                                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                                     I am the victim
                                 </button>
-                                <button type="button" data-role="bystander" class="role-btn px-4 py-2.5 rounded-xl border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white text-[13px] font-semibold text-gray-500 transition-all hover:bg-gray-50 flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <button type="button" onclick="setRole('bystander', this)" data-role="bystander" class="role-btn px-4 py-2.5 rounded-xl border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white text-[13px] font-semibold text-gray-500 transition-all hover:bg-gray-50 flex items-center gap-2">
+                                    <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     I am a bystander
                                 </button>
                             </div>
@@ -456,7 +456,7 @@
                     const data = JSON.parse(draft);
                     if (data.role) {
                         const btn = document.querySelector(`.role-btn[data-role="${data.role}"]`);
-                        if (btn) btn.click();
+                        if (btn) setRole(data.role, btn);
                     }
                     if (data.victimName) document.getElementById('victim_name').value = data.victimName;
                     if (data.aggressorName) document.getElementById('aggressor_name').value = data.aggressorName;
@@ -497,36 +497,39 @@
         document.addEventListener('DOMContentLoaded', loadDraft);
 
         // Role Toggle Logic
-        document.querySelectorAll('.role-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.role-btn').forEach(b => {
-                    b.classList.remove('active', 'bg-calm-50', 'border-calm-300', 'text-calm-700', 'shadow-[0_2px_10px_rgba(74,155,110,0.12)]');
-                    b.classList.add('bg-white', 'border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]', 'text-gray-500', 'hover:bg-gray-50');
-                });
-                
-                this.classList.remove('bg-white', 'border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]', 'text-gray-500', 'hover:bg-gray-50');
-                this.classList.add('active', 'bg-calm-50', 'border-calm-300', 'text-calm-700', 'shadow-[0_2px_10px_rgba(74,155,110,0.12)]');
-                
-                const role = this.getAttribute('data-role');
-                document.getElementById('roleInput').value = role;
-                
-                const victimBox = document.getElementById('victimNameBox');
-                const aggBox = document.getElementById('aggressorNameBox');
-                const victimInput = document.getElementById('victim_name');
-                if(role === 'bystander') {
-                    victimBox.classList.remove('hidden');
-                    victimBox.style.display = '';
-                    aggBox.classList.remove('md:col-span-2');
-                    victimInput.required = true;
-                } else {
-                    victimBox.classList.add('hidden');
-                    victimBox.style.display = 'none';
-                    aggBox.classList.add('md:col-span-2');
-                    victimInput.required = false;
-                    victimInput.value = '';
-                }
+        function setRole(role, btnElement) {
+            const activeRoleClasses = "role-btn active px-4 py-2.5 rounded-xl border border-calm-300 bg-calm-50 text-[13px] font-bold text-calm-700 transition-all shadow-[0_2px_10px_rgba(74,155,110,0.12)] flex items-center gap-2";
+            const inactiveRoleClasses = "role-btn px-4 py-2.5 rounded-xl border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white text-[13px] font-semibold text-gray-500 transition-all hover:bg-gray-50 flex items-center gap-2";
+
+            // Reset all buttons
+            document.querySelectorAll('.role-btn').forEach(b => {
+                b.className = inactiveRoleClasses;
             });
-        });
+            
+            // Set the clicked button to active
+            btnElement.className = activeRoleClasses;
+            
+            // Set the hidden input value
+            document.getElementById('roleInput').value = role;
+
+            // Toggle visibility of victim/aggressor fields
+            const victimBox = document.getElementById('victimNameBox');
+            const aggBox = document.getElementById('aggressorNameBox');
+            const victimInput = document.getElementById('victim_name');
+
+            if(role === 'bystander') {
+                victimBox.classList.remove('hidden');
+                victimBox.style.display = 'block';
+                aggBox.className = ''; // remove col-span-2 so it takes 1 column
+                victimInput.required = true;
+            } else {
+                victimBox.classList.add('hidden');
+                victimBox.style.display = 'none';
+                aggBox.className = 'md:col-span-2';
+                victimInput.required = false;
+                victimInput.value = ''; // clear if self
+            }
+        }
 
         // Character Counter
         const textarea = document.getElementById('incident_details');
