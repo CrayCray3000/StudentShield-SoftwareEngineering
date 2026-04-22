@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudentShield - Counselor Dashboard</title>
+    <title>StudentShield - <?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -216,7 +216,7 @@
 
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight">StudentShield</h1>
-                    <span class="text-[#F2C300] text-xs font-semibold tracking-widest uppercase">Counselor Dashboard</span>
+                    <span class="text-[#F2C300] text-xs font-semibold tracking-widest uppercase"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</span>
                 </div>
             </div>
             
