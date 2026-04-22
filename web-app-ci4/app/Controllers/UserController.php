@@ -33,20 +33,24 @@ class UserController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        $name     = trim($this->request->getPost('name'));
-        $role     = (int) $this->request->getPost('role');
-        $studentId = trim($this->request->getPost('student_id') ?? '');
+        $name        = trim($this->request->getPost('name'));
+        $role        = (int) $this->request->getPost('role');
+        $studentIdInput = trim($this->request->getPost('student_id') ?? '');
+        $studentId   = ($studentIdInput === '') ? null : $studentIdInput;
         $parentEmail = trim($this->request->getPost('parent_email') ?? '');
         $parentPhone = trim($this->request->getPost('parent_phone') ?? '');
-        $section = trim($this->request->getPost('section') ?? '');
+        $section     = trim($this->request->getPost('section') ?? '');
         $adviserName = trim($this->request->getPost('adviser_name') ?? '');
-        $passcode = $this->request->getPost('passcode') ?? '';
+        $passcode    = $this->request->getPost('passcode') ?? '';
 
         if (empty($name)) {
             return redirect()->back()->with('error', 'Name is required.');
         }
         
         if ($role === 0) {
+            if (empty($studentId)) {
+                return redirect()->back()->with('error', 'Student ID is required for students.');
+            }
             if (empty($section)) {
                 return redirect()->back()->with('error', 'Section is required for students.');
             }
@@ -109,9 +113,10 @@ class UserController extends BaseController
             return redirect()->back()->with('error', 'You cannot demote your own account.');
         }
 
+        $studentIdInput = trim($this->request->getPost('student_id') ?? '');
         $updateData = [
             'name'         => trim($this->request->getPost('name')),
-            'student_id'   => trim($this->request->getPost('student_id') ?? ''),
+            'student_id'   => ($studentIdInput === '') ? null : $studentIdInput,
             'role'         => $targetRole,
             'parent_email' => trim($this->request->getPost('parent_email') ?? ''),
             'parent_phone' => trim($this->request->getPost('parent_phone') ?? ''),

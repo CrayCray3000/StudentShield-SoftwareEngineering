@@ -10,8 +10,9 @@ class AdminSeeder extends Seeder
     {
         $data = [
             'name'            => 'admin',
-            'role'            => 'Counselor',
-            'hashed_password' => password_hash('admin123', PASSWORD_DEFAULT),
+            'student_id'      => null,
+            'role'            => 2, // Super Admin
+            'passcode'        => password_hash('admin123', PASSWORD_BCRYPT),
         ];
 
         // Check if admin already exists
