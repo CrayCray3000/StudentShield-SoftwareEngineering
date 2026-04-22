@@ -55,13 +55,17 @@ class BullyReportController extends BaseController
         }
 
         date_default_timezone_set('Asia/Manila');
+        $encrypter = \Config\Services::encrypter();
+        $rawDetails = "TARGETED STUDENT: " . ($victimName ?: 'Self') . "\nREPORTED AGGRESSOR(S): " . ($bullyName ?: 'N/A') . "\n\n" . $details;
+        $encryptedDetails = bin2hex($encrypter->encrypt($rawDetails));
+
         $reportData = [
             'reporter_student_id' => $userId,
             'reporter_type'       => $reporterType,
             'victim_student_id'   => $victimStudentId,
             'bully_student_id'    => $bullyStudentId,
             // Prepend the typed names into the details so the counselor always knows who it was, even if the DB lookup couldn't find an exact match
-            'incident_details'    => "TARGETED STUDENT: " . ($victimName ?: 'Self') . "\nREPORTED AGGRESSOR(S): " . ($bullyName ?: 'N/A') . "\n\n" . $details,
+            'incident_details'    => $encryptedDetails,
             'status'             => 'pending_review',
             'created_at'         => date('Y-m-d H:i:s')
         ];
