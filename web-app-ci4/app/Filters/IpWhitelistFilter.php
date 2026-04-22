@@ -16,6 +16,7 @@ class IpWhitelistFilter implements FilterInterface
         '136.158.58.234',  // User's public IP
         '112.209.179.217', // Whitelisted IP
         '112.201.103.171', // Whitelisted IP
+        '113.19.143.229', // My love's whitelisted IP
         '127.0.0.1',       // Localhost (Laragon/XAMPP)
         '::1',             // Localhost IPv6
     ];

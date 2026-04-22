@@ -122,7 +122,6 @@ class BullyReportController extends BaseController
             CURLOPT_HTTPHEADER => ["Content-Type: application/json", "Connection: close"],
         ]);
         curl_exec($curl);
-        curl_close($curl);
         
         return true;
     }
