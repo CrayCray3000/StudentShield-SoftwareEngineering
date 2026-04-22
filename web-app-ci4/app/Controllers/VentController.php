@@ -165,7 +165,7 @@ class VentController extends BaseController
 
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://ashlogg-student-shield-official.hf.space",
+            CURLOPT_URL => env('sms.GatewayUrl', "http://192.168.1.3:8080/send-sms"),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 30, // Keep timeout reasonably long because sending via real SIM can take a few seconds
             CURLOPT_CUSTOMREQUEST => "POST",
@@ -302,7 +302,7 @@ class VentController extends BaseController
         ]);
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => "http://192.168.1.3:8080/send-sms",
+            CURLOPT_URL => env('sms.GatewayUrl', "http://192.168.1.3:8080/send-sms"),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 2,
             CURLOPT_CUSTOMREQUEST => "POST",

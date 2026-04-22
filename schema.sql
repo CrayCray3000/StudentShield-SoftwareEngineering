@@ -26,23 +26,29 @@ CREATE TABLE IF NOT EXISTS vent_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     raw_text TEXT NOT NULL,
-    sentiment_score FLOAT,
+    emotions VARCHAR(255) NULL,
+    risk_percent FLOAT,
     risk_level VARCHAR(50),
     status VARCHAR(50) DEFAULT 'Pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at DATETIME NULL DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS incident_reports (
+CREATE TABLE IF NOT EXISTS bully_reports (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    reporter_id INT,
-    perpetrator_name VARCHAR(255),
-    incident_type VARCHAR(100),
-    description TEXT,
-    status VARCHAR(50) DEFAULT 'Pending Investigation',
+    reporter_student_id INT,
+    reporter_type VARCHAR(50),
+    victim_student_id INT NULL,
+    bully_student_id INT NULL,
+    incident_details TEXT,
+    status VARCHAR(50) DEFAULT 'pending_review',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL DEFAULT NULL,
     deleted_at DATETIME NULL DEFAULT NULL,
-    FOREIGN KEY (reporter_id) REFERENCES users(id) ON DELETE SET NULL
+    FOREIGN KEY (reporter_student_id) REFERENCES users(id) ON DELETE SET NULL,
+    FOREIGN KEY (victim_student_id) REFERENCES users(id) ON DELETE SET NULL,
+    FOREIGN KEY (bully_student_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS audit_logs (

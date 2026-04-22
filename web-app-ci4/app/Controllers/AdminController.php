@@ -300,7 +300,7 @@ class AdminController extends BaseController
         $payload = json_encode(['phone' => $cleanPhone, 'message' => $message]);
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => "http://192.168.1.3:8080/send-sms",
+            CURLOPT_URL => env('sms.GatewayUrl', "http://192.168.1.3:8080/send-sms"),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 1,
             CURLOPT_CUSTOMREQUEST => "POST",

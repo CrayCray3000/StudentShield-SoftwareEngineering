@@ -72,7 +72,12 @@ class BullyReportController extends BaseController
         $db->transStart();
         
         $model = new BullyReportModel();
-        $model->insert((object) $reportData);
+        $insertResult = $model->insert((object) $reportData);
+        
+        if ($insertResult === false) {
+            $db->transRollback();
+            return redirect()->back()->with('error', 'Critical Error: Data validation failed. Report not saved.');
+        }
         
         $db->transComplete();
 
@@ -114,7 +119,7 @@ class BullyReportController extends BaseController
         $payload = json_encode(['phone' => $cleanPhone, 'message' => $message]);
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => "http://192.168.1.3:8080/send-sms",
+            CURLOPT_URL => env('sms.GatewayUrl', "http://192.168.1.3:8080/send-sms"),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 1, // Ultra-fast fail timeout mapping to prevent bottlenecking the main UI
             CURLOPT_CUSTOMREQUEST => "POST",
