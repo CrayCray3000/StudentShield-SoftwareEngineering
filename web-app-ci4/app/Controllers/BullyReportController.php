@@ -106,13 +106,23 @@ class BullyReportController extends BaseController
         $db->transStart();
         
         $model = new BullyReportModel();
-        $insertResult = $model->insert($reportData);
+        
+        try {
+            log_message('debug', 'Attempting insert with data keys: ' . json_encode(array_keys($reportData)));
+            $insertResult = $model->insert($reportData);
+        } catch (\Exception $e) {
+            $db->transRollback();
+            log_message('error', 'DB Exception on insert: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Database Error: ' . $e->getMessage());
+        }
         
         if ($insertResult === false) {
             $db->transRollback();
-            $errors = $model->errors();
-            log_message('error', 'Insert Failed: ' . json_encode($errors));
-            return redirect()->back()->with('error', 'Critical Error: Data validation failed. ' . json_encode($errors));
+            $modelErrors = $model->errors();
+            $dbError = $db->error();
+            log_message('error', 'Insert Failed - Model errors: ' . json_encode($modelErrors) . ' | DB error: ' . json_encode($dbError));
+            $errorMsg = !empty($modelErrors) ? json_encode($modelErrors) : (($dbError['message'] ?? '') ?: 'Unknown database error');
+            return redirect()->back()->with('error', 'Critical Error: ' . $errorMsg);
         }
         
         $db->transComplete();
