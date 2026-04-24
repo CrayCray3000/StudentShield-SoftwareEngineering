@@ -107,23 +107,19 @@ class BullyReportController extends BaseController
             $reportData['evidence_file'] = $evidencePath;
         }
 
-        // Direct query builder insert — bypasses CI4 model abstractions that were silently failing
-        $db->transStart();
-        
+        // Simple direct insert — no transaction wrapper (InfinityFree MyISAM tables don't support transactions)
         try {
-            $inserted = $db->table('bully_reports')->insert($reportData);
+            $db->table('bully_reports')->insert($reportData);
+            $insertId = $db->insertID();
+            
+            if (empty($insertId)) {
+                $dbError = $db->error();
+                log_message('error', 'Insert returned no ID - DB error: ' . json_encode($dbError) . ' | Data keys: ' . json_encode(array_keys($reportData)));
+                return redirect()->back()->with('error', 'Database Error: Insert failed. ' . ($dbError['message'] ?? 'No insert ID returned.'));
+            }
         } catch (\Exception $e) {
-            $db->transRollback();
             log_message('error', 'DB Exception: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Database Error: ' . $e->getMessage());
-        }
-        
-        $db->transComplete();
-
-        if ($db->transStatus() === false) {
-            $dbError = $db->error();
-            log_message('error', 'Transaction failed - DB error: ' . json_encode($dbError));
-            return redirect()->back()->with('error', 'Critical Error: ' . ($dbError['message'] ?? 'Database transaction failed.'));
         }
 
         // --- Stage 1: Instant Counselor Alert (Report Intake) ---
