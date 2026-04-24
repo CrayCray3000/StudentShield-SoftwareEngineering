@@ -347,7 +347,7 @@
                 <?php endif; ?>
 
                 <!-- Vent Form -->
-                <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="bullyingForm" class="flex-1 flex flex-col space-y-5 anim-form">
+                <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="bullyingForm" enctype="multipart/form-data" class="flex-1 flex flex-col space-y-5 anim-form">
                     <div class="hidden"><?= csrf_field() ?></div>
 
                     
@@ -393,6 +393,16 @@
                                 Include who was involved, what happened, where and when it occurred.
                             </p>
                             <textarea id="incident_details" name="incident_details" maxlength="2000" class="w-full flex-1 min-h-[140px] px-5 py-4 textarea-field rounded-2xl outline-none resize-none text-gray-900 placeholder-gray-400/60 leading-[1.6] text-[15px] shadow-sm font-medium" placeholder="Take your time describing what happened..." required></textarea>
+                        </div>
+                        
+                        <!-- Evidence Upload -->
+                        <div class="flex flex-col pb-4">
+                            <label class="block text-xs font-semibold text-gray-800 mb-2">Attach Evidence (Optional)</label>
+                            <p class="text-[11px] text-gray-500 mb-2 flex items-center gap-1.5">
+                                <svg class="w-3 h-3 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                Upload a photo or video (max 20MB)
+                            </p>
+                            <input type="file" name="evidence_file" id="evidence_file" accept="image/*,video/*" class="w-full bg-white/80 border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all font-medium text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-calm-50 file:text-calm-700 hover:file:bg-calm-100">
                         </div>
                     </div>
 <!-- Submit -->

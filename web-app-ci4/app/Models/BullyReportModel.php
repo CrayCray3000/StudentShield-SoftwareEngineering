@@ -18,6 +18,7 @@ class BullyReportModel extends Model
         'victim_student_id',
         'bully_student_id',
         'incident_details',
+        'evidence_file',
         'status',
         'created_at',
         'updated_at',

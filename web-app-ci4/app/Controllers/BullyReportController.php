@@ -29,6 +29,33 @@ class BullyReportController extends BaseController
         $bullyName    = trim($this->request->getPost('bully_name') ?? '');
         $details      = $this->request->getPost('incident_details');
         
+        $evidenceFile = $this->request->getFile('evidence_file');
+        $evidencePath = null;
+
+        if ($evidenceFile && $evidenceFile->isValid() && !$evidenceFile->hasMoved()) {
+            $rules = [
+                'evidence_file' => [
+                    'rules' => 'max_size[evidence_file,20480]|ext_in[evidence_file,jpg,jpeg,png,gif,webp,mp4,mov,avi,mkv]',
+                    'errors' => [
+                        'max_size' => 'The evidence file must not exceed 20MB.',
+                        'ext_in'   => 'Only images (JPG, PNG, GIF, WEBP) and videos (MP4, MOV, AVI, MKV) are allowed.'
+                    ]
+                ]
+            ];
+
+            if (!$this->validate($rules)) {
+                return redirect()->back()->withInput()->with('error', $this->validator->getError('evidence_file'));
+            }
+
+            // Ensure the upload directory exists
+            if (!is_dir(FCPATH . 'uploads/evidence')) {
+                mkdir(FCPATH . 'uploads/evidence', 0777, true);
+            }
+            $newName = $evidenceFile->getRandomName();
+            $evidenceFile->move(FCPATH . 'uploads/evidence', $newName);
+            $evidencePath = 'uploads/evidence/' . $newName;
+        }
+        
         // Loophole 3 Mitigation: Identity Traceability via Session
         $userId = session()->get('user_id') ?? 1; 
 
@@ -66,6 +93,7 @@ class BullyReportController extends BaseController
             'bully_student_id'    => $bullyStudentId,
             // Prepend the typed names into the details so the counselor always knows who it was, even if the DB lookup couldn't find an exact match
             'incident_details'    => $encryptedDetails,
+            'evidence_file'       => $evidencePath,
             'status'             => 'pending_review',
             'created_at'         => date('Y-m-d H:i:s')
         ];

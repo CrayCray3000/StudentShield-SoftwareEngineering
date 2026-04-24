@@ -499,6 +499,13 @@
                     <div id="modalContent" class="text-[16px] leading-[1.85] tracking-wide text-gray-800 bg-[#f8faf6] border border-[#e5ebe5] shadow-inner p-7 rounded-2xl whitespace-pre-wrap font-medium">
                         --
                     </div>
+                    <div id="modalEvidenceContainer" class="mt-4 hidden">
+                        <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Attached Evidence</p>
+                        <a id="modalEvidenceLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition-colors font-semibold text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                            View Evidence File
+                        </a>
+                    </div>
                 </div>
 
                 <div class="mt-6 pt-4 border-t border-gray-200 flex justify-end">
@@ -902,6 +909,8 @@
 
                         let bgColor = isPending ? 'bg-white hover:bg-gray-50 border-l-4 border-l-amber-400' : (isRejected ? 'bg-white hover:bg-gray-50 border-l-4 border-l-red-500' : 'bg-white hover:bg-gray-50 border-l-4 border-l-transparent');
 
+                        let evidenceBadge = incident.evidence_file ? `<span class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">📎 Evidence Attached</span>` : '';
+
                         html += `<tr class="transition-colors duration-200 ${bgColor}">
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center">
                                 <input type="checkbox" name="incident_ids[]" value="${incident.id}" class="incident-checkbox rounded border-gray-300 text-primary h-4 w-4">
@@ -913,7 +922,10 @@
                                 ${incident.parent_email ? `<span class="text-xs text-gray-600 block">✉️ ${escapeHtml(incident.parent_email)}</span>` : ''}
                             </td>
                             <td data-label="Perpetrator" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${escapeHtml(perpetratorName)}</td>
-                            <td data-label="Type" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-semibold">${escapeHtml(incident.incident_type)}</td>
+                            <td data-label="Type" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-semibold">
+                                ${escapeHtml(incident.incident_type)}
+                                ${evidenceBadge ? '<br>' + evidenceBadge : ''}
+                            </td>
                             <td data-label="Description" class="px-6 py-4 cursor-pointer group" onclick="openIncidentModal(${incident.id})">
                                 <p class="text-sm text-gray-600 italic line-clamp-2">"${escapeHtml(textSnippet)}"</p>
                                 <span class="text-[10px] text-[#E04B3F] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
@@ -1053,6 +1065,10 @@
             document.getElementById('modalTime').innerText = timeStr;
             document.getElementById('modalContent').innerText = fullText;
             
+            if(document.getElementById('modalEvidenceContainer')) {
+                document.getElementById('modalEvidenceContainer').classList.add('hidden');
+            }
+            
             const badge = document.getElementById('modalBadge');
             badge.innerText = badgeText;
             badge.className = `inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border ${badgeClass}`;
@@ -1097,6 +1113,13 @@
             const badgeClass = isRes ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
             
             openDetailModal('Bullying Incident Report', `Reporter: ${reporter}\nAccused: ${perp}`, dateStr, inc.description, isRes ? 'Resolved' : 'Action Required', badgeClass);
+
+            if (inc.evidence_file) {
+                const evidenceContainer = document.getElementById('modalEvidenceContainer');
+                const evidenceLink = document.getElementById('modalEvidenceLink');
+                evidenceLink.href = '<?= base_url() ?>' + inc.evidence_file;
+                evidenceContainer.classList.remove('hidden');
+            }
         }
 
         function openAlertModal(index) {

@@ -199,7 +199,7 @@
 
         <!-- Glass Form Card -->
         <div class="glass-panel p-5 sm:p-10 lg:p-12 anim-fade-up" style="animation-delay: 0.2s;">
-            <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="incidentForm" class="space-y-6 sm:space-y-8 lg:space-y-10">
+            <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="incidentForm" enctype="multipart/form-data" class="space-y-6 sm:space-y-8 lg:space-y-10">
                 
                 <div class="space-y-1.5 sm:space-y-2">
                     <label for="incident_type" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">What kind of incident occurred?</label>
@@ -242,6 +242,18 @@
                     <textarea id="description" name="description" rows="5" required
                               class="w-full px-4 sm:px-6 py-4 sm:py-5 input-dark rounded-xl sm:rounded-[1.5rem] text-[14px] sm:text-[15px] font-medium leading-relaxed resize-none" 
                               placeholder="Where did it happen? When? Describe exactly what was said or done. The more detail you provide, the faster counselors can intervene safely."></textarea>
+                </div>
+
+                <!-- EVIDENCE UPLOAD -->
+                <div class="space-y-1.5 sm:space-y-2">
+                    <label for="evidence_file" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">
+                        Attach Evidence (Photo/Video)
+                    </label>
+                    <div class="relative group/input">
+                        <input type="file" id="evidence_file" name="evidence_file" accept="image/*,video/*"
+                               class="w-full px-4 sm:px-6 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[15px] font-medium file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold file:text-[#042E15] hover:file:bg-yellow-400 cursor-pointer">
+                        <p class="mt-2 text-xs text-white/50 ml-2">Max size: 20MB. Supported formats: JPG, PNG, MP4, MOV.</p>
+                    </div>
                 </div>
 
                 <!-- SUBMIT BUTTON -->
