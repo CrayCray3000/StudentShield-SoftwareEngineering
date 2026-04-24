@@ -90,46 +90,40 @@ class BullyReportController extends BaseController
         $encrypter = \Config\Services::encrypter();
         $rawDetails = "TARGETED STUDENT: " . ($victimName ?: 'Self') . "\nREPORTED AGGRESSOR(S): " . ($bullyName ?: 'N/A') . "\n\n" . $details;
         $encryptedDetails = bin2hex($encrypter->encrypt($rawDetails));
-
+        
         $reportData = [
             'reporter_student_id' => $userId,
             'reporter_type'       => $reporterType,
             'victim_student_id'   => $victimStudentId,
             'bully_student_id'    => $bullyStudentId,
-            // Prepend the typed names into the details so the counselor always knows who it was, even if the DB lookup couldn't find an exact match
             'incident_details'    => $encryptedDetails,
-            'evidence_file'       => $evidencePath,
-            'status'             => 'pending_review',
+            'status'              => 'pending_review',
+            'created_at'          => date('Y-m-d H:i:s'),
+            'updated_at'          => date('Y-m-d H:i:s'),
         ];
 
-        // Loophole 2 Mitigation: Database Transactions
+        // Only include evidence_file if a file was actually uploaded
+        if (!empty($evidencePath)) {
+            $reportData['evidence_file'] = $evidencePath;
+        }
+
+        // Direct query builder insert — bypasses CI4 model abstractions that were silently failing
         $db->transStart();
         
-        $model = new BullyReportModel();
-        
         try {
-            log_message('debug', 'Attempting insert with data keys: ' . json_encode(array_keys($reportData)));
-            $insertResult = $model->insert($reportData);
+            $inserted = $db->table('bully_reports')->insert($reportData);
         } catch (\Exception $e) {
             $db->transRollback();
-            log_message('error', 'DB Exception on insert: ' . $e->getMessage());
+            log_message('error', 'DB Exception: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Database Error: ' . $e->getMessage());
-        }
-        
-        if ($insertResult === false) {
-            $db->transRollback();
-            $modelErrors = $model->errors();
-            $dbError = $db->error();
-            log_message('error', 'Insert Failed - Model errors: ' . json_encode($modelErrors) . ' | DB error: ' . json_encode($dbError));
-            $errorMsg = !empty($modelErrors) ? json_encode($modelErrors) : (($dbError['message'] ?? '') ?: 'Unknown database error');
-            return redirect()->back()->with('error', 'Critical Error: ' . $errorMsg);
         }
         
         $db->transComplete();
 
-        // The SMS logic will NEVER fire if the database transaction fails!
         if ($db->transStatus() === false) {
-            return redirect()->back()->with('error', 'Critical Error: Database failure. Report not saved.');
+            $dbError = $db->error();
+            log_message('error', 'Transaction failed - DB error: ' . json_encode($dbError));
+            return redirect()->back()->with('error', 'Critical Error: ' . ($dbError['message'] ?? 'Database transaction failed.'));
         }
 
         // --- Stage 1: Instant Counselor Alert (Report Intake) ---
