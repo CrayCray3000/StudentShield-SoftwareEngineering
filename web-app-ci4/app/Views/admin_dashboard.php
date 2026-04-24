@@ -271,7 +271,17 @@
                     <svg class="w-6 h-6 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                     Overview
                 </h2>
-                <p class="text-gray-600 text-sm mt-1">Real-time monitoring and analytics from the student portal.</p>
+                <div class="flex items-center gap-4 mt-1">
+                    <p class="text-gray-600 text-sm">Real-time monitoring and analytics from the student portal.</p>
+                    <label class="flex items-center cursor-pointer group" title="Pause auto-refresh while you're reading">
+                        <div class="relative">
+                            <input type="checkbox" id="pauseUpdatesToggle" class="sr-only">
+                            <div class="block bg-gray-300 w-8 h-5 rounded-full transition-colors duration-200" id="toggleBg"></div>
+                            <div class="dot absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform duration-200" id="toggleDot"></div>
+                        </div>
+                        <div class="ml-2 text-xs font-semibold text-gray-500 group-hover:text-gray-800 transition-colors">Pause Auto-Refresh</div>
+                    </label>
+                </div>
             </div>
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
                 <div class="stat-card green-accent flex items-center gap-4">
@@ -501,9 +511,15 @@
                     </div>
                     <div id="modalEvidenceContainer" class="mt-4 hidden">
                         <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Attached Evidence</p>
-                        <a id="modalEvidenceLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition-colors font-semibold text-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
-                            View Evidence File
+                        
+                        <div id="evidencePreviewArea" class="mt-2 mb-3 bg-gray-50 rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
+                            <img id="evidenceImagePreview" src="" alt="Evidence" class="hidden max-w-full max-h-[400px] object-contain" />
+                            <video id="evidenceVideoPreview" src="" controls class="hidden max-w-full max-h-[400px]"></video>
+                        </div>
+
+                        <a id="modalEvidenceLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition-colors font-semibold text-sm w-full justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            Open in New Tab
                         </a>
                     </div>
                 </div>
@@ -772,7 +788,7 @@
                                 <div class="text-xs text-gray-600">${dayName}, ${dateStr}</div>
                             </td>
                             <td data-label="Student" class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center cursor-pointer group" onclick="openStudentProfile(${vent.user_id})">
+                                <div class="flex items-center cursor-pointer group" onclick="event.stopPropagation(); openStudentProfile(${vent.user_id})">
                                     <div class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs mr-3 group-hover:bg-primary group-hover:text-white transition-colors">
                                         ${escapeHtml(vent.name.charAt(0))}
                                     </div>
@@ -917,7 +933,7 @@
                             </td>
                             <td data-label="Date" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${dateStr}</td>
                             <td data-label="Reporter" class="px-6 py-4 whitespace-nowrap">
-                                <div ${incident.reporter_id ? `class="cursor-pointer group" onclick="openStudentProfile(${incident.reporter_id})"` : ''}>
+                                <div ${incident.reporter_id ? `class="cursor-pointer group" onclick="event.stopPropagation(); openStudentProfile(${incident.reporter_id})"` : ''}>
                                     <span class="text-sm font-medium text-gray-900 block ${incident.reporter_id ? 'group-hover:text-primary transition-colors hover:underline' : ''}">${escapeHtml(reporterName)}</span>
                                     ${incident.parent_phone ? `<span class="text-xs text-gray-600 block">📞 ${escapeHtml(incident.parent_phone)}</span>` : ''}
                                     ${incident.parent_email ? `<span class="text-xs text-gray-600 block">✉️ ${escapeHtml(incident.parent_email)}</span>` : ''}
@@ -930,7 +946,7 @@
                             </td>
                             <td data-label="Description" class="px-6 py-4 cursor-pointer group" onclick="openIncidentModal(${incident.id})">
                                 <p class="text-sm text-gray-600 italic line-clamp-2">"${escapeHtml(textSnippet)}"</p>
-                                <span class="text-[10px] text-[#E04B3F] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
+                                <span class="text-[10px] text-[#2A5DB0] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
                             </td>
                             <td data-label="Status" class="px-6 py-4 whitespace-nowrap text-center">${statusBadge}</td>
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
@@ -1069,6 +1085,8 @@
             
             if(document.getElementById('modalEvidenceContainer')) {
                 document.getElementById('modalEvidenceContainer').classList.add('hidden');
+                const videoPreview = document.getElementById('evidenceVideoPreview');
+                if(videoPreview) videoPreview.pause();
             }
             
             const badge = document.getElementById('modalBadge');
@@ -1111,16 +1129,35 @@
             const perp = inc.perpetrator_name || 'Unknown';
             const dateObj = parsePHDate(inc.created_at);
             const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
-            const isRes = inc.status === 'Resolved';
-            const badgeClass = isRes ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+            const isRes = inc.status === 'Resolved' || inc.status === 'resolved' || inc.status === 'verified';
+            const badgeClass = isRes ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700 border-blue-200';
             
             openDetailModal('Bullying Incident Report', `Reporter: ${reporter}\nAccused: ${perp}`, dateStr, inc.description, isRes ? 'Resolved' : 'Action Required', badgeClass);
 
             if (inc.evidence_file) {
                 const evidenceContainer = document.getElementById('modalEvidenceContainer');
                 const evidenceLink = document.getElementById('modalEvidenceLink');
-                evidenceLink.href = '<?= base_url() ?>' + inc.evidence_file;
+                const imgPreview = document.getElementById('evidenceImagePreview');
+                const videoPreview = document.getElementById('evidenceVideoPreview');
+                const fileUrl = '<?= base_url() ?>' + inc.evidence_file;
+                
+                evidenceLink.href = fileUrl;
                 evidenceContainer.classList.remove('hidden');
+
+                imgPreview.classList.add('hidden');
+                videoPreview.classList.add('hidden');
+                videoPreview.pause();
+                videoPreview.removeAttribute('src');
+                imgPreview.removeAttribute('src');
+
+                const ext = inc.evidence_file.split('.').pop().toLowerCase();
+                if (['mp4', 'mov', 'webm'].includes(ext)) {
+                    videoPreview.src = fileUrl;
+                    videoPreview.classList.remove('hidden');
+                } else {
+                    imgPreview.src = fileUrl;
+                    imgPreview.classList.remove('hidden');
+                }
             }
         }
 
@@ -1174,10 +1211,34 @@
             fetchLiveIncidents();
             fetchAlertLogs();
             
-            // Poll every 30 seconds for a snappy, real-time presentation feel while reducing server load
-            setInterval(fetchLiveVents, 30000);
-            setInterval(fetchLiveIncidents, 30000);
-            setInterval(fetchAlertLogs, 30000);
+            let isLivePaused = false;
+            
+            const pauseToggle = document.getElementById('pauseUpdatesToggle');
+            if(pauseToggle) {
+                pauseToggle.addEventListener('change', function() {
+                    isLivePaused = this.checked;
+                    document.getElementById('toggleBg').classList.toggle('bg-amber-400', this.checked);
+                    document.getElementById('toggleBg').classList.toggle('bg-gray-300', !this.checked);
+                    document.getElementById('toggleDot').classList.toggle('translate-x-3', this.checked);
+                });
+            }
+
+            // Hover pause logic for tables to prevent jumping
+            document.querySelectorAll('table').forEach(table => {
+                table.addEventListener('mouseenter', () => {
+                    isLivePaused = true;
+                });
+                table.addEventListener('mouseleave', () => {
+                    if (pauseToggle && !pauseToggle.checked) {
+                        isLivePaused = false;
+                    }
+                });
+            });
+
+            // Start Polling 
+            setInterval(() => { if(!isLivePaused) fetchLiveVents(); }, 30000);
+            setInterval(() => { if(!isLivePaused) fetchLiveIncidents(); }, 30000);
+            setInterval(() => { if(!isLivePaused) fetchAlertLogs(); }, 30000);
 
             // Live Philippine Clock — seeded from server (Manila timezone guaranteed)
             const serverTimestamp = <?= (time() + 28800) * 1000 ?>; // +8 hours for Manila time (PHT) in ms
