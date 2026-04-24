@@ -200,6 +200,7 @@
         <!-- Glass Form Card -->
         <div class="glass-panel p-5 sm:p-10 lg:p-12 anim-fade-up" style="animation-delay: 0.2s;">
             <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="incidentForm" enctype="multipart/form-data" class="space-y-6 sm:space-y-8 lg:space-y-10">
+                <?= csrf_field() ?>
                 
                 <div class="space-y-1.5 sm:space-y-2">
                     <label for="incident_type" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">What kind of incident occurred?</label>

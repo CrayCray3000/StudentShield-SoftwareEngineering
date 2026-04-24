@@ -24,10 +24,15 @@ class BullyReportController extends BaseController
         }
         session()->set('last_bully_report_time', time());
         
-        $reporterType = $this->request->getPost('reporter_type');
+        $reporterType = $this->request->getPost('reporter_type') ?? 'self';
         $victimName   = trim($this->request->getPost('victim_name') ?? '');
-        $bullyName    = trim($this->request->getPost('bully_name') ?? '');
-        $details      = $this->request->getPost('incident_details');
+        $bullyName    = trim($this->request->getPost('bully_name') ?: $this->request->getPost('perpetrator_name') ?: '');
+        
+        $details      = $this->request->getPost('incident_details') ?: $this->request->getPost('description');
+        $incidentType = $this->request->getPost('incident_type');
+        if (!empty($incidentType)) {
+            $details = "INCIDENT CATEGORY: " . $incidentType . "\n\n" . $details;
+        }
         
         $evidenceFile = $this->request->getFile('evidence_file');
         $evidencePath = null;
@@ -95,20 +100,19 @@ class BullyReportController extends BaseController
             'incident_details'    => $encryptedDetails,
             'evidence_file'       => $evidencePath,
             'status'             => 'pending_review',
-            'created_at'         => date('Y-m-d H:i:s')
         ];
 
-        $db = \Config\Database::connect();
-        
         // Loophole 2 Mitigation: Database Transactions
         $db->transStart();
         
         $model = new BullyReportModel();
-        $insertResult = $model->insert((object) $reportData);
+        $insertResult = $model->insert($reportData);
         
         if ($insertResult === false) {
             $db->transRollback();
-            return redirect()->back()->with('error', 'Critical Error: Data validation failed. Report not saved.');
+            $errors = $model->errors();
+            log_message('error', 'Insert Failed: ' . json_encode($errors));
+            return redirect()->back()->with('error', 'Critical Error: Data validation failed. ' . json_encode($errors));
         }
         
         $db->transComplete();

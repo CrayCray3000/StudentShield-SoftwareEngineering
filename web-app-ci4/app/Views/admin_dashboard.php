@@ -923,7 +923,7 @@
                             </td>
                             <td data-label="Perpetrator" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${escapeHtml(perpetratorName)}</td>
                             <td data-label="Type" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-semibold">
-                                ${escapeHtml(incident.incident_type)}
+                                Bullying Report
                                 ${evidenceBadge ? '<br>' + evidenceBadge : ''}
                             </td>
                             <td data-label="Description" class="px-6 py-4 cursor-pointer group" onclick="openIncidentModal(${incident.id})">
