@@ -772,12 +772,12 @@
                                 <div class="text-xs text-gray-600">${dayName}, ${dateStr}</div>
                             </td>
                             <td data-label="Student" class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs mr-3">
+                                <div class="flex items-center cursor-pointer group" onclick="openStudentProfile(${vent.user_id})">
+                                    <div class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs mr-3 group-hover:bg-primary group-hover:text-white transition-colors">
                                         ${escapeHtml(vent.name.charAt(0))}
                                     </div>
                                     <div>
-                                        <span class="text-sm font-medium text-gray-900 block">${escapeHtml(vent.name)}</span>
+                                        <span class="text-sm font-medium text-gray-900 block group-hover:text-primary transition-colors hover:underline">${escapeHtml(vent.name)}</span>
                                         ${vent.section ? `<span class="text-[11px] text-gray-600 font-bold block mt-0.5">Section: <span class="font-normal text-gray-600">${escapeHtml(vent.section)}</span></span>` : ''}
                                         ${vent.adviser_name ? `<span class="text-[11px] text-gray-600 font-bold block mb-1">Adviser: <span class="font-normal text-gray-600">${escapeHtml(vent.adviser_name)}</span></span>` : ''}
                                         ${vent.parent_phone ? `<span class="text-[10px] text-gray-500 block pt-0.5 border-t border-gray-200 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
@@ -917,9 +917,11 @@
                             </td>
                             <td data-label="Date" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${dateStr}</td>
                             <td data-label="Reporter" class="px-6 py-4 whitespace-nowrap">
-                                <span class="text-sm font-medium text-gray-900 block">${escapeHtml(reporterName)}</span>
-                                ${incident.parent_phone ? `<span class="text-xs text-gray-600 block">📞 ${escapeHtml(incident.parent_phone)}</span>` : ''}
-                                ${incident.parent_email ? `<span class="text-xs text-gray-600 block">✉️ ${escapeHtml(incident.parent_email)}</span>` : ''}
+                                <div ${incident.reporter_id ? `class="cursor-pointer group" onclick="openStudentProfile(${incident.reporter_id})"` : ''}>
+                                    <span class="text-sm font-medium text-gray-900 block ${incident.reporter_id ? 'group-hover:text-primary transition-colors hover:underline' : ''}">${escapeHtml(reporterName)}</span>
+                                    ${incident.parent_phone ? `<span class="text-xs text-gray-600 block">📞 ${escapeHtml(incident.parent_phone)}</span>` : ''}
+                                    ${incident.parent_email ? `<span class="text-xs text-gray-600 block">✉️ ${escapeHtml(incident.parent_email)}</span>` : ''}
+                                </div>
                             </td>
                             <td data-label="Perpetrator" class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${escapeHtml(perpetratorName)}</td>
                             <td data-label="Type" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-semibold">
