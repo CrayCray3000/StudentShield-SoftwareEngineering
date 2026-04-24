@@ -111,6 +111,6 @@ class Filters extends BaseFilters
      */
     public array $filters = [
         'ratelimit'   => ['before' => ['login/authenticate', 'admin/login/authenticate', 'admin/verify-otp']],
-        'ipwhitelist' => ['before' => ['admin', 'admin/*', 'counselor', 'counselor/*']],
+        'ipwhitelist' => ['before' => ['admin', 'admin/*']],
     ];
 }

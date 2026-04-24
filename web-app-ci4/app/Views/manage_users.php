@@ -136,7 +136,7 @@
             </div>
             
             <div class="flex items-center gap-3">
-                <a href="/counselor/dashboard" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
+                <a href="/admin/dashboard" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
                     Dashboard
                 </a>
 

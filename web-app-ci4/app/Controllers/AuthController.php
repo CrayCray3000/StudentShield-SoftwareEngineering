@@ -10,7 +10,7 @@ class AuthController extends BaseController
         if (session()->get('isLoggedIn')) {
             $role = (int) session()->get('role');
             if ($role === 0) return redirect()->to('/student/dashboard');
-            if ($role === 1 || $role === 2) return redirect()->to('/counselor/dashboard');
+            if ($role === 1 || $role === 2) return redirect()->to('/admin/dashboard');
         }
         return view('login');
     }
@@ -20,12 +20,36 @@ class AuthController extends BaseController
         if (session()->get('isLoggedIn')) {
             $role = (int) session()->get('role');
             if ($role === 1 || $role === 2) {
-                return redirect()->to('/counselor/dashboard');
+                return redirect()->to('/admin/dashboard');
             } else {
                 session()->destroy();
                 return redirect()->to('/admin/login');
             }
         }
+
+        // ── AUTO-LOGIN VIA TRUSTED DEVICE COOKIE ──
+        if (isset($_COOKIE['admin_trusted_device'])) {
+            $cookieData = base64_decode($_COOKIE['admin_trusted_device']);
+            if (strpos($cookieData, ':') !== false) {
+                list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
+                $db = \Config\Database::connect();
+                $user = $db->table('users')->where('id', $cookieUserId)->whereIn('role', [1, 2])->get()->getRowArray();
+                
+                if ($user && password_verify($cookieToken, $user['remember_token'])) {
+                    $roleNames = [1 => 'counselor', 2 => 'super_admin'];
+                    session()->regenerate();
+                    session()->set([
+                        'user_id'    => $user['id'],
+                        'name'       => $user['name'],
+                        'role'       => (int) $user['role'],
+                        'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
+                        'isLoggedIn' => true,
+                    ]);
+                    return redirect()->to('/admin/dashboard');
+                }
+            }
+        }
+
         return view('admin_login');
     }
 
@@ -135,7 +159,7 @@ class AuthController extends BaseController
                             'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
                             'isLoggedIn' => true,
                         ]);
-                        return redirect()->to('/counselor/dashboard');
+                        return redirect()->to('/admin/dashboard');
                     }
                 }
             }
@@ -257,7 +281,7 @@ class AuthController extends BaseController
             // Clear temporary OTP tokens
             session()->remove(['otp', 'otp_expires', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
 
-            return redirect()->to('/counselor/dashboard');
+            return redirect()->to('/admin/dashboard');
         }
 
         return redirect()->back()->with('error', 'Invalid verification code.');

@@ -360,7 +360,7 @@
             </div>
             
             <!-- Table Container -->
-            <form action="<?= base_url('counselor/vent/delete-multiple') ?>" method="POST" id="bulkDeleteVentsForm" class="overflow-x-auto custom-scrollbar flex flex-col">
+            <form action="<?= base_url('admin/vent/delete-multiple') ?>" method="POST" id="bulkDeleteVentsForm" class="overflow-x-auto custom-scrollbar flex flex-col">
                 <div class="hidden"><?= csrf_field() ?></div>
                 <div class="px-6 py-2 flex justify-end bg-white">
                     <button type="submit" onclick="return confirm('Archive selected vents?');" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents hidden">
@@ -412,7 +412,7 @@
                 </div>
             </div>
             
-            <form action="<?= base_url('counselor/incident/delete-multiple') ?>" method="POST" id="bulkDeleteIncidentsForm" class="overflow-x-auto custom-scrollbar flex flex-col">
+            <form action="<?= base_url('admin/incident/delete-multiple') ?>" method="POST" id="bulkDeleteIncidentsForm" class="overflow-x-auto custom-scrollbar flex flex-col">
                 <div class="hidden"><?= csrf_field() ?></div>
                 <div class="px-6 py-2 flex justify-end bg-white">
                     <button type="submit" onclick="return confirm('Archive selected incident reports?');" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents hidden">
@@ -542,7 +542,7 @@
 
     <!-- AJAX Logic & Chart Rendering -->
     <script>
-        const API_URL = "<?= base_url('counselor/api/vents') ?>";
+        const API_URL = "<?= base_url('admin/api/vents') ?>";
         let pieChart, barChart;
         let previousVentsDataString = "";
         let isFirstLoadVents = true;
@@ -699,11 +699,11 @@
             let form = document.getElementById('bulkDeleteVentsForm');
             let btn = form.querySelector('.delete-btn-vents');
             if (isArchived) {
-                form.action = "<?= base_url('counselor/vent/restore-multiple') ?>";
+                form.action = "<?= base_url('admin/vent/restore-multiple') ?>";
                 btn.innerHTML = "⟲ Restore Selected";
                 btn.className = "text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg border border-blue-200 transition-colors shadow-sm delete-btn-vents " + (btn.classList.contains('hidden') ? 'hidden' : '');
             } else {
-                form.action = "<?= base_url('counselor/vent/delete-multiple') ?>";
+                form.action = "<?= base_url('admin/vent/delete-multiple') ?>";
                 btn.innerHTML = "📦 Archive Selected";
                 btn.className = "text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents " + (btn.classList.contains('hidden') ? 'hidden' : '');
             }
@@ -717,11 +717,11 @@
             let form = document.getElementById('bulkDeleteIncidentsForm');
             let btn = form.querySelector('.delete-btn-incidents');
             if (isArchived) {
-                form.action = "<?= base_url('counselor/incident/restore-multiple') ?>";
+                form.action = "<?= base_url('admin/incident/restore-multiple') ?>";
                 btn.innerHTML = "⟲ Restore Selected";
                 btn.className = "text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg border border-blue-200 transition-colors shadow-sm delete-btn-incidents " + (btn.classList.contains('hidden') ? 'hidden' : '');
             } else {
-                form.action = "<?= base_url('counselor/incident/delete-multiple') ?>";
+                form.action = "<?= base_url('admin/incident/delete-multiple') ?>";
                 btn.innerHTML = "📦 Archive Selected";
                 btn.className = "text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents " + (btn.classList.contains('hidden') ? 'hidden' : '');
             }
@@ -831,7 +831,7 @@
                             </td>
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
                                 ${!isResolved && !showArchivedVents ? `
-                                    <form action="<?= base_url('counselor/vent/resolve/') ?>${vent.id}" method="POST" class="block w-full mb-1">
+                                    <form action="<?= base_url('admin/vent/resolve/') ?>${vent.id}" method="POST" class="block w-full mb-1">
                                         <button type="submit" class="w-full text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-md transition-colors">
                                             Mark Resolved
                                         </button>
@@ -844,13 +844,13 @@
                                 ` : '')}
                                 
                                 ${showArchivedVents ? `
-                                <form action="<?= base_url('counselor/vent/restore/') ?>${vent.id}" method="POST" class="block w-full">
+                                <form action="<?= base_url('admin/vent/restore/') ?>${vent.id}" method="POST" class="block w-full">
                                     <button type="submit" onclick="return confirm('Restore this vent to the active dashboard?');" class="w-full text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-md transition-colors">
                                         ⟲ Unarchive
                                     </button>
                                 </form>
                                 ` : `
-                                <form action="<?= base_url('counselor/vent/delete/') ?>${vent.id}" method="POST" class="block w-full">
+                                <form action="<?= base_url('admin/vent/delete/') ?>${vent.id}" method="POST" class="block w-full">
                                     <button type="submit" onclick="return confirm('Archive this vent?');" class="w-full text-xs font-semibold text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-md transition-colors">
                                         Archive
                                     </button>
@@ -879,7 +879,7 @@
         }
 
         // Incident Reports Polling
-        const INCIDENTS_API_URL = "<?= base_url('counselor/api/incidents') ?>";
+        const INCIDENTS_API_URL = "<?= base_url('admin/api/incidents') ?>";
         let previousIncidentsDataString = "";
 
         function fetchLiveIncidents() {
@@ -952,12 +952,12 @@
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
                                 <div class="flex flex-col gap-2 min-w-[140px]">
                                 ${isPending && !showArchivedIncidents ? `
-                                    <form action="<?= base_url('counselor/incident/verify/') ?>${incident.id}" method="POST">
+                                    <form action="<?= base_url('admin/incident/verify/') ?>${incident.id}" method="POST">
                                         <button type="submit" onclick="return confirm('VERIFY this report and send automated SMS & Email alerts to parents?');" class="w-full text-xs font-bold text-white bg-[#0B5E2E] hover:bg-[#0F6A34] px-3 py-2.5 rounded-lg transition-colors shadow-sm">
                                             ✓ Verify & Alert Parents
                                         </button>
                                     </form>
-                                    <form action="<?= base_url('counselor/incident/reject/') ?>${incident.id}" method="POST">
+                                    <form action="<?= base_url('admin/incident/reject/') ?>${incident.id}" method="POST">
                                         <button type="submit" onclick="return confirm('REJECT this report as fake/unverified? No parent alerts will be sent.');" class="w-full text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-2 rounded-lg transition-colors border border-red-200">
                                             ✗ Reject (Fake)
                                         </button>
@@ -968,7 +968,7 @@
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                         Alerts Sent
                                     </span>
-                                    <form action="<?= base_url('counselor/incident/undo/') ?>${incident.id}" method="POST">
+                                    <form action="<?= base_url('admin/incident/undo/') ?>${incident.id}" method="POST">
                                         <button type="submit" onclick="return confirm('Undo verification and reset to Pending Review? (Note: alerts already sent cannot be unsent)');" class="w-full text-[10px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
                                             ↩ Undo (Nagkamali?)
                                         </button>
@@ -978,7 +978,7 @@
                                     <span class="text-xs font-semibold px-3 py-2 rounded-lg text-red-500 bg-red-50 border border-red-200 flex items-center justify-center gap-1 w-full">
                                         No Alerts Sent
                                     </span>
-                                    <form action="<?= base_url('counselor/incident/undo/') ?>${incident.id}" method="POST">
+                                    <form action="<?= base_url('admin/incident/undo/') ?>${incident.id}" method="POST">
                                         <button type="submit" onclick="return confirm('Undo rejection and reset to Pending Review so you can re-evaluate?');" class="w-full text-[10px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
                                             ↩ Undo (Nagkamali?)
                                         </button>
@@ -994,13 +994,13 @@
                                 <hr class="border-gray-200 my-0.5">
                                 
                                 ${showArchivedIncidents ? `
-                                <form action="<?= base_url('counselor/incident/restore/') ?>${incident.id}" method="POST">
+                                <form action="<?= base_url('admin/incident/restore/') ?>${incident.id}" method="POST">
                                     <button type="submit" onclick="return confirm('Restore this incident report to the active dashboard?');" class="w-full text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors">
                                         ⟲ Unarchive
                                     </button>
                                 </form>
                                 ` : `
-                                <form action="<?= base_url('counselor/incident/delete/') ?>${incident.id}" method="POST">
+                                <form action="<?= base_url('admin/incident/delete/') ?>${incident.id}" method="POST">
                                     <button type="submit" onclick="return confirm('Archive this incident report?');" class="w-full text-xs font-semibold text-gray-500 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-colors">
                                         Archive
                                     </button>
@@ -1027,7 +1027,7 @@
         }
 
         // Alert Logs Polling
-        const ALERTS_API_URL = "<?= base_url('counselor/api/alerts') ?>";
+        const ALERTS_API_URL = "<?= base_url('admin/api/alerts') ?>";
         let previousAlertsDataString = "";
 
         function fetchAlertLogs() {

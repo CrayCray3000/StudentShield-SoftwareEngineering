@@ -100,7 +100,7 @@
         
         document.getElementById('spCriticalBadge').classList.add('hidden');
 
-        const PROFILE_API_BASE = "<?= base_url('counselor/api/student-profile') ?>";
+        const PROFILE_API_BASE = "<?= base_url('admin/api/student-profile') ?>";
         fetch(`${PROFILE_API_BASE}/${userId}`)
             .then(res => {
                 if (!res.ok) {

@@ -10,7 +10,7 @@ class UserController extends BaseController
     public function index()
     {
         if ((int) session()->get('role') !== 2) {
-            return redirect()->to('/counselor/dashboard')->with('error', 'Access denied.');
+            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
         }
 
         $db = \Config\Database::connect();
@@ -29,7 +29,7 @@ class UserController extends BaseController
     public function create()
     {
         if ((int) session()->get('role') !== 2) {
-            return redirect()->to('/counselor/dashboard')->with('error', 'Access denied.');
+            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
         }
 
         $db = \Config\Database::connect();
@@ -101,7 +101,7 @@ class UserController extends BaseController
     public function update($id)
     {
         if ((int) session()->get('role') !== 2) {
-            return redirect()->to('/counselor/dashboard')->with('error', 'Access denied.');
+            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
         }
 
         $db = \Config\Database::connect();
@@ -151,7 +151,7 @@ class UserController extends BaseController
     public function delete($id)
     {
         if ((int) session()->get('role') !== 2) {
-            return redirect()->to('/counselor/dashboard')->with('error', 'Access denied.');
+            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
         }
 
         if ($id == session()->get('user_id')) {

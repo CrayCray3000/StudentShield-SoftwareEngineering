@@ -106,7 +106,7 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         $db->table('vent_logs')->where('id', $id)->update(['status' => 'Resolved']);
         $this->logAudit('RESOLVE', 'vent', (int)$id);
-        return redirect()->to('/counselor/dashboard')->with('message', "Vent Entry #$id resolved.");
+        return redirect()->to('/admin/dashboard')->with('message', "Vent Entry #$id resolved.");
     }
 
     public function deleteVent($id)
@@ -115,7 +115,7 @@ class AdminController extends BaseController
         // Soft Delete: set deleted_at timestamp instead of permanent removal
         $db->table('vent_logs')->where('id', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
         $this->logAudit('SOFT_DELETE', 'vent', (int)$id);
-        return redirect()->to('/counselor/dashboard')->with('message', "Vent Entry #$id archived (soft-deleted).");
+        return redirect()->to('/admin/dashboard')->with('message', "Vent Entry #$id archived (soft-deleted).");
     }
 
     public function deleteMultipleVents()
@@ -128,9 +128,9 @@ class AdminController extends BaseController
             foreach ($ids as $id) {
                 $this->logAudit('BULK_SOFT_DELETE', 'vent', (int)$id);
             }
-            return redirect()->to('/counselor/dashboard')->with('message', count($ids) . " Vents archived (soft-deleted).");
+            return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Vents archived (soft-deleted).");
         }
-        return redirect()->to('/counselor/dashboard')->with('error', "No vents selected for deletion.");
+        return redirect()->to('/admin/dashboard')->with('error', "No vents selected for deletion.");
     }
     
     public function restoreVent($id)
@@ -138,7 +138,7 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         $db->table('vent_logs')->where('id', $id)->update(['deleted_at' => null]);
         $this->logAudit('RESTORE', 'vent', (int)$id);
-        return redirect()->to('/counselor/dashboard')->with('message', "Vent Entry #$id unarchived and restored.");
+        return redirect()->to('/admin/dashboard')->with('message', "Vent Entry #$id unarchived and restored.");
     }
 
     public function restoreMultipleVents()
@@ -150,9 +150,9 @@ class AdminController extends BaseController
             foreach ($ids as $id) {
                 $this->logAudit('BULK_RESTORE', 'vent', (int)$id);
             }
-            return redirect()->to('/counselor/dashboard')->with('message', count($ids) . " Vents unarchived and restored.");
+            return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Vents unarchived and restored.");
         }
-        return redirect()->to('/counselor/dashboard')->with('error', "No vents selected for restoration.");
+        return redirect()->to('/admin/dashboard')->with('error', "No vents selected for restoration.");
     }
     
     public function fetchIncidents()
@@ -206,7 +206,7 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update(['status' => 'resolved']);
         $this->logAudit('RESOLVE', 'incident', (int)$id);
-        return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id resolved.");
+        return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id resolved.");
     }
 
     /**
@@ -231,7 +231,7 @@ class AdminController extends BaseController
         // Fetch the full report record
         $report = $db->table('bully_reports')->where('id', $id)->get()->getRow();
         if (!$report) {
-            return redirect()->to('/counselor/dashboard')->with('error', "Report #$id not found.");
+            return redirect()->to('/admin/dashboard')->with('error', "Report #$id not found.");
         }
 
         // --- Execute Automated Parent SMS & Email Blast (Stage 2) ---
@@ -256,7 +256,7 @@ class AdminController extends BaseController
             }
         }
 
-        return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id VERIFIED. Automated SMS & Email alerts have been sent to parents.");
+        return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id VERIFIED. Automated SMS & Email alerts have been sent to parents.");
     }
 
     /**
@@ -270,7 +270,7 @@ class AdminController extends BaseController
             'updated_at' => date('Y-m-d H:i:s')
         ]);
         $this->logAudit('REJECT_FAKE', 'incident', (int)$id);
-        return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id marked as unverified/fake. No parent alerts were sent.");
+        return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id marked as unverified/fake. No parent alerts were sent.");
     }
 
     /**
@@ -285,7 +285,7 @@ class AdminController extends BaseController
             'updated_at' => date('Y-m-d H:i:s')
         ]);
         $this->logAudit('UNDO_TO_PENDING', 'incident', (int)$id);
-        return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id has been reset to Pending Review.");
+        return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id has been reset to Pending Review.");
     }
 
     private function sendLocalSms($phone, $message)
@@ -348,7 +348,7 @@ class AdminController extends BaseController
         // Soft Delete
         $db->table('bully_reports')->where('id', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
         $this->logAudit('SOFT_DELETE', 'incident', (int)$id);
-        return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id archived (soft-deleted).");
+        return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id archived (soft-deleted).");
     }
 
     public function deleteMultipleIncidents()
@@ -361,9 +361,9 @@ class AdminController extends BaseController
             foreach ($ids as $id) {
                 $this->logAudit('BULK_SOFT_DELETE', 'incident', (int)$id);
             }
-            return redirect()->to('/counselor/dashboard')->with('message', count($ids) . " Incident Reports archived (soft-deleted).");
+            return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Incident Reports archived (soft-deleted).");
         }
-        return redirect()->to('/counselor/dashboard')->with('error', "No incidents selected for deletion.");
+        return redirect()->to('/admin/dashboard')->with('error', "No incidents selected for deletion.");
     }
     
     public function restoreIncident($id)
@@ -371,7 +371,7 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update(['deleted_at' => null]);
         $this->logAudit('RESTORE', 'incident', (int)$id);
-        return redirect()->to('/counselor/dashboard')->with('message', "Incident Report #$id unarchived and restored.");
+        return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id unarchived and restored.");
     }
 
     public function restoreMultipleIncidents()
@@ -383,9 +383,9 @@ class AdminController extends BaseController
             foreach ($ids as $id) {
                 $this->logAudit('BULK_RESTORE', 'incident', (int)$id);
             }
-            return redirect()->to('/counselor/dashboard')->with('message', count($ids) . " Incident Reports unarchived and restored.");
+            return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Incident Reports unarchived and restored.");
         }
-        return redirect()->to('/counselor/dashboard')->with('error', "No incidents selected for restoration.");
+        return redirect()->to('/admin/dashboard')->with('error', "No incidents selected for restoration.");
     }
     
     public function fetchAlertLogs()
