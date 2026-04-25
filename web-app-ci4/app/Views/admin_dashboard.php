@@ -360,10 +360,9 @@
             </div>
             
             <!-- Table Container -->
-            <form action="<?= base_url('admin/vent/delete-multiple') ?>" method="POST" id="bulkDeleteVentsForm" class="overflow-x-auto custom-scrollbar flex flex-col">
-                <div class="hidden"><?= csrf_field() ?></div>
+            <div class="overflow-x-auto custom-scrollbar flex flex-col">
                 <div class="px-6 py-2 flex justify-end bg-white">
-                    <button type="submit" onclick="return confirm('Archive selected vents?');" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents hidden">
+                    <button type="button" onclick="submitBulkDeleteVents()" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents hidden">
                         📦 Archive Selected
                     </button>
                 </div>
@@ -392,7 +391,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </form>
+            </div>
         </div>
         
         <!-- Bullying Incidents Table -->
@@ -412,10 +411,9 @@
                 </div>
             </div>
             
-            <form action="<?= base_url('admin/incident/delete-multiple') ?>" method="POST" id="bulkDeleteIncidentsForm" class="overflow-x-auto custom-scrollbar flex flex-col">
-                <div class="hidden"><?= csrf_field() ?></div>
+            <div class="overflow-x-auto custom-scrollbar flex flex-col">
                 <div class="px-6 py-2 flex justify-end bg-white">
-                    <button type="submit" onclick="return confirm('Archive selected incident reports?');" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents hidden">
+                    <button type="button" onclick="submitBulkDeleteIncidents()" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents hidden">
                         📦 Archive Selected
                     </button>
                 </div>
@@ -440,7 +438,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </form>
+            </div>
         </div>
 
         <!-- Alert Logs Monitor -->
@@ -1270,8 +1268,49 @@
             updateClock();
             setInterval(updateClock, 1000);
         });
+
+        function submitBulkDeleteVents() {
+            if (!confirm('Archive selected vents?')) return;
+            const checkboxes = document.querySelectorAll('.vent-checkbox:checked');
+            if (checkboxes.length === 0) return;
+            const container = document.getElementById('bulkDeleteVentsInputs');
+            container.innerHTML = '';
+            checkboxes.forEach(cb => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'vent_ids[]';
+                input.value = cb.value;
+                container.appendChild(input);
+            });
+            document.getElementById('bulkDeleteVentsForm').submit();
+        }
+
+        function submitBulkDeleteIncidents() {
+            if (!confirm('Archive selected incident reports?')) return;
+            const checkboxes = document.querySelectorAll('.incident-checkbox:checked');
+            if (checkboxes.length === 0) return;
+            const container = document.getElementById('bulkDeleteIncidentsInputs');
+            container.innerHTML = '';
+            checkboxes.forEach(cb => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'incident_ids[]';
+                input.value = cb.value;
+                container.appendChild(input);
+            });
+            document.getElementById('bulkDeleteIncidentsForm').submit();
+        }
     </script>
 
+    <!-- Hidden Bulk Forms -->
+    <form action="<?= base_url('admin/vent/delete-multiple') ?>" method="POST" id="bulkDeleteVentsForm" class="hidden">
+        <?= csrf_field() ?>
+        <div id="bulkDeleteVentsInputs"></div>
+    </form>
+    <form action="<?= base_url('admin/incident/delete-multiple') ?>" method="POST" id="bulkDeleteIncidentsForm" class="hidden">
+        <?= csrf_field() ?>
+        <div id="bulkDeleteIncidentsInputs"></div>
+    </form>
     <?= view('reports/modals/student_profile') ?>
 </body>
 </html>
