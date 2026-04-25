@@ -477,57 +477,58 @@
             </div>
         </div>
 
-        <!-- Universal Detail Modal -->
-        <div id="detailModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-8">
-            <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" id="detailBackdrop" onclick="closeDetailModal()"></div>
-            <div class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[calc(100vh-4rem)] border border-[#e5ebe5]">
-                <div class="flex justify-between items-start mb-4 shrink-0">
-                    <div>
-                        <div id="modalBadge" class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border"></div>
-                        <h2 id="modalTitle" class="text-2xl font-heading font-extrabold text-[#0B5E2E] tracking-tight">Report Details</h2>
-                    </div>
-                    <button onclick="closeDetailModal()" class="text-gray-500 hover:text-red-500 transition-colors p-2 bg-gray-50 hover:bg-red-50 rounded-full">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
-                
-                <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-200 shrink-0">
-                    <div>
-                        <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Involved Party / Sender</p>
-                        <p id="modalSender" class="text-sm font-semibold text-gray-800">--</p>
-                    </div>
-                    <div>
-                        <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Timestamp</p>
-                        <p id="modalTime" class="text-sm font-semibold text-gray-800">--</p>
-                    </div>
-                </div>
+    </main>
 
-                <div class="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-2 pb-4">
-                    <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Full Context Payload</p>
-                    <div id="modalContent" class="text-[16px] leading-[1.85] tracking-wide text-gray-800 bg-[#f8faf6] border border-[#e5ebe5] shadow-inner p-7 rounded-2xl whitespace-pre-wrap font-medium">
-                        --
-                    </div>
-                    <div id="modalEvidenceContainer" class="mt-4 hidden">
-                        <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Attached Evidence</p>
-                        
-                        <div id="evidencePreviewArea" class="mt-2 mb-3 bg-gray-50 rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
-                            <img id="evidenceImagePreview" src="" alt="Evidence" class="hidden max-w-full max-h-[250px] object-contain" />
-                            <video id="evidenceVideoPreview" src="" controls class="hidden max-w-full max-h-[250px]"></video>
-                        </div>
-
-                        <a id="modalEvidenceLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition-colors font-semibold text-sm w-full justify-center">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                            Open in New Tab
-                        </a>
-                    </div>
+    <!-- Universal Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-8">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" id="detailBackdrop" onclick="closeDetailModal()"></div>
+        <div class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[calc(100vh-4rem)] border border-[#e5ebe5]">
+            <div class="flex justify-between items-start mb-4 shrink-0">
+                <div>
+                    <div id="modalBadge" class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border"></div>
+                    <h2 id="modalTitle" class="text-2xl font-heading font-extrabold text-[#0B5E2E] tracking-tight">Report Details</h2>
                 </div>
-
-                <div class="mt-6 pt-4 border-t border-gray-200 flex justify-end shrink-0">
-                    <button onclick="closeDetailModal()" class="px-6 py-3 bg-[#0B5E2E] hover:bg-[#0F6A34] text-white text-sm font-bold rounded-xl transition-colors shadow-sm">Confirm & Close</button>
+                <button onclick="closeDetailModal()" class="text-gray-500 hover:text-red-500 transition-colors p-2 bg-gray-50 hover:bg-red-50 rounded-full">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-200 shrink-0">
+                <div>
+                    <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Involved Party / Sender</p>
+                    <p id="modalSender" class="text-sm font-semibold text-gray-800">--</p>
+                </div>
+                <div>
+                    <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Timestamp</p>
+                    <p id="modalTime" class="text-sm font-semibold text-gray-800">--</p>
                 </div>
             </div>
+
+            <div class="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-2 pb-4">
+                <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Full Context Payload</p>
+                <div id="modalContent" class="text-[16px] leading-[1.85] tracking-wide text-gray-800 bg-[#f8faf6] border border-[#e5ebe5] shadow-inner p-7 rounded-2xl whitespace-pre-wrap font-medium">
+                    --
+                </div>
+                <div id="modalEvidenceContainer" class="mt-4 hidden">
+                    <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Attached Evidence</p>
+                    
+                    <div id="evidencePreviewArea" class="mt-2 mb-3 bg-gray-50 rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
+                        <img id="evidenceImagePreview" src="" alt="Evidence" class="hidden max-w-full max-h-[250px] object-contain" />
+                        <video id="evidenceVideoPreview" src="" controls class="hidden max-w-full max-h-[250px]"></video>
+                    </div>
+
+                    <a id="modalEvidenceLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition-colors font-semibold text-sm w-full justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        Open in New Tab
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-200 flex justify-end shrink-0">
+                <button onclick="closeDetailModal()" class="px-6 py-3 bg-[#0B5E2E] hover:bg-[#0F6A34] text-white text-sm font-bold rounded-xl transition-colors shadow-sm">Confirm & Close</button>
+            </div>
         </div>
-    </main>
+    </div>
 
     <!-- Footer -->
     <footer class="footer-bar mt-auto">
