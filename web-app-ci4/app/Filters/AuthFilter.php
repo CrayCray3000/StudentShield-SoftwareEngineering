@@ -79,8 +79,8 @@ class AuthFilter implements FilterInterface
         $role = session()->get('role');
         $uriStr = $request->getUri()->getPath();
 
-        // Prevent Students from accessing Counselor Dashboards
-        if ($role == 0 && strpos($uriStr, 'counselor') !== false) {
+        // Prevent Students from accessing Admin/Counselor Dashboards
+        if ($role == 0 && (strpos($uriStr, 'admin') !== false || strpos($uriStr, 'counselor') !== false)) {
             return redirect()->to('/student/vent')->with('error', 'Unauthorized access. You are a student.');
         }
 

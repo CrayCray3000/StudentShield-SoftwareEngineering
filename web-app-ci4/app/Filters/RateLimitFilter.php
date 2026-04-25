@@ -13,8 +13,8 @@ use CodeIgniter\Filters\FilterInterface;
  */
 class RateLimitFilter implements FilterInterface
 {
-    private const MAX_ATTEMPTS = 50;
-    private const LOCKOUT_SECONDS = 60; // 1 minute (temporarily raised for dev)
+    private const MAX_ATTEMPTS = 10;
+    private const LOCKOUT_SECONDS = 300; // 5 minutes
     private const STORAGE_DIR = WRITEPATH . 'rate_limits/';
 
     public function before(RequestInterface $request, $arguments = null)
