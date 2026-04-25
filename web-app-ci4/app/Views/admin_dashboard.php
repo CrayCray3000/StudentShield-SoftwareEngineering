@@ -513,8 +513,8 @@
                         <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Attached Evidence</p>
                         
                         <div id="evidencePreviewArea" class="mt-2 mb-3 bg-gray-50 rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
-                            <img id="evidenceImagePreview" src="" alt="Evidence" class="hidden max-w-full max-h-[400px] object-contain" />
-                            <video id="evidenceVideoPreview" src="" controls class="hidden max-w-full max-h-[400px]"></video>
+                            <img id="evidenceImagePreview" src="" alt="Evidence" class="hidden max-w-full max-h-[250px] object-contain" />
+                            <video id="evidenceVideoPreview" src="" controls class="hidden max-w-full max-h-[250px]"></video>
                         </div>
 
                         <a id="modalEvidenceLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition-colors font-semibold text-sm w-full justify-center">
@@ -832,6 +832,7 @@
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
                                 ${!isResolved && !showArchivedVents ? `
                                     <form action="<?= base_url('admin/vent/resolve/') ?>${vent.id}" method="POST" class="block w-full mb-1">
+                                        <?= csrf_field() ?>
                                         <button type="submit" class="w-full text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-md transition-colors">
                                             Mark Resolved
                                         </button>
@@ -845,12 +846,14 @@
                                 
                                 ${showArchivedVents ? `
                                 <form action="<?= base_url('admin/vent/restore/') ?>${vent.id}" method="POST" class="block w-full">
+                                    <?= csrf_field() ?>
                                     <button type="submit" onclick="return confirm('Restore this vent to the active dashboard?');" class="w-full text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-md transition-colors">
                                         ⟲ Unarchive
                                     </button>
                                 </form>
                                 ` : `
                                 <form action="<?= base_url('admin/vent/delete/') ?>${vent.id}" method="POST" class="block w-full">
+                                    <?= csrf_field() ?>
                                     <button type="submit" onclick="return confirm('Archive this vent?');" class="w-full text-xs font-semibold text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-md transition-colors">
                                         Archive
                                     </button>
@@ -953,11 +956,13 @@
                                 <div class="flex flex-col gap-2 min-w-[140px]">
                                 ${isPending && !showArchivedIncidents ? `
                                     <form action="<?= base_url('admin/incident/verify/') ?>${incident.id}" method="POST">
+                                        <?= csrf_field() ?>
                                         <button type="submit" onclick="return confirm('VERIFY this report and send automated SMS & Email alerts to parents?');" class="w-full text-xs font-bold text-white bg-[#0B5E2E] hover:bg-[#0F6A34] px-3 py-2.5 rounded-lg transition-colors shadow-sm">
                                             ✓ Verify & Alert Parents
                                         </button>
                                     </form>
                                     <form action="<?= base_url('admin/incident/reject/') ?>${incident.id}" method="POST">
+                                        <?= csrf_field() ?>
                                         <button type="submit" onclick="return confirm('REJECT this report as fake/unverified? No parent alerts will be sent.');" class="w-full text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-2 rounded-lg transition-colors border border-red-200">
                                             ✗ Reject (Fake)
                                         </button>
@@ -969,6 +974,7 @@
                                         Alerts Sent
                                     </span>
                                     <form action="<?= base_url('admin/incident/undo/') ?>${incident.id}" method="POST">
+                                        <?= csrf_field() ?>
                                         <button type="submit" onclick="return confirm('Undo verification and reset to Pending Review? (Note: alerts already sent cannot be unsent)');" class="w-full text-[10px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
                                             ↩ Undo (Nagkamali?)
                                         </button>
@@ -979,6 +985,7 @@
                                         No Alerts Sent
                                     </span>
                                     <form action="<?= base_url('admin/incident/undo/') ?>${incident.id}" method="POST">
+                                        <?= csrf_field() ?>
                                         <button type="submit" onclick="return confirm('Undo rejection and reset to Pending Review so you can re-evaluate?');" class="w-full text-[10px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
                                             ↩ Undo (Nagkamali?)
                                         </button>
@@ -995,12 +1002,14 @@
                                 
                                 ${showArchivedIncidents ? `
                                 <form action="<?= base_url('admin/incident/restore/') ?>${incident.id}" method="POST">
+                                    <?= csrf_field() ?>
                                     <button type="submit" onclick="return confirm('Restore this incident report to the active dashboard?');" class="w-full text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors">
                                         ⟲ Unarchive
                                     </button>
                                 </form>
                                 ` : `
                                 <form action="<?= base_url('admin/incident/delete/') ?>${incident.id}" method="POST">
+                                    <?= csrf_field() ?>
                                     <button type="submit" onclick="return confirm('Archive this incident report?');" class="w-full text-xs font-semibold text-gray-500 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-colors">
                                         Archive
                                     </button>
