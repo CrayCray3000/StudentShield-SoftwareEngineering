@@ -480,9 +480,9 @@
     </main>
 
     <!-- Universal Detail Modal -->
-    <div id="detailModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-8">
+    <div id="detailModal" class="fixed inset-0 hidden items-center justify-center p-4 sm:p-8" style="z-index: 99999;">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" id="detailBackdrop" onclick="closeDetailModal()"></div>
-        <div class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[calc(100vh-4rem)] border border-[#e5ebe5]">
+        <div class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[75vh] border border-[#e5ebe5]">
             <div class="flex justify-between items-start mb-4 shrink-0">
                 <div>
                     <div id="modalBadge" class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border"></div>
