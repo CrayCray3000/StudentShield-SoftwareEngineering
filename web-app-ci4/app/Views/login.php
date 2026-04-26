@@ -175,7 +175,7 @@
         }
     </style>
 </head>
-<body class="bg-student min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 py-4 lg:py-8 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
+<body class="bg-student h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden" onmousemove="updateSpotlight(event)">
 
             <!-- Premium Fast-Load Splash Screen -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-student backdrop-blur-xl transition-all duration-700 ease-in-out">
@@ -200,7 +200,7 @@
             </div>
         </div>
     </div>
-    </div>
+
 
     <!-- Interactive Spotlight Overlay -->
     <div id="spotlight-overlay" class="spotlight absolute inset-0 pointer-events-none z-10"></div>

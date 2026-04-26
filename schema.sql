@@ -5,32 +5,25 @@ CREATE TABLE IF NOT EXISTS users (
     student_id VARCHAR(50) UNIQUE,
     name VARCHAR(255) NOT NULL,
     passcode VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
     role TINYINT(1) DEFAULT 0 COMMENT '0=Student, 1=Counselor',
     parent_phone VARCHAR(50),
     parent_email VARCHAR(255),
     section VARCHAR(100),
-    adviser_name VARCHAR(255)
-);
-
-CREATE TABLE IF NOT EXISTS student_profiles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    grade_level VARCHAR(50),
-    assigned_counselor_id INT,
-    parent_contact_number VARCHAR(50),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (assigned_counselor_id) REFERENCES users(id) ON DELETE SET NULL
+    adviser_name VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS vent_logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     raw_text TEXT NOT NULL,
-    emotions VARCHAR(255) NULL,
     risk_percent FLOAT,
     risk_level VARCHAR(50),
     status VARCHAR(50) DEFAULT 'Pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL DEFAULT NULL,
     deleted_at DATETIME NULL DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -42,6 +35,7 @@ CREATE TABLE IF NOT EXISTS bully_reports (
     victim_student_id INT NULL,
     bully_student_id INT NULL,
     incident_details TEXT,
+    evidence_file VARCHAR(255),
     status VARCHAR(50) DEFAULT 'pending_review',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL DEFAULT NULL,
@@ -59,5 +53,17 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     entity_id INT NOT NULL,
     ip_address VARCHAR(45) NULL,
     user_agent VARCHAR(255) NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS sms_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    parent_number VARCHAR(50) NOT NULL,
+    alert_type VARCHAR(50) NOT NULL,
+    message_content TEXT NOT NULL,
+    sent_status VARCHAR(50) DEFAULT 'pending',
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
 );

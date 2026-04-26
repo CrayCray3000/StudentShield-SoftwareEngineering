@@ -152,12 +152,7 @@
 
         .char-count { transition: color 0.2s ease; }
 
-        /* Helpline card */
-        .helpline-card {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.08);
-            backdrop-filter: blur(8px);
-        }
+
     </style>
 </head>
 <body class="text-gray-800 antialiased min-h-screen flex items-center justify-center p-0 relative overflow-x-hidden bg-white">
@@ -237,11 +232,7 @@
 
             <!-- Bottom — Helpline + Footer -->
             <div class="relative z-10 space-y-5 anim-3">
-                <div class="helpline-card rounded-xl p-4">
-                    <p class="text-white/80 text-[11px] font-semibold uppercase tracking-wider mb-1.5">Crisis Helpline</p>
-                    <p class="text-white/80 text-sm font-medium">National Mental Health Crisis Hotline</p>
-                    <p class="text-gold text-lg font-heading font-bold mt-1">0917-899-USAP (8727)</p>
-                </div>
+
                 <div class="border-t border-white/8 pt-4 flex items-center justify-between">
                     <p class="text-white/60 text-[11px]">© 2026 StudentShield · SVBSM</p>
                     <div class="flex items-center gap-1.5 text-white/60 text-[11px]">
