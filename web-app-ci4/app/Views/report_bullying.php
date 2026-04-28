@@ -253,7 +253,7 @@
                     <div class="relative group/input">
                         <input type="file" id="evidence_file" name="evidence_file" accept="image/*,video/*"
                                class="w-full px-4 sm:px-6 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[15px] font-medium file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold file:text-[#042E15] hover:file:bg-yellow-400 cursor-pointer">
-                        <p class="mt-2 text-xs text-white/50 ml-2">Max size: 500MB. Supported: JPG, PNG, HEIC, MP4, MOV, AVI, MKV, WEBM.</p>
+                        <p class="mt-2 text-xs text-white/50 ml-2">Max size: 10MB. Supported: JPG, PNG, HEIC, MP4, MOV, AVI, MKV, WEBM.</p>
                     </div>
                 </div>
 

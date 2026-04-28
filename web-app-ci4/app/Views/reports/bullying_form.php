@@ -391,7 +391,7 @@
                             <label class="block text-xs font-semibold text-gray-800 mb-2">Attach Evidence (Optional)</label>
                             <p class="text-[11px] text-gray-500 mb-2 flex items-center gap-1.5">
                                 <svg class="w-3 h-3 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                                Upload a photo or video (max 500MB — iPhone 4K supported)
+                                Upload a photo or video (max 10MB)
                             </p>
                             <input type="file" name="evidence_file" id="evidence_file" accept="image/*,video/*" class="w-full bg-white/80 border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all font-medium text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-calm-50 file:text-calm-700 hover:file:bg-calm-100">
                         </div>
