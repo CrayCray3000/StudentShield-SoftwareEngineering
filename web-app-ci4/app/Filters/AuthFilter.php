@@ -39,7 +39,12 @@ class AuthFilter implements FilterInterface
                 }
             }
 
-            if (isset($_COOKIE['admin_trusted_device'])) {
+            // Only auto-login from admin cookie when navigating to admin routes.
+            // This prevents the admin session from hijacking the student portal.
+            $uriPath = $request->getUri()->getPath();
+            $isAdminRoute = (strpos($uriPath, 'admin') !== false || strpos($uriPath, 'counselor') !== false);
+
+            if ($isAdminRoute && isset($_COOKIE['admin_trusted_device'])) {
                 $cookieData = base64_decode($_COOKIE['admin_trusted_device']);
                 if (strpos($cookieData, ':') !== false) {
                     list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
@@ -57,11 +62,10 @@ class AuthFilter implements FilterInterface
                             'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
                             'isLoggedIn' => true,
                         ]);
-                        $uriStr = $request->getUri()->getPath();
-                        if ($uriStr === 'admin/login' || $uriStr === 'admin/otp' || $uriStr === '/' || $uriStr === '') {
+                        if ($uriPath === 'admin/login' || $uriPath === 'admin/otp') {
                              return redirect()->to('/admin/dashboard');
                         }
-                        return; // Let them continue
+                        return; // Let them continue to their admin destination
                     }
                 }
             }

@@ -9,8 +9,10 @@ class AuthController extends BaseController
     {
         if (session()->get('isLoggedIn')) {
             $role = (int) session()->get('role');
+            // Only auto-redirect students who are already logged in.
+            // If an admin/counselor navigates here, let them see the student
+            // login page so they can switch accounts on the same device.
             if ($role === 0) return redirect()->to('/student/dashboard');
-            if ($role === 1 || $role === 2) return redirect()->to('/admin/dashboard');
         }
         return view('login');
     }
