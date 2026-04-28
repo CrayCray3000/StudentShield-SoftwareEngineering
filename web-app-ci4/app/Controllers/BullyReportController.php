@@ -40,10 +40,10 @@ class BullyReportController extends BaseController
         if ($evidenceFile && $evidenceFile->isValid() && !$evidenceFile->hasMoved()) {
             $rules = [
                 'evidence_file' => [
-                    'rules' => 'max_size[evidence_file,20480]|ext_in[evidence_file,jpg,jpeg,png,gif,webp,mp4,mov,avi,mkv]',
+                    'rules' => 'max_size[evidence_file,512000]|ext_in[evidence_file,jpg,jpeg,png,gif,webp,heic,heif,mp4,mov,avi,mkv,webm]',
                     'errors' => [
-                        'max_size' => 'The evidence file must not exceed 20MB.',
-                        'ext_in'   => 'Only images (JPG, PNG, GIF, WEBP) and videos (MP4, MOV, AVI, MKV) are allowed.'
+                        'max_size' => 'The evidence file must not exceed 500MB.',
+                        'ext_in'   => 'Only images (JPG, PNG, GIF, WEBP, HEIC) and videos (MP4, MOV, AVI, MKV, WEBM) are allowed.'
                     ]
                 ]
             ];
