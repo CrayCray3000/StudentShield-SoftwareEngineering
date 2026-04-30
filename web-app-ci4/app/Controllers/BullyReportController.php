@@ -62,7 +62,10 @@ class BullyReportController extends BaseController
         }
         
         // Loophole 3 Mitigation: Identity Traceability via Session
-        $userId = session()->get('user_id') ?? 1; 
+        $userId = session()->get('user_id'); 
+        if (!$userId) {
+            return redirect()->to('/login')->with('error', 'Authentication required. Please log in.');
+        }
 
         $db = \Config\Database::connect();
 
@@ -115,11 +118,11 @@ class BullyReportController extends BaseController
             if (empty($insertId)) {
                 $dbError = $db->error();
                 log_message('error', 'Insert returned no ID - DB error: ' . json_encode($dbError) . ' | Data keys: ' . json_encode(array_keys($reportData)));
-                return redirect()->back()->with('error', 'Database Error: Insert failed. ' . ($dbError['message'] ?? 'No insert ID returned.'));
+                return redirect()->back()->with('error', 'Submission failed due to a system error. Please try again.');
             }
         } catch (\Exception $e) {
             log_message('error', 'DB Exception: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Database Error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Submission failed due to a system error. Please try again.');
         }
 
         // --- Stage 1: Instant Counselor Alert (Report Intake) ---

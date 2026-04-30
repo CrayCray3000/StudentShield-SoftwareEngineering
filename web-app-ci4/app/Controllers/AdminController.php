@@ -25,14 +25,7 @@ class AdminController extends BaseController
         parent::initController($request, $response, $logger);
         helper('cookie');
         
-        // Auto-migrate deleted_at column to prevent 500 errors on remote host
-        $db = \Config\Database::connect();
-        if (!$db->fieldExists('deleted_at', 'vent_logs')) {
-            $db->query("ALTER TABLE vent_logs ADD deleted_at DATETIME NULL DEFAULT NULL");
-        }
-        if (!$db->fieldExists('deleted_at', 'bully_reports')) {
-            $db->query("ALTER TABLE bully_reports ADD deleted_at DATETIME NULL DEFAULT NULL");
-        }
+        // Auto-migrate logic removed: schema alterations should be handled by CI4 Migrations.
     }
     public function dashboard()
     {
