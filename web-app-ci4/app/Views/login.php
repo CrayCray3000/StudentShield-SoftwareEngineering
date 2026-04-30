@@ -100,10 +100,12 @@
         .glow-blob {
             position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.15; z-index: 0;
             animation: pulseGlow 10s ease-in-out infinite alternate; pointer-events: none;
+            will-change: transform, opacity;
+            transform: translateZ(0);
         }
         @keyframes pulseGlow {
-            0% { opacity: 0.1; transform: scale(0.9) translate(0,0); }
-            100% { opacity: 0.2; transform: scale(1.1) translate(-20px, 20px); }
+            0% { opacity: 0.1; transform: scale(0.9) translate(0,0) translateZ(0); }
+            100% { opacity: 0.2; transform: scale(1.1) translate(-20px, 20px) translateZ(0); }
         }
         
         @keyframes fadeInUp {
@@ -175,7 +177,7 @@
         }
     </style>
 </head>
-<body class="bg-student h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden" onmousemove="updateSpotlight(event)">
+<body class="bg-student min-h-[100dvh] w-full flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden" onmousemove="updateSpotlight(event)">
 
             <!-- Premium Fast-Load Splash Screen -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-student backdrop-blur-xl transition-all duration-700 ease-in-out">
@@ -202,14 +204,18 @@
     </div>
 
 
-    <!-- Interactive Spotlight Overlay -->
-    <div id="spotlight-overlay" class="spotlight absolute inset-0 pointer-events-none z-10"></div>
+    <!-- Background Effects Container (Ensures no mobile scrolling) -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <!-- Interactive Spotlight Overlay -->
+        <div id="spotlight-overlay" class="spotlight absolute inset-0 z-10"></div>
 
-    <!-- Deep Ambient Background -->
-    <div class="bg-grid"></div>
-    <!-- Adjusted blob positioning to prevent horizontal overflow constraints on mobile -->
-    <div class="glow-blob bg-gold w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] top-[-5%] right-[-10%] mix-blend-screen"></div>
-    <div class="glow-blob bg-primary-light w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bottom-[-10%] left-[-15%] mix-blend-screen" style="animation-delay: -5s; animation-direction: alternate-reverse;"></div>
+        <!-- Deep Ambient Background -->
+        <div class="bg-grid absolute inset-0"></div>
+        
+        <!-- Adjusted blob positioning to prevent horizontal overflow constraints on mobile -->
+        <div class="glow-blob bg-gold w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] top-[-5%] right-[-10%] mix-blend-screen"></div>
+        <div class="glow-blob bg-primary-light w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bottom-[-10%] left-[-15%] mix-blend-screen" style="animation-delay: -5s; animation-direction: alternate-reverse;"></div>
+    </div>
 
     <div class="w-full max-w-[480px] z-20 relative animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)] mt-4 sm:mt-0">
         
@@ -254,7 +260,7 @@
                             <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
                         </div>
                         <input type="text" name="name" id="name" required
-                               class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[15px] sm:text-[16px] font-bold outline-none"
+                               class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[16px] font-bold outline-none"
                                placeholder="Your registered name">
                     </div>
                 </div>
@@ -266,7 +272,7 @@
                             <i class="fas fa-lock text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
                         </div>
                         <input type="password" name="password" id="password" required
-                               class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[15px] sm:text-[16px] font-bold outline-none tracking-[0.1em]"
+                               class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[16px] font-bold outline-none tracking-[0.1em]"
                                placeholder="••••••••">
                     </div>
                 </div>
