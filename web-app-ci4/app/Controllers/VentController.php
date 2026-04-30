@@ -59,12 +59,24 @@ class VentController extends BaseController
         }
         else {
             log_message('error', 'ML Service Error (HTTP ' . $httpCode . '): ' . ($curlError ?: 'Invalid response: ' . $response));
+        }
 
-            // --- LOCAL KEYWORD FALLBACK (when ML service is offline) ---
-            $localResult = $this->localKeywordFallback($text);
+        // --- LOCAL KEYWORD FALLBACK (SAFETY NET OVERRIDE) ---
+        // Always run the local heuristic to catch severe threats (like Taglish slang) the ML might miss or under-score
+        $localResult = $this->localKeywordFallback($text);
+        
+        // Severity mapping for comparison
+        $severityLevels = ['LOW' => 1, 'MEDIUM' => 2, 'HIGH' => 3, 'CRITICAL' => 4];
+        
+        $currentSeverity = $severityLevels[$riskLevel] ?? 1;
+        $localSeverity = $severityLevels[$localResult['risk_level']] ?? 1;
+        
+        // Override if local heuristic detects a strictly higher risk level
+        if ($localSeverity > $currentSeverity) {
+            log_message('info', "Safety Net Override: Risk upgraded from {$riskLevel} to {$localResult['risk_level']} based on local keywords.");
             $riskLevel = $localResult['risk_level'];
-            $sentimentScore = $localResult['risk_percent'];
-            log_message('info', 'Local fallback used. Risk: ' . $riskLevel . ' (' . $sentimentScore . '%)');
+            // Adopt the higher score to reflect the increased risk severity
+            $sentimentScore = max($sentimentScore, $localResult['risk_percent']);
         }
 
         // --- 2. DATA PRIVACY SECURE ENCRYPTION ---
