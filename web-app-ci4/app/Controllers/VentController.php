@@ -385,8 +385,8 @@ class VentController extends BaseController
 
         // Gen-Z sarcasm check — before keyword scanning
         $sarcasticContext = false;
-        $jokeMarkers = ['haha', 'lol', 'lmao', 'char', 'charot', 'jk', 'joke lang', '😂', '💀', '🤣', 'eme', 'eme lang', 'dejk', 'charizz', 'chz'];
-        $academicContext = ['exam', 'test', 'quiz', 'math', 'homework', 'assignment', 'school', 'class', 'project'];
+        $jokeMarkers = ['haha', 'lol', 'lmao', 'char', 'charot', 'jk', 'joke lang', '😂', '💀', '🤣', 'eme', 'eme lang', 'dejk', 'charizz', 'chz', 'de joke', 'hehe', 'lmfao', 'biruan lang', 'nagbibiro', 'charot lang', 'char lang', 'joke lang naman', 'halfmeant', 'half meant', 'deadz', 'dedz', 'deds'];
+        $academicContext = ['exam', 'test', 'quiz', 'math', 'homework', 'assignment', 'school', 'class', 'project', 'thesis', 'defense', 'recit', 'plate', 'subject', 'module', 'prof', 'teacher', 'guro', 'output', 'board exam'];
 
         foreach ($jokeMarkers as $jm) {
             if (mb_strpos($lower, $jm) !== false) {
@@ -398,7 +398,21 @@ class VentController extends BaseController
         if (!$sarcasticContext) {
             foreach ($academicContext as $ac) {
                 if (mb_strpos($lower, $ac) !== false) {
-                    foreach (['kms', 'kill me', 'end me', 'wanna die', 'want to die'] as $casual) {
+                    foreach (['kms', 'kill me', 'end me', 'wanna die', 'want to die', 'magpakamatay', 'mamatay na ko'] as $casual) {
+                        if (mb_strpos($lower, $casual) !== false) {
+                            $sarcasticContext = true;
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+        // Trivial trigger neutralizer (traffic, boredom, food, weather)
+        if (!$sarcasticContext) {
+            $trivialContext = ['traffic', 'bored', 'boring', 'food', 'hungry', 'init', 'mainit', 'hot'];
+            foreach ($trivialContext as $tc) {
+                if (mb_strpos($lower, $tc) !== false) {
+                    foreach (['kms', 'kill me', 'wanna die', 'want to die', 'mamatay', 'magpakamatay'] as $casual) {
                         if (mb_strpos($lower, $casual) !== false) {
                             $sarcasticContext = true;
                             break 2;
@@ -413,7 +427,10 @@ class VentController extends BaseController
             'suicide', 'kill myself', 'cut myself', 'magpakamatay', 'laslas',
             'tatalon', 'bibigti', 'patayin sarili ko', 'magbibigti',
             'slit my wrist', 'self-harm', 'self harm', 'bigti', 'bitay',
-            'i wanna end this shit', 'i wanna end this na', 'sana kunin na ko ni lord', 'tapusin ko na buhay ko', 'sana matulog at di na magising'
+            'i wanna end this shit', 'i wanna end this na', 'sana kunin na ko ni lord', 'tapusin ko na buhay ko', 'sana matulog at di na magising',
+            'tatapusin ko na', 'bibitay', 'magbigti', 'lulunukin ko na lang',
+            'tumalon', 'lulundag', 'stab myself', 'overdose',
+            'unalive', 'kms', 'kayat kon matayen',
         ];
 
         // CRITICAL PASSIVE — Passive Ideation (Can be downgraded to MEDIUM if joking)
@@ -424,7 +441,16 @@ class VentController extends BaseController
             'sana di na lang ako pinanganak', 'wala nang pag-asa',
             'i wanna die', 'i want to die', 'end my life', 'hang myself',
             'wish i was never born', 'wish i could disappear',
-            'done with life', 'tired of living', 'gusto ko maglaho na lang', 'wala nang tutulong sakin'
+            'done with life', 'tired of living', 'gusto ko maglaho na lang', 'wala nang tutulong sakin',
+            'ayoko na sa mundong ito', 'di na worth it mabuhay',
+            'gusto ko na lang mawala ng tuluyan', 'para saan pa ako',
+            'bakit pa ako nabuhay', 'bakit pa ako narito',
+            'kung wala na ako mas maayos pa', 'may magbabago ba kung wala ako',
+            'sana kunin na ako', 'konti na lang susuko na ko',
+            'nasa tipping point na ko', 'hirap na hirap na ko mabuhay',
+            'di na ko lalaban pa', 'tapusin ko na',
+            'gilaay na jud ko sa tanan', 'gusto na ko mahunong',
+            'narigat unay ti riknak', 'mabannogakon ti panagbiag',
         ];
 
         // HIGH — Emotional Distress 
@@ -432,7 +458,17 @@ class VentController extends BaseController
             'pagod na ako', 'depressed', 'depression', 'di ko na kaya', 'ayoko na',
             'sobrang lungkot', 'sobrang bigat', 'hirap na hirap', 'sawang sawa na',
             'walang silbi', 'wala akong kwenta', 'pabigat ako', 'suko na ko',
-            'di na ko lalaban', 'deds na ko', 'game over na', 'namamatay', 'durug na durog', 'wasak na wasak', 'sukong suko na', 'parang sasabog utak ko', "can't take this anymore"
+            'di na ko lalaban', 'deds na ko', 'game over na', 'namamatay', 'durug na durog', 'wasak na wasak', 'sukong suko na', 'parang sasabog utak ko', "can't take this anymore",
+            'tinatamad mabuhay', 'manhid na ko', 'blangko na lang', 'wala na akong gana',
+            'nawalan ng gana sa lahat', 'parang robot na lang', 'autopilot na lang',
+            'wala na kong pake', 'wala na akong maramdaman',
+            'ang hirap magpanggap na okay', 'nagmumukmok', 'di makatulog',
+            'paulit-ulit iniisip', 'wala na akong silbi', 'extra lang ako',
+            'feel ko ang useless ko', 'parang wala akong silbi',
+            'pabigat lang naman ako', 'walang nagmamahal sakin',
+            'di naman mapapansin kung mawala ako',
+            'gilaay na', 'way kwenta', 'wala koy pulos', 'kapoy na mabuhi',
+            'awan pag-asa', 'awan serserbi', 'narigat unay',
         ];
 
         // STRICT HIGH — Physical Violence (Never downgraded by sarcasm)
@@ -444,9 +480,12 @@ class VentController extends BaseController
             'death threat', 'harassed', 'extort', 'blackmail', 'kidnap', 'strangled',
             'ginulpi', 'pananakit', 'inabuso', 'pinagbantaan', 'tatakutin',
             'dumugo', 'sugat', 'nananakit', 'tinadyakan', 'sabunot', 'dinukot', 'kinuyog', 'pinagkaisahan', 'kinuwelyuhan', 'sinungalngal',
+            'nambugbog', 'pinagtripan', 'tinutukan ng itak',
+            'gikulata', 'gilabayan', 'binagsol', 'ginahasa', 'gahasa',
+            'pinagsamantalahan', 'pinilit', 'hinipo',
         ];
 
-        // MEDIUM — Verbal Abuse, Cyberbullying
+        // MEDIUM — Verbal Abuse, Cyberbullying, Masked Depression
         $medium = [
             'ugly', 'loser', 'slut', 'whore', 'dumb', 'stupid', 'hate you',
             'bobo', 'tanga', 'pangit', 'mataba', 'pokpok', 'squatter', 'gago',
@@ -456,6 +495,11 @@ class VentController extends BaseController
             'cyberbully', 'doxx', 'exposed', 'na-bash',
             'walang kwenta', 'insecure', 'buang', 'salot', 'bida-bida',
             'pinagtatawanan', 'pabida', 'epal', 'plastik', 'sipsip', 'kupal', 'papansin', 'jejemon', 'feelingera', 'walang ambag',
+            'binully', 'na-bully', 'na-cancel', 'na-ghost',
+            'pinagsasabihan', 'pinagtawanan',
+            'di naman halata', 'normal naman ako kausap pero', 'pag mag-isa na iba na',
+            'okay sa labas pero sa loob hindi', 'nakangiti pero malungkot',
+            'tinatago ko', 'pinipigilan ko iyak', 'nagpapanggap na okay',
         ];
 
         // 1. Process STRICT CRITICAL (Ignores Sarcasm)

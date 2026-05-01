@@ -94,6 +94,26 @@ CRISIS_PHRASES = [
     "may magbabago ba kung wala ako",
     "para saan pa ako",
     "kung wala na ako siguro mas maayos pa",
+    # ── v7.1: Expanded Taglish/Gen-Z crisis anchors ──────────────
+    "tapusin ko na buhay ko", "ayoko na sa mundong ito",
+    "di ko na kaya ang lahat", "konti na lang susuko na ko",
+    "sana kunin na ako", "hirap na hirap na ko mabuhay",
+    "walang silbi ang buhay ko", "pabigat lang ako sa mundo",
+    "nasa tipping point na ko", "di na worth it mabuhay",
+    "gusto ko na lang mawala ng tuluyan", "di na ko lalaban pa",
+    "bakit pa ako bumabangon", "wala namang maghahanap sakin",
+    "mag-isa na lang ako lagi, walang may paki",
+    "parang extra lang ako sa lahat ng tao",
+    "normal naman ako sa harap nila pero sa loob namamatay na ko",
+    "manhid na ko sa lahat, wala na kong nararamdaman",
+    "ang hirap magpanggap na okay araw-araw",
+    "paulit-ulit ko na lang iniisip kung may silbi pa ba ako",
+    # Bisaya expanded
+    "gilaay na jud ko sa tanan", "wala na koy gana mubuhi",
+    "way pulos ang akong kinabuhi", "gusto na ko mahunong",
+    # Ilocano expanded
+    "awan serserbi ti biag ko", "kayat kon matayen",
+    "narigat unay ti riknak saan ko kayat agbiag",
 ]
 CRISIS_EMBEDDINGS = semantic_model.encode(CRISIS_PHRASES, convert_to_tensor=True)
 
@@ -117,6 +137,28 @@ TAGLISH_SLANG_MAP = {
     "makipag usap": "makipag-usap",
     "nagrereply": "sumasagot",
     "inaabangan": "inaasahan",
+    # ── v7.1: Expanded Gen-Z / Taglish slang ─────────────────────
+    "lods": "friend", "lodi": "idol", "mars": "friend",
+    "besh": "friend", "bes": "friend", "mamsh": "friend",
+    "siz": "friend", "dzai": "friend", "accla": "friend",
+    "chariz": "charot", "chz": "charot", "dejk": "de joke",
+    "de jk": "de joke", "eme": "joke", "eme lang": "joke lang",
+    "skl": "share ko lang", "nmn": "naman", "dn": "din",
+    "lng": "lang", "kc": "kasi", "dko": "di ko", "dna": "di na",
+    "pko": "pa ko", "nko": "na ko", "nlng": "na lang",
+    "kms": "kill myself", "kys": "kill yourself",
+    "deadz": "dead", "dedz": "dead", "deds": "dead", "ded": "dead",
+    "hugot": "emotional statement", "sanaol": "sana all",
+    "dasurv": "deserve", "laftrip": "laugh trip",
+    "naurrr": "no", "slayyy": "excellent", "periodt": "period",
+    "ate girl": "older sister", "kuya boy": "older brother",
+    "na-trauma": "traumatized", "na-trigger": "triggered",
+    "na-bully": "bullied", "binully": "bullied",
+    "na-cancel": "cancelled", "na-ghost": "ghosted",
+    "petsa de peligro": "broke", "walwal": "sobrang lasing",
+    "gigil": "frustrated", "inis": "annoyed",
+    "badtrip": "frustrated", "bwisit": "annoyed",
+    "pagod na pagod": "exhausted", "sobrang pagod": "exhausted",
     # Existing contractions
     "yk": "you know", "ngl": "not gonna lie", "tbh": "to be honest",
     "fr": "for real", "rn": "right now", "nvm": "nevermind",
@@ -806,7 +848,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
     # └──────────────────────────────────────────────────────────┘
     semantic_score = get_semantic_similarity(translated_text)
 
-    risk_score = (0.40 * distress_conf) + (0.40 * neg_emo_conf) + (0.20 * semantic_score)
+    risk_score = (0.35 * distress_conf) + (0.35 * neg_emo_conf) + (0.30 * semantic_score)
 
     # ┌──────────────────────────────────────────────────────────┐
     # │  STAGE 3: REGEX COMPILE (once, then cached globally)    │
@@ -929,8 +971,8 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
         reason = "NLP: Negative sentiment detected."
 
     # ── RULE 1: Semantic similarity override ─────────────────
-    if semantic_score >= 0.82 and not has_cat1:
-        if semantic_score >= 0.91:
+    if semantic_score >= 0.78 and not has_cat1:
+        if semantic_score >= 0.88:
             risk       = "CRITICAL"
             risk_score = max(0.95, risk_score)
             reason     = f"CRITICAL: Semantic AI hard-override ({semantic_score:.0%}) to crisis language."
