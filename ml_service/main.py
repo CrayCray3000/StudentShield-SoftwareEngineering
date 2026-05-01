@@ -114,6 +114,17 @@ CRISIS_PHRASES = [
     # Ilocano expanded
     "awan serserbi ti biag ko", "kayat kon matayen",
     "narigat unay ti riknak saan ko kayat agbiag",
+    # ── v7.1: Breakup → crisis escalation anchors ────────────
+    "iniwan niya ako, wala na akong dahilan mabuhay",
+    "pinagpalit niya ako, wala na akong silbi",
+    "niloko niya ako, ayoko na sa lahat",
+    "bakit di ako sapat, walang may gusto sakin",
+    "break up na kami, wala nang point mag-continue",
+    "iniwan na naman ako, palaging iniwan, pabigat lang talaga ako",
+    "wasak puso ko, di ko na kayang magpatuloy",
+    "nobody loves me, I just want to disappear",
+    "she left me and I have nothing left",
+    "he cheated on me, I feel so worthless and alone",
 ]
 CRISIS_EMBEDDINGS = semantic_model.encode(CRISIS_PHRASES, convert_to_tensor=True)
 
@@ -801,6 +812,67 @@ MASKED_DEPRESSION = [
     r"\bokay sa ruar\b.{0,20}\bsaan sa uneg\b",
 ]
 
+# ── NEW: RELATIONSHIP DISTRESS ────────────────────────────────────
+# Risk: alone → MEDIUM (0.55); + emotional/isolation/hopeless → HIGH (0.78+)
+# Breakups are a top trigger for student suicidal ideation. Even casual
+# breakup venting must be tracked because it can escalate.
+RELATIONSHIP_DISTRESS = [
+    # English — breakup / heartbreak / rejection
+    r"\bbreak.?up\b", r"\bbroke up\b", r"\bbroken up\b",
+    r"\bbreakup\b", r"\bheartbreak\b", r"\bheartbroken\b",
+    r"\bhe left me\b", r"\bshe left me\b", r"\bthey left me\b",
+    r"\bleft me for\b", r"\bcheated on me\b", r"\bcheating on me\b",
+    r"\bgot cheated\b", r"\bex.?boyfriend\b", r"\bex.?girlfriend\b",
+    r"\bmy ex\b", r"\brejected me\b", r"\bgot rejected\b",
+    r"\bdumped me\b", r"\bgot dumped\b", r"\bhe dumped\b", r"\bshe dumped\b",
+    r"\bunloved\b", r"\bnot loved\b", r"\bno one loves me\b",
+    r"\bnobody loves me\b", r"\bnot lovable\b",
+    r"\bfalling out of love\b", r"\bfell out of love\b",
+    r"\bmoving on\b.{0,20}\b(hard|can'?t|impossible|hurts)\b",
+    r"\bcan'?t move on\b", r"\bcan'?t get over\b",
+    r"\bstill in love\b.{0,20}\b(ex|him|her|them)\b",
+    r"\bhe doesn'?t love\b", r"\bshe doesn'?t love\b",
+    r"\bused me\b", r"\bplayed me\b", r"\bwas just using me\b",
+    r"\btrust issues\b", r"\bbetrayed\b", r"\bbetrayal\b",
+    r"\brelationship\b.{0,20}\b(over|ended|done|toxic|abusive|ruined)\b",
+    r"\bwhy wasn'?t i enough\b", r"\bwasn'?t enough for\b",
+    # Tagalog — breakup / sakit ng puso
+    r"\bnakipaghiwalay\b", r"\bhiniwalayan\b", r"\bnakipag.?break\b",
+    r"\bnag.?break kami\b", r"\bnag.?break na kami\b",
+    r"\biniwan niya ako\b", r"\biniwan ako\b", r"\biniwan na ako\b",
+    r"\bbinasag puso ko\b", r"\bwasak puso ko\b",
+    r"\bsakit ng puso\b", r"\bmasakit sa puso\b",
+    r"\bniloko niya ako\b", r"\bniloko ako\b", r"\bnanloko\b",
+    r"\bnag.?cheat\b", r"\bchineat\b", r"\bchineat ako\b",
+    r"\bmay iba\b.{0,20}\b(siya|sya|xa)\b",
+    r"\bmay iba na siya\b", r"\bmay bago na siya\b",
+    r"\bdi na niya ko mahal\b", r"\bdi na niya ako mahal\b",
+    r"\bhindi na niya ko mahal\b", r"\bhindi na niya ako mahal\b",
+    r"\bdi na ko mahal\b", r"\bwala na siyang paki\b",
+    r"\bginamit lang ako\b", r"\bpinaglaruan\b", r"\blaro lang\b",
+    r"\bpinalitan\b", r"\bpinagpalit\b", r"\bpinagpalit ako\b",
+    r"\bhindi ako sapat\b", r"\bdi ako sapat\b",
+    r"\bbakit di ako sapat\b", r"\bkulang pa ba ako\b",
+    r"\bdi na ko makamove on\b", r"\bhindi makapag move on\b",
+    r"\bmahal ko pa siya\b.{0,20}\b(pero|pero wala na|pero tapos na)\b",
+    r"\bmasakit\b.{0,20}\b(iniwan|niloko|pinagpalit|break)\b",
+    r"\bjowa\b.{0,20}\b(iniwan|nanloko|nakipag.?break|may iba)\b",
+    r"\bex ko\b.{0,20}\b(masakit|iniwan|niloko|hindi na mahal)\b",
+    r"\bsakit\b.{0,20}\b(mag.?mahal|umibig|magmahal)\b",
+    r"\bhindi na magkakasama\b", r"\btapos na\b.{0,20}\b(kami|relasyon|lahat)\b",
+    r"\bghinated\b", r"\bghinost\b", r"\bin.?ghost\b",
+    r"\bnag.?ghost\b", r"\bghinost ako\b",
+    # Bisaya — breakup / bulag
+    r"\bnagbulag\b", r"\bnag.?break mi\b", r"\bnag.?break na mi\b",
+    r"\bgibiyaan ko\b", r"\bgibiyaan niya ko\b",
+    r"\bnanloko siya\b", r"\bnag.?cheat siya\b",
+    r"\bsakit sa dughan\b", r"\bwasak ang akong dughan\b",
+    r"\bdi nako mahimo mag.?move on\b",
+    # Ilocano
+    r"\bpinanawan nak\b", r"\bnagbulag kami\b",
+    r"\bsakit ti pusok\b", r"\bsaan na nak ay-ayaten\b",
+]
+
 
 # ══════════════════════════════════════════════════════════════════
 # MAIN ANALYSIS ENDPOINT
@@ -870,6 +942,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
         COMPILED_REGEXES['academic']    = compile_regexes(ACADEMIC_PRESSURE)
         COMPILED_REGEXES['self_worth']  = compile_regexes(SELF_WORTH)       # NEW v7
         COMPILED_REGEXES['masked_dep']  = compile_regexes(MASKED_DEPRESSION) # NEW v7
+        COMPILED_REGEXES['relationship']= compile_regexes(RELATIONSHIP_DISTRESS) # NEW v7.1
         COMPILED_REGEXES['method_pairs'] = [
             (re.compile(m, re.IGNORECASE), re.compile(s, re.IGNORECASE))
             for m, s in CAT1_METHOD_SELF_PAIRS
@@ -904,8 +977,9 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
     has_anhedonia  = any(pat.search(scan_text) for pat in COMPILED_REGEXES['anhedonia'])
     has_sexual     = any(pat.search(scan_text) for pat in COMPILED_REGEXES['sexual'])
     has_academic   = any(pat.search(scan_text) for pat in COMPILED_REGEXES['academic'])
-    has_self_worth = any(pat.search(scan_text) for pat in COMPILED_REGEXES['self_worth'])  # NEW
-    has_masked_dep = any(pat.search(scan_text) for pat in COMPILED_REGEXES['masked_dep'])  # NEW
+    has_self_worth    = any(pat.search(scan_text) for pat in COMPILED_REGEXES['self_worth'])  # NEW
+    has_masked_dep   = any(pat.search(scan_text) for pat in COMPILED_REGEXES['masked_dep'])  # NEW
+    has_relationship = any(pat.search(scan_text) for pat in COMPILED_REGEXES['relationship']) # NEW v7.1
 
     # ┌──────────────────────────────────────────────────────────┐
     # │  STAGE 6: PSYCHOLOGICAL HEURISTICS                      │
@@ -933,11 +1007,15 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
     if has_masked_dep:
         risk_score += 0.14
         expert_reasoning.append("Masked depression pattern: hides feelings when around others.")
+    if has_relationship:
+        risk_score += 0.10
+        expert_reasoning.append("Relationship distress (breakup/rejection/betrayal) detected.")
 
-    # Compound signal detection — expanded to include new v7 signals
+    # Compound signal detection — expanded to include new v7/v7.1 signals
     signal_count = sum([
         has_emotional, has_isolation, has_anhedonia,
         has_hopeless, has_distortion, has_self_worth, has_masked_dep,
+        has_relationship,
     ])
     if signal_count >= 2:
         compound_boost = 0.15 * (signal_count - 1)
@@ -960,6 +1038,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
     # │  Rule 5.5: Self-worth issues          ← NEW v7          │
     # │  Rule 5.7: Masked depression          ← NEW v7          │
     # │  Rule 6:   Verbal abuse (Cat3)                          │
+    # │  Rule 6.3: Relationship distress     ← NEW v7.1         │
     # │  Rule 6.5: Academic pressure                            │
     # │  Rule 7:   Pure risk score                              │
     # └──────────────────────────────────────────────────────────┘
@@ -1103,6 +1182,32 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             risk       = "MEDIUM"
             risk_score = max(0.6, risk_score)
             reason     = "Verbal cyberbullying or toxicity detected."
+        if expert_reasoning: reason += " " + " ".join(expert_reasoning)
+
+    # ── RULE 6.3: Relationship distress (NEW v7.1) ───────────
+    # Breakups are a leading trigger for student suicidal ideation.
+    # Alone → MEDIUM; compounded with distress signals → HIGH.
+    elif has_relationship:
+        if is_joke:
+            risk       = "MEDIUM"
+            risk_score = max(0.40, risk_score)
+            reason     = "Relationship keywords found but context suggests casual mention."
+        elif signal_count >= 2:
+            # Breakup + emotional distress / isolation / hopelessness = HIGH
+            risk       = "HIGH"
+            risk_score = max(0.78, risk_score)
+            reason     = (
+                f"HIGH: Relationship distress compounded with "
+                f"{signal_count} concurrent emotional signals — "
+                f"elevated risk for crisis escalation."
+            )
+        else:
+            risk       = "MEDIUM"
+            risk_score = max(0.55, risk_score)
+            reason     = (
+                "MEDIUM: Relationship distress detected (breakup, rejection, betrayal). "
+                "Monitoring for escalation."
+            )
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
     # ── RULE 6.5: Academic pressure ──────────────────────────

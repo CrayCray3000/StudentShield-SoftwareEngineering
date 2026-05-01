@@ -541,6 +541,33 @@ class VentController extends BaseController
             }
         }
 
+        // RELATIONSHIP DISTRESS — Breakup/rejection/heartbreak (NEW v7.1)
+        // Processed after other categories because breakup alone = MEDIUM,
+        // but it compounds with emotional signals (handled by Azure ML).
+        $relationship = [
+            'break up', 'breakup', 'broke up', 'heartbreak', 'heartbroken',
+            'iniwan', 'hiniwalayan', 'nakipaghiwalay', 'nag-break',
+            'niloko', 'chineat', 'nag-cheat', 'cheated',
+            'pinagpalit', 'ginamit lang', 'pinaglaruan', 'laro lang',
+            'dumped', 'rejected', 'got dumped', 'got rejected',
+            'wasak puso', 'sakit ng puso', 'masakit sa puso',
+            'di na niya ko mahal', 'di na ako mahal', 'hindi na mahal',
+            'may iba na siya', 'may bago na siya',
+            'nobody loves me', 'no one loves me', 'unloved',
+            'di ako sapat', 'hindi ako sapat', 'kulang pa ba ako',
+            'di na makapag move on', 'cant move on',
+            'bakit di ako sapat', 'ex ko', 'my ex',
+            'ghinost', 'ghosted', 'na-ghost',
+        ];
+        foreach ($relationship as $kw) {
+            if (mb_strpos($lower, $kw) !== false) {
+                if ($sarcasticContext) {
+                    return ['risk_level' => 'LOW', 'risk_percent' => 20];
+                }
+                return ['risk_level' => 'MEDIUM', 'risk_percent' => 50];
+            }
+        }
+
         return ['risk_level' => 'LOW', 'risk_percent' => 10];
     }
 }
