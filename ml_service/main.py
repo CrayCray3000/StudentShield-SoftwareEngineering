@@ -316,6 +316,7 @@ CAT1_DIRECT = [
     r"\bdi ko na alam gagawin\b", r"\blulunukin ko na lang\b",
     r"i\s*wanna\s*die", r"i\s*want\s*to\s*die", r"kill\s*myself",
     r"end\s+(my|this)\s+life", r"don't\s+want\s+to\s+exist",
+    r"don'?t\s+want\s+to\s+live", r"can'?t\s+do\s+this\s+anymore",
     r"wish\s+i\s+was\s+never\s+born", r"wish\s+i\s+could\s+disappear",
     r"world\s+would\s+be\s+better\s+without\s+me", r"no\s+point\s+in\s+living",
     r"\bself.?harm\b", r"\bself.?destruct\b",
@@ -529,7 +530,7 @@ DISTORTIONS = [
 HOPELESSNESS = [
     r"\bbahala na\b", r"\bwhatever happens\b", r"\byaan mo na\b",
     r"\bwala rin naman magbabago\b", r"\bpointless\b", r"\buseless to try\b",
-    r"\btired of trying\b",
+    r"\btired of trying\b", r"\bhopeless\b", r"\bno hope\b",
     # Added for pattern #5: Quiet giving up
     r"\bwala na yung feeling na may inaabangan\b",
     r"\bwala na akong inaabangan\b",
