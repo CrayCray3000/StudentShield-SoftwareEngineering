@@ -14,10 +14,10 @@ from sentence_transformers import SentenceTransformer, util
 import faiss
 from deep_translator import GoogleTranslator
 
-# ── Performance ──────────────────────────────────────────────────
+### Performance 
 torch.set_num_threads(2)
 
-# ── Logging ──────────────────────────────────────────────────────
+### Logging 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("ML_Service")
 
@@ -30,7 +30,7 @@ app = FastAPI(
     version="7.0.0",
 )
 
-# ── Security ─────────────────────────────────────────────────────
+### Security 
 API_KEY = os.getenv("ML_API_KEY", "svbsm-production-ml-key-v1")
 API_KEY_NAME = "X-API-KEY"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)
@@ -42,9 +42,7 @@ async def verify_api_key(api_key: str = Security(api_key_header)):
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
-# ══════════════════════════════════════════════════════════════════
 # MODEL LOADING
-# ══════════════════════════════════════════════════════════════════
 
 emotion_classifier = pipeline(
     "text-classification",
@@ -94,7 +92,7 @@ CRISIS_PHRASES = [
     "may magbabago ba kung wala ako",
     "para saan pa ako",
     "kung wala na ako siguro mas maayos pa",
-    # ── v7.1: Expanded Taglish/Gen-Z crisis anchors ──────────────
+    ### v7.1: Expanded Taglish/Gen-Z crisis anchors 
     "tapusin ko na buhay ko", "ayoko na sa mundong ito",
     "di ko na kaya ang lahat", "konti na lang susuko na ko",
     "sana kunin na ako", "hirap na hirap na ko mabuhay",
@@ -114,7 +112,7 @@ CRISIS_PHRASES = [
     # Ilocano expanded
     "awan serserbi ti biag ko", "kayat kon matayen",
     "narigat unay ti riknak saan ko kayat agbiag",
-    # ── v7.1: Breakup → crisis escalation anchors ────────────
+    ### v7.1: Breakup → crisis escalation anchors 
     "iniwan niya ako, wala na akong dahilan mabuhay",
     "pinagpalit niya ako, wala na akong silbi",
     "niloko niya ako, ayoko na sa lahat",
@@ -128,7 +126,7 @@ CRISIS_PHRASES = [
 ]
 CRISIS_EMBEDDINGS = semantic_model.encode(CRISIS_PHRASES, convert_to_tensor=True)
 
-# ── Taglish / Gen-Z Slang Normalizer ────────────────────────────
+### Taglish / Gen-Z Slang Normalizer 
 TAGLISH_SLANG_MAP = {
     "naliyak": "umiyak", "naiyak": "umiyak", "naiiyak": "umiiyak",
     "naluha": "umiyak", "luhaan": "umiyak", "iyaq": "umiyak",
@@ -148,7 +146,7 @@ TAGLISH_SLANG_MAP = {
     "makipag usap": "makipag-usap",
     "nagrereply": "sumasagot",
     "inaabangan": "inaasahan",
-    # ── v7.1: Expanded Gen-Z / Taglish slang ─────────────────────
+    ### v7.1: Expanded Gen-Z / Taglish slang 
     "lods": "friend", "lodi": "idol", "mars": "friend",
     "besh": "friend", "bes": "friend", "mamsh": "friend",
     "siz": "friend", "dzai": "friend", "accla": "friend",
@@ -189,7 +187,7 @@ def normalize_slang(text: str) -> str:
 
 logger.info(f"Encoded {len(CRISIS_PHRASES)} multilingual crisis anchor phrases.")
 
-# ── Contextual Memory (FAISS) ────────────────────────────────────
+### Contextual Memory (FAISS) 
 MEMORY_DIR = os.path.join(base_dir, "faiss_memory")
 os.makedirs(MEMORY_DIR, exist_ok=True)
 
@@ -203,9 +201,7 @@ class MLResponse(BaseModel):
     flag_reason: Optional[str] = None
 
 
-# ══════════════════════════════════════════════════════════════════
 # HELPER FUNCTIONS
-# ══════════════════════════════════════════════════════════════════
 
 def get_semantic_similarity(text: str) -> float:
     try:
@@ -300,16 +296,14 @@ def get_risk_components(text: str) -> tuple[float, float]:
         return 0.0, 0.0
 
 
-# ══════════════════════════════════════════════════════════════════
 # KEYWORD DEFINITIONS
-# ══════════════════════════════════════════════════════════════════
 
 COMPILED_REGEXES = {}
 
 def compile_regexes(patterns):
     return [re.compile(pat, re.IGNORECASE) for pat in patterns]
 
-# ── CATEGORY 1: CRITICAL — Explicit Suicide Intent/Methods ──────
+### CATEGORY 1: CRITICAL — Explicit Suicide Intent/Methods 
 CAT1_DIRECT = [
     r"\bsuicide\b", r"\bkill myself\b", r"\bend it all\b", r"\bcut myself\b",
     r"\bwant to die\b", r"\bno reason to live\b",
@@ -351,7 +345,7 @@ CAT1_METHOD_SELF_PAIRS = [
     (r"jump\s+(off|from)\b", r"\b(myself|building|tulay|bridge|roof)\b"),
 ]
 
-# ── CATEGORY 2: HIGH — Physical Violence, Bullying, Abuse ───────
+### CATEGORY 2: HIGH — Physical Violence, Bullying, Abuse 
 CAT2_WORDS = [
     r"\bpunched\b", r"\bkicked\b", r"\bchoked\b", r"\bslapped\b", r"\bbeat me up\b",
     r"\bpushed\b", r"\bcornered\b", r"\bhit me\b", r"\bweapon\b", r"\bbleeding\b",
@@ -373,7 +367,7 @@ CAT2_WORDS = [
     r"\bpinagmalupitan\b", r"\binapi\b", r"\bpinag-iinitan\b",
 ]
 
-# ── CATEGORY 3: MEDIUM — Verbal Abuse, Cyberbullying ────────────
+### CATEGORY 3: MEDIUM — Verbal Abuse, Cyberbullying 
 CAT3_WORDS = [
     r"\bugly\b", r"\bfat\b", r"\bloser\b", r"\bslut\b", r"\bwhore\b", r"\bdumb\b",
     r"\bstupid\b", r"\bcancel\b", r"\bdoxx\b", r"\bexposed\b", r"\bhate you\b",
@@ -389,7 +383,7 @@ CAT3_WORDS = [
     r"\bcyberbully\b", r"\bposer\b", r"\bfake account\b",
 ]
 
-# ── EMOTIONAL DISTRESS ───────────────────────────────────────────
+### EMOTIONAL DISTRESS 
 EMOTIONAL_DISTRESS = [
     r"\bdepressed\b", r"\bdepression\b", r"can't take this anymore",
     r"\btired all the time\b", r"\bnothing feels right\b", r"\bgoing through the motions\b",
@@ -421,7 +415,7 @@ EMOTIONAL_DISTRESS = [
     r"\bnagbakho\b", r"\bnagdugo ang dughan\b", r"\bnagul-an\b",
     r"mabannogakon ti panagbiag", r"narigat unay", r"awan pag-asa", r"awan inka serserbi",
     r"saan ko nga kaya", r"nadagsen unay",
-    # ── Added for pattern #2: Persistent sadness ─────────────────
+    ### Added for pattern #2: Persistent sadness 
     r"\bang bigat lang lagi\b",
     r"\bbigat lagi\b.{0,20}\bkahit walang nangyayari\b",
     r"\bkahit walang nangyayari\b.{0,30}\bbigat\b",
@@ -433,7 +427,7 @@ EMOTIONAL_DISTRESS = [
     r"\blagging malungkot\b", r"\bwala namang dahilan\b.{0,20}\bmalungkot\b",
 ]
 
-# ── SOCIAL ISOLATION / WITHDRAWAL ────────────────────────────────
+### SOCIAL ISOLATION / WITHDRAWAL 
 SOCIAL_ISOLATION = [
     r"want(?:ed)?\s+to\s+be\s+alone", r"\bleave me alone\b", r"\bi feel alone\b",
     r"\bso alone\b", r"\ball alone\b", r"\bfeel(?:ing)?\s+lonely\b",
@@ -452,7 +446,7 @@ SOCIAL_ISOLATION = [
     r"\bdi naman ako hinahanap\b", r"\bwala naman akong silbi sa kanila\b",
     r"\bnag-inusara\b", r"\bwalay kauban\b", r"\bwalay higala\b",
     r"\bginabiyaan\b", r"\bnagpadayon nga mag-inusara\b",
-    # ── Added for pattern #4: Isolation / low communication energy ─
+    ### Added for pattern #4: Isolation / low communication energy 
     r"\bdi na masyado nagrereply\b",
     r"\bdi na nagrereply\b.{0,20}\b(friends|tropa|barkada|kaibigan)\b",
     r"\bwala akong energy makipag.?usap\b",
@@ -466,7 +460,7 @@ SOCIAL_ISOLATION = [
     r"\bnabawasan na ang\b.{0,20}\b(pakikipag.?usap|pakikisalamuha)\b",
 ]
 
-# ── SARCASM / GEN-Z TAGLISH BIAS-CORRECTOR (v7) ─────────────────
+### SARCASM / GEN-Z TAGLISH BIAS-CORRECTOR (v7) 
 # NOTE: Removed the overly broad bare-suffix pattern (naman/lang/daw)
 # that falsely matched "di naman halata" as a joke.
 JOKE_PATTERNS = [
@@ -514,7 +508,7 @@ JOKE_PATTERNS = [
     r"(!{3,})", r"(\?{3,})",
 ]
 
-# ── COGNITIVE DISTORTIONS ────────────────────────────────────────
+### COGNITIVE DISTORTIONS 
 DISTORTIONS = [
     r"\balways\b", r"\bnever\b", r"\bpalaging\b", r"\blaging\b",
     r"\bwala na talaga\b", r"\bhinding hindi\b", r"\beveryone hates me\b",
@@ -531,7 +525,7 @@ DISTORTIONS = [
     r"\bpara bang wala akong silbi\b",
 ]
 
-# ── HOPELESSNESS ─────────────────────────────────────────────────
+### HOPELESSNESS 
 HOPELESSNESS = [
     r"\bbahala na\b", r"\bwhatever happens\b", r"\byaan mo na\b",
     r"\bwala rin naman magbabago\b", r"\bpointless\b", r"\buseless to try\b",
@@ -557,13 +551,13 @@ HOPELESSNESS = [
     r"\bsuko na talaga\b",
 ]
 
-# ── EXTREME VENTING ───────────────────────────────────────────────
+### EXTREME VENTING 
 EXTREME_VENTING = [
     r"\bputangina\b", r"\bgago\b", r"\bfuck\b", r"\bshit\b",
     r"\btangina\b", r"\bbullshit\b",
 ]
 
-# ── ANHEDONIA / DISSOCIATION ─────────────────────────────────────
+### ANHEDONIA / DISSOCIATION 
 ANHEDONIA = [
     r"\bfeeling nothing\b", r"\bempty\b", r"\bwatching myself\b",
     r"\bsitting in my chest\b", r"heavy.*chest", r"\bdull weight\b",
@@ -580,7 +574,7 @@ ANHEDONIA = [
     r"kapoy na tanan", r"wa na koy emosyon",
     r"awan ganak", r"awan rikna", r"buyong ti panunot", r"awanen serserbi",
     r"nauma akon", r"awan serserbik", r"awan marikrikna",
-    # ── Added for pattern #1: Low energy / numb ──────────────────
+    ### Added for pattern #1: Low energy / numb 
     r"\bwala na akong gana sa lahat\b",
     r"\bwala na akong gana\b",
     r"\bnawalan ng gana sa lahat\b",
@@ -598,7 +592,7 @@ ANHEDONIA = [
     r"\bpati na rin\b.{0,20}\b(gusto ko dati|dati kong gusto)\b",
 ]
 
-# ── FINALITY / PREPARATION ────────────────────────────────────────
+### FINALITY / PREPARATION 
 FINALITY = [
     r"sorted .* stuff", r"done fighting", r"won't .* notice the difference",
     r"won't be a burden", r"better off without me",
@@ -616,14 +610,14 @@ FINALITY = [
     r"di na ko magtatagal", r"di nyo na ko poproblemahin",
     r"ayoko na mag-isip", r"tuloy pa rin ang buhay",
     r"ang payapa", r"tahimik na ang isip ko",
-    # ── Added for pattern #5: Quiet giving up / no more anticipation
+    ### Added for pattern #5: Quiet giving up / no more anticipation
     r"ginagawa ko na lang.{0,20}kailangan",
     r"wala na yung feeling.{0,20}may inaabangan",
     r"basta gagawin ko na lang",
     r"walang point.{0,20}mag.?aabang pa",
 ]
 
-# ── SEXUAL HARASSMENT ────────────────────────────────────────────
+### SEXUAL HARASSMENT 
 SEXUAL_HARASSMENT = [
     r"\brape[d]?\b", r"\bsexual assault\b", r"\bsexually assaulted\b",
     r"\bsexually abused\b", r"\bsexual abuse\b", r"\bmolested\b",
@@ -664,7 +658,7 @@ SEXUAL_HARASSMENT = [
     r"\bnaginggina\b", r"\bpinugsan\b",
 ]
 
-# ── ACADEMIC PRESSURE ────────────────────────────────────────────
+### ACADEMIC PRESSURE 
 ACADEMIC_PRESSURE = [
     r"\bfailed\b.{0,20}\b(exam|test|subject|class|course|semester)\b",
     r"\bfailing\b.{0,20}\b(school|class|subject|course|semester)\b",
@@ -715,7 +709,7 @@ ACADEMIC_PRESSURE = [
     r"\bnarigat\b.{0,20}\b(klase|subject|eskwela)\b",
 ]
 
-# ── NEW: SELF-WORTH ISSUES ────────────────────────────────────────
+### NEW: SELF-WORTH ISSUES 
 # Risk: alone → MEDIUM (0.58+); + any other signal → HIGH (0.75+)
 # Maps to pattern #3: "feel ko ang useless ko... parang extra lang ako sa lahat"
 SELF_WORTH = [
@@ -763,7 +757,7 @@ SELF_WORTH = [
     r"\bawan inka serserbi\b",
 ]
 
-# ── NEW: MASKED DEPRESSION ────────────────────────────────────────
+### NEW: MASKED DEPRESSION 
 # Risk: alone → MEDIUM-HIGH (0.65+); signals a student who is suffering
 # privately while appearing normal, which is a clinical red flag.
 # Maps to pattern #7: "di naman halata kasi normal naman ako kausap
@@ -812,7 +806,7 @@ MASKED_DEPRESSION = [
     r"\bokay sa ruar\b.{0,20}\bsaan sa uneg\b",
 ]
 
-# ── NEW: RELATIONSHIP DISTRESS ────────────────────────────────────
+### NEW: RELATIONSHIP DISTRESS 
 # Risk: alone → MEDIUM (0.55); + emotional/isolation/hopeless → HIGH (0.78+)
 # Breakups are a top trigger for student suicidal ideation. Even casual
 # breakup venting must be tracked because it can escalate.
@@ -874,9 +868,7 @@ RELATIONSHIP_DISTRESS = [
 ]
 
 
-# ══════════════════════════════════════════════════════════════════
 # MAIN ANALYSIS ENDPOINT
-# ══════════════════════════════════════════════════════════════════
 
 @app.get("/")
 async def root_health_check():
@@ -896,9 +888,9 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
     if not text.strip():
         raise HTTPException(status_code=400, detail="Text payload cannot be empty")
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 0: SLANG NORMALIZATION & GLOBAL TRANSLATION      │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 0: SLANG NORMALIZATION & GLOBAL TRANSLATION      
+    ## ┘
     normalized_text = normalize_slang(text)
     try:
         translated_text = GoogleTranslator(source='auto', target='en').translate(normalized_text)
@@ -910,21 +902,21 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
 
     logger.info(f"Normalized/Translated: '{text[:80]}' → '{translated_text[:80]}'")
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 1: SCORE COMPONENTS                              │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 1: SCORE COMPONENTS                              
+    ## ┘
     distress_conf, neg_emo_conf = get_risk_components(translated_text)
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 2: SEMANTIC SIMILARITY                           │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 2: SEMANTIC SIMILARITY                           
+    ## ┘
     semantic_score = get_semantic_similarity(translated_text)
 
     risk_score = (0.35 * distress_conf) + (0.35 * neg_emo_conf) + (0.30 * semantic_score)
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 3: REGEX COMPILE (once, then cached globally)    │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 3: REGEX COMPILE (once, then cached globally)    
+    ## ┘
     global COMPILED_REGEXES
     if not COMPILED_REGEXES:
         COMPILED_REGEXES['cat1']        = compile_regexes(CAT1_DIRECT)
@@ -948,15 +940,15 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             for m, s in CAT1_METHOD_SELF_PAIRS
         ]
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 4: SARCASM / JOKE DETECTION (v7)                 │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 4: SARCASM / JOKE DETECTION (v7)                 
+    ## ┘
     scan_text = text + " " + normalized_text
     is_joke = any(pat.search(scan_text) for pat in COMPILED_REGEXES['joke'])
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 5: KEYWORD MATCH FLAGS                           │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 5: KEYWORD MATCH FLAGS                           
+    ## ┘
     has_cat1_direct = any(pat.search(scan_text) for pat in COMPILED_REGEXES['cat1'])
 
     has_cat1_method = False
@@ -981,9 +973,9 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
     has_masked_dep   = any(pat.search(scan_text) for pat in COMPILED_REGEXES['masked_dep'])  # NEW
     has_relationship = any(pat.search(scan_text) for pat in COMPILED_REGEXES['relationship']) # NEW v7.1
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 6: PSYCHOLOGICAL HEURISTICS                      │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 6: PSYCHOLOGICAL HEURISTICS                      
+    ## ┘
     expert_reasoning = []
 
     if has_distortion:
@@ -1026,22 +1018,22 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
 
     risk_score = max(min(risk_score, 1.0), 0.0)
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 7: FINAL RULE ENGINE (Sequential Priority)       │
-    # │                                                          │
-    # │  Rule 1:   Semantic similarity override                 │
-    # │  Rule 2:   Explicit suicide (Cat1)                      │
-    # │  Rule 3:   Finality / preparation                       │
-    # │  Rule 4:   Physical violence (Cat2)                     │
-    # │  Rule 4.5: Sexual harassment                            │
-    # │  Rule 5:   Emotional / Anhedonia / Isolation            │
-    # │  Rule 5.5: Self-worth issues          ← NEW v7          │
-    # │  Rule 5.7: Masked depression          ← NEW v7          │
-    # │  Rule 6:   Verbal abuse (Cat3)                          │
-    # │  Rule 6.3: Relationship distress     ← NEW v7.1         │
-    # │  Rule 6.5: Academic pressure                            │
-    # │  Rule 7:   Pure risk score                              │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 7: FINAL RULE ENGINE (Sequential Priority)       
+    ### 
+    ### Rule 1:   Semantic similarity override                 
+    ### Rule 2:   Explicit suicide (Cat1)                      
+    ### Rule 3:   Finality / preparation                       
+    ### Rule 4:   Physical violence (Cat2)                     
+    ### Rule 4.5: Sexual harassment                            
+    ### Rule 5:   Emotional / Anhedonia / Isolation            
+    ### Rule 5.5: Self-worth issues          ← NEW v7          
+    ### Rule 5.7: Masked depression          ← NEW v7          
+    ### Rule 6:   Verbal abuse (Cat3)                          
+    ### Rule 6.3: Relationship distress     ← NEW v7.1         
+    ### Rule 6.5: Academic pressure                            
+    ### Rule 7:   Pure risk score                              
+    ## ┘
     risk   = "LOW"
     reason = "NLP: No severe negativity detected."
 
@@ -1049,7 +1041,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
         risk   = "MEDIUM"
         reason = "NLP: Negative sentiment detected."
 
-    # ── RULE 1: Semantic similarity override ─────────────────
+    ### RULE 1: Semantic similarity override 
     if semantic_score >= 0.78 and not has_cat1:
         if semantic_score >= 0.88:
             risk       = "CRITICAL"
@@ -1061,7 +1053,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             reason     = f"HIGH: Semantic AI strong similarity ({semantic_score:.0%}) to crisis language."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 2: Explicit suicide keywords ────────────────────
+    ### RULE 2: Explicit suicide keywords 
     elif has_cat1:
         risk       = "CRITICAL"
         risk_score = max(0.95, risk_score)
@@ -1071,7 +1063,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             reason = "CRITICAL: Explicit self-harm or suicidal intent detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 3: Finality / preparation signals ───────────────
+    ### RULE 3: Finality / preparation signals 
     elif has_finality:
         if is_joke:
             risk       = "HIGH"
@@ -1083,7 +1075,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             reason     = "HIGH: Subtle preparation hints (closure, peace, organizing) detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 4: Physical violence / bullying ─────────────────
+    ### RULE 4: Physical violence / bullying 
     elif has_cat2:
         if is_joke:
             risk       = "MEDIUM"
@@ -1095,14 +1087,14 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             reason     = "HIGH: Physical bullying or threat detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 4.5: Sexual harassment / assault ────────────────
+    ### RULE 4.5: Sexual harassment / assault 
     elif has_sexual:
         risk       = "CRITICAL"
         risk_score = max(0.95, risk_score)
         reason     = "CRITICAL: Sexual harassment, assault, or inappropriate conduct detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 5: Emotional distress, Anhedonia, or Isolation ──
+    ### RULE 5: Emotional distress, Anhedonia, or Isolation 
     elif has_emotional or has_anhedonia or has_isolation:
         if is_joke:
             risk       = "MEDIUM"
@@ -1124,7 +1116,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             )
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 5.5: Self-worth issues (NEW v7) ─────────────────
+    ### RULE 5.5: Self-worth issues (NEW v7) 
     elif has_self_worth:
         if is_joke:
             risk       = "MEDIUM"
@@ -1144,7 +1136,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             reason     = "MEDIUM: Self-worth and self-value impairment detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 5.7: Masked depression (NEW v7) ─────────────────
+    ### RULE 5.7: Masked depression (NEW v7) 
     elif has_masked_dep:
         # Masked depression is clinically significant on its own — a student
         # who says "I'm fine around others but different alone" is disclosing
@@ -1169,7 +1161,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             )
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 6: Verbal abuse / cyberbullying ─────────────────
+    ### RULE 6: Verbal abuse / cyberbullying 
     elif has_cat3:
         if risk_score < 0.35 and not is_joke:
             risk   = "LOW"
@@ -1184,7 +1176,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             reason     = "Verbal cyberbullying or toxicity detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 6.3: Relationship distress (NEW v7.1) ───────────
+    ### RULE 6.3: Relationship distress (NEW v7.1) 
     # Breakups are a leading trigger for student suicidal ideation.
     # Alone → MEDIUM; compounded with distress signals → HIGH.
     elif has_relationship:
@@ -1210,7 +1202,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             )
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 6.5: Academic pressure ──────────────────────────
+    ### RULE 6.5: Academic pressure 
     elif has_academic:
         if is_joke:
             risk   = "LOW"
@@ -1228,7 +1220,7 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             reason     = "MEDIUM: Academic pressure or performance anxiety detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    # ── RULE 7: Pure risk score ──────────────────────────────
+    ### RULE 7: Pure risk score 
     else:
         if risk_score >= 0.70 or (distress_conf >= 0.85 and neg_emo_conf >= 0.80):
             risk       = "HIGH"
@@ -1244,9 +1236,9 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             risk_score = max(0.5, risk_score)
             reason     = "Atypical sentiment pattern flagged by heuristics."
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 8: CONTEXTUAL MEMORY (FAISS RAG)                 │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 8: CONTEXTUAL MEMORY (FAISS RAG)                 
+    ## ┘
     if student_id:
         user_embedding = semantic_model.encode(text)
         b_escalate, trajectory = manage_student_memory(
@@ -1261,9 +1253,9 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
             risk_score = max(0.95, risk_score)
             reason     = "CRITICAL ESCALATION: Repeated HIGH/CRITICAL distress over 14 days. " + reason
 
-    # ┌──────────────────────────────────────────────────────────┐
-    # │  STAGE 9: RISK PERCENTAGE BANDING                       │
-    # └──────────────────────────────────────────────────────────┘
+    ## ┐
+    ### STAGE 9: RISK PERCENTAGE BANDING                       
+    ## ┘
     raw_percent = int(round(risk_score * 99)) + 1
     raw_percent = max(1, min(100, raw_percent))
 
