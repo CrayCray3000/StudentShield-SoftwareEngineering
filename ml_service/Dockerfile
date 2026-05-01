@@ -3,15 +3,16 @@ FROM python:3.10
 # Set up a new user named "user" with user ID 1000
 RUN useradd -m -u 1000 user
 
-# Switch to the "user" user
-USER user
-
 # Set home to the user's home directory
 ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH
 
-# Set the working directory to the user's home directory
+# Set the working directory (creates as root, then we chown)
 WORKDIR $HOME/app
+RUN chown -R user:user $HOME
+
+# Switch to the "user" user
+USER user
 
 # Copy the current directory contents into the container at $HOME/app setting the owner to the user
 COPY --chown=user . $HOME/app

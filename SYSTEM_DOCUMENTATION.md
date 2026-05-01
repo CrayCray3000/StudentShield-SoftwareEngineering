@@ -115,3 +115,28 @@ StudentShield includes a "Safety Net for the Safety Net." If the AI Microservice
 
 > [!IMPORTANT]
 > **NotebookLM User Note**: This document is comprehensive. If you are asking about the "Logic," refer to Section 3. If you are asking about "Safety," refer to Section 4. For "Technical Setup," refer to Section 2 and 6.
+
+---
+
+## 🔄 8. Software Development Life Cycle (SDLC)
+
+For the development of the Student Shield ecosystem, the **Agile (Scrum) Methodology** was utilized. Given the exploratory nature of Artificial Intelligence and the critical requirement of adapting to user feedback (such as new Gen-Z slang or Taglish phrases), a rigid, linear methodology like Waterfall would be ineffective. Agile allowed the development team to iteratively refine the system leading up to the final defense.
+
+### The Iterative Sprints (Capstone Context)
+1. **Sprint 1 (Foundation & UI)**: 
+   * Development of the CodeIgniter 4 Web Application.
+   * Designing the Tailwind CSS dashboards for the Principal, Counselors, and Students.
+   * Establishing the encrypted database schema.
+2. **Sprint 2 (AI Integration)**:
+   * Building the Python/FastAPI Microservice.
+   * Integrating the DistilRoBERTa emotion classifier and fine-tuning the mDeBERTa distress detection model.
+   * Connecting the Web App to the AI backend via secure API keys.
+3. **Sprint 3 (Testing & Refinement)**:
+   * Stress-testing the vector engine (FAISS) with diverse Taglish crisis phrases.
+   * Refining the "False Positive" prevention layers (e.g., teaching the AI the difference between sarcasm and actual crisis).
+   * Presenting the prototype to advisers and incorporating UI/UX feedback.
+4. **Sprint 4 (Final Deployment & Defense)**:
+   * Deploying the ML Microservice to a production environment.
+   * Finalizing the system documentation, diagrams, and security protocols for the panel defense.
+
+*Note on Post-Defense Maintenance: While Agile emphasizes continuous updates, the scope of the academic capstone concludes at the successful completion of Sprint 4. Further updates and maintenance iterations would only resume if the institution officially adopts and commissions the system for active school deployment.*

@@ -33,7 +33,7 @@ class VentController extends BaseController
         }
 
         // --- 1. CALL ML SERVICE FOR RISK ANALYSIS ---
-        $ch = curl_init('https://ashlogg-student-shield-official.hf.space/analyze-text');
+        $ch = curl_init(env('ML_API_URL', 'http://20.187.146.70') . '/analyze-text');
         $payload = json_encode(['raw_text' => $text, 'student_id' => (string)$userId]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
