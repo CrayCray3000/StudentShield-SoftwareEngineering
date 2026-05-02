@@ -13,6 +13,16 @@ from transformers import pipeline
 from sentence_transformers import SentenceTransformer, util
 import faiss
 from deep_translator import GoogleTranslator
+import nltk
+
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt', quiet=True)
+try:
+    nltk.data.find('tokenizers/punkt_tab')
+except LookupError:
+    nltk.download('punkt_tab', quiet=True)
 
 ### Performance 
 torch.set_num_threads(2)
@@ -205,8 +215,12 @@ class MLResponse(BaseModel):
 
 def get_semantic_similarity(text: str) -> float:
     try:
-        user_embedding = semantic_model.encode(text, convert_to_tensor=True)
-        similarities = util.cos_sim(user_embedding, CRISIS_EMBEDDINGS)[0]
+        sentences = nltk.sent_tokenize(text)
+        if not sentences:
+            return 0.0
+            
+        user_embeddings = semantic_model.encode(sentences, convert_to_tensor=True)
+        similarities = util.cos_sim(user_embeddings, CRISIS_EMBEDDINGS)
         return float(similarities.max())
     except Exception as e:
         logger.error(f"Semantic similarity error: {e}")
@@ -252,10 +266,8 @@ def manage_student_memory(
         logger.error(f"FAISS Memory Engine error: {e}")
         return False, "INSUFFICIENT_DATA"
 
-def get_risk_components(text: str) -> tuple[float, float]:
+def get_risk_components(translated_text: str, normalized_text: str) -> tuple[float, float]:
     try:
-        words = text.split()
-        chunk_size = 350
         max_distress_conf = 0.0
         max_neg_emo_conf  = 0.0
 
@@ -267,28 +279,51 @@ def get_risk_components(text: str) -> tuple[float, float]:
             "remorse": 0.8, "embarrassment": 0.55,
         }
 
-        chunks = [" ".join(words[i:i+chunk_size]) for i in range(0, len(words), chunk_size)]
+        trans_sentences = nltk.sent_tokenize(translated_text)
+        norm_sentences = nltk.sent_tokenize(normalized_text)
 
-        for chunk in chunks:
+        def build_chunks(sentences, max_words=250):
+            chunks = []
+            curr_chunk = []
+            curr_words = 0
+            for s in sentences:
+                s_words = len(s.split())
+                if curr_words + s_words > max_words and curr_chunk:
+                    chunks.append(" ".join(curr_chunk))
+                    curr_chunk = [s]
+                    curr_words = s_words
+                else:
+                    curr_chunk.append(s)
+                    curr_words += s_words
+            if curr_chunk:
+                chunks.append(" ".join(curr_chunk))
+            return chunks
+
+        trans_chunks = build_chunks(trans_sentences)
+        norm_chunks = build_chunks(norm_sentences)
+
+        for chunk in trans_chunks:
             if not chunk.strip(): continue
             emo_result     = emotion_classifier(chunk)[0]
             emo_label      = emo_result['label']
             emo_confidence = emo_result['score']
 
+            neg_emo_weight = emotion_weights.get(emo_label, 0.0)
+            neg_emo_conf   = neg_emo_weight * emo_confidence
+            if neg_emo_conf > max_neg_emo_conf:
+                max_neg_emo_conf = neg_emo_conf
+
+        for chunk in norm_chunks:
+            if not chunk.strip(): continue
             dist_result     = distress_classifier(chunk)[0]
             dist_label      = str(dist_result['label']).upper()
             dist_confidence = dist_result['score']
-
-            neg_emo_weight = emotion_weights.get(emo_label, 0.0)
-            neg_emo_conf   = neg_emo_weight * emo_confidence
 
             is_distress = dist_label in [
                 "1", "LABEL_1", "NEGATIVE", "TOXIC", "SADNESS", "GRIEF", "FEAR", "ANGER"
             ]
             if is_distress and dist_confidence > max_distress_conf:
                 max_distress_conf = dist_confidence
-            if neg_emo_conf > max_neg_emo_conf:
-                max_neg_emo_conf = neg_emo_conf
 
         return max_distress_conf, max_neg_emo_conf
     except Exception as e:
@@ -906,12 +941,12 @@ async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_k
     ## ┐
     ### STAGE 1: SCORE COMPONENTS                              
     ## ┘
-    distress_conf, neg_emo_conf = get_risk_components(translated_text)
+    distress_conf, neg_emo_conf = get_risk_components(translated_text, normalized_text)
 
     ## ┐
     ### STAGE 2: SEMANTIC SIMILARITY                           
     ## ┘
-    semantic_score = get_semantic_similarity(translated_text)
+    semantic_score = get_semantic_similarity(normalized_text)
 
     risk_score = (0.35 * distress_conf) + (0.35 * neg_emo_conf) + (0.30 * semantic_score)
 
