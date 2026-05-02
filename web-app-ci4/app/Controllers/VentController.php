@@ -75,9 +75,11 @@ class VentController extends BaseController
         if ($localSeverity > $currentSeverity) {
             log_message('info', "Safety Net Override: Risk upgraded from {$riskLevel} to {$localResult['risk_level']} based on local keywords.");
             $riskLevel = $localResult['risk_level'];
-            // Adopt the higher score to reflect the increased risk severity
-            $sentimentScore = max($sentimentScore, $localResult['risk_percent']);
         }
+
+        // Always ensure the sentiment score reflects the highest percentage evaluated.
+        // This fixes the issue where ML timeouts default to 0% and stay 0% if both are LOW.
+        $sentimentScore = max($sentimentScore, $localResult['risk_percent']);
 
         // --- 2. DATA PRIVACY SECURE ENCRYPTION ---
         $encrypter = \Config\Services::encrypter();
@@ -469,6 +471,17 @@ class VentController extends BaseController
             'di naman mapapansin kung mawala ako',
             'gilaay na', 'way kwenta', 'wala koy pulos', 'kapoy na mabuhi',
             'awan pag-asa', 'awan serserbi', 'narigat unay',
+            // v7.2: Subtle emotional distress — basic English sadness/pain
+            'so sad', 'im sad', 'i am sad', 'i\'m sad', 'feeling sad', 'really sad',
+            'it hurts', 'hurts so much', 'i\'m hurting', 'im hurting',
+            'crying', 'been crying', 'can\'t stop crying',
+            'scared', 'i\'m scared', 'im scared',
+            'lonely', 'feel lonely', 'feeling lonely', 'so alone', 'all alone',
+            'heartbroken', 'broken hearted', 'miserable',
+            'anxious', 'overwhelmed', 'drained', 'exhausted',
+            'falling apart', 'breaking apart', 'in pain',
+            'sobrang sad', 'malungkot', 'lungkot', 'naiyak', 'umiyak',
+            'nasasaktan', 'masakit', 'sakit ng dibdib',
         ];
 
         // STRICT HIGH — Physical Violence (Never downgraded by sarcasm)
@@ -558,6 +571,18 @@ class VentController extends BaseController
             'di na makapag move on', 'cant move on',
             'bakit di ako sapat', 'ex ko', 'my ex',
             'ghinost', 'ghosted', 'na-ghost',
+            // v7.2: Subtle relationship distress — missing/longing/conflict
+            'i miss her', 'i miss him', 'miss her so much', 'miss him so much',
+            'love her so much', 'love him so much', 'i love her', 'i love him',
+            'wanna see her', 'wanna see him', 'want to see her', 'want to see him',
+            'open up to her', 'open up to him',
+            'argument', 'might get mad', 'she might get mad', 'he might get mad',
+            'cold to me', 'less sweet', 'kinda cold',
+            'scared to open up', 'scared to talk',
+            'mahal ko siya', 'miss ko siya', 'namimiss ko siya',
+            'gusto ko siya makita', 'gusto ko siyang makita',
+            'natatakot ako baka mag-away', 'natatakot baka magalit',
+            'malamig na siya', 'parang malamig na siya',
         ];
         foreach ($relationship as $kw) {
             if (mb_strpos($lower, $kw) !== false) {
