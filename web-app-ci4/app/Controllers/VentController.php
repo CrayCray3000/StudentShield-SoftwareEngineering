@@ -33,7 +33,7 @@ class VentController extends BaseController
         }
 
         // --- 1. CALL ML SERVICE FOR RISK ANALYSIS ---
-        $ch = curl_init(env('ML_API_URL', 'http://student-shield-.duckdns.org:7860') . '/analyze-text');
+        $ch = curl_init(env('ML_API_URL', 'http://student-shield-.duckdns.org') . '/analyze-text');
         
         // Handle potentially invalid UTF-8 (smart quotes) which makes json_encode return false
         $payload = json_encode(['raw_text' => $text, 'student_id' => (string)$userId], JSON_INVALID_UTF8_SUBSTITUTE);
