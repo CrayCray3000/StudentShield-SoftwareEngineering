@@ -489,8 +489,11 @@ class VentController extends BaseController
             'scared', 'i\'m scared', 'im scared',
             'lonely', 'feel lonely', 'feeling lonely', 'so alone', 'all alone',
             'heartbroken', 'broken hearted', 'miserable',
-            'anxious', 'overwhelmed', 'drained', 'exhausted',
+            'anxious', 'overwhelmed', 'drained', 'exhausted', 'exhausting', 'mentally',
             'falling apart', 'breaking apart', 'in pain',
+            'everything feels heavy', 'so much energy', 'don\'t even recognize myself',
+            'constantly overthinking', 'constantly doubting', 'not enough', 'tired',
+            'worse than just ending it', 'how much of myself i have left', 'fading',
             'sobrang sad', 'malungkot', 'lungkot', 'naiyak', 'umiyak',
             'nasasaktan', 'masakit', 'sakit ng dibdib',
         ];
