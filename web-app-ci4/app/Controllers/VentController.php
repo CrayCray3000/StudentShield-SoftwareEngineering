@@ -134,18 +134,14 @@ class VentController extends BaseController
 
         // --- 5. RETURN RESPONSE ---
         if ($this->request->isAJAX()) {
-            $isInvalidJson = (!$mlResult || !isset($mlResult['risk_level']));
-            $debugMsg = ($curlError || $httpCode !== 200 || $isInvalidJson) ? " (Debug HTTP: $httpCode | Resp: " . substr(strip_tags($response), 0, 100) . " | Err: $curlError)" : "";
             return $this->response->setJSON([
                 'status' => 'success',
-                'message' => 'Vent securely submitted.' . $debugMsg,
+                'message' => 'Vent securely submitted.',
                 'risk_level' => $riskLevel
             ]);
         }
 
-        $isInvalidJson = (!$mlResult || !isset($mlResult['risk_level']));
-        $debugMsg = ($curlError || $httpCode !== 200 || $isInvalidJson) ? " (Debug HTTP: $httpCode | Resp: " . substr(strip_tags($response), 0, 100) . " | Err: $curlError)" : "";
-        return redirect()->to('/student/vent')->with('message', 'Vent securely submitted.' . $debugMsg);
+        return redirect()->to('/student/vent')->with('message', 'Vent securely submitted.');
     }
 
     // --- 3. ALERT FATIGUE COOLDOWN (RATE LIMITING) ---
