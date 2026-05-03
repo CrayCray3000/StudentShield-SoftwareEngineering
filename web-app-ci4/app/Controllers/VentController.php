@@ -134,7 +134,7 @@ class VentController extends BaseController
 
         // --- 5. RETURN RESPONSE ---
         if ($this->request->isAJAX()) {
-            $debugMsg = $curlError ? " (ML Error: $curlError | HTTP: $httpCode)" : "";
+            $debugMsg = ($curlError || $httpCode !== 200) ? " (Debug HTTP: $httpCode | Resp: $response | Err: $curlError)" : "";
             return $this->response->setJSON([
                 'status' => 'success',
                 'message' => 'Vent securely submitted.' . $debugMsg,
@@ -142,7 +142,7 @@ class VentController extends BaseController
             ]);
         }
 
-        $debugMsg = $curlError ? " (ML Error: $curlError | HTTP: $httpCode)" : "";
+        $debugMsg = ($curlError || $httpCode !== 200) ? " (Debug HTTP: $httpCode | Resp: $response | Err: $curlError)" : "";
         return redirect()->to('/student/vent')->with('message', 'Vent securely submitted.' . $debugMsg);
     }
 
