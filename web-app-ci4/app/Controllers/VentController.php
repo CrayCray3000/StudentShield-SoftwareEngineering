@@ -34,7 +34,14 @@ class VentController extends BaseController
 
         // --- 1. CALL ML SERVICE FOR RISK ANALYSIS ---
         $ch = curl_init(env('ML_API_URL', 'http://20.187.146.70') . '/analyze-text');
-        $payload = json_encode(['raw_text' => $text, 'student_id' => (string)$userId]);
+        
+        // Handle potentially invalid UTF-8 (smart quotes) which makes json_encode return false
+        $payload = json_encode(['raw_text' => $text, 'student_id' => (string)$userId], JSON_INVALID_UTF8_SUBSTITUTE);
+        if ($payload === false) {
+            log_message('error', 'JSON encode failed: ' . json_last_error_msg());
+            $payload = json_encode(['raw_text' => mb_convert_encoding($text, 'UTF-8', 'UTF-8'), 'student_id' => (string)$userId]);
+        }
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
@@ -42,8 +49,8 @@ class VentController extends BaseController
         ]);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Increased from 15 to 60 for slower ML models
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Increased from 5 to 10
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
