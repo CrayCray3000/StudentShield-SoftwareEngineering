@@ -134,14 +134,16 @@ class VentController extends BaseController
 
         // --- 5. RETURN RESPONSE ---
         if ($this->request->isAJAX()) {
+            $debugMsg = $curlError ? " (ML Error: $curlError | HTTP: $httpCode)" : "";
             return $this->response->setJSON([
                 'status' => 'success',
-                'message' => 'Vent securely submitted.',
+                'message' => 'Vent securely submitted.' . $debugMsg,
                 'risk_level' => $riskLevel
             ]);
         }
 
-        return redirect()->to('/student/vent')->with('message', 'Vent securely submitted.');
+        $debugMsg = $curlError ? " (ML Error: $curlError | HTTP: $httpCode)" : "";
+        return redirect()->to('/student/vent')->with('message', 'Vent securely submitted.' . $debugMsg);
     }
 
     // --- 3. ALERT FATIGUE COOLDOWN (RATE LIMITING) ---
