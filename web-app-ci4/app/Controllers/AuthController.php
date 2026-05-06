@@ -89,7 +89,7 @@ class AuthController extends BaseController
                 setcookie('student_remember', $cookieValue, [
                     'expires' => time() + (86400 * 30),
                     'path' => '/',
-                    'secure' => true,
+                    'secure' => false,
                     'httponly' => true,
                     'samesite' => 'Strict'
                 ]);
@@ -246,8 +246,15 @@ class AuthController extends BaseController
         $storedOtp = session()->get('otp');
         $expiresAt = session()->get('otp_expires');
 
+        // Security: OTP brute-force protection (max 5 attempts)
+        $otpAttempts = session()->get('otp_attempts') ?? 0;
+        if ($otpAttempts >= 5) {
+            session()->remove(['otp', 'otp_expires', 'otp_attempts', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
+            return redirect()->to('/admin/login')->with('error', 'Too many failed verification attempts. Please log in again.');
+        }
+
         if (time() > $expiresAt) {
-            session()->remove(['otp', 'otp_expires', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
+            session()->remove(['otp', 'otp_expires', 'otp_attempts', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
             return redirect()->to('/admin/login')->with('error', 'Security code has expired. Please log in again.');
         }
 
@@ -265,7 +272,7 @@ class AuthController extends BaseController
                 setcookie('admin_trusted_device', $cookieValue, [
                     'expires' => time() + (86400 * 30),
                     'path' => '/',
-                    'secure' => true,
+                    'secure' => false,
                     'httponly' => true,
                     'samesite' => 'Strict'
                 ]);
@@ -281,11 +288,12 @@ class AuthController extends BaseController
             ]);
 
             // Clear temporary OTP tokens
-            session()->remove(['otp', 'otp_expires', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
+            session()->remove(['otp', 'otp_expires', 'otp_attempts', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
 
             return redirect()->to('/admin/dashboard');
         }
 
+        session()->set('otp_attempts', $otpAttempts + 1);
         return redirect()->back()->with('error', 'Invalid verification code.');
     }
 
