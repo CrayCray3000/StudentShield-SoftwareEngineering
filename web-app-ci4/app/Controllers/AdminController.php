@@ -4,22 +4,6 @@ namespace App\Controllers;
 
 class AdminController extends BaseController
 {
-    /**
-     * Write an immutable audit log entry for compliance tracking.
-     */
-    private function logAudit(string $action, string $entityType, int $entityId): void
-    {
-        $db = \Config\Database::connect();
-        $db->table('audit_logs')->insert([
-            'user_id'     => session()->get('user_id'),
-            'action'      => $action,
-            'entity_type' => $entityType,
-            'entity_id'   => $entityId,
-            'ip_address'  => $this->request->getIPAddress(),
-            'user_agent'  => $this->request->getUserAgent()->getAgentString(),
-            'created_at'  => date('Y-m-d H:i:s'),
-        ]);
-    }
     public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger)
     {
         parent::initController($request, $response, $logger);
@@ -31,20 +15,12 @@ class AdminController extends BaseController
     {
         $db = \Config\Database::connect();
         // Fetch initially for SSR rendering
-        try {
-            $recent_vents = $db->table('vent_logs')
-                ->select('vent_logs.*, users.name, users.student_id, users.section, users.adviser_name')
-                ->join('users', 'users.id = vent_logs.user_id')
-                ->where('vent_logs.deleted_at IS NULL')
-                ->orderBy('created_at', 'DESC')
-                ->get()->getResultArray();
-        } catch (\Exception $e) {
-            $recent_vents = $db->table('vent_logs')
-                ->select('vent_logs.*, users.name, users.student_id, users.section, users.adviser_name')
-                ->join('users', 'users.id = vent_logs.user_id')
-                ->orderBy('created_at', 'DESC')
-                ->get()->getResultArray();
-        }
+        $recent_vents = $db->table('vent_logs')
+            ->select('vent_logs.*, users.name, users.student_id, users.section, users.adviser_name')
+            ->join('users', 'users.id = vent_logs.user_id')
+            ->where('vent_logs.deleted_at IS NULL')
+            ->orderBy('created_at', 'DESC')
+            ->get()->getResultArray();
             
         $encrypter = \Config\Services::encrypter();
         foreach ($recent_vents as &$vent) {
@@ -71,8 +47,7 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         $isArchived = $this->request->getGet('archived') == '1';
         
-        try {
-            $query = $db->table('vent_logs')
+        $query = $db->table('vent_logs')
                 ->select('vent_logs.*, users.name, users.student_id, users.parent_phone, users.parent_email, users.section, users.adviser_name')
                 ->join('users', 'users.id = vent_logs.user_id', 'left');
                 
@@ -82,18 +57,10 @@ class AdminController extends BaseController
                 $query->where('vent_logs.deleted_at IS NULL');
             }
             
-            $vents = $query->orderBy('created_at', 'DESC')
-                ->limit(500)
-                ->get()->getResultArray();
-        } catch (\Exception $e) {
-            $vents = $db->table('vent_logs')
-                ->select('vent_logs.*, users.name, users.student_id, users.parent_phone, users.parent_email, users.section, users.adviser_name')
-                ->join('users', 'users.id = vent_logs.user_id', 'left')
-                ->orderBy('created_at', 'DESC')
-                ->limit(500)
-                ->get()->getResultArray();
-        }
-            
+        $vents = $query->orderBy('created_at', 'DESC')
+            ->limit(500)
+            ->get()->getResultArray();
+
         $encrypter = \Config\Services::encrypter();
         foreach ($vents as &$vent) {
             try {
@@ -171,8 +138,7 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         $isArchived = $this->request->getGet('archived') == '1';
         
-        try {
-            $query = $db->table('bully_reports')
+        $query = $db->table('bully_reports')
                 ->select('bully_reports.*, bully_reports.incident_details as description, bully_reports.reporter_student_id as reporter_id, users.name, users.parent_phone, users.parent_email')
                 ->join('users', 'users.id = bully_reports.reporter_student_id', 'left');
                 
@@ -182,18 +148,10 @@ class AdminController extends BaseController
                 $query->where('bully_reports.deleted_at IS NULL');
             }
             
-            $incidents = $query->orderBy('created_at', 'DESC')
-                ->limit(500)
-                ->get()->getResultArray();
-        } catch (\Exception $e) {
-            $incidents = $db->table('bully_reports')
-                ->select('bully_reports.*, bully_reports.incident_details as description, bully_reports.reporter_student_id as reporter_id, users.name, users.parent_phone, users.parent_email')
-                ->join('users', 'users.id = bully_reports.reporter_student_id', 'left')
-                ->orderBy('created_at', 'DESC')
-                ->limit(500)
-                ->get()->getResultArray();
-        }
-            
+        $incidents = $query->orderBy('created_at', 'DESC')
+            ->limit(500)
+            ->get()->getResultArray();
+
         $encrypter = \Config\Services::encrypter();
         foreach ($incidents as &$incident) {
             try {
@@ -307,7 +265,7 @@ class AdminController extends BaseController
         $payload = json_encode(['phone' => $cleanPhone, 'message' => $message]);
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => env('sms.GatewayUrl', "http://192.168.1.3:8080/send-sms"),
+            CURLOPT_URL => env('sms.GatewayUrl', ''),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 1,
             CURLOPT_CUSTOMREQUEST => "POST",
@@ -326,7 +284,7 @@ class AdminController extends BaseController
         try {
             $email = \Config\Services::email();
             
-            $smtpUser = env('email.SMTPUser', 'svbsmcounseling@gmail.com');
+            $smtpUser = env('email.SMTPUser', '');
             $smtpPass = env('email.SMTPPass', '');
             
             $email->initialize([
@@ -344,7 +302,7 @@ class AdminController extends BaseController
             $email->setFrom($smtpUser, 'SVBSM Wellness Team');
             $email->setTo($emailAddress);
             $email->setSubject('StudentShield: Protective Services Notification');
-            $email->setMessage("<div style='font-family: Arial; padding: 20px; background: #f9f9f9; border: 1px solid #ddd;'><h3>Counseling Alert</h3><p>{$messageBody}</p></div>");
+            $email->setMessage("<div style='font-family: Arial; padding: 20px; background: #f9f9f9; border: 1px solid #ddd;'><h3>Counseling Alert</h3><p>" . esc($messageBody, 'html') . "</p></div>");
             $email->send(false);
         } catch (\Exception $e) {}
     }
@@ -420,6 +378,26 @@ class AdminController extends BaseController
 
         return $this->response->setJSON($logs);
     }
+
+    public function evidence($fileName)
+    {
+        if (!session()->get('isLoggedIn') || !in_array((int)session()->get('role'), [1, 2])) {
+            return $this->response->setStatusCode(401)->setBody('Unauthorized');
+        }
+
+        $safeName = basename($fileName);
+        $path = WRITEPATH . 'uploads/evidence/' . $safeName;
+        if (!is_file($path)) {
+            return $this->response->setStatusCode(404)->setBody('Evidence not found');
+        }
+
+        $mime = mime_content_type($path) ?: 'application/octet-stream';
+        return $this->response
+            ->setHeader('Content-Type', $mime)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $safeName . '"')
+            ->setBody(file_get_contents($path));
+    }
+
     public function getStudentProfile($id)
     {
         if (!session()->get('isLoggedIn') || !in_array((int)session()->get('role'), [1, 2])) {

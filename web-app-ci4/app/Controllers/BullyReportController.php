@@ -40,10 +40,11 @@ class BullyReportController extends BaseController
         if ($evidenceFile && $evidenceFile->isValid() && !$evidenceFile->hasMoved()) {
             $rules = [
                 'evidence_file' => [
-                    'rules' => 'max_size[evidence_file,10240]|ext_in[evidence_file,jpg,jpeg,png,gif,webp,heic,heif,mp4,mov,avi,mkv,webm]',
+                    'rules' => 'max_size[evidence_file,10240]|ext_in[evidence_file,jpg,jpeg,png,gif,webp,heic,heif,mp4,mov,avi,mkv,webm]|mime_in[evidence_file,image/jpeg,image/png,image/gif,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/x-msvideo,video/x-matroska,video/webm]',
                     'errors' => [
                         'max_size' => 'The evidence file must not exceed 10MB.',
-                        'ext_in'   => 'Only images (JPG, PNG, GIF, WEBP, HEIC) and videos (MP4, MOV, AVI, MKV, WEBM) are allowed.'
+                        'ext_in'   => 'Only images (JPG, PNG, GIF, WEBP, HEIC) and videos (MP4, MOV, AVI, MKV, WEBM) are allowed.',
+                        'mime_in'  => 'The uploaded evidence file type is not allowed.'
                     ]
                 ]
             ];
@@ -52,13 +53,13 @@ class BullyReportController extends BaseController
                 return redirect()->back()->withInput()->with('error', $this->validator->getError('evidence_file'));
             }
 
-            // Ensure the upload directory exists
-            if (!is_dir(FCPATH . 'uploads/evidence')) {
-                mkdir(FCPATH . 'uploads/evidence', 0777, true);
+            $evidenceDir = WRITEPATH . 'uploads/evidence';
+            if (!is_dir($evidenceDir)) {
+                mkdir($evidenceDir, 0755, true);
             }
             $newName = $evidenceFile->getRandomName();
-            $evidenceFile->move(FCPATH . 'uploads/evidence', $newName);
-            $evidencePath = 'uploads/evidence/' . $newName;
+            $evidenceFile->move($evidenceDir, $newName);
+            $evidencePath = 'evidence/' . $newName;
         }
         
         // Loophole 3 Mitigation: Identity Traceability via Session
@@ -89,7 +90,6 @@ class BullyReportController extends BaseController
             if (count($bUsers) === 1) $bullyStudentId = $bUsers[0]->id;
         }
 
-        date_default_timezone_set('Asia/Manila');
         $encrypter = \Config\Services::encrypter();
         $rawDetails = "TARGETED STUDENT: " . ($victimName ?: 'Self') . "\nREPORTED AGGRESSOR(S): " . ($bullyName ?: 'N/A') . "\n\n" . $details;
         $encryptedDetails = bin2hex($encrypter->encrypt($rawDetails));
@@ -136,8 +136,14 @@ class BullyReportController extends BaseController
         }
 
         // 2. Alert the Counselor Immediately (SMS & Email) — so they can investigate ASAP
-        $this->sendLocalSms("09221234567", "StudentShield URGENT: A new Bullying Report was just filed and requires your verification. Please log into the admin dashboard immediately to investigate and verify the report before parent alerts are sent.");
-        $this->sendLocalEmail("svbsmcounseling@gmail.com", "StudentShield URGENT: A new Bullying Report was just filed and requires your verification. Please log into the admin dashboard immediately to investigate and verify the report before parent alerts are sent.");
+        $counselorPhone = env('COUNSELOR_PHONE', '');
+        $counselorEmail = env('COUNSELOR_EMAIL', '');
+        if (!empty($counselorPhone)) {
+            $this->sendLocalSms($counselorPhone, "StudentShield URGENT: A new Bullying Report was just filed and requires your verification. Please log into the admin dashboard immediately to investigate and verify the report before parent alerts are sent.");
+        }
+        if (!empty($counselorEmail)) {
+            $this->sendLocalEmail($counselorEmail, "StudentShield URGENT: A new Bullying Report was just filed and requires your verification. Please log into the admin dashboard immediately to investigate and verify the report before parent alerts are sent.");
+        }
 
         // NOTE: Parent SMS & Email alerts are now triggered via Stage 2 (Counselor Verification)
         // See AdminController::verifyIncident() — counselor clicks "Verify & Alert Parents" on the dashboard
@@ -158,7 +164,7 @@ class BullyReportController extends BaseController
         $payload = json_encode(['phone' => $cleanPhone, 'message' => $message]);
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => env('sms.GatewayUrl', "http://192.168.1.3:8080/send-sms"),
+            CURLOPT_URL => env('sms.GatewayUrl', ''),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 1, // Ultra-fast fail timeout mapping to prevent bottlenecking the main UI
             CURLOPT_CUSTOMREQUEST => "POST",
@@ -166,6 +172,7 @@ class BullyReportController extends BaseController
             CURLOPT_HTTPHEADER => ["Content-Type: application/json", "Connection: close"],
         ]);
         curl_exec($curl);
+        curl_close($curl);
         
         return true;
     }
@@ -177,7 +184,7 @@ class BullyReportController extends BaseController
             $email = \Config\Services::email();
             
             // Safe fallback configuration using environment variables
-            $smtpUser = env('email.SMTPUser', 'svbsmcounseling@gmail.com');
+            $smtpUser = env('email.SMTPUser', '');
             $smtpPass = env('email.SMTPPass', '');
             
             $email->initialize([
@@ -195,7 +202,7 @@ class BullyReportController extends BaseController
             $email->setFrom($smtpUser, 'SVBSM Wellness Team');
             $email->setTo($emailAddress);
             $email->setSubject('StudentShield: Protective Services Notification');
-            $email->setMessage("<div style='font-family: Arial; padding: 20px; background: #f9f9f9; border: 1px solid #ddd;'><h3>Counseling Alert</h3><p>{$messageBody}</p></div>");
+            $email->setMessage("<div style='font-family: Arial; padding: 20px; background: #f9f9f9; border: 1px solid #ddd;'><h3>Counseling Alert</h3><p>" . esc($messageBody, 'html') . "</p></div>");
             $email->send(false);
         } catch (\Exception $e) {}
     }

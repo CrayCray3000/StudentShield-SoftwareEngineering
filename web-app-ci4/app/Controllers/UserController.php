@@ -170,25 +170,4 @@ class UserController extends BaseController
 
         return redirect()->to('/admin/users')->with('success', "User \"{$user->name}\" deleted.");
     }
-
-    /**
-     * Write an audit log entry.
-     */
-    private function logAudit(string $action, string $entityType, int $entityId): void
-    {
-        $db = \Config\Database::connect();
-        try {
-            $db->table('audit_logs')->insert([
-                'user_id'     => session()->get('user_id'),
-                'action'      => $action,
-                'entity_type' => $entityType,
-                'entity_id'   => $entityId,
-                'ip_address'  => $this->request->getIPAddress(),
-                'user_agent'  => $this->request->getUserAgent()->getAgentString(),
-                'created_at'  => date('Y-m-d H:i:s'),
-            ]);
-        } catch (\Exception $e) {
-            log_message('error', 'Audit log failed: ' . $e->getMessage());
-        }
-    }
 }

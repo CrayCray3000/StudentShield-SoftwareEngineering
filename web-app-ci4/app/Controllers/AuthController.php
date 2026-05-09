@@ -71,13 +71,7 @@ class AuthController extends BaseController
         // Find student by name (role = 0)
         $user = $db->table('users')->where(['name' => $name, 'role' => 0])->get()->getRowArray();
 
-        if ($user && ($user['passcode'] === $password || password_verify($password, $user['passcode']))) {
-            // Auto-upgrade plaintext password to hash
-            if ($user['passcode'] === $password && !password_verify($password, $user['passcode'])) {
-                $db->table('users')->where('id', $user['id'])->update([
-                    'passcode' => password_hash($password, PASSWORD_BCRYPT)
-                ]);
-            }
+        if ($user && password_verify($password, $user['passcode'])) {
 
             // Remember Me Feature
             if ($this->request->getPost('remember') === 'on') {
@@ -89,7 +83,7 @@ class AuthController extends BaseController
                 setcookie('student_remember', $cookieValue, [
                     'expires' => time() + (86400 * 30),
                     'path' => '/',
-                    'secure' => false,
+                    'secure' => $this->shouldUseSecureCookie(),
                     'httponly' => true,
                     'samesite' => 'Strict'
                 ]);
@@ -131,17 +125,8 @@ class AuthController extends BaseController
             return redirect()->back()->with('error', 'Invalid credentials.');
         }
 
-        // Check password — support both legacy plaintext and bcrypt hashed
-        $passwordValid = false;
-        if (password_verify($password, $user['passcode'])) {
-            $passwordValid = true;
-        } elseif ($user['passcode'] === $password) {
-            // Legacy plaintext — auto-upgrade to bcrypt
-            $passwordValid = true;
-            $db->table('users')->where('id', $user['id'])->update([
-                'passcode' => password_hash($password, PASSWORD_BCRYPT)
-            ]);
-        }
+        // Authenticate with bcrypt only — plaintext fallback removed for security
+        $passwordValid = password_verify($password, $user['passcode']);
 
         if ($passwordValid) {
             $roleNames = [1 => 'counselor', 2 => 'super_admin'];
@@ -272,18 +257,24 @@ class AuthController extends BaseController
                 setcookie('admin_trusted_device', $cookieValue, [
                     'expires' => time() + (86400 * 30),
                     'path' => '/',
-                    'secure' => false,
+                    'secure' => $this->shouldUseSecureCookie(),
                     'httponly' => true,
                     'samesite' => 'Strict'
                 ]);
             }
 
+            // Read temp values BEFORE regenerate() to prevent data loss
+            $userId   = session()->get('temp_user_id');
+            $name     = session()->get('temp_name');
+            $role     = session()->get('temp_role');
+            $roleName = session()->get('temp_role_name');
+
             session()->regenerate();
             session()->set([
-                'user_id'    => session()->get('temp_user_id'),
-                'name'       => session()->get('temp_name'),
-                'role'       => session()->get('temp_role'),
-                'role_name'  => session()->get('temp_role_name'),
+                'user_id'    => $userId,
+                'name'       => $name,
+                'role'       => $role,
+                'role_name'  => $roleName,
                 'isLoggedIn' => true,
             ]);
 
@@ -315,5 +306,11 @@ class AuthController extends BaseController
             return redirect()->to('/admin/login');
         }
         return redirect()->to('/login');
+    }
+
+    private function shouldUseSecureCookie(): bool
+    {
+        return $this->request->isSecure()
+            || strtolower((string) $this->request->getServer('HTTP_X_FORWARDED_PROTO')) === 'https';
     }
 }

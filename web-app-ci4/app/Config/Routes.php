@@ -14,7 +14,7 @@ $routes->get('/admin/login', 'AuthController::adminLoginView');
 $routes->post('/admin/login/authenticate', 'AuthController::authenticateAdmin');
 $routes->get('/admin/otp', 'AuthController::otpView');
 $routes->post('/admin/verify-otp', 'AuthController::verifyOtp');
-$routes->get('/logout', 'AuthController::logout');
+$routes->post('/logout', 'AuthController::logout');
 
 // Protected Routes
 $routes->group('', ['filter' => 'auth'], static function ($routes) {
@@ -29,6 +29,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/admin/api/incidents', 'AdminController::fetchIncidents');
     $routes->get('/admin/api/alerts', 'AdminController::fetchAlertLogs');
     $routes->get('/admin/api/student-profile/(:num)', 'AdminController::getStudentProfile/$1');
+    $routes->get('/admin/evidence/(:segment)', 'AdminController::evidence/$1');
     
     $routes->post('/admin/incident/resolve/(:num)', 'AdminController::resolveIncident/$1');
     $routes->post('/admin/incident/verify/(:num)', 'AdminController::verifyIncident/$1');

@@ -12,7 +12,13 @@ class VentController extends BaseController
     public function submit()
     {
         $text = $this->request->getPost('vent_text');
-        $userId = session()->get('user_id') ?? 1;
+        $userId = session()->get('user_id');
+        if (empty($userId)) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Authentication required.']);
+            }
+            return redirect()->to('/login')->with('error', 'Authentication required. Please log in.');
+        }
 
         // Security: Anti-Spam Rate Limiting (1 vent per 30 seconds)
         $lastSubmit = session()->get('last_vent_time');
@@ -32,6 +38,14 @@ class VentController extends BaseController
             return redirect()->back()->with('error', 'Please enter some text before submitting.');
         }
 
+        // Security: Input length validation (prevent memory abuse on ML service)
+        if (mb_strlen($text) > 5000) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Your vent is too long. Please keep it under 5000 characters.']);
+            }
+            return redirect()->back()->with('error', 'Your vent is too long. Please keep it under 5000 characters.');
+        }
+
         // --- 1. CALL ML SERVICE FOR RISK ANALYSIS ---
         $ch = curl_init(env('ML_API_URL', 'http://student-shield-.duckdns.org') . '/analyze-text');
         
@@ -45,7 +59,7 @@ class VentController extends BaseController
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'X-API-KEY: ' . env('ML_API_KEY', 'svbsm-production-ml-key-v1')
+            'X-API-KEY: ' . env('ML_API_KEY', '')
         ]);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
@@ -96,7 +110,6 @@ class VentController extends BaseController
         $db = \Config\Database::connect();
         $emotions = $this->request->getPost('emotions') ?? '';
 
-        date_default_timezone_set('Asia/Manila');
         $db->table('vent_logs')->insert([
             'user_id' => $userId,
             'raw_text' => $encryptedText,
@@ -186,7 +199,7 @@ class VentController extends BaseController
 
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => env('sms.GatewayUrl', "http://192.168.1.3:8080/send-sms"),
+            CURLOPT_URL => env('sms.GatewayUrl', ''),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 30, // Keep timeout reasonably long because sending via real SIM can take a few seconds
             CURLOPT_CUSTOMREQUEST => "POST",
@@ -316,14 +329,15 @@ class VentController extends BaseController
     private function triggerCounselorEmergencyAlert($message, $subject)
     {
         // 1. Text the default Counselor Phone
-        $this->logAlert('SMS (Counselor Override)', "09221234567", $message);
+        $counselorPhone = env('COUNSELOR_PHONE', '');
+        $this->logAlert('SMS (Counselor Override)', $counselorPhone, $message);
         $payload = json_encode([
-            'phone' => "09221234567", // Default Counselor Hotline mapped in config
+            'phone' => $counselorPhone,
             'message' => "StudentShield URGENT: " . $message
         ]);
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => env('sms.GatewayUrl', "http://192.168.1.3:8080/send-sms"),
+            CURLOPT_URL => env('sms.GatewayUrl', ''),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 2,
             CURLOPT_CUSTOMREQUEST => "POST",
@@ -345,12 +359,12 @@ class VentController extends BaseController
                     'SMTPCrypto' => env('email.SMTPCrypto', 'tls'), 'mailType' => 'html'
                 ]);
                 $email->setFrom($smtpUser, 'SVBSM Wellness Dashboard');
-                $email->setTo("svbsmcounseling@gmail.com");
+                $email->setTo(env('COUNSELOR_EMAIL', ''));
                 $email->setSubject($subject);
                 $email->setMessage(
                     "<div style='border: 2px solid #ef4444; padding: 20px; font-family: sans-serif;'>" .
-                    "<h2>🚨 " . $subject . "</h2>" .
-                    "<p style='color: #b91c1c; font-size: 16px;'><strong>" . $message . "</strong></p>" .
+                    "<h2>🚨 " . esc($subject, 'html') . "</h2>" .
+                    "<p style='color: #b91c1c; font-size: 16px;'><strong>" . esc($message, 'html') . "</strong></p>" .
                     "<p>Log into your dashboard to read the full encrypted entry securely.</p>" .
                     "</div>"
                 );
