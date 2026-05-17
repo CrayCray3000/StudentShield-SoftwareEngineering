@@ -38,3 +38,12 @@ ml_service/models/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Capstone Documents
+*.pdf
+ARCHITECTURE_PAPER.md
+MANAGEMENT_GUIDE.md
+SYSTEM_DOCUMENTATION.md
+capstone_text_dump.txt
+gantt_chart.txt
+studentshield.txt
