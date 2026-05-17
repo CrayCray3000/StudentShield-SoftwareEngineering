@@ -1,0 +1,1280 @@
+StudentShield: A Machine Learning-Based Emotional Distress Detection and Bullying Reporting System with Automated SMS and Email Alerts for Saint Vincent Blessed School of Manila
+
+
+
+
+
+
+A Capstone Project  
+presented to the Faculty of the 
+School of Arts, Science and Technology
+National Teachers College
+Quiapo, Manila
+
+
+
+
+In Partial Fulfillment of the 
+Requirements for the Degree of 
+Bachelor of Science in Information Technology
+
+
+
+
+
+
+By
+Enriquez, Justin Altamia
+Melgarejo, John Carlo
+Meneses, Vonn Christian Miel
+Ramos, John Cris
+Urayanza, Ashley Princess 
+
+
+
+
+
+
+
+
+May 2026
+APPROVAL SHEET FOR TITLE DEFENSE
+
+This Capstone Project  entitled StudentShield: A Machine Learning-Based Emotional Distress Detection and Bullying Reporting System with Automated SMS and Email Alerts for Saint Vincent Blessed School of Manila was prepared and submitted by:
+
+
+Enriquez, Justin Altamia
+Melgarejo, John Carlo
+Meneses, Vonn Christian Miel
+Ramos, John Cris
+Urayanza, Ashley Princess
+
+
+
+has been approved by the REVIEW COMMITTEE as partial fulfillment of the requirements for the subject Capstone Project
+
+
+Mr. Edward James V. Grageda
+Adviser
+
+
+REVIEW COMMITTEE
+
+
+  Mrs. Rodessa Bunag					                  Mr. Joshua Pacer
+              Panelist 1							               Panelist 2
+
+
+
+Accepted and approved by:
+Carlito L. Cunanan, MIT
+Information Technology Department
+		                    
+
+        
+Liezel  L. Aguilar, MACDDS
+School of Arts, Sciences and Technology
+
+
+
+APPROVAL SHEET FOR ORAL DEFENSE
+
+
+This Capstone Project entitled StudentShield: A Machine Learning-Based Emotional Distress Detection and Bullying Reporting System with Automated SMS and Email Alerts for Saint Vincent Blessed School of Manila was prepared and submitted by:
+
+
+Enriquez, Justin Altamia
+Melgarejo, John Carlo
+Meneses, Vonn Christian Miel
+Ramos, John Cris
+Urayanza, Ashley Princess
+
+
+has been approved by the REVIEW COMMITTEE as partial fulfillment of the requirements for the subject Capstone Project.
+
+Mr. Edward James V. Grageda
+Adviser
+
+
+REVIEW COMMITTEE
+
+    Panelist 1							      	 Panelist 2	
+                 Panelist							           	   Panelist
+Panelist
+Panelist Chair
+
+
+Accepted and approved by:
+Carlito L. Cunanan, MIT
+ Information Technology Department
+ 
+        Liezel  L. Aguilar, MACDDS
+School of Arts, Sciences and Technology
+
+
+
+
+
+
+ACKNOWLEDGMENT
+(Font Style: Garamond; Font Size: 12)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ABSTRACT
+(Font Style:  Garamond; Font Size: 12)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TABLE OF CONTENTS
+Chapter I. Introduction
+	1.0 Project Purpose………………………………………………………………...1
+	1.1 Project Description………………………………………………………….…2
+	1.2 Objective of the Study……………………………………………..…………34
+		1.2.1 General Objective of the Study……………………………………….
+		1.2.2 Specific Objectives of the Study…………………………………....76
+	1.3 Significance of the Study……………………………………………………..
+            1.4 Scope and Delimitation of the Study………………………………………..
+		1.4.1 Scope……………………………………………………………..
+		1.4.2 Limitation………………………………………………………….
+	1.5 Review of Related Literature……………………………………………….
+	1.6 Review of Related Studies …………………………………………………
+	1.7 Technical Background………………………………………………………
+		1.7.1 Conceptual Framework…………………………………………….
+	1.8 Definition of Terms……………………………………………………….
+
+Chapter II. Methodology
+	2.1 Design of Software , System, Product or Process………………………………
+		2.1.1 Software Architecture………………………………………………..
+		2.1.2 Data Flow Diagram…………………………….……………….
+		2.1.3 Software Development Life Cycle………………………………….
+		2.1.4 System Flowchart………………………………………………..
+		2.1.5 Entity Relationship Diagram………………………………………….
+		2.1.6 Use Case Diagram…………………………………………………
+              2.2 Requirements Analysis………………………………………………..
+              2.3 Requirements Documentation………………………………………….
+              2.4 Development and Pre-Testing procedures……………………………….
+              2.5 Implementation Plan (Infrastructure/ Deployment)...................................
+              2.6 Statistical Treatment of data……………………………………………
+		2.6.1 Data Gathering Technique………………………………….
+		2.6.2 Setting of the Study…………………………………………..
+		2.6.3 Subject of the Study……………………………..
+		2.6.4 Sampling Technique………………………………..
+		2.6.5 Statistical Treatment of Data………………………………………
+
+Chapter III. Results and Discussion 
+	3.1 System Test Plan
+	3.2 Statistical Analysis
+	3.3 Implementation and Statistical Results Interpretation
+
+Chapter IV. Summary of Findings, Conclusion, and Recommendation
+	4.1 Summary
+	4.2 Recommendations
+	4.3 Conclusions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LIST OF FIGURES
+Figure								   		               Page
+Figure  1. Conceptual framework of the SMS…………………………….………
+Figure 2. Software Architecture……………………………………....……………
+Figure 3.  DFD Level 0…………………………………………....……………
+Figure 4. DFD Level 1…………………………………………....……………
+Figure 5. Software Development Life Cycle - Agile Model……………....……………
+Figure 6. Super Admin Flowchart of StudentShield System
+Figure 7. Counselors Flowchart of StudentShield System
+Figure 8. Students Flowchart of StudentShield System
+Figure 9. Entity Relationship Diagram
+Figure 10. Use Case Diagram
+Figure 11. Implementation Plan using Gantt Chart
+
+
+LIST OF TABLES
+Table
+Table 1: Test Case Scenario for Authentication Module
+Table 2: Test Case Scenario for Vent Log Module
+Table 3: Test Case Scenario for Bully Report Module
+Table 4: Test Case Scenario for Dashboard and Case Management Module
+Table 5: Test Case Scenario for User Management Module
+Table 6: Test Case Scenario for Audit Log Module
+
+
+
+
+
+
+
+
+
+LIST OF APPENDICES
+Appendices
+Appendix A: References
+Appendix B: Relevant Source Codes
+Appendix C: Gantt Chart
+Appendix D: Informed Consent
+Appendix E: Evaluation Tool or Testing Documents ( Include evaluation questionnaire and Sample accomplished questionnaire)
+Appendix F: Summary of Evaluation Responses
+Appendix G: Test Results
+Appendix H: System Screenshots
+Appendix I : User’s Manual 
+Appendix J: Curriculum Vitae (One Page per Student)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CHAPTER 1
+INTRODUCTION
+Students today are growing up in an environment shaped heavily by digital connectivity. Technology has made many aspects of life easier, allowing people to access information almost instantly. Because every student and educator now lives in a space dominated by screens and the internet, the way they interact has fundamentally changed. However, this shift toward a digital world has also brought serious complications, particularly the rise of cyberbullying, harassment, and hidden emotional distress.
+Dealing with these modern problems requires modern solutions. Since much of student interaction now happens online, technology has become an essential tool for preventing harmful behaviors. Instead of relying purely on physical monitoring, schools can now use software applications to trace possible bullying behavior or emotional risks. These applications can collect and process data in real-time to help ensure student safety. When an administration uses advanced monitoring tools, they can scan digital interactions and receive instant alerts the moment a student shows signs of critical risk.
+Given that educational institutions like St. Vincent Blessed School of Manila (SVBSM) need a more efficient way to spot and sort through these risks, the proponents decided to develop a system titled StudentShield. Through the implementation of StudentShield, educational institutions acquire a robust framework for mitigating the psychological and social consequences of peer victimization and chronic stress. The system assures guidance counselors that they will be alerted quickly whenever risk is detected in the digital environment. The proposed system provides school administrators with a robust framework to modernize and streamline traditional student intervention protocols. To ensure that critical interventions happen without delay, the system incorporates an asynchronous email notification module. Instead of requiring guardians and school counselors to actively monitor a dashboard, the framework utilizes secure SMTP (Simple Mail Transfer Protocol) to automatically push high-risk vulnerability and cyberbullying alerts directly to their registered email addresses in real-time.
+
+Project Purpose   
+	StudentShield's main objective is to equip Saint Vincent Blessed School of Manila (SVBSM) with a dependable, automated detection and mitigation platform to help identify and address cyberbullying and behavioral risks in realtime. The system combines advanced technological solutions with the practical needs of the guidance and student affairs departments, thanks to the integration of Natural Language Processing (NLP).  
+If no central monitoring system is in place, educational institutions have major problems relating to effective tracking of bullying behaviors and early intervention. To address this, StudentShield is essentially based on the following principles:
+Proactive Risk Identification: Move from a reactive disciplinary strategy to early detection through the use of NLP algorithms to detect warning signs in student communications. 
+Prioritized Intervention: To create a system of classification for incidents that places them into Low, Medium, High and Critical categories so school counselors can quickly identify and assist those students in the highest category.
+Ensuring the SVBSM administration can make decisions that have the potential to positively influence student wellbeing, through the use of underlying trend data and constant monitoring.
+Data-Driven Decision Making: To leverage trend analytics and continuous monitoring to uncover underlying patterns in student wellbeing, effectively empowering the SVBSM administration to perform timely, evidence-based interventions.
+
+Project Description
+The proponents want to develop a machine learning system to track and intervene risks that can improve the safety of students in the SVBSM setting, referred to as StudentShield. The proposed system will incorporate a hybrid approach with a PHP CodeIgniter 4 web interface for administrative purposes and Python FastAPI for ML computations.
+The system applies Natural Language Processing to analyze the text and classifies the emotional strength into 4 different risk levels: Low, Medium, High, Critical. This action can result in immediate notification to relevant individuals such as guidance counselors when a serious behavioural risk is detected, thereby enabling StudentShield to achieve real-time notification. Data privacy and security were a heightened concern with this system due to the sensitive nature of the data held by students.Data privacy and security features throughout the development of the system were a significant concern by the proponents. The project provides a realistic and modernized platform for bullying prevention and enhanced student welfare by bringing all reports and trends into one centralised location, which provides for SVBSM.
+
+
+
+Objective of the Study
+General Objective of the Study
+The primary objective of this study is to develop StudentShield, an NLP-powered monitoring and intervention system for SVBSM designed to automate bullying detection, categorize behavioral risks, and facilitate proactive, data-driven administrative responses.
+Specific Objectives of the Study
+To develop a secure "Safe Space" web portal where SVBSM Junior High School students can conditionally anonymously submit emotional vents and formal bullying incident reports, featuring the ability to attach photo and video evidence.
+To implement a multi-model AI Risk Classification Engine (mDeBERTa-v3 and DistilRoBERTa) that automatically analyzes and categorizes text submissions into distinct emotional risk levels (Low, Medium, High, and Critical).
+To integrate a behavioral trajectory tracking algorithm using mathematical vector search (FAISS) to track a student's 14-day history and identify worsening patterns of behavioral distress over time.
+To build a real-time Counselor Dashboard and Alert System equipped with automated SMS (using PhilSMS API) and Email emergency alerts to instantly notify parents and administrators when critical cases are identified.
+To evaluate the system's accuracy and data privacy by enforcing AES-256 encryption for secure data handling and validating the accuracy of the AI risk flags through an official pilot test with the SVBSM administration to ensure legal compliance.
+
+Significance of the Study
+	This study represents a big improvement to how Saint Vincent Blessed School of Manila manages the wellbeing of its students. In a traditional setting, student discipline and mental wellness are treated as reactive tasks where problems are only solved after they become public. StudentShield shifts this approach by introducing a proactive technology driven protocol that prioritizes the "Golden Hour," the short timeframe immediately following a student expression of distress when intervention is most effective.
+The Client / Organization (Saint Vincent Blessed School of Manila)
+This project offers for SVBSM a modern operational tool which overcomes the issue of a decentralized report management. The school can now rely on a centralized system, thus avoiding cumbersome paper trails or verbal reports and having concerns automatically flagged. This enables the administration to utilize the guidance staff where it is most needed, leaving the guidance department more efficient as a whole.  
+The End Users (Students and Guidance Counselors)
+StudentShield provides students with a non-threatening "Safe Space" to express what they are thinking without fear of being immediately judged. They use Conditional Anonymity to be able to express their emotions without everyone knowing but knowing that there is someone there to assist them if things get out of hand. The system serves as a virtual assistant for counselors, helping to filter through the hundreds of vents and identify only the "High" and "Critical" cases, problematically reducing the daily administrative burden.
+The Parents
+Parental involvement is often the weak link in the school safety chain, as parents are also typically the last people to be aware of their child's difficulties. StudentShield fills this gap by giving students instant feedback. If the situation is life-threatening or very aggressive the NLP engine automatically sends the parent an SMS alert. This will keep the family informed "as it happens" and enable a home-and-school intervention. Automated e-mail notification allows parents to instantly and formally be alerted to the child's mental state or cyber-bullying. This mutually bridges the school and home communication with parents intervening promptly via the school without having to actively log in to the web portal.
+The School / Institution
+Through this measure, SVBSM demonstrates it takes digital safety and data privacy seriously, which is evident in the institution's use of StudentShield. The school transitions away from having old and at-risk record systems and uses a new protocol that adheres to national data privacy regulations.
+The Proponents
+The project challenged the team to integrate the core concepts of web development and artificial intelligence in designing a PHP/CodeIgniter-based system intended to interface with a Python/FastAPI microservice. The study also introduced the proponents to concepts related to API design, AES-256 data encryption, and real-time notification routing, which are relevant in modern software development.
+Future Researchers
+This project serves as a case study on how to integrate high-level transformer models into practical, localized school systems. Future researchers can use this architecture as a foundation, perhaps expanding the NLP engine to include more local dialects or integrating it with wearable technology for broader biosocial monitoring.
+
+
+
+Scope and Delimitation of the Study
+Scope
+Developing a secure "Safe Space" web platform exclusively for SVBSM Junior High School students to conditionally anonymously submit emotional vents and formal bullying incident reports, featuring the ability to attach photo and video evidence.
+Implementing a multi-model NLP artificial intelligence engine (mDeBERTa-v3 and DistilRoBERTa) to automatically analyze and categorize text submissions into distinct emotional risk levels (Low, Medium, High, and Critical).
+Integrating a behavioral trajectory tracking algorithm using mathematical vector search (FAISS) to track a student's 14-day history and identify worsening patterns of behavioral distress over time.
+Building a real-time administrative counselor dashboard equipped with automated SMS (using PhilSMS API) and Email emergency alerts to instantly notify parents and administrators when critical cases are identified.
+Evaluating the system's accuracy and data privacy by enforcing AES-256 encryption for secure data handling and validating the accuracy of the AI risk flags through an official pilot test with the SVBSM administration to ensure legal compliance.
+Limitations
+Explicit boundaries are given, to avoid scope creep and to be clear what it does not do:
+It is not meant to diagnose mental health issues, nor is it a prescription for therapy, nor does it replace a certified guide counselor.
+There is no live chat and real-time two-way communication.
+The system does not include live chat or real-time two-way communication. All interactions are asynchronous.
+The platform does not offer complete anonymity. 
+The machine learning service runs on standard computer processors (CPUs). While this is enough for SVBSM, it would be slower than the expensive graphics processors used by large global platforms.
+The project budget could not support scaling up the system for hundreds, let alone thousands of concurrent submissions in multiple schools.
+The system requires an active internet connection and does not work offline.
+
+Review of Related Literature
+A Review on Deep-Learning-Based Cyberbullying Detection
+According to Elsafoury, Katsigiannis, and Ramzan (2023), deep learning methods such as convolutional neural networks, recurrent architectures, and Transformer-based models have been applied to cyberbullying detection across social media platforms. Their review found that BERT-family models consistently outperform older approaches, especially when classifying messages that are aggressive without containing obvious slur words.
+The proponents relate it to the current study because StudentShield also needs to detect harmful language that does not rely on obvious keywords. The system must read the full context of a student's message to tell the difference between a genuine cry for help and casual venting.
+Based on Elsafoury and group's study the proponents came up with the idea of building the analysis engine on Transformer architecture instead of simpler keyword-matching or rule-based methods, so the system picks up on subtle threats in student-submitted text.
+BERT-Based Ensemble Learning for Multi-Aspect Hate Speech Detection
+According to Mazari, Boudoukhani, and Djeffal (2023), combining the pre-trained BERT model with Bidirectional LSTM and Bidirectional GRU networks for multi-label hate speech detection achieved a ROC-AUC score of 98.63%. Their system sorted toxic text into specific categories like "threat," "insult," and "identity hate" rather than using a single binary label.
+The proponents relate it to the current study because StudentShield also needs to classify student vents into multiple risk categories instead of just labeling them as "bullying" or "not bullying." A multi-label approach gives counselors a more complete picture of each situation.
+Based on Mazari and group's study the proponents came up with the idea of breaking each vent down into separate emotional and threat dimensions so the counselor dashboard displays a detailed risk profile rather than a flat binary flag.
+Natural Language Processing Applied to Mental Illness Detection
+According to Zhang, Schoene, Ji, and Ananiadou (2022), natural language processing techniques can detect signs of depression, anxiety, and suicidal thinking from non-clinical text like tweets and forum posts. Their review found that pre-trained language models catch emotional warning signs that standard screening questionnaires often miss, especially among younger users who talk about their feelings online more than in person. They also noted that these models lose accuracy when applied to language patterns not well-represented in the training data.
+The proponents relate it to the current study because StudentShield processes informal student text that contains "Taglish" and local slang not found in standard English training datasets. The system must handle these language patterns without losing detection accuracy.
+Based on Zhang and group's study the proponents came up with the idea of testing the DistilRoBERTa model against actual "Taglish" text samples from SVBSM students rather than relying solely on benchmarks from English-only datasets.
+DeBERTaV3: Improving DeBERTa with ELECTRA-Style Pre-Training
+He, Gao and Chen (2023) have proposed DeBERTaV3, which is an improved Transformer model, using replaced token detection during training rather than masked language modeling. This is the model train that scores higher and faster than BERT and RoBERTa, and requires less computation resources in text classification task. Its benchmarks demonstrated that they can get to the top of the SuperGLUE leaderboard with nothing particularly expensive like GPU clusters.
+The proponents connect it to this current study as it does not require data center hardware for the analysis engine, but on traditional server machines. The school requires to have a reliable solution that provides high accuracy and low cost, which are critical in maintaining the speed of the system in providing alerts in real time.
+The proponents decided on relying on the results of He and the group's research and chose to use DeBERTaV3 as the base Transformer model for the threat detection engine in StudentShield, given the speed of a typical school internet that limits the computations that can be carried out. 
+Detection of Hate Speech Using BERT and Hate Speech Word Embedding with Deep Model
+According to Saleh, Alhothali, and Moria (2023), training BERT alongside custom word embeddings built from annotated hate speech datasets helped the model catch toxic expressions that rarely appear in general-purpose training data. The improvement in F1-score was most noticeable on tweets containing implicit hatred, where sarcasm or euphemism masked the real intent.
+The proponents relate it to the current study because Filipino junior high students at SVBSM mix English, Filipino, and street slang in ways that standard language models have never encountered. The system needs domain-specific tuning to handle coded local insults.
+Based on Saleh and group's study the proponents came up with the idea of training the classification engine with context-specific embeddings so that locally coded expressions and slang are properly flagged instead of slipping through as meaningless noise.
+Bullying and Cyberbullying: Prevalence, Context, and Consequences
+This book examines bullying and Cyberbullying from various angles, focusing on its prevalence, context and consequences.
+Smith (2022) points out the following problems that cannot occur with traditional bullying that occur with cyberbullying: posted messages can stay there which means there is a huge audience, and aggressors can easily be anonymous. Stuart's work also revealed that when students experience both offline and online bullying, they experienced the consequences of that duality significantly worse than those of experiencing only offline or online bullying.
+The proponents equate the data StudentShield collects from 2 distinct channels: the "Safe Space" digital vents, and the formal Bullying Report Module with the current study. With both streams counselors can determine if a student is being targeted from more than one area.
+Drawing on Smith's research, the proponents decided to design the platform to collect both informal emotional disclosures and formal incident reports to provide a full picture to the guidance team of the student's situation as opposed to a single incident report per aggression type.
+BERT-Based Ensemble Approaches for Hate Speech Detection
+According to Mnassri, Rajapaksha, Farahbakhsh, and Crespi (2022), stacking several BERT-based classifiers together and voting on the final output reduces false positives in hate speech detection. Their experiments at the IEEE Global Communications Conference showed that no single BERT configuration dominates across all hate speech types, so combining multiple models gives safer predictions.
+The proponents relate it to the current study because in a school setting, one false critical alert can destroy a student's trust in the system. StudentShield needs to minimize false alarms while still catching genuine threats.
+Based on Mnassri and group's study the proponents came up with the idea of running student text through two separate models mDeBERTa-v3 for threat detection and DistilRoBERTa for emotion classification and merging their outputs as a built-in second opinion before triggering high-level alerts.
+Policy Guidance on AI for Children
+Today, UNICEF (2021) enumerates nine requirements that the AI systems can be fair and transparent, include children's data protection, and also have human oversight, which directly impact minors. This guidance is aimed at emphasizing the importance of AI tools for education complementing human decision-making, and cautions against the full automation of the counselor or teacher.
+The associations they are proposing equate it with the present study as processing sensitive information from minor students and making risk categorizations that enable for alerts to go to both parents and counselors. The system has to adhere to the ethical regulations of algorithms for children.
+The idea for designing the StudentShield using the UNICEF guidelines, which recommend a ‘human-in-the-loop' approach for the system to score risk levels and flag students, but do not send an SMS to a parent and/or an alert to a counselor without someone being made aware and taking responsibility for the next step. 
+Hesitancy in Reporting Cyberbullying in Philippine Schools
+Realized that there needs to be a structured reporting system in Philippine schools today which is why recent studies focused on this. Buguina and Buguina (2023) studied the experience of cyberbullying during the period of the post-pandemic in high schools and found that some victims are reluctant to report the cyberbullying and hence do not have secure reporting avenues. Their research identified some key aspects of how cyberbullying has a devastating impact on pupils' wellbeing and academic achievement. We take a step forward to have an encrypted anonymous reporting module, with StudentShield, directly addressing this gap. The system helps students to speak up without fear of exposure, and the guidance office will discuss with the students so that pal’s bullying doesn't escalate.
+Understanding Bullying in Philippine Education: Impacts and Opportunities for Change
+This is an insightful awareness-raising session on Bullying in Philippine Education and what opportunities for change exist.
+The Second Congressional Commission on Education (EDCOM 2, 2024) indicates that the prevalence of bullying among Filipino students is well above the OECD average with nearly one in three students experiencing one or more types of bullying. An absence of tools for digital monitoring is cited as a factor in why schools are not able to intervene in bullying early enough.
+The proponents refer to this study as a response to the missing institutional gap EDCOM 2 had identified, as StudentShield has emerged as a product to fill that role. The system provides SVBSM with a monitoring system that can detect the characteristics of harassment in student text and alerts them in time, before the damage is already done.
+The proponents based on EDCOM 2 report came with an idea to create an early-warning platform, which involves the ability of utilizing machine learning for identifying detrimental patterns in student works the early warning platform that EDCOM 2 stated that Philippine schools should implement.
+Understanding the Influence of Cyberbullying among High School Students in Philippine Public Schools in the Post-Pandemic Era
+Buguina and Buguina (2023) found that the potential to reveal cyberbullying incidents to the Filipino high school student population in public high schools is constrained because of among other things, youth participants' lack of confidence in the school's response and challenging to talk with teachers. The researchers noted the need for safer, less intimidating reporting systems for students "from the student's perspective," and for schools to prioritize protection of student safety.
+The proponents connect this to current study as they see the potential of StudentShield to overcome these obstacles with a ‘Safe Space' portal. The proponents followed Buguina and Buguina's method: Conditional Anonymity, which guarantees students remain anonymous unless AI alerts of life-threatening danger, which took away the social cost of disclosure.
+Revised Implementing Rules and Regulations of Republic Act No. 10627
+The Department of Education (2022) has clarified in the updated implementing rules on the Anti-Bullying Act of 2013 that Cyberbullying, which happens outside the school environment and Online Harassment are covered. The updated guidelines include asking schools to implement digital tools to assist with the process of identifying and documenting bullying incidents and reduce the amount of manual work involved.
+The proponents link it to the present study as providing a legal framework for DepEd's directive for implementing a digital monitoring platform, the use of which is given legal backing by the proponents. The school has this policy to explain to parents and students why it collects and processes student vents via StudentShield.
+The proponents innovatively conceived the system to be used as a compliance tool to enable the school to fulfil its obligation under RA 10627 in that the system will automatically log, timestamp, and automatically classify all such incidents flagged.
+Automated SMS Notification Systems for Emergency Response in the Philippines
+Billones and Sybingco (2023) argue that a text message can be sent as soon as possible and will be delivered without a single fail without requiring a broadband connection, thus the advantage that in the Philippines, it has a speedier delivery and better reliability compared to email or app Push notifications. SMS emerged as the most reliable channel for alerting as the nation has an almost universal phone ownership with a still rigid internet connectivity.
+The later day makers state that it's connected with the current study on the grounds that the StudentShield must provide the parents with the essential alerts without any delay, even in regions with weak Wi-Fi connections. Spending all your time on texting online is no reliable system.
+The idea of the proponents originated from the findings of Asejo and group's study that SMS is the most prevalent way of notifying parents with critical-risk alerts, provided the critical-risk alerts are in plain text and are sent to parents by the PhilSMS API when the AI engine determines that a vent is life-threatening.
+The Role of Anonymity in Reporting Bullying: Evidence from Philippine Public Schools
+About 40% more students who used an anonymous digital portal were expected to report instances of harm than those who took in-person guidance office visits, according to De Leon and Reyes (2023). They said this was due to "perceived safety distance", that is, the distance in front of the screen between student and counsellor lessened the emotional cost of request.
+The proponents refer it to the current study as the same population of students is targeted by the StudentShield that De Leon and Reyes studied. If a 40% increase in disclosure is induced by using anonymity, the system should have anonymous disclosure as its default parameter.
+The idea that the proponents came up with is to adopt a graduated anonymity model: they propose that the student can freely express themselves in the forum without being associated to his or her name, while only the counselor, upon AI detection of a critical or threatening post, is allowed to see the information.
+Mental Health Program Implementation in the Philippine Education Sector
+According to the Department of Health (2023), the execution of the Philippine Mental Health Act (RA 11036) in school setups is inconsistent at the moment. Most of the institutions have not developed enough capacity within the guidance departments for conducting mental health screenings, as stipulated under the law for integrating mental health programs in services provided by governmental institutions.
+They relate the article to the current study due to the similarity between the issue in the DOH article and the one faced by the proponents. Specifically, the manual screening of students by the guidance department in SVBSM is not feasible due to the lack of adequate personnel in the department.
+Inspired by the above problem, the proponents designed StudentShield as an automated screening tool capable of picking the signs of emotional distress even where there is inadequate capacity in the guidance department.
+
+Review of Related Studies
+ProTect: A Hybrid Deep Learning Model for Proactive Detection of Cyberbullying
+ProTect: An AI Framework for Proactive Cyberbullying Detection Through Combining Random Forest Feature Selection With CNN
+According to Almomani, Alkhayer, and El-Shafai (2024), the novel hybrid system referred to as “ProTect” incorporates the use of a random forest model for feature selection combined with CNN to detect cyberbullying on Twitter and Instagram platforms. The approach focuses on finding the middle ground in terms of achieving high accuracy and speed, recognizing the potential adverse consequences resulting from slow detection times due to the possibility of the harm already being done.
+This is significant for the present paper since, like StudentShield, StudentVent detection involves quick categorization and can happen in less than a second. If the process takes too long in real-life circumstances, it may be too late by the time an alert is issued.
+Inspired by the results reported in the aforementioned paper, the present study implements a similar fast text classification solution using a microservice architecture built on FastAPI.
+A Multitask Framework for Sentiment, Emotion, and Sarcasm Aware Cyberbullying Detection
+Maity et al., 2022 suggests a multitasking method where cyberbullying is not assessed as a dichotomous outcome but instead based on different dimensions such as sentiment, emotion, and sarcasm. By training an algorithm to consider these various emotions at once, the algorithm generates severity scores that measure how much a conversation involves problematic behaviors.
+This approach connects well with the current study in the sense that StudentShield should avoid treating cyberbullying as simply a yes or no problem. It is essential that a guidance counselor dealing with hundreds of students be able to distinguish between urgent and non-urgent incidents.
+Following Maity et al., 2022’s idea, the authors incorporate the use of calculating emotional risk percentage ranging from 0 to 100 for each vent and classifying the incident according to its level (low, medium, high, critical).
+Deep Learning Architectures for Sentiment Analysis in Higher Education
+According to Singh and Kumari (2022), machine learning can help school administrators identify students heading toward behavioral problems before those problems surface. Their study applied multiple algorithms to historical school data and found that predictive models flag at-risk students with reasonable accuracy when given enough context about prior behavior.
+The proponents relate it to the current study because StudentShield is designed to be proactive, not reactive. The system should catch patterns of declining well-being before they lead to a crisis, not just respond after something bad has already happened.
+Based on Singh and Kumari's study the proponents came up with the idea of implementing weekly "Mental Health Trajectory" reports that track school-wide emotional trends, allowing counselors to spot patterns like a collective dip in morale during exam season and respond with preventive measures.
+Comparing Transformer Models for Offensive Language Identification
+According to Plaza-del-Arco, Guillen, and Ureña-López (2023), while all Transformer models outperformed traditional machine learning baselines for toxic language detection, models fine-tuned on domain-relevant datasets showed the largest accuracy gains. A general-purpose BERT is good, but a BERT trained on the kind of text it will actually encounter in production is much better.
+The proponents relate it to the current study because StudentShield processes informal text written by teenagers, not news articles or Wikipedia entries. The models must be trained on social-style text to detect how students actually communicate online.
+Based on Plaza-del-Arco and group's study the proponents came up with the idea of picking pre-trained models that have already seen social media text during training, so the system can handle informal language, abbreviations, and emoji-heavy messages from SVBSM students.
+Tracking Emotional Trajectory with Dense Vector Representations
+According to Ríos and Kavuluru (2023), embedding each text entry as a vector and comparing new entries against historical ones allows a system to detect gradual emotional deterioration that single-post analysis would miss entirely. Their approach tracked how a user's emotional state shifts across multiple posts over days and weeks.
+The proponents relate it to the current study because StudentShield needs to detect worsening trends in a student's emotional state, not just flag individual posts. A student might submit several mildly negative vents that are not alarming on their own but together signal a dangerous decline.
+Based on Ríos and Kavuluru's study the proponents came up with the idea of using FAISS (Facebook AI Similarity Search) to convert each vent into a mathematical vector and compare it against the student's entries from the past 14 days, flagging a "worsening trend" alert when vectors drift consistently toward negative territory.
+Chatbot Interaction Design for Adolescent Mental Health Support
+According to Koulouri, Lauria, and Macredie (2022), students are more willing to open up when an interface uses casual, non-judgmental language and when it is clear that a human will review the conversation not just a machine. Cold, clinical wording reduced disclosure rates among adolescents in their study.
+The proponents relate it to the current study because the "Safe Space" portal must feel approachable enough that students actually use it. If the interface looks like a hospital intake form, students will avoid it entirely.
+Based on Koulouri and group's study the proponents came up with the idea of designing the portal with warm, informal prompts and clearly telling students that their vents will be reviewed by a counselor if the system detects danger, setting honest expectations about how the tool works.
+Deep Neural Networks for Detecting Emotional Distress from Student Writing
+According to Ophir, Tikochinski, Asterhan, Sisso, and Reichart (2022), NLP-based screening tools can identify high-school students showing signs of emotional distress through their writing assignments. Their results showed that the NLP tool flagged students who later self-reported distress at rates comparable to structured clinical screening instruments. They recommended schools treat these tools as "first-pass" filters that supplement professional evaluation.
+The proponents relate it to the current study because StudentShield follows this exact model the AI engine acts as a digital first responder, not a replacement for a counselor. The technology scans vents for red flags and sends cases to the human counselor for final judgment.
+Based on Ophir and group's study the proponents came up with the idea of positioning the AI classification engine as a screening layer that catches what busy counselors might miss, while leaving all intervention decisions to trained guidance professionals at SVBSM.
+Multilingual Hate Speech Detection with Code-Switching Analysis
+According to Nozza (2022), hate speech detection models fail badly on code-switched text messages where users mix two or more languages within a single sentence. Monolingual models misclassify a large percentage of toxic posts as neutral when code-switching is present. Multilingual Transformer models performed better but only when fine-tuned on code-switched examples from the target language pair.
+The proponents relate it to the current study because Filipino students at SVBSM routinely mix English and Filipino in the same sentence ("Taglish"). The system cannot afford to miss a threat just because the student typed half the message in Tagalog and half in English.
+Based on Nozza's study the proponents came up with the idea of selecting mDeBERTa-v3 a multilingual Transformer model as the threat detection engine specifically to handle the code-switching problem common in Philippine school text.
+Web-Based Sentiment Analysis for Student Mental Health Monitoring in the Philippines
+According to Barlaan, Cueto, and De Torres (2022), their web-based sentiment analysis tool for guidance offices in Cavite province collected short text entries from students and used basic NLP to classify them by overall mood. Switching to a digital format cut the time counselors spent on paperwork and made it easier to notice when a student's mood was declining over several weeks.
+The proponents relate it to the current study because StudentShield builds on the same concept but takes the analysis further. Where Barlaan's tool used simpler classification methods, StudentShield uses Transformer models that catch nuance in mixed-language text.
+Based on Barlaan and group's study the proponents came up with the idea of adding what the Cavite tool left out: automated SMS alerts that notify parents when a student's emotional risk score goes critical, so the time between detection and intervention shrinks to minutes.
+Cyberbullying and Mental Health Among Filipino College Students
+According to Opiniano & Bernarte (2023), over half of the college students in the surveyed population in Metro Manila had suffered from at least one type of cyberbullying in the previous semester, with the victims having significantly higher levels of anxiety in the tests compared to the general population. Furthermore, the study concludes that a majority of these victims did not report their experiences to school authorities.
+As mentioned earlier, the current research is consistent with this study as the need to report cyberbullying instances is considered in the design and development of StudentShield. In order for the victims to come forward, a private reporting channel has been deemed necessary, as most of them are unwilling to go to the guidance offices for help.
+Based on this finding, the proponents suggest a private and encrypted reporting channel where they can freely express themselves without being embarrassed in person, hence revealing the issues that may not have been uncovered through other means.
+Digital Parenting and Online Safety in Filipino Households
+According to Cabalquinto (2022), many Filipino parents lack the necessary technical expertise and tools to protect their children from harm in the online space. Parents used a lot of non-technical solutions to solve the problem and were inclined to use time restrictions rather than monitoring software. This research highlights the role played by school technology in facilitating collaboration between schools and homes.
+This current group of proponents relates this study to the present situation by indicating that StudentShield should reach out to parents irrespective of their technical skills. The alerting system should work effectively even for those parents who do not have smartphones or access to the Internet.
+Based on the results of the study carried out by Cabalquinto (2022), the proponents recommend using SMS alerts delivered automatically in clear and precise language to notify the parents about their children’s state.
+Implementation of the Philippine Anti-Bullying Act in Central Luzon
+As explained by Taño and Cuyugan (2022), while the Anti-Bullying Act (RA 10627) is indeed strong legislation, there have been many schools in Central Luzon found to be swamped with manual documentation as required. Documentation is done manually, reports are piling up in filing cabinets, and there are cases when these activities were not even consistently done. They suggested automation in documenting as much as possible.
+The proponents connect this to their current research because SVBSM has the same compliance issue as mentioned in the aforementioned study. Excessive amounts of paperwork in the guidance office could have been done electronically.
+Based on this information from Taño and Cuyugan, the proponents suggested designing a StudentShield application that would automate all the processes in which the school needs to document each case reported and generate an audit trail of all entries that can be used in future compliance checks.
+Digital Literacy and Unrecognized Cyberbullying in Philippine Higher Education
+Marcial (2022) finds that students at Visayas were able to easily recognize physical bullying yet had much more trouble identifying cyberbullying, whether directed at themselves or other people. Cases of bullying that included being excluded from conversations, passive aggressive comments, and insults made anonymously were often considered nothing but "jokes."
+The current research will consider this result, as the primary aim of StudentShield is to help close the awareness gap among the students of SVBSM. In case students are not capable of independently recognizing cyberbullying cases, it becomes necessary to ensure that they are recognized by the system itself.
+Based on the research conducted by Marcial, the developers of StudentShield suggest establishing a single classification standard to be applied to all messages in order to use "High Risk" as a reference point that can help distinguish between harmless humor and inappropriate comments.
+Online Counseling and Student Disclosure in Philippine Higher Education
+According to Bernardo, Estrera, and Presbitero (2022), the students of a private university in Metro Manila demonstrated greater openness towards discussing issues such as family, emotional, and peer-related problems using an online counseling system compared to face-to-face counseling appointments. What was critical was not convenience, but rather the level of privacy of the information shared during the consultation process.
+This literature review can be related to the current study since the authors note that the effective operation of the “Safe Space” feature depends on whether the students trust it. They will not use the tool if there is a risk of their disclosures being included into their academic file.
+Based on the results provided by Bernardo and co-authors, it was decided to intentionally separate the “Safe Space” from all other systems within which students' grades, disciplinary actions, and absences are tracked.
+Evaluating Language Model Finetuning Techniques for Low-Resource Languages
+According to Cruz and Cheng (2022), transfer learning, which involves fine-tuning pre-trained models based on a language with more resources (such as English) to work with Filipino, a low-resource language, is highly beneficial. Cruz and Cheng’s findings show that multilingual BERT-based models that have been fine-tuned for Filipino significantly outperform models trained from scratch on a small dataset of the local language.
+The current research places the aforementioned hypothesis in the context of StudentShield, where the algorithm works with texts in Taglish, a combination of English and Filipino languages. Thus, creating a model based only on the Filipino language is impossible in case of insufficient training data.
+In light of Cruz and Cheng’s experiment, the researchers suggest using an existing pre-trained multilingual transformer (mDeBERTa-v3), capable of understanding the linguistic patterns of sentences across different languages, for working with Taglish text written by SVBSM students.
+Technical Background
+The StudentShield project follows the principle of decoupling and consists of two separate components web application and a machine learningI analysis module to prevent any crashes during student submission processing. Both modules were decoupled to provide the system with enough performance capabilities while the machine learning algorithm analyzes several text entries at once. Such a system configuration is useful during busy times, such as during exams or any stressful moments in schools when the number of students could increase drastically.
+Front-End Student and Administrative Portal: The web application relies on standard HTML5, vanilla JavaScript, and Tailwind CSS for its frontend. We chose these specific web technologies to keep the system lightweight, ensuring the pages load fast and remain easy for students to navigate.
+Back-End Application Logic (PHP): Routing, session management, and major parts of business logic were designed with CodeIgniter 4 (PHP 8.1), since the chosen software provides strong security features such as protection from SQL injection and CSRF attacks important factors for a minor-oriented platform.
+Secure Data Storage: MySQL 8.0 acts as the main relational database of the platform. In line with the requirements of the Data Privacy Act of 2012, sensitive emotional text data and student submissions undergo an encryption layer powered by PHP software before being stored in the database, protecting sensitive information from being viewed if there is an unauthorized access to the database.
+Machine Learning Analysis Engine (Python): The natural language processing analysis of StudentShield takes place through a REST API based architecture built using FastAPI with Python 3.10. Such approach ensures that the system can use advanced machine learning capabilities provided by PyTorch and Hugging Face Transformers while sparing the main web server from unnecessary strain.	
+Advanced Language Models: For the analysis of emotional text and identification of bullying instances, the system uses mDeBERTa-v3 and DistilRoBERTa. Those advanced transformer models were chosen due to their greater proficiency in recognizing multilingual and Taglish text used by junior high school students.
+Vectorized Trajectory Tracking: To track any potential trajectories or patterns in students' emotional state, FAISS (Facebook AI Similarity Search) is used to turn each submission into a vector. As a result, it is possible to compare recent submissions with those made during the last two weeks by the same user, highlighting any trends.
+Deployment and Notification Layer: All the components of StudentShield are deployed using Docker containers to ensure consistency. To notify parents and counselors about any potential issues, the PhilSMS API along with the SMTP protocol is incorporated in the system.
+Conceptual Framework
+The study follows the Input-Process-Output (IPO) model, adapted to reflect the real-time nature of digital school safety interventions. This framework guides the transformation of subjective student emotions into objective administrative data.
+
+
+
+
+FIGURE 1. Conceptual framework
+Input
+The system accepts three primary categories of inputs required to develop and operate the StudentShield platform:
+System Data: Unstructured student venting messages, formal bullying incident reports (including media attachments), user credentials, and counselor configurations.
+Development Software: The complete technology stack, including PHP 8 and CodeIgniter 4 for the backend, Python and FastAPI for the machine learning microservice, and HuggingFace Transformers (mDeBERTa-v3 and DistilRoBERTa) for text classification. It also includes MySQL for AES-256 encrypted storage, PhilSMS for emergency routing, and cloud hosting platforms like InfinityFree and Microsoft Azure.
+Hardware: Standard computer sets, client web browsers, and active internet connections serving as the physical tools for both system development and end-user testing.
+Process
+Process describes the process followed in creating and testing the system. The process begins with planning and objectives formulation where key modules like Venting Portal and NLP Dashboard are determined and designed. In the System Development process, the developers install the web interface, create the Python API, incorporate SMS Gateway, and apply data encryption. Then follows thorough Testing and Debugging of the software, focusing especially on the efficiency of the machine learning engine in reading text written in multiple languages including Tagalog, English, Bisaya, and Ilocano. Lastly, validation tools like ISO 25010 rating forms are used alongside expert opinions from school counselors and psychiatrists to conduct statistical analysis.
+Output
+Output refers to the final stage where the project’s deliverables will be finalized. In this case, the main deliverable is the complete StudentShield software that comes with an encrypted Safe Space website, text analysis features for identifying cases of bullying and depression, and conditional anonymity to ensure the safety of users' data. In terms of tangible deliverables, the system delivers risk scores from NLP analysis, SMS alerts sent directly to the user's parents in emergencies, and campus-wide trends generated by the Counselor Dashboard.
+Evaluation
+System evaluation serves as the continuous feedback loop for the project. This is achieved by analyzing the final user acceptance scores and feedback gathered from the Guidance office and testing panels, ensuring the platform meets the practical and psychological needs of the school environment.
+
+Definition of Terms
+Cyberbullying - Intimidation, harassment, or threat towards a person through electronic communications (Oxford Dictionary, 2020). In StudentShield, it refers to the use of digital means and/or aggression formally reported through the "Bullying Report" Module by SVBSM students.
+Data Privacy Act (DPA of 2012 / RA 10173) -  Philippine law that protects privacy rights of private and sensitive personal information (National Privacy Commission). It forms the legislative basis of how data is collected, stored, encrypted, and used in the system.
+Encryption - : A process in which information is converted into code to prevent any unauthorized access to it (Kaspersky, 2021). In the system, student reports and vents are encrypted before they are placed in the MySQL database to protect their confidentiality.
+FAISS (Facebook AI Similarity Search) - Library for efficient similarity search and clustering of dense vectors (Johnson et al., 2017). It helps StudentShield determine whether there are similarities in current student submission and previous ones in order to identify a pattern of emotional deterioration over time.
+Machine Learning - Subfield of artificial intelligence that enables computers to learn from experience and adapt without being explicitly programmed (Mitchell, 1997). Machine learning is the main element in the development of a system to recognize patterns of bullying and emotional distress in Taglish text submissions.
+Microservice - An architectural method for developing a single application as a suite of small running services (Fowler, 2014). A way of building software where different parts run independently. In the StudentShield system, AI engine works independently from the primary website to maintain the overall system efficiency during text analysis.
+Natural Language Processing (NLP) -  Artificial intelligence subdomain aimed at analyzing, generating, and understanding language in humans (IBM, 2021). In the StudentShield system, it serves to help analyze non-formal student text submissions, which contain a significant amount of slang and informal expressions.
+StudentShield - The official, brand name of the integrated software platform developed for Saint Vincent Blessed School of Manila, combining student sentiment analysis with an automated parent SMS notification system.
+Transformer Model -  A type of neural networks characterized by attention mechanisms for establishing word-word and word-sentence relationships (Vaswani et al., 2017). Transformers in this case are used to improve the contextual interpretation of the meaning of student vents.
+Vent - The expression or release of a strong emotion or feeling (Merriam-Webster, 2023). A digital text entry made by a student within the "Safe Space" module, which is intended for emotional release and represents the primary data source for the system's welfare monitoring.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CHAPTER II
+METHODOLOGY
+
+Design of Software, System, Product or Process
+The design of StudentShield was built with one goal in mind: making sure the system stays fast and responsive even when students are submitting long pieces of text. To do this, we decided to split the system into two distinct parts: a web portal and a machine learning engine. This separate design ensures that the heavy work of text analysis doesn't slow down the website for students or counselors. Every part of the system was chosen to support a reliable and secure environment for student welfare.
+
+Software Architecture
+
+
+
+
+
+
+
+
+
+
+Figure 2. Software Architecture 
+The diagram illustrates a student safety system that engages three primary user roles: students, admins (or school counselors) and parents. Students can report issues anonymously via the web or app, while admins or counselors can access a dashboard to view reports, track activity and respond to issues. The back-end manages user authentication, roles, and main service calls, and stores data in a MySQL database. It also integrates with an NLP/machine learning component for risk assessment, and other external services such as SMS and email for notifications.
+
+	Data Flow Diagram
+
+
+Figure 3. DFD Level 0 
+The Context Diagram shows StudentShield as a central hub that connects students, staff, and automated services.
+
+Students use the system to share their feelings anonymously, report bullying with evidence, and manage their accounts. To help keep everyone safe, the system sends venting text to a machine learning service that flags potential risks based on emotion and sentiment. 
+
+Counselors and admins use the dashboard to track these insights, review cases, and manage the system. If a student is flagged as high-risk, the system immediately sends alerts to parents through both SMS and email, making sure help arrives as quickly as possible.
+
+
+
+Figure 4. DFD Level 1
+While the Context Diagram gives the big picture, DFD Level 1 breaks down how StudentShield actually works behind the scenes. It splits the system into five main parts that handle everything from user accounts to emergency notifications.
+The process starts with User Account Management, which handles all logins and registrations. It checks user details against the User Data Store and logs every attempt in the Audit Logs to keep the system secure. When a student shares how they feel through the Vent and Mood Processing module, the system sends that text to the HuggingFace ML Service to check for safety risks. Both the mood and the analysis results are saved in the Vents Data Store. If the machine learning detects a high-risk situation, it flags it immediately for action.
+
+Bullying Report Processing works in a similar way by handling formal complaints. It collects incident details and evidence, then saves them in the Reports Data Store. Just like the venting process, any serious report will trigger a high-priority alert. These insights flow into the Dashboard Management module, which is the main interface for counselors and admins. They use it to view aggregated data from the user, vent, and report databases. Every action a counselor takes is recorded in the Audit Logs to ensure accountability.
+
+Finally, the Notification Dispatcher handles any alerts that are triggered. It turns these alerts into readable messages and sends them through PhilSMS and Gmail. By using both methods, the system ensures that parents or guardians are notified immediately if their child needs help.
+
+Software Development Life Cycle
+
+
+Figure 5. Software Development Life Cycle - Agile Model
+
+We chose the Agile-Iterative model for developing StudentShield. This was the best choice because we knew we would need to adjust our machine learning models many times as we tested them with real Filipino student language. By working in short cycles, we could build a small part of the system, test it, and then improve it based on what we learned.
+
+Planning
+In the planning phase, the researchers first identified the problem that the study intended to address. In the context of the school setting, there was no structured and timely system for identifying student distress, bullying incidents, and other situations that may require intervention. From this, the objectives of StudentShield were defined. The system was intended to provide students with a secure space for expression, assist in identifying possible risk through text analysis, and support counselors and parents through timely notifications. The main parts of the system were also outlined during this stage, including the student portal, counselor dashboard, bullying report module, and machine learning service.
+System Analysis
+In the system analysis phase, the researchers examined the requirements of the proposed system based on the needs of its users. This included determining how students would submit vent entries and bullying reports, how counselors would review these submissions, and how the system would process text to identify possible levels of risk. The technical requirements were also studied, such as database structure, user access levels, encryption of sensitive information, machine learning integration, and alert mechanisms. This phase helped define how data would move through the system and what functions were necessary for the system to operate properly.
+System Design
+In the system design phase, the structure of StudentShield was prepared in detail. The researchers designed the database schema, identified the relationships among the main entities, and arranged the major components of the system. The interfaces for students and counselors were also planned in order to support ease of use and clear workflow. In addition, the interaction between the web application and the machine learning service was defined, particularly in relation to text classification, risk assessment, and notification handling. Design outputs such as the entity-relationship diagram, architecture diagram, and process flowcharts served as guides for implementation.
+Development
+System development was executed in manageable iterations following the Agile approach, with each iteration focusing on a specific feature:
+Iteration 1: Core Web Features (Login, Vent Submission, Bullying Reports)
+Iteration 2: Machine Learning Integration (Hugging Face text analysis)
+Iteration 3: Security & Notifications (Encryption, Audit Logging, PhilSMS)
+The frontend was built using Tailwind CSS and JavaScript, while the backend used PHP (CodeIgniter 4) and MySQL. Additional tools included the PhilSMS API for text alerts, SMTP for email OTPs, and ApexCharts for visualizing data.
+Testing
+Each major feature was rigorously evaluated against the functional system requirements:
+    Validated core functions like OTP authentication and database storage.
+  Tuned the ML component to accurately interpret Filipino expressions, Taglish, and slang.
+    Verified that the automated PhilSMS and SMTP alerts triggered perfectly during critical cases.  
+Maintenance
+After successful testing, the system was deployed to a live environment by configuring the production server, environment variables, and automated APIs (PhilSMS and SMTP). Once live, ongoing maintenance ensures the system remains secure and responsive to evolving needs. Key activities include:
+Uploading the CodeIgniter 4 system and configuring the live database
+Assigning initial user roles and access permissions for Counselors and Super Admins
+Resolving logical errors or issues reported by users
+Continuously adjusting the ML model to better reflect student language patterns
+Performing regular system backups and security patch updates
+
+
+
+
+
+
+System Flowchart
+
+Figure 6. Super Admin Flowchart of StudentShield System
+The Super Admin workflow provides oversight for the system through a multi-step verification and management process. Access begins with a secure login requiring an email and password. Following a successful submission, the system starts two-factor authentication to confirm the identity of the administrator. Once authenticated, the dashboard provides access to real-time monitoring of intelligence feeds, incident reports, and alert delivery statuses. The workflow also covers user management functions: including the ability to add new accounts, view the system directory, and edit or remove user profiles. Actions are saved to the database to maintain accurate records across the platform.
+
+Figure 7. Counselors Flowchart of StudentShield System
+The counselor workflow is built for observation and response. Access is granted through a secure login and two-factor authentication process. The primary workspace is the dashboard overview: which focuses on real-time monitoring. This feature pulls data from the database to show live intelligence feeds, bullying incident reports, and alert monitors. This setup allows for constant awareness of the school environment. The process concludes with a logout option that ends the session and returns the individual to the starting state.
+
+Figure 8. Students Flowchart of StudentShield System
+The student workflow offers a full set of tools for emotional expression and safety reporting. After a secure sign-in, two primary actions are available. The Safe Space path allows for the entry of vent messages and the selection of personal feelings. This path includes a choice to send a notification to a guardian or keep the entry private. The Incident Report path provides a structured portal where the role of the reporter is identified as a victim or a bystander. Depending on this selection, specific details such as the name of the bully or the victim are recorded. Incident details and evidence attachments are submitted to the database for review. The session ends with a sign-out process to protect personal information.
+
+Entity Relationship Diagram
+
+Figure 9. Entity Relationship Diagram
+
+Use Case Diagram
+
+Figure 10. Use Case Diagram
+	Figure 6 shows how students, parents, counselors, and admins interact with StudentShield's reporting and notification features.
+Key Actors
+Student: The primary user who logs in to write encrypted journal entries or report bullying incidents.
+Counselor: School staff who log in through a secured OTP gateway, then review vent logs and investigate bully reports. They are the first to receive emergency SMS and email alerts when a student is flagged.
+Admin (Super Admin): Also logs in through the same OTP gateway. They manage user accounts, assign roles, and monitor the system's audit logs. They do not receive alerts directly.
+Parent: A passive actor who receives automated SMS and email notifications when their child's vent log is scored as critical risk by the machine learning.
+
+Use Cases
+Staff/Admin Login: Both Counselors and Admins authenticate through this portal. It mandatorily includes an email-based OTP verification step before granting access.
+Student Login: A separate, simpler login for students using name and password. No OTP is required.
+Submit Vent Log: Students write encrypted journal entries. Every submission automatically includes a call to the machine learning risk analyzer, which scores the text and assigns a risk level (Low, Medium, High, or Critical).
+Submit Bully Report: Students file an encrypted incident report about bullying. Upon submission, the counselor office is immediately alerted via SMS and email so they can investigate.
+View Counselor Dashboard / Review Vent Logs / Review Bully Reports: Counselor-side functions for reading decrypted entries and managing active cases.
+View Admin Dashboard / Manage Users & Roles / View System Audit Logs: Admin-side functions for account management and compliance tracking.
+Trigger Email Alert / Trigger SMS Alert: Automated system responses that conditionally extend from the submission use cases. If a vent log scores Critical, the system texts and emails the student's parent. If a bully report is filed, the counselor office gets an immediate SMS and email. These are not manually triggered by any actor; they fire on their own based on conditions in the backend.
+
+This diagram maps the boundary between what users do (submit forms, review dashboards) and what the system handles automatically (risk scoring, emergency notifications). The key design decision is that parents are only contacted when the machine learning flags something serious, and bully report alerts go straight to the counselor's phone so they can verify before escalating further.
+
+Requirements Analysis
+1. Software Requirements
+These are the software tools and platforms used in developing, testing, and running the StudentShield web application.
+Development Tools and Frameworks:
+a) Frontend Development 
+i  . HTML 5 
+ii. CSS 3 
+iii. Tailwind CSS (CDN)
+iv. Chart.js (risk distribution pie chart)
+v. ApexCharts (vent trend area chart, student risk timeline)
+vi. JavaScript (Fetch API for AJAX)
+b) Backend Development 
+i. PHP 8.1+ (CodeIgniter 4 Framework) 
+ii. MySQL (via Laragon local server) 
+iii. Hugging Face Inference API (ML-based risk analysis) 
+iv. PhilSMS API (for automated SMS alerts to parents and counselors)
+ v. Gmail SMTP (for OTP delivery, parent email alerts, and counselor notifications)
+c) Security and Authentication 
+i. AES-256 Encryption (OpenSSL, for encrypting vent logs and incident reports at rest) 
+ii. Bcrypt Password Hashing (for storing user credentials) 
+iii. Email-based One-Time Password (OTP) verification for staff and admin logins 
+iv. Anti-spam rate limiting (30-second cooldown on vents, 120-second cooldown on bully reports) to prevent PhilSMS credit abuse
+v. Trusted Device Cookies (optional OTP bypass for remembered machines)
+2. Hardware Requirements
+These are the physical resources needed during development, testing, and deployment of the application.
+Development Environment:
+a. Developer Machines (for coding and testing): 
+i. Processor: Minimum: Intel Core i3 / AMD Ryzen 3. 
+ii. RAM: 4 GB minimum; 8 GB recommended to handle Laragon, the browser, a code editor, and the local SMS gateway app running at the same time. 
+iii. Storage: Minimum: 128 GB SSD; Recommended: 256 GB SSD for the codebase, database files, and dependencies. 
+iv. Graphics: Integrated graphics (Intel HD or AMD Radeon Vega) are enough. No GPU-heavy tasks are required. 
+v. Operating System: Windows 10 or later (Laragon is Windows-native).
+b. SMS Gateway Device: 
+i. Android Phone: Any Android 8.0+ device with an active SIM card and mobile data or Wi-Fi. This phone runs the local SMS gateway app that receives REST API calls from the server and sends actual text messages to parents.
+Testing Devices:
+a. Devices for Testing: 
+i. Computer: Laptop or desktop with a modern browser for testing the full dashboard layout and responsiveness. 
+ii. Mobile Device: Any smartphone for testing the student-facing pages (vent form, bully report form) on small screens. 
+iii. Test Network: All devices must be on the same local network (Wi-Fi) so the web server can reach the Android SMS gateway.
+
+Requirements Documentation
+Functional Requirements
+Role-Based Access Control
+The system assigns three user roles: Student (role 0), Counselor (role 1), and Super Admin (role 2), each with different access levels.
+Students can only access the student dashboard, the vent form, and the bully report form.
+Counselors can view all vent logs, review bully reports, verify or reject incidents, and view student risk profiles.
+Super Admins can do everything Counselors can, plus manage user accounts, assign roles, and view system audit logs.
+User management is locked to Super Admin only (role 2). The code explicitly blocks Counselors from accessing it.
+Account Management
+Admin and Counselor accounts are pre-seeded or created by the Super Admin through the user management panel.
+Student accounts are created by the Super Admin, who provides the student's name, student ID, section, adviser name, parent phone, parent email, and password.
+Student IDs are mandatory for student accounts. Section and adviser name are also required.
+Counselors and Super Admins log in with name and password, followed by a mandatory email-based OTP (6-digit code, 5-minute expiry).
+Students log in with name and password only. No OTP is required.
+Passwords are stored as bcrypt hashes. Legacy plaintext passwords are silently auto-upgraded on first login.
+There is no password reset feature. If a user forgets their password, the Super Admin resets it manually through user management.
+Vent Log Submission and AI Risk Analysis
+Students write personal journal entries through an encrypted submission form.
+Each submission is sent to a custom ML model hosted on Hugging Face Spaces that scores the text and returns a risk level: Low, Medium, High, or Critical.
+If the ML service is offline or times out (15 seconds), a local keyword-based fallback engine activates. This engine uses Filipino and English distress keywords with built-in Gen-Z sarcasm detection (e.g., "kms after math exam" is downgraded because it matches both a crisis keyword and an academic context marker).
+All vent text is encrypted with AES-256 before being saved to the database.
+If the risk level is Critical, the system automatically sends an SMS and email to the student's registered parent.
+If the student checks "hide from parents" (domestic abuse precaution), parent alerts are suppressed and the counselor receives an emergency override notification instead.
+Bully Report Submission (Two-Stage Alert Pipeline)
+Students file encrypted bullying incident reports, identifying whether they are the victim or reporting for someone else.
+The system resolves typed names to database user IDs using strict single-match lookups to prevent wrong-parent notification errors.
+Stage 1 (Immediate): Upon submission, the counselor office gets an SMS and email alert so they can investigate. No parent alerts are sent yet.
+Stage 2 (Counselor Verification): The counselor reviews the report on the dashboard and can click "Verify & Alert Parents," which fires automated SMS and email alerts to both the victim's parent and the bully's parent. Alternatively, the counselor can reject the report as fake, which blocks all parent alerts. They can also undo a decision to reset the report back to pending review.
+Dashboard and Case Management
+Counselors see all active vent logs with decrypted text, risk scores, student names, sections, and adviser information.
+The dashboard displays a risk distribution pie chart (Chart.js) and a vent trend area chart (ApexCharts) that update in real time via AJAX polling.
+Counselors can mark entries as Resolved, soft-delete (archive) them, restore archived entries, or perform bulk operations on multiple entries at once.
+Counselors can click on any student name to open a full student profile that displays the student's information, their risk timeline graph (ApexCharts), all their vent history, and any bully report involvement.
+The Admin dashboard provides user management (create, edit, delete), role assignment, and a full system audit log.
+The Super Admin cannot demote or delete their own account (self-protection guard).
+Automated Notifications
+SMS alerts are sent through the PhilSMS API using app key and secret credentials stored in the .env configuration file.
+Email alerts are sent through Gmail SMTP using credentials stored in the .env file.
+A cooldown timer prevents alert fatigue by blocking duplicate notifications to the same parent within a set time window.
+Alert logs are written to a JSON file and viewable from the dashboard.
+Audit Logging
+Every administrative action (resolve, archive, restore, bulk delete, verify, reject, undo, create user, update user, delete user) is logged to the audit_logs table with the acting user's ID, IP address, user agent string, and timestamp.
+Non-Functional Requirements
+Performance
+Vent submissions process and save within 2–3 seconds, including the round-trip to the Hugging Face ML API.
+If the ML service times out (15-second limit), the local keyword fallback returns a risk score instantly.
+Dashboard data refreshes via AJAX polling without requiring a full page reload.
+Availability
+The system runs on Laragon for local deployment. For production, it can run on any PHP-compatible web server with MySQL.
+The SMS gateway depends on active PhilSMS API credentials and a stable internet connection on the server.
+Security
+All sensitive text (vent content, incident details) is encrypted at rest using AES-256 via CodeIgniter's built-in encryption library.
+User passwords are hashed with bcrypt. Plaintext passwords are never stored after first use.
+Staff logins require a 6-digit OTP sent via email, with a strict 5-minute expiration.
+Form submissions are rate-limited (30s for vents, 120s for bully reports) to prevent spam and gateway abuse.
+The user management panel is access-controlled to Super Admin only. Counselors are explicitly blocked.
+Usability
+The interface is built with Tailwind CSS and is responsive across desktop and mobile devices.
+Students can submit a vent in 2 steps: type their entry and click submit.
+The counselor dashboard loads all active cases in a single scrollable view with no pagination required.
+
+Development and Pre-Testing procedures
+This section documents the testing process followed for StudentShield, guided by the design specifications and functional requirements listed above.
+Table 1: Test Case Scenario for Authentication Module
+
+Table 2: Test Case Scenario for Vent Log Module
+
+Table 3: Test Case Scenario for Bully Report Module
+
+Table 4: Test Case Scenario for Dashboard and Case Management Module
+
+Table 5: Test Case Scenario for User Management Module
+
+Table 6: Test Case Scenario for Audit Log Module
+
+
+
+
+
+
+
+Implementation Plan (Infrastructure/ Deployment)
+Figure 11. Implementation Plan using Gantt Chart
+The StudentShield system uses a three-part cloud setup to balance cost, data security, and machine learning performance. The deployment covers the web application, the machine learning service, and the emergency alert systems.
+Students and counselors access the system through a CodeIgniter 4 PHP application hosted on InfinityFree. This hosting provider manages the web server and the MySQL database. The database stores hashed passwords, audit logs, and encrypted vent submissions. Before the system saves any raw text or bullying reports, it encrypts them using AES-256. This means if anyone gains unauthorized access to the database, they will only see random strings of characters. Developers update the web application directly through FTP and clear the system caches to apply the changes. The project uses this free hosting to keep costs low during testing, but the code does not rely on any specific host. If the school increases the budget or the system needs to handle more users, developers can move the application and database to a paid host like HostGator, AWS, or DigitalOcean, and link it to a custom domain name without rewriting the code.
+The machine learning features require significant processing power to run models like mDeBERTa, DistilRoBERTa, and the FAISS vector memory. Because of this, the machine learning service runs separately from the web application. It is a Python and FastAPI program hosted on a Microsoft Azure Virtual Machine running Linux. To keep the environment stable and make updates easier, the service runs inside a Docker container. Python scripts automate the deployment: they zip the source code, upload it to the Azure server through SFTP, delete old containers to save space, and build a new Docker image containing the Hugging Face models. The container is set to restart automatically if the virtual machine reboots unexpectedly, keeping the API online. Finally, the system connects to physical devices to send emergency notifications. For standard email alerts, it uses the Gmail SMTP protocol with app passwords to send HTML messages to parents and counselors. For urgent situations, the web application sends HTTP POST requests to an Android phone running an SMS gateway app on the local network. This phone normalizes the contact numbers and immediately texts the parents or counselors.
+The implementation plan outlines the 10-month schedule for building, deploying, and testing StudentShield. The project breaks down into five main phases: Planning, System Coding, Debugging, System Testing, and User Acceptance Testing. Each phase focuses on specific parts of the system, making sure the web app, machine learning service, and automated alerts work together before the live launch.
+
+Statistical Treatment of data
+To determine the effectiveness, usability, and technical reliability of the Student Shield platform, the research team will follow a systematic approach to gather and analyze data. The study uses a mixed-methods design to evaluate both qualitative and quantitative metrics. Quantitative data obtained from user evaluation surveys and the machine learning model's performance testing will be subjected to descriptive statistical methods. This approach ensures the system is evaluated not just on its technical accuracy in detecting psychological distress and bullying, but also on its practical acceptance among the people who will actually use it.
+
+Data Gathering Technique
+The researchers will implement a multi-faceted procedure to evaluate the front-end usability and the back-end artificial intelligence of the system. The main tool for assessing user satisfaction and software quality is a standardized survey questionnaire adapted from the ISO/IEC 25010 software evaluation guidelines. Participants will fill out this questionnaire after a guided interaction session with the Student Shield platform.
+
+Along with the surveys, the researchers will collect system-generated data. The machine learning microservice will record anonymized logs showing how accurately the Natural Language Processing (NLP) model classifies different levels of distress. To validate the AI, the team will set up simulated testing environments and feed the system pre-classified text inputs that represent various states of emotional exhaustion or bullying incidents. This step allows the researchers to empirically measure the model's precision and recall. In addition, structured interviews will be conducted with a select panel of guidance counselors and school administrators to gather qualitative feedback about the dashboard's interface and the practicality of the real-time alerting mechanisms.
+
+ Setting of the Study
+The study will be conducted at Saint Vincent Blessed School of Manila (SVBSM), physically located at 732 Instruccion St., Sampaloc, Manila, 1000 Metro Manila. This institution was purposively selected as the primary research locale due to its demographic representation of typical junior and senior high school environments within a highly urbanized setting.
+Furthermore, the school's commitment to enhancing student welfare and modernizing its guidance counseling protocols makes it an ideal environment for deploying and evaluating the StudentShield ecosystem. Conducting the research in this specific Metro Manila locale ensures that the system's Machine Learning models which are specifically fine-tuned to process Tagalog, English, Taglish, and Gen-Z slang are accurately tested against the authentic, everyday linguistic nuances of the target student population.
+
+
+Subject of the Study
+The primary subjects of this research are divided into three distinct user groups. Each group plays an important role in the overall operation of the Student Shield ecosystem:
+The Student Body: These are the primary end-users who will use the platform’s "Vent" feature and the incident reporting modules. Their participation is vital for evaluating the user interface, ease of navigation, and how secure and anonymous they feel when submitting sensitive reports.
+Guidance Counselors and Responders: This group serves as the authorized personnel who receive and act on the alerts generated by the NLP model. Their evaluation will focus on how functional the administrative dashboard is, the accuracy of the automated distress classifications, and the timeliness of the notifications. 
+IT and System Administrators: These individuals are responsible for the overall technical maintenance of the platform. They will assess the system's back-end performance, the smoothness of the API integration, and how well the platform adheres to data privacy protocols and encryption standards.
+
+Sampling Technique
+To select the participants for the software evaluation phase, the researchers will use a combination of purposive sampling and stratified random sampling. Purposive sampling will be specifically used to select the guidance counselors and IT administrators. Since evaluating the backend administrative dashboards, algorithmic risk assessments, and system security requires specific professional expertise, it is necessary to select individuals who actually hold these roles in the institution.
+For the student respondents, stratified random sampling will be used to make sure there is fair representation across different grade levels or academic departments. This method ensures that the feedback regarding the user interface and reporting mechanisms reflects a diverse cross-section of the student population. It also helps minimize selection bias and makes the usability findings more reliable. The exact sample size for the student population will be calculated using Slovin’s formula to ensure statistical significance with an acceptable margin of error.
+
+ Statistical Treatment of Data
+The data gathered from the evaluation questionnaires and the machine learning testing logs will be quantified and analyzed using specific statistical tools. This guarantees an objective interpretation of how well the Student Shield system performs.
+
+Percentage and Frequency Distribution: This method will be used to profile the demographic characteristics of the respondents and to figure out the proportion of users who selected specific responses in the survey.
+
+Formula: P = (f / N) × 100 
+Where P is the percentage, f is the frequency of a specific response, and N is the total number of respondents.
+
+Weighted Mean: To evaluate the system based on the ISO/IEC 25010 software quality characteristics like functional suitability, usability, and performance efficiency, a 5-point Likert scale will be used. The weighted mean will be calculated to find the central tendency of the respondents' evaluations, providing a clear numerical score of the system's overall acceptability.
+
+Formula: WM = (Σfx) / N 
+Where WM is the weighted mean, f is the frequency of responses for a specific weight, x is the numerical weight assigned to the Likert scale option, and N is the total number of respondents.
+
+Confusion Matrix Metrics (Precision, Recall, and F1-Score): To evaluate the technical diagnostic performance of the Python FastAPI machine learning microservice, standard algorithmic classification metrics will be applied to the results from the simulated text datasets.
+Accuracy: This measures the overall correctness of the NLP model in identifying the correct distress tier.
+Precision and Recall: These are used to measure the model's ability to correctly identify genuine psychological threats (True Positives) while actively reducing false alarms (False Positives) and missed distress signals (False Negatives). This metric is highly important to prove that the system will not overwhelm guidance counselors with inaccurate alerts.
+
+
+
+
+Test Case
+Test Scenario
+Results
+Authentication Module
+Can a student log in with a valid name and password?
+Passed or Failed
+
+Does the system reject invalid student credentials?
+Passed or Failed
+
+Can a counselor log in and receive an OTP email?
+Passed or Failed
+
+Can a super admin log in and receive an OTP email?
+Passed or Failed
+
+Does the system reject an expired or incorrect OTP?
+Passed or Failed
+
+Does the trusted device cookie bypass OTP on the next login?
+Passed or Failed
+
+Are legacy plaintext passwords auto-upgraded to bcrypt on first login?
+Passed or Failed
+Test Case
+Test Scenario
+Results
+Vent Log Module
+Can a student submit a vent entry successfully?
+Passed or Failed
+
+Is the vent text encrypted with AES-256 before being saved?
+Passed or Failed
+
+Does the Hugging Face ML API return a valid risk level?
+Passed or Failed
+
+Does the local keyword fallback activate when the ML API is offline?
+Passed or Failed
+
+Does the sarcasm detector correctly downgrade "kms after math exam" to Medium?
+Passed or Failed
+
+Does the system send an SMS to the parent when risk is Critical?
+Passed or Failed
+
+Does the system send an email to the parent when risk is Critical?
+Passed or Failed
+
+Does the "hide from parents" toggle suppress parent alerts and notify the counselor instead?
+Passed or Failed
+
+Does the rate limiter block a second submission within 30 seconds?
+Passed or Failed
+Test Case
+Test Scenario
+Results
+Bully Report Module
+Can a student submit a report for themselves (self)?
+Passed or Failed
+
+Can a student submit a report on behalf of someone else?
+Passed or Failed
+
+Are incident details encrypted before being saved?
+Passed or Failed
+
+Does the counselor receive an SMS alert after submission (Stage 1)?
+Passed or Failed
+
+Does the counselor receive an email alert after submission (Stage 1)?
+Passed or Failed
+
+Does "Verify & Alert Parents" send SMS and email to both the victim's and bully's parents (Stage 2)?
+Passed or Failed
+
+Does "Reject as Fake" block all parent alerts?
+Passed or Failed
+
+Does "Undo" reset the report back to pending review?
+Passed or Failed
+
+Does the rate limiter block a second report within 120 seconds?
+Passed or Failed
+Test Case
+Test Scenario
+Results
+Dashboard Module
+Can the counselor view all active vent logs with decrypted text?
+Passed or Failed
+
+Does the risk pie chart display correct distribution counts?
+Passed or Failed
+
+Does the vent trend area chart update via AJAX?
+Passed or Failed
+
+Can the counselor mark a vent entry as Resolved?
+Passed or Failed
+
+Can the counselor archive (soft-delete) a vent entry?
+Passed or Failed
+
+Can the counselor restore an archived vent entry?
+Passed or Failed
+
+Can the counselor bulk-delete or bulk-restore multiple entries?
+Passed or Failed
+
+Can the counselor click a student name to view their full risk timeline and profile?
+Passed or Failed
+Test Case
+Test Scenario
+Results
+User Management Module
+Can the super admin create a new student with all required fields (name, student ID, section, adviser)?
+Passed or Failed
+
+Can the super admin create a new counselor or admin account?
+Passed or Failed
+
+Can the super admin edit an existing user's information?
+Passed or Failed
+
+Can the super admin delete a user account?
+Passed or Failed
+
+Is a counselor blocked from accessing the user management page?
+Passed or Failed
+
+Is the super admin prevented from demoting or deleting their own account?
+Passed or Failed
+Test Case
+Test Scenario
+Results
+Audit Log Module
+Does the system log every resolve, archive, restore, and verify action?
+Passed or Failed
+
+Does each log entry record the correct user ID, IP address, user agent, and timestamp?
+Passed or Failed
+
+Can the admin view the full audit trail from the dashboard?
+Passed or Failed
+
+Are alert logs (SMS/Email history) viewable from the dashboard?
+Passed or Failed
+Activity
+FEBRUARY - MAY
+FEBRUARY - MAY
+FEBRUARY - MAY
+FEBRUARY - MAY
+
+
+
+
+
+
+Planning Phase
+Month 1
+Month 2
+Month 3
+Month 4
+Month 5
+Month 6
+Month 7
+Month 8
+Month 9
+Month 10
+Defining the Problem
+
+
+
+
+
+
+
+
+
+
+Confirming Project Feasibility
+
+
+
+
+
+
+
+
+
+
+Producing the Project Schedule
+
+
+
+
+
+
+
+
+
+
+Chapter 1, 2, 3, 4
+
+
+
+
+
+
+
+
+
+
+Title Defense
+
+
+
+
+
+
+
+
+
+
+Prototype Defense
+
+
+
+
+
+
+
+
+
+
+Analysis Phase
+
+
+
+
+
+
+
+
+
+
+Interview in target Beneficiary
+
+
+
+
+
+
+
+
+
+
+Consulting Mental Health Pro
+
+
+
+
+
+
+
+
+
+
+Determining System Requirement
+
+
+
+
+
+
+
+
+
+
+Determining User Requirement
+
+
+
+
+
+
+
+
+
+
+Recommending Solutions
+
+
+
+
+
+
+
+
+
+
+Designing DFD, CFD, ERD
+
+
+
+
+
+
+
+
+
+
+Design Phase
+
+
+
+
+
+
+
+
+
+
+Determining the Programming Tools
+
+
+
+
+
+
+
+
+
+
+Designing the Database
+
+
+
+
+
+
+
+
+
+
+Designing the System Interface
+
+
+
+
+
+
+
+
+
+
+Designing ML System Control
+
+
+
+
+
+
+
+
+
+
+Implementation Phase
+
+
+
+
+
+
+
+
+
+
+Revision of Document
+
+
+
+
+
+
+
+
+
+
+Coding
+
+
+
+
+
+
+
+
+
+
+Testing and Verifying System
+
+
+
+
+
+
+
+
+
+
+Mock Defense / Final Checking
+
+
+
+
+
+
+
+
+
+
+Final Proposal Defense
+
+
+
+
+
+
+
+
+

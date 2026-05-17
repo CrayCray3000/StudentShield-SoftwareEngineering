@@ -1,0 +1,136 @@
+ 
+ 
+ 
+ 
+ 
+TITLE PROPOSAL 
+ 
+ 
+ 
+RESEARCHER: 
+Member 1: Enriquez, Justin Altamia 
+Member 2: Melgarejo, John Carlo 
+Member 3: Meneses, Vonn Christian Miel 
+Member 4: Ramos, John Cris 
+Member 5: Urayanza, Ashley Princess  
+Proposed Project Title 2: StudentShield: Machine Learning Framework for Student Bullying 
+Detection & Automated Parent SMS Alerts for Junior High School at Saint Vincent Blessed School 
+of Manila 
+        
+ 
+ 
+1.0​
+Area of Investigation: 
+ 
+The investigation centers on the design and development of StudentShield, a machine 
+learning-powered web platform for Junior High School at SVBSM. This system enables 
+anonymous venting of frustrations and depression symptoms, tracks bullying incidents (as 
+victim or perpetrator), applies predictive behavioral analytics, and delivers automated SMS 
+notifications to parents for proactive intervention. 
+ 
+2.0​
+Background and Rationale of the Project/System: 
+ 
+Bullying and student depression are pressing issues in junior high schools in SVBSM, often 
+leading to poor mental health, academic decline, and disrupted learning environments. They 
+rely on manual reporting and delayed counselor intervention, which fail to address patterns 
+early or involve parents effectively. 
+ 
+StudentShield tackles these challenges through an integrated ML framework that analyzes 
+vent entries for depression risks, detects bullying patterns via behavioral tracking, and triggers 
+real-time SMS alerts to parents, fostering immediate discipline for perpetrators and support 
+for victims. This creates a proactive, data-driven safety net that enhances student well-being, 
+reduces incidents, and promotes a healthier school climate tailored to SVBSM's Junior High 
+School student needs. 
+ 
+3.0​
+Statement of Objectives: 
+ 
+The main objectives of the StudentShield project are: 
+ 
+1.​ Develop a secure web platform for Junior High School  students at SVBSM to anonymously 
+vent frustrations, report depression symptoms, and log bullying incidents (as victim or 
+perpetrator.) 
+2.​ Implement machine learning models for predictive behavioral analytics to detect 
+patterns in depression risks and repeated bullying encounters from vent entries and 
+tracking data. 
+3.​ Integrate an automated SMS notification system to alert parents immediately when the 
+ML model calculates a high-risk threshold, enabling rapid home support while allowing 
+counselors to monitor the data and follow up with the student afterward.  
+4.​ Provide admin dashboards for school counselors and teachers to monitor trends, review 
+high-risk cases, and intervene proactively. 
+5.​ Ensure data privacy compliance and a user-friendly, responsive web interface tailored to 
+junior high school students.  
+ 
+4.0​
+Scope and Limitations of the Study: 
+ 
+Scope: 
+ 
+●​ The study focuses on designing and developing the StudentShield web platform using 
+PHP CodeIgniter, including venting forms, bullying trackers, ML sentiment analysis 
+integration, and Twilio SMS automation. 
+●​ It will cover full implementation for SVBSM Junior High School students with admin 
+oversight features. 
+●​ Pilot testing will validate detection accuracy and parent notification impact on 
+behavior. 
+ 
+Limitations: 
+ 
+●​ The system targets only SVBSM Junior High School  initially, with testing in a controlled 
+school environment before broader rollout. 
+●​ ML models will use basic sentiment classification and pattern detection rather than 
+advanced deep learning. SMS functionality depends on Twilio service availability and 
+parent phone number accuracy. 
+●​ The study excludes long-term psychological impact evaluation and physical hardware 
+integration, focusing solely on software functionality. 
+ 
+5.0​
+Target Beneficiaries: 
+ 
+1.​ Junior High School Students at SVBSM: StudentShield offers a safe space to 
+anonymously vent frustrations and depression symptoms, reducing isolation while 
+tracking bullying encounters to protect victims and encourage better behavior in 
+perpetrators. 
+2.​ Parents/Guardians: Receive automated SMS alerts about incidents, enabling 
+immediate home discussions, discipline for bullies, and support for victims to prevent 
+escalation. 
+3.​ School Counselors: Gain admin dashboards with ML-driven insights on behavioral 
+trends, high-risk students, and incident patterns for proactive interventions and 
+reduced classroom disruptions. 
+4.​ SVBSM 
+Administration: 
+Benefits 
+from 
+a data-backed system that lowers 
+bullying/depression rates, improves overall student well-being, and demonstrates 
+commitment to modern mental health solutions. 
+ 
+6.0​
+References: 
+ 
+●​ McCloud, T., Jones, R., Lewis, G., Bell, V., & Tsakanikos, E. (2020). Effectiveness of a 
+mobile app intervention for anxiety and depression symptoms in university 
+students: randomized controlled trial. JMIR Mhealth and Uhealth, 8(7), e15418. 
+https://doi.org/10.2196/15418 
+●​ Madububambachu, U., Ukpebor, A., & Ihezue, U. (2024). Machine Learning 
+Techniques to Predict Mental Health Diagnoses: A Systematic Literature Review. 
+Clinical Practice and Epidemiology in Mental Health, 20(1), e17450179315688. 
+https://doi.org/10.2174/0117450179315688240607052117 
+●​ Ukpebor, Augustine. “Machine Learning Techniques to Predict Mental Health 
+Diagnoses: A Systematic Literature Review.” Clinical Practice and Epidemiology in 
+Mental 
+Health, 
+vol. 
+20, 
+no. 
+1, 
+26 
+July 
+2024, 
+clinical-practice-and-epidemiology-in-mental-health.com/VOLUME/20/ELOCATO
+R/e17450179315688/. Accessed 1 Mar. 2026. 
+●​ Satpute, S. G., & Rajeshwar, G. T. (2025). Real-time AI solutions for monitoring 
+and preventing bullying in Educational Institutions. International Journal of 
+Advanced Scientific Research, 48–51. 
+https://www.allscientificjournal.com/assets/archives/2025/vol10issue3/10052.pdf 

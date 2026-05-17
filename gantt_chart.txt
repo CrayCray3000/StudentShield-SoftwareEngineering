@@ -1,0 +1,19 @@
+                                      Timeline Month 1 Month 2 Month 3 Month 4 Month 5 Month 6 Month 7 Month 8 Month 9 Month 10
+0            Planning and Requirement Analysis     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN      NaN
+1                             Client Interview       ●     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN      NaN
+2                            Feasibility Study       ●     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN      NaN
+3                    Requirement Documentation     NaN       ●     NaN     NaN     NaN     NaN     NaN     NaN     NaN      NaN
+4                  System Coding / Development     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN      NaN
+5                           Reservation Module     NaN     NaN       ●     NaN     NaN     NaN     NaN     NaN     NaN      NaN
+6                               Payroll Module     NaN     NaN     NaN       ●     NaN     NaN     NaN     NaN     NaN      NaN
+7                             Analytics Module     NaN     NaN     NaN     NaN       ●     NaN     NaN     NaN     NaN      NaN
+8                          Chatbot Integration     NaN     NaN     NaN     NaN     NaN       ●     NaN     NaN     NaN      NaN
+9                 User Role and Access Control     NaN     NaN     NaN     NaN     NaN       ●     NaN     NaN     NaN      NaN
+10                                   Debugging     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN      NaN
+11                         Module Unit Testing     NaN     NaN     NaN     NaN     NaN     NaN       ●     NaN     NaN      NaN
+12                         Integration Testing     NaN     NaN     NaN     NaN     NaN     NaN       ●     NaN     NaN      NaN
+13                              System Testing     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN      NaN
+14         System Testing under Live Scenarios     NaN     NaN     NaN     NaN     NaN     NaN     NaN       ●     NaN      NaN
+15                     User Acceptance Testing     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN      NaN
+16            Final Testing for Possible Users     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN       ●      NaN
+17  Final Testing for Possible Admin and Staff     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN     NaN        ●

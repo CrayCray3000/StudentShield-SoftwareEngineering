@@ -1,7 +1,12 @@
-from fastapi import FastAPI, HTTPException, Security, Depends
+from fastapi import FastAPI, HTTPException, Security, Depends, Request
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 from typing import Optional
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import JSONResponse
 import re
 import os
 import json
@@ -40,8 +45,35 @@ app = FastAPI(
     version="7.0.0",
 )
 
+### Rate Limiting 
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+### IP Whitelist Middleware 
+ALLOWED_IPS = [ip.strip() for ip in os.getenv("ALLOWED_IPS", "").split(",") if ip.strip()]
+
+class IPWhitelistMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        # Skip whitelist if not configured (development mode)
+        if not ALLOWED_IPS:
+            return await call_next(request)
+        client_ip = request.client.host
+        # Allow health checks from anywhere
+        if request.url.path in ("/", "/docs", "/openapi.json"):
+            return await call_next(request)
+        if client_ip not in ALLOWED_IPS:
+            logger.warning(f"Blocked request from unauthorized IP: {client_ip}")
+            return JSONResponse(status_code=403, content={"detail": f"IP {client_ip} not authorized"})
+        return await call_next(request)
+
+app.add_middleware(IPWhitelistMiddleware)
+
 ### Security 
-API_KEY = os.getenv("ML_API_KEY", "svbsm-production-ml-key-v1")
+API_KEY = os.getenv("ML_API_KEY")
+if not API_KEY:
+    logger.critical("FATAL: ML_API_KEY environment variable is not set. Refusing to start with no auth.")
+    raise RuntimeError("ML_API_KEY environment variable must be set.")
 API_KEY_NAME = "X-API-KEY"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)
 
@@ -461,6 +493,10 @@ EMOTIONAL_DISTRESS = [
     r"\bparang may pasan\b.{0,20}\bhindi ko maalis\b",
     r"\bpalaging mabigat\b", r"\bpalagi akong malungkot\b",
     r"\blagging malungkot\b", r"\bwala namang dahilan\b.{0,20}\bmalungkot\b",
+    ### Added for nuanced exhaustion / burnout
+    r"\beverything feels heavy\b", r"\bsmallest things take so much energy\b",
+    r"\btake so much energy\b", r"\bdon'?t even recognize myself\b",
+    r"\bmentally exhausting\b",
 ]
 
 ### SOCIAL ISOLATION / WITHDRAWAL 
@@ -598,8 +634,12 @@ ANHEDONIA = [
     r"\bfeeling nothing\b", r"\bempty\b", r"\bwatching myself\b",
     r"\bsitting in my chest\b", r"heavy.*chest", r"\bdull weight\b",
     r"functioning from a distance", r"blur together", r"going through the motions",
-    r"don'?t feel anything", r"\bdisconnected\b", r"\bnumb\b",
-    r"autopilot na lang", r"lutang lang", r"parang mag-isa",
+    r"don't care about anything anymore", r"loss of interest",
+    r"can't feel happiness", r"world feels grey", r"colorless",
+    r"zombie", r"autopilot", r"dead inside",
+    # Nuanced Anhedonia
+    r"\bquiet shift\b", r"\bdon'?t feel like myself\b",
+    r"lutang lang", r"parang mag-isa",
     r"hindi ka fully nandun", r"hirap gumalaw", r"nawalan ng gana",
     r"walang nararamdaman", r"manhid\b", r"blangko\b", r"walang kagana-gana",
     r"tinatamad mabuhay", r"so draining", r"literally nothing", r"spaced out",
@@ -866,6 +906,12 @@ RELATIONSHIP_DISTRESS = [
     r"\btrust issues\b", r"\bbetrayed\b", r"\bbetrayal\b",
     r"\brelationship\b.{0,20}\b(over|ended|done|toxic|abusive|ruined)\b",
     r"\bwhy wasn'?t i enough\b", r"\bwasn'?t enough for\b",
+    # Nuanced Relationship Fading / Burnout
+    r"\bnot really connecting\b", r"\bstopped choosing each other\b",
+    r"\breason to walk away\b", r"\bquiet shift\b",
+    r"\bcounting how long it takes you to respond\b",
+    r"\bslowly fading\b", r"\bfit into your day\b",
+    r"\bwondering if i'?m holdin\b", r"\bslowly becoming someone\b",
     # Tagalog — breakup / sakit ng puso
     r"\bnakipaghiwalay\b", r"\bhiniwalayan\b", r"\bnakipag.?break\b",
     r"\bnag.?break kami\b", r"\bnag.?break na kami\b",
@@ -917,12 +963,18 @@ async def root_health_check():
     }
 
 @app.post("/analyze-text", response_model=MLResponse)
-async def analyze_text(payload: TextPayload, api_key: str = Depends(verify_api_key)):
+@limiter.limit("30/minute")
+async def analyze_text(request: Request, payload: TextPayload, api_key: str = Depends(verify_api_key)):
     text       = payload.raw_text
     student_id = payload.student_id
 
     if not text.strip():
         raise HTTPException(status_code=400, detail="Text payload cannot be empty")
+
+    # Security: Input length validation (prevent memory abuse)
+    MAX_INPUT_CHARS = 5000
+    if len(text) > MAX_INPUT_CHARS:
+        raise HTTPException(status_code=400, detail=f"Input too long ({len(text)} chars). Max is {MAX_INPUT_CHARS}.")
 
     ## ┐
     ### STAGE 0: SLANG NORMALIZATION & GLOBAL TRANSLATION      

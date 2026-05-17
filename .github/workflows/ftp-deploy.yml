@@ -23,7 +23,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./web-app-ci4/   # Only deploy the CI4 folder
-        server-dir: /htdocs/        # Target directory on InfinityFree
+        server-dir: /studentshield.gt.tc/htdocs/        # Target directory on InfinityFree
         dangerous-clean-slate: false # Will NOT delete files on server that aren't in GitHub
         exclude: |
           **/.git*

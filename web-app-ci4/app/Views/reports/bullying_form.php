@@ -276,10 +276,10 @@
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                         Safe Space
                     </a>
-                    <a href="/logout" class="bg-white text-gray-600 border border-gray-200 shadow-sm rounded-xl py-2.5 px-4 flex items-center justify-center gap-2 font-bold text-[13px] hover:bg-gray-50 transition-colors whitespace-nowrap">
+                    <form action="/logout" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="bg-white text-gray-600 border border-gray-200 shadow-sm rounded-xl py-2.5 px-4 flex items-center justify-center gap-2 font-bold text-[13px] hover:bg-gray-50 transition-colors whitespace-nowrap">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                         Sign Out
-                    </a>
+                    </button></form>
                 </div>
 
                 <!-- Ultra-fast Ambient Depth for Mobile -->
@@ -299,10 +299,10 @@
                             <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                             Safe Space
                         </a>
-                        <a href="/logout" class="text-xs font-medium text-gray-500 hover:text-primary px-3 py-2.5 rounded-xl hover:bg-primary/5 transition-colors flex items-center gap-1.5">
+                        <form action="/logout" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="text-xs font-medium text-gray-500 hover:text-primary px-3 py-2.5 rounded-xl hover:bg-primary/5 transition-colors flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                             Sign Out
-                        </a>
+                        </button></form>
                     </div>
                 </div>
 
