@@ -16,6 +16,14 @@ $routes->get('/admin/otp', 'AuthController::otpView');
 $routes->post('/admin/verify-otp', 'AuthController::verifyOtp');
 $routes->post('/logout', 'AuthController::logout');
 
+// Counselor alias — /counselor/dashboard redirects to the unified admin dashboard
+$routes->get('/counselor/dashboard', static function () {
+    return redirect()->to('/admin/dashboard');
+}, ['filter' => 'auth']);
+$routes->get('/counselor/(:any)', static function ($path) {
+    return redirect()->to('/admin/' . $path);
+}, ['filter' => 'auth']);
+
 // Protected Routes
 $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/admin/dashboard', 'AdminController::dashboard');
