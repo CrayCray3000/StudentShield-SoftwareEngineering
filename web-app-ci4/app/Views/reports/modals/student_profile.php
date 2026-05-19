@@ -175,14 +175,22 @@
             return;
         }
 
-        // Sanitize data
+        // Snap raw percentage to one of 4 clean levels
+        function snapToLevel(val) {
+            if(val >= 88) return 100;  // Critical
+            if(val >= 63) return 75;   // High
+            if(val >= 38) return 50;   // Medium
+            return 25;                 // Low
+        }
+
+        // Sanitize data and snap to stepped values
         var cleanData = [];
         for(var i = 0; i < timelineData.length; i++) {
             var pt = timelineData[i];
             if(pt && typeof pt.x === 'number' && typeof pt.y === 'number') {
                 cleanData.push({
                     x: pt.x,
-                    y: pt.y,
+                    y: snapToLevel(pt.y),
                     risk_label: pt.risk_label || '',
                     sentiment: pt.sentiment || '0'
                 });
@@ -197,11 +205,11 @@
         // Clear container
         chartEl.innerHTML = '';
 
-        // Helper: map value to human-readable status
+        // Helper: map stepped value to human-readable status
         function getRiskName(val) {
-            if(val >= 88) return 'Critical';
-            if(val >= 63) return 'High';
-            if(val >= 38) return 'Medium';
+            if(val >= 100) return 'Critical';
+            if(val >= 75)  return 'High';
+            if(val >= 50)  return 'Medium';
             return 'Low';
         }
 
@@ -231,7 +239,7 @@
                 hover: { size: 9 }
             },
             dataLabels: { enabled: false },
-            stroke: { curve: 'smooth', width: 3 },
+            stroke: { curve: 'stepline', width: 3 },
             xaxis: {
                 type: 'datetime',
                 tooltip: { enabled: false },
@@ -244,17 +252,17 @@
                 }
             },
             yaxis: {
-                min: 0,
-                max: 100,
+                min: 12.5,
+                max: 112.5,
                 tickAmount: 4,
                 labels: { 
                     style: { colors: '#6b7280', fontSize: '11px', fontWeight: 600 },
                     offsetX: -5,
                     formatter: function(val) {
-                        if(val === 100) return '🔴 Critical';
-                        if(val === 75)  return '🟠 High';
-                        if(val === 50)  return '🟡 Medium';
-                        if(val === 25)  return '🟢 Low';
+                        if(Math.abs(val - 100) < 5) return 'Critical';
+                        if(Math.abs(val - 75) < 5)  return 'High';
+                        if(Math.abs(val - 50) < 5)  return 'Medium';
+                        if(Math.abs(val - 25) < 5)  return 'Low';
                         return '';
                     }
                 }
@@ -278,10 +286,10 @@
             },
             annotations: {
                 yaxis: [
-                    { y: 0,    y2: 37.5, fillColor: '#22c55e', opacity: 0.06, label: { text: 'Low', style: { color: '#166534', fontSize: '10px' } } },
-                    { y: 37.5, y2: 62.5, fillColor: '#eab308', opacity: 0.06, label: { text: 'Medium', style: { color: '#854d0e', fontSize: '10px' } } },
-                    { y: 62.5, y2: 87.5, fillColor: '#f97316', opacity: 0.06, label: { text: 'High', style: { color: '#9a3412', fontSize: '10px' } } },
-                    { y: 87.5, y2: 100,  fillColor: '#ef4444', opacity: 0.08, label: { text: 'Critical', style: { color: '#991b1b', fontSize: '10px' } } }
+                    { y: 12.5, y2: 37.5, fillColor: '#22c55e', opacity: 0.06 },
+                    { y: 37.5, y2: 62.5, fillColor: '#eab308', opacity: 0.06 },
+                    { y: 62.5, y2: 87.5, fillColor: '#f97316', opacity: 0.06 },
+                    { y: 87.5, y2: 112.5, fillColor: '#ef4444', opacity: 0.08 }
                 ]
             }
         };
