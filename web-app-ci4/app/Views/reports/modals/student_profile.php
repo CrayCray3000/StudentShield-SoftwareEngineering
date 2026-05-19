@@ -60,7 +60,13 @@
                         <svg class="w-5 h-5 text-[#EAB308]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
                         Student Wellness Trend
                     </h3>
-                    <p class="text-xs text-gray-500 font-medium">AI-analyzed risk level over time</p>
+                    <p class="text-xs text-gray-500 font-medium mb-2">How this student has been feeling over time</p>
+                    <div class="flex flex-wrap gap-3 text-[10px] font-bold uppercase tracking-wider">
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span> <span class="text-gray-500">Safe</span></span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> <span class="text-gray-500">Watch</span></span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> <span class="text-gray-500">Concerning</span></span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> <span class="text-gray-500">Urgent</span></span>
+                    </div>
                 </div>
                 <!-- Chart Container -->
                 <div id="studentRiskChart" style="width:100%; min-height:280px; height:280px;"></div>
@@ -165,11 +171,11 @@
         var chartEl = document.getElementById('studentRiskChart');
 
         if(!timelineData || timelineData.length === 0) {
-            chartEl.innerHTML = '<div style="height:280px;" class="w-full flex items-center justify-center text-gray-400 text-sm font-medium">No vent data available to display wellness trend.</div>';
+            chartEl.innerHTML = '<div style="height:280px;" class="w-full flex items-center justify-center text-gray-400 text-sm font-medium">No entries yet — trend will appear after the student uses the Safe Space.</div>';
             return;
         }
 
-        // Sanitize data — ensure every data point has valid x (timestamp) and y
+        // Sanitize data
         var cleanData = [];
         for(var i = 0; i < timelineData.length; i++) {
             var pt = timelineData[i];
@@ -191,9 +197,17 @@
         // Clear container
         chartEl.innerHTML = '';
 
+        // Helper: map value to human-readable status
+        function getRiskName(val) {
+            if(val >= 90) return 'Urgent';
+            if(val >= 70) return 'Concerning';
+            if(val >= 40) return 'Needs Attention';
+            return 'Doing Well';
+        }
+
         var options = {
             series: [{
-                name: 'Risk Level',
+                name: 'Wellness',
                 data: cleanData
             }],
             chart: {
@@ -204,15 +218,15 @@
                 zoom: { enabled: false },
                 animations: { enabled: true, easing: 'easeinout', speed: 800 }
             },
-            colors: ['#D95A5A'],
+            colors: ['#6366f1'],
             fill: {
                 type: 'gradient',
-                gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [0, 100] }
+                gradient: { shadeIntensity: 1, opacityFrom: 0.35, opacityTo: 0.05, stops: [0, 100] }
             },
             markers: {
                 size: 6,
                 colors: ['#fff'],
-                strokeColors: '#D95A5A',
+                strokeColors: '#6366f1',
                 strokeWidth: 3,
                 hover: { size: 9 }
             },
@@ -220,13 +234,13 @@
             stroke: { curve: 'smooth', width: 3 },
             xaxis: {
                 type: 'datetime',
-                tooltip: { enabled: true },
+                tooltip: { enabled: false },
                 axisBorder: { show: false },
                 axisTicks: { show: false },
                 labels: {
-                    style: { colors: '#9ca3af', fontSize: '11px' },
+                    style: { colors: '#9ca3af', fontSize: '11px', fontWeight: 500 },
                     datetimeUTC: false,
-                    format: 'MMM dd, h:mmtt'
+                    datetimeFormatter: { day: 'MMM d', hour: 'h:mm TT' }
                 }
             },
             yaxis: {
@@ -234,48 +248,41 @@
                 max: 100,
                 tickAmount: 4,
                 labels: { 
-                    style: { colors: '#9ca3af', fontSize: '11px' },
+                    style: { colors: '#6b7280', fontSize: '11px', fontWeight: 600 },
+                    offsetX: -5,
                     formatter: function(val) {
-                        if(val >= 90) return 'Critical';
-                        if(val >= 70) return 'High';
-                        if(val >= 40) return 'Medium';
-                        if(val >= 10) return 'Low';
+                        if(val === 100) return '🔴 Urgent';
+                        if(val === 75)  return '🟠 Concern';
+                        if(val === 50)  return '🟡 Watch';
+                        if(val === 25)  return '🟢 Safe';
                         return '';
                     }
                 }
             },
             grid: {
                 borderColor: '#f0f0f0',
-                strokeDashArray: 4,
-                padding: { left: 10, right: 10 },
+                strokeDashArray: 0,
+                padding: { left: 15, right: 15, top: 0, bottom: 0 },
                 yaxis: { lines: { show: true } }
             },
             tooltip: {
-                theme: 'dark',
-                x: { format: 'MMM dd, yyyy h:mm tt' },
+                theme: 'light',
+                style: { fontSize: '13px' },
+                x: { format: 'MMM d, yyyy · h:mm tt' },
                 y: {
-                    formatter: function(val, opts) {
-                        var idx = opts.dataPointIndex;
-                        var dataArr = opts.w.config.series[opts.seriesIndex].data;
-                        var pt = dataArr[idx];
-                        var label = (pt && pt.risk_label) ? pt.risk_label : '';
-                        var score = (pt && pt.sentiment) ? pt.sentiment : '0';
-                        return label + ' (' + val + '%) · AI Score: ' + score;
-                    }
+                    formatter: function(val) {
+                        return getRiskName(val);
+                    },
+                    title: { formatter: function() { return 'Status:'; } }
                 }
             },
             annotations: {
-                yaxis: [{
-                    y: 75,
-                    borderColor: '#C24545',
-                    strokeDashArray: 4,
-                    label: {
-                        borderColor: '#C24545',
-                        position: 'front',
-                        style: { color: '#fff', background: '#C24545', fontSize: '10px', fontWeight: 'bold', padding: { left: 8, right: 8, top: 4, bottom: 4 } },
-                        text: 'HIGH RISK LINE'
-                    }
-                }]
+                yaxis: [
+                    { y: 0,  y2: 35,  fillColor: '#22c55e', opacity: 0.06 },
+                    { y: 35, y2: 60,  fillColor: '#eab308', opacity: 0.06 },
+                    { y: 60, y2: 80,  fillColor: '#f97316', opacity: 0.06 },
+                    { y: 80, y2: 100, fillColor: '#ef4444', opacity: 0.08 }
+                ]
             }
         };
 
