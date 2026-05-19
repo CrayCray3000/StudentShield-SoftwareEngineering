@@ -199,9 +199,9 @@
 
         // Helper: map value to human-readable status
         function getRiskName(val) {
-            if(val >= 85) return 'Critical';
-            if(val >= 65) return 'High';
-            if(val >= 35) return 'Medium';
+            if(val >= 88) return 'Critical';
+            if(val >= 63) return 'High';
+            if(val >= 38) return 'Medium';
             return 'Low';
         }
 
@@ -278,10 +278,10 @@
             },
             annotations: {
                 yaxis: [
-                    { y: 0,  y2: 35,  fillColor: '#22c55e', opacity: 0.06, label: { text: 'Low', style: { color: '#166534', fontSize: '10px' } } },
-                    { y: 35, y2: 62,  fillColor: '#eab308', opacity: 0.06, label: { text: 'Medium', style: { color: '#854d0e', fontSize: '10px' } } },
-                    { y: 62, y2: 82,  fillColor: '#f97316', opacity: 0.06, label: { text: 'High', style: { color: '#9a3412', fontSize: '10px' } } },
-                    { y: 82, y2: 100, fillColor: '#ef4444', opacity: 0.08, label: { text: 'Critical', style: { color: '#991b1b', fontSize: '10px' } } }
+                    { y: 0,    y2: 37.5, fillColor: '#22c55e', opacity: 0.06, label: { text: 'Low', style: { color: '#166534', fontSize: '10px' } } },
+                    { y: 37.5, y2: 62.5, fillColor: '#eab308', opacity: 0.06, label: { text: 'Medium', style: { color: '#854d0e', fontSize: '10px' } } },
+                    { y: 62.5, y2: 87.5, fillColor: '#f97316', opacity: 0.06, label: { text: 'High', style: { color: '#9a3412', fontSize: '10px' } } },
+                    { y: 87.5, y2: 100,  fillColor: '#ef4444', opacity: 0.08, label: { text: 'Critical', style: { color: '#991b1b', fontSize: '10px' } } }
                 ]
             }
         };

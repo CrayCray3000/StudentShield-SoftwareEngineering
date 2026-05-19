@@ -435,10 +435,10 @@ class AdminController extends BaseController
             // Format for ApexCharts datetime axis (timestamps in ms)
             $risk = $vent['risk_level'] ?? 'LOW';
             $riskUpper = strtoupper($risk);
-            if ($riskUpper === 'CRITICAL') $y = 90;
+            if ($riskUpper === 'CRITICAL') $y = 100;
             elseif ($riskUpper === 'HIGH') $y = 75;
             elseif ($riskUpper === 'MEDIUM') $y = 50;
-            else $y = 20;
+            else $y = 25;
 
             $timelineData[] = [
                 'x' => strtotime($vent['created_at']) * 1000,
