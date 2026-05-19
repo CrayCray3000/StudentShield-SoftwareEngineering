@@ -1,4 +1,11 @@
 <!-- FAISS Trajectory Student Profile Modal -->
+<style>
+    .modal-backdrop {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+</style>
 <div id="studentProfileModal" class="fixed inset-0 z-[100] hidden items-center justify-center modal-backdrop">
     <div class="bg-[#FAFDFB] rounded-2xl p-0 w-[95%] max-w-4xl shadow-[0_20px_70px_-10px_rgba(0,0,0,0.5)] flex flex-col max-h-[90vh] overflow-hidden border border-gray-200">
         
@@ -71,7 +78,7 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- ApexCharts already loaded in parent dashboard, do not reload -->
 <script>
     let riskChart = null;
 
@@ -151,12 +158,23 @@
     }
 
     function renderFAISSChart(timelineData) {
-        if(riskChart) riskChart.destroy();
+        // Destroy any previous chart instance to prevent memory leaks
+        if(riskChart) {
+            try { riskChart.destroy(); } catch(e) {}
+            riskChart = null;
+        }
+
+        const chartContainer = document.getElementById('studentRiskChart');
 
         if(!timelineData || timelineData.length === 0) {
-            document.getElementById('studentRiskChart').innerHTML = '<div class="w-full h-full flex items-center justify-center text-gray-400 text-sm font-medium">No sufficient vent data to plot behavioral trajectory.</div>';
+            chartContainer.innerHTML = '<div class="w-full h-full flex items-center justify-center text-gray-400 text-sm font-medium">No sufficient vent data to plot behavioral trajectory.</div>';
             return;
         }
+
+        // CRITICAL: Clear all existing content before ApexCharts render.
+        // ApexCharts will fail silently or render with 0px height if the
+        // container has leftover skeleton/placeholder nodes inside it.
+        chartContainer.innerHTML = '';
 
         var options = {
             series: [{
@@ -226,8 +244,13 @@
             }
         };
 
-        riskChart = new ApexCharts(document.querySelector("#studentRiskChart"), options);
-        riskChart.render();
+        try {
+            riskChart = new ApexCharts(chartContainer, options);
+            riskChart.render();
+        } catch(e) {
+            console.error('FAISS Chart render error:', e);
+            chartContainer.innerHTML = '<div class="w-full h-full flex items-center justify-center text-red-400 text-sm font-medium">Chart rendering failed. Please refresh.</div>';
+        }
     }
 
     function renderHistoryFeed(vents, incidents) {
