@@ -95,33 +95,28 @@
         document.getElementById('spParentPhone').innerHTML = '<div class="h-5 bg-gray-200 rounded w-32 animate-pulse"></div>';
         
         // Skeleton for the history feed
-        document.getElementById('spHistoryFeed').innerHTML = `
-            <div class="space-y-4">
-                <div class="h-24 bg-gray-100 rounded-xl w-full animate-pulse border border-gray-200"></div>
-                <div class="h-24 bg-gray-100 rounded-xl w-full animate-pulse border border-gray-200"></div>
-            </div>
-        `;
+        document.getElementById('spHistoryFeed').innerHTML = '<div class="space-y-4"><div class="h-24 bg-gray-100 rounded-xl w-full animate-pulse border border-gray-200"></div><div class="h-24 bg-gray-100 rounded-xl w-full animate-pulse border border-gray-200"></div></div>';
         
         // Skeleton for the chart
         document.getElementById('studentRiskChart').innerHTML = '<div style="height:280px;width:100%;" class="bg-gray-100 rounded-xl animate-pulse border border-gray-200 flex items-center justify-center text-gray-400 font-medium text-sm">Loading wellness data...</div>';
         
         document.getElementById('spCriticalBadge').classList.add('hidden');
 
-        const PROFILE_API_BASE = "<?= base_url('admin/api/student-profile') ?>";
-        fetch(`${PROFILE_API_BASE}/${userId}`)
-            .then(res => {
+        var PROFILE_API_BASE = "<?= base_url('admin/api/student-profile') ?>";
+        fetch(PROFILE_API_BASE + '/' + userId)
+            .then(function(res) {
                 if (!res.ok) {
-                    return res.text().then(txt => { throw new Error('HTTP ' + res.status + ': ' + txt.substring(0, 200)); });
+                    return res.text().then(function(txt) { throw new Error('HTTP ' + res.status + ': ' + txt.substring(0, 200)); });
                 }
                 return res.json();
             })
-            .then(data => {
-                const u = data.user;
+            .then(function(data) {
+                var u = data.user;
                 document.getElementById('spName').innerText = u.name;
                 
                 // Get initials
-                const names = u.name.split(' ');
-                let initials = names[0].charAt(0);
+                var names = u.name.split(' ');
+                var initials = names[0].charAt(0);
                 if (names.length > 1) initials += names[names.length-1].charAt(0);
                 document.getElementById('spInitials').innerText = initials.toUpperCase();
 
@@ -135,8 +130,8 @@
                 
                 // Check if last two vents mark a critical rising pattern
                 if(data.timeline.length >= 2) {
-                    const last = data.timeline[data.timeline.length-1].y;
-                    const prev = data.timeline[data.timeline.length-2].y;
+                    var last = data.timeline[data.timeline.length-1].y;
+                    var prev = data.timeline[data.timeline.length-2].y;
                     if(last >= 75 && prev >= 50) {
                         document.getElementById('spCriticalBadge').classList.remove('hidden');
                     }
@@ -145,7 +140,7 @@
                 // Render Feed
                 renderHistoryFeed(data.vents, data.incidents);
             })
-            .catch(err => {
+            .catch(function(err) {
                 console.error('Profile API Error:', err);
                 document.getElementById('spHistoryFeed').innerHTML = '<div class="text-center py-6 text-red-500 text-xs font-mono break-all px-4">' + err.message + '</div>';
             });
@@ -174,12 +169,17 @@
             return;
         }
 
-        // Sanitize data — ensure every data point has valid x and y
+        // Sanitize data — ensure every data point has valid x (timestamp) and y
         var cleanData = [];
         for(var i = 0; i < timelineData.length; i++) {
             var pt = timelineData[i];
-            if(pt && pt.x !== undefined && pt.x !== null && typeof pt.y === 'number') {
-                cleanData.push({ x: String(pt.x), y: pt.y, sentiment: pt.sentiment || '0' });
+            if(pt && typeof pt.x === 'number' && typeof pt.y === 'number') {
+                cleanData.push({
+                    x: pt.x,
+                    y: pt.y,
+                    risk_label: pt.risk_label || '',
+                    sentiment: pt.sentiment || '0'
+                });
             }
         }
 
@@ -188,7 +188,7 @@
             return;
         }
 
-        // Clear existing content completely
+        // Clear container
         chartEl.innerHTML = '';
 
         var options = {
@@ -201,50 +201,66 @@
                 height: 280,
                 fontFamily: 'Inter, sans-serif',
                 toolbar: { show: false },
+                zoom: { enabled: false },
                 animations: { enabled: true, easing: 'easeinout', speed: 800 }
             },
             colors: ['#D95A5A'],
             fill: {
                 type: 'gradient',
-                gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] }
+                gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [0, 100] }
+            },
+            markers: {
+                size: 6,
+                colors: ['#fff'],
+                strokeColors: '#D95A5A',
+                strokeWidth: 3,
+                hover: { size: 9 }
             },
             dataLabels: { enabled: false },
             stroke: { curve: 'smooth', width: 3 },
             xaxis: {
-                type: 'category',
-                tooltip: { enabled: false },
+                type: 'datetime',
+                tooltip: { enabled: true },
                 axisBorder: { show: false },
                 axisTicks: { show: false },
-                labels: { style: { colors: '#9ca3af', fontSize: '12px' } }
+                labels: {
+                    style: { colors: '#9ca3af', fontSize: '11px' },
+                    datetimeUTC: false,
+                    format: 'MMM dd, h:mmtt'
+                }
             },
             yaxis: {
                 min: 0,
                 max: 100,
                 tickAmount: 4,
                 labels: { 
-                    style: { colors: '#9ca3af' },
+                    style: { colors: '#9ca3af', fontSize: '11px' },
                     formatter: function(val) {
-                        if(val === 100) return 'Critical';
-                        if(val === 75) return 'High';
-                        if(val === 50) return 'Medium';
-                        if(val === 25) return 'Low';
-                        return val;
+                        if(val >= 90) return 'Critical';
+                        if(val >= 70) return 'High';
+                        if(val >= 40) return 'Medium';
+                        if(val >= 10) return 'Low';
+                        return '';
                     }
                 }
             },
             grid: {
-                borderColor: '#f3f4f6',
+                borderColor: '#f0f0f0',
                 strokeDashArray: 4,
+                padding: { left: 10, right: 10 },
                 yaxis: { lines: { show: true } }
             },
             tooltip: {
                 theme: 'dark',
+                x: { format: 'MMM dd, yyyy h:mm tt' },
                 y: {
-                    formatter: function (val, opts) {
+                    formatter: function(val, opts) {
                         var idx = opts.dataPointIndex;
                         var dataArr = opts.w.config.series[opts.seriesIndex].data;
-                        var score = (dataArr[idx] && dataArr[idx].sentiment) ? dataArr[idx].sentiment : '0';
-                        return val + '% Risk | AI Score: ' + score;
+                        var pt = dataArr[idx];
+                        var label = (pt && pt.risk_label) ? pt.risk_label : '';
+                        var score = (pt && pt.sentiment) ? pt.sentiment : '0';
+                        return label + ' (' + val + '%) · AI Score: ' + score;
                     }
                 }
             },
@@ -252,18 +268,18 @@
                 yaxis: [{
                     y: 75,
                     borderColor: '#C24545',
+                    strokeDashArray: 4,
                     label: {
                         borderColor: '#C24545',
-                        style: { color: '#fff', background: '#C24545', fontSize: '10px', fontWeight: 'bold' },
-                        text: 'DANGER THRESHOLD'
+                        position: 'front',
+                        style: { color: '#fff', background: '#C24545', fontSize: '10px', fontWeight: 'bold', padding: { left: 8, right: 8, top: 4, bottom: 4 } },
+                        text: 'HIGH RISK LINE'
                     }
                 }]
             }
         };
 
-        // Use requestAnimationFrame to guarantee the container has
-        // been painted with real dimensions before ApexCharts initializes.
-        // Without this, the chart SVG renders at 0×0 inside hidden/flex modals.
+        // Use requestAnimationFrame to guarantee container has painted dimensions
         requestAnimationFrame(function() {
             try {
                 studentRiskChart = new ApexCharts(chartEl, options);
@@ -276,13 +292,13 @@
     }
 
     function renderHistoryFeed(vents, incidents) {
-        const feed = document.getElementById('spHistoryFeed');
+        var feed = document.getElementById('spHistoryFeed');
         feed.innerHTML = '';
         
-        let allItems = [];
+        var allItems = [];
         
         // Normalize Vents
-        vents.forEach(v => {
+        vents.forEach(function(v) {
             allItems.push({
                 type: 'vent',
                 date: new Date(v.created_at),
@@ -292,7 +308,7 @@
         });
 
         // Normalize Incidents
-        incidents.forEach(i => {
+        incidents.forEach(function(i) {
             allItems.push({
                 type: 'incident',
                 date: new Date(i.created_at),
@@ -301,63 +317,61 @@
             });
         });
 
-        // Sort completely descending
-        allItems.sort((a,b) => b.date - a.date);
+        // Sort descending
+        allItems.sort(function(a,b) { return b.date - a.date; });
 
         if(allItems.length === 0) {
             feed.innerHTML = '<div class="text-center py-6 text-gray-400 text-sm">No recorded history.</div>';
             return;
         }
 
-        let html = '';
-        allItems.forEach(item => {
-            const dateStr = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }).format(item.date);
+        var html = '';
+        allItems.forEach(function(item) {
+            var dateStr = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }).format(item.date);
             
             if(item.type === 'vent') {
-                const v = item.data;
-                const rl = (v.risk_level || 'LOW').toUpperCase();
-                const riskColor = rl === 'CRITICAL' ? 'bg-red-50 text-red-700 border-red-200' : 
+                var v = item.data;
+                var rl = (v.risk_level || 'LOW').toUpperCase();
+                var riskColor = rl === 'CRITICAL' ? 'bg-red-50 text-red-700 border-red-200' : 
                                 rl === 'HIGH' ? 'bg-orange-50 text-orange-700 border-orange-200' : 
                                 rl === 'MEDIUM' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-green-50 text-green-700 border-green-200';
                                 
-                const dotColor = rl === 'CRITICAL' ? 'bg-red-500' : 
+                var dotColor = rl === 'CRITICAL' ? 'bg-red-500' : 
                                 rl === 'HIGH' ? 'bg-orange-500' : 
                                 rl === 'MEDIUM' ? 'bg-yellow-500' : 'bg-green-500';
 
-                html += `
-                <div class="relative pl-6 pb-6 border-l-2 border-gray-100 last:border-0 last:pb-0">
-                    <div class="absolute -left-[5px] top-1 w-2 h-2 rounded-full ${dotColor} ring-4 ring-white"></div>
-                    <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hovered:shadow-md transition-shadow">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${riskColor}">Safe Space Entry - ${rl} Risk</span>
-                            <span class="text-xs text-gray-400 font-medium">${dateStr}</span>
-                        </div>
-                        <p class="text-sm text-gray-700 line-clamp-3">"${v.raw_text}"</p>
-                        <div class="mt-3 flex items-center justify-between border-t border-gray-50 pt-2">
-                            <span class="text-[10px] text-gray-400">AI Risk Score: ${v.risk_percent || '0'}%</span>
-                            <span class="text-[10px] uppercase font-bold tracking-wider ${v.status === 'Resolved' ? 'text-emerald-600' : 'text-amber-500'}">
-                                ${v.status === 'Resolved' ? '✓ Resolved' : '• Pending Review'}
-                            </span>
-                        </div>
-                    </div>
-                </div>`;
+                html += '<div class="relative pl-6 pb-6 border-l-2 border-gray-100 last:border-0 last:pb-0">' +
+                    '<div class="absolute -left-[5px] top-1 w-2 h-2 rounded-full ' + dotColor + ' ring-4 ring-white"></div>' +
+                    '<div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">' +
+                        '<div class="flex justify-between items-start mb-2">' +
+                            '<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ' + riskColor + '">Safe Space Entry - ' + rl + ' Risk</span>' +
+                            '<span class="text-xs text-gray-400 font-medium">' + dateStr + '</span>' +
+                        '</div>' +
+                        '<p class="text-sm text-gray-700 line-clamp-3">"' + v.raw_text + '"</p>' +
+                        '<div class="mt-3 flex items-center justify-between border-t border-gray-50 pt-2">' +
+                            '<span class="text-[10px] text-gray-400">AI Risk Score: ' + (v.risk_percent || '0') + '%</span>' +
+                            '<span class="text-[10px] uppercase font-bold tracking-wider ' + (v.status === 'Resolved' ? 'text-emerald-600' : 'text-amber-500') + '">' +
+                                (v.status === 'Resolved' ? '✓ Resolved' : '• Pending Review') +
+                            '</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
             } else {
-                const i = item.data;
-                html += `
-                <div class="relative pl-6 pb-6 border-l-2 border-gray-100 last:border-0 last:pb-0">
-                    <div class="absolute -left-[6px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 ring-4 ring-white"></div>
-                    <div class="bg-blue-50/50 rounded-xl p-4 border border-blue-100 shadow-sm">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200">Incident Associated</span>
-                            <span class="text-xs text-gray-500 font-medium">${dateStr}</span>
-                        </div>
-                        <p class="text-sm font-semibold text-gray-800 mb-1">Bullying Report</p>
-                        <p class="text-xs text-gray-600">This student was marked as involved in this reported incident.</p>
-                        <div class="mt-3 flex justify-end">
-                            <span class="text-[10px] uppercase font-bold tracking-wider text-blue-600">ID: #${i.id} - ${i.status.replace('_', ' ')}</span>
-                        </div>
-                    </div>
-                </div>`;
+                var inc = item.data;
+                html += '<div class="relative pl-6 pb-6 border-l-2 border-gray-100 last:border-0 last:pb-0">' +
+                    '<div class="absolute -left-[6px] top-1 w-2.5 h-2.5 rounded-full bg-blue-500 ring-4 ring-white"></div>' +
+                    '<div class="bg-blue-50/50 rounded-xl p-4 border border-blue-100 shadow-sm">' +
+                        '<div class="flex justify-between items-start mb-2">' +
+                            '<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200">Incident Associated</span>' +
+                            '<span class="text-xs text-gray-500 font-medium">' + dateStr + '</span>' +
+                        '</div>' +
+                        '<p class="text-sm font-semibold text-gray-800 mb-1">Bullying Report</p>' +
+                        '<p class="text-xs text-gray-600">This student was marked as involved in this reported incident.</p>' +
+                        '<div class="mt-3 flex justify-end">' +
+                            '<span class="text-[10px] uppercase font-bold tracking-wider text-blue-600">ID: #' + inc.id + ' - ' + inc.status.replace('_', ' ') + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
             }
         });
 

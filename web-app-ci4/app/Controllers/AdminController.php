@@ -415,7 +415,7 @@ class AdminController extends BaseController
         // Remove sensitive info
         unset($user['passcode']);
         
-        // 2. Fetch Vents (FAISS tracking data)
+        // 2. Fetch Vents (wellness tracking data)
         $vents = $db->table('vent_logs')
             ->where('user_id', $id)
             ->where('deleted_at IS NULL')
@@ -432,7 +432,7 @@ class AdminController extends BaseController
                 }
             } catch (\Exception $e) {}
             
-            // Format for ApexCharts
+            // Format for ApexCharts datetime axis (timestamps in ms)
             $risk = $vent['risk_level'] ?? 'LOW';
             $riskUpper = strtoupper($risk);
             if ($riskUpper === 'CRITICAL') $y = 90;
@@ -441,8 +441,9 @@ class AdminController extends BaseController
             else $y = 20;
 
             $timelineData[] = [
-                'x' => date('M d', strtotime($vent['created_at'])),
+                'x' => strtotime($vent['created_at']) * 1000,
                 'y' => $y,
+                'risk_label' => $riskUpper,
                 'sentiment' => $vent['risk_percent'] ?? '0'
             ];
         }
