@@ -1,4 +1,4 @@
-<!-- FAISS Trajectory Student Profile Modal -->
+<!-- Student Wellness Profile Modal -->
 <style>
     .modal-backdrop {
         background: rgba(0, 0, 0, 0.5);
@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <!-- FAISS Trajectory Tracker -->
+            <!-- Student Wellness Trend Graph -->
             <div class="dashboard-card bg-white p-5 rounded-2xl border border-gray-200 shadow-sm relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
                     <svg class="w-16 h-16 text-[#0B5E2E]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
@@ -58,12 +58,12 @@
                 <div class="mb-4">
                     <h3 class="text-lg font-bold font-heading text-gray-900 flex items-center gap-2">
                         <svg class="w-5 h-5 text-[#EAB308]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
-                        FAISS Behavioral Trajectory
+                        Student Wellness Trend
                     </h3>
-                    <p class="text-xs text-gray-500 font-medium">14-Day Rolling Machine Learning Risk Graph</p>
+                    <p class="text-xs text-gray-500 font-medium">AI-analyzed risk level over time</p>
                 </div>
                 <!-- Chart Container -->
-                <div id="studentRiskChart" class="w-full h-[280px]"></div>
+                <div id="studentRiskChart" style="width:100%; min-height:280px; height:280px;"></div>
             </div>
 
             <!-- History Feed: Vents & Incidents -->
@@ -78,9 +78,9 @@
     </div>
 </div>
 
-<!-- ApexCharts already loaded in parent dashboard, do not reload -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    let riskChart = null;
+    var studentRiskChart = null;
 
     function openStudentProfile(userId) {
         document.getElementById('studentProfileModal').classList.remove('hidden');
@@ -94,7 +94,7 @@
         document.getElementById('spParentEmail').innerHTML = '<div class="h-5 bg-gray-200 rounded w-40 animate-pulse"></div>';
         document.getElementById('spParentPhone').innerHTML = '<div class="h-5 bg-gray-200 rounded w-32 animate-pulse"></div>';
         
-        // Skeleton for the history feed (3 fake cards)
+        // Skeleton for the history feed
         document.getElementById('spHistoryFeed').innerHTML = `
             <div class="space-y-4">
                 <div class="h-24 bg-gray-100 rounded-xl w-full animate-pulse border border-gray-200"></div>
@@ -102,8 +102,8 @@
             </div>
         `;
         
-        // Skeleton for the FAISS chart
-        document.getElementById('studentRiskChart').innerHTML = '<div class="h-full w-full bg-gray-100 rounded-xl animate-pulse border border-gray-200 flex items-center justify-center text-gray-400 font-medium text-sm">Building Neural Graph...</div>';
+        // Skeleton for the chart
+        document.getElementById('studentRiskChart').innerHTML = '<div style="height:280px;width:100%;" class="bg-gray-100 rounded-xl animate-pulse border border-gray-200 flex items-center justify-center text-gray-400 font-medium text-sm">Loading wellness data...</div>';
         
         document.getElementById('spCriticalBadge').classList.add('hidden');
 
@@ -131,7 +131,7 @@
                 document.getElementById('spParentPhone').innerText = u.parent_phone || 'N/A';
 
                 // Render Chart
-                renderFAISSChart(data.timeline);
+                renderWellnessChart(data.timeline);
                 
                 // Check if last two vents mark a critical rising pattern
                 if(data.timeline.length >= 2) {
@@ -154,32 +154,47 @@
     function closeStudentProfile() {
         document.getElementById('studentProfileModal').classList.add('hidden');
         document.getElementById('studentProfileModal').classList.remove('flex');
-        if(riskChart) riskChart.destroy();
+        if(studentRiskChart) {
+            try { studentRiskChart.destroy(); } catch(e) {}
+            studentRiskChart = null;
+        }
     }
 
-    function renderFAISSChart(timelineData) {
-        // Destroy any previous chart instance to prevent memory leaks
-        if(riskChart) {
-            try { riskChart.destroy(); } catch(e) {}
-            riskChart = null;
+    function renderWellnessChart(timelineData) {
+        // Destroy any previous chart instance
+        if(studentRiskChart) {
+            try { studentRiskChart.destroy(); } catch(e) {}
+            studentRiskChart = null;
         }
 
-        const chartContainer = document.getElementById('studentRiskChart');
+        var chartEl = document.getElementById('studentRiskChart');
 
         if(!timelineData || timelineData.length === 0) {
-            chartContainer.innerHTML = '<div class="w-full h-full flex items-center justify-center text-gray-400 text-sm font-medium">No sufficient vent data to plot behavioral trajectory.</div>';
+            chartEl.innerHTML = '<div style="height:280px;" class="w-full flex items-center justify-center text-gray-400 text-sm font-medium">No vent data available to display wellness trend.</div>';
             return;
         }
 
-        // CRITICAL: Clear all existing content before ApexCharts render.
-        // ApexCharts will fail silently or render with 0px height if the
-        // container has leftover skeleton/placeholder nodes inside it.
-        chartContainer.innerHTML = '';
+        // Sanitize data — ensure every data point has valid x and y
+        var cleanData = [];
+        for(var i = 0; i < timelineData.length; i++) {
+            var pt = timelineData[i];
+            if(pt && pt.x !== undefined && pt.x !== null && typeof pt.y === 'number') {
+                cleanData.push({ x: String(pt.x), y: pt.y, sentiment: pt.sentiment || '0' });
+            }
+        }
+
+        if(cleanData.length === 0) {
+            chartEl.innerHTML = '<div style="height:280px;" class="w-full flex items-center justify-center text-gray-400 text-sm font-medium">No valid data points to plot.</div>';
+            return;
+        }
+
+        // Clear existing content completely
+        chartEl.innerHTML = '';
 
         var options = {
             series: [{
-                name: 'FAISS Calculated Risk %',
-                data: timelineData
+                name: 'Risk Level',
+                data: cleanData
             }],
             chart: {
                 type: 'area',
@@ -188,7 +203,7 @@
                 toolbar: { show: false },
                 animations: { enabled: true, easing: 'easeinout', speed: 800 }
             },
-            colors: ['#D95A5A'], // Use the custom soft red
+            colors: ['#D95A5A'],
             fill: {
                 type: 'gradient',
                 gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] }
@@ -226,13 +241,15 @@
                 theme: 'dark',
                 y: {
                     formatter: function (val, opts) {
-                        const score = opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].sentiment;
-                        return val + '% Risk | NLP Score: ' + score;
+                        var idx = opts.dataPointIndex;
+                        var dataArr = opts.w.config.series[opts.seriesIndex].data;
+                        var score = (dataArr[idx] && dataArr[idx].sentiment) ? dataArr[idx].sentiment : '0';
+                        return val + '% Risk | AI Score: ' + score;
                     }
                 }
             },
             annotations: {
-                yAxis: [{
+                yaxis: [{
                     y: 75,
                     borderColor: '#C24545',
                     label: {
@@ -244,13 +261,18 @@
             }
         };
 
-        try {
-            riskChart = new ApexCharts(chartContainer, options);
-            riskChart.render();
-        } catch(e) {
-            console.error('FAISS Chart render error:', e);
-            chartContainer.innerHTML = '<div class="w-full h-full flex items-center justify-center text-red-400 text-sm font-medium">Chart rendering failed. Please refresh.</div>';
-        }
+        // Use requestAnimationFrame to guarantee the container has
+        // been painted with real dimensions before ApexCharts initializes.
+        // Without this, the chart SVG renders at 0×0 inside hidden/flex modals.
+        requestAnimationFrame(function() {
+            try {
+                studentRiskChart = new ApexCharts(chartEl, options);
+                studentRiskChart.render();
+            } catch(e) {
+                console.error('Wellness chart render error:', e);
+                chartEl.innerHTML = '<div style="height:280px;" class="w-full flex items-center justify-center text-red-400 text-sm font-medium">Chart failed to load. Try refreshing the page.</div>';
+            }
+        });
     }
 
     function renderHistoryFeed(vents, incidents) {
@@ -307,12 +329,12 @@
                     <div class="absolute -left-[5px] top-1 w-2 h-2 rounded-full ${dotColor} ring-4 ring-white"></div>
                     <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hovered:shadow-md transition-shadow">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${riskColor}">Internal Vent - ${rl} Risk</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${riskColor}">Safe Space Entry - ${rl} Risk</span>
                             <span class="text-xs text-gray-400 font-medium">${dateStr}</span>
                         </div>
                         <p class="text-sm text-gray-700 line-clamp-3">"${v.raw_text}"</p>
                         <div class="mt-3 flex items-center justify-between border-t border-gray-50 pt-2">
-                            <span class="text-[10px] text-gray-400">FAISS Risk Score: ${v.risk_percent || '0'}%</span>
+                            <span class="text-[10px] text-gray-400">AI Risk Score: ${v.risk_percent || '0'}%</span>
                             <span class="text-[10px] uppercase font-bold tracking-wider ${v.status === 'Resolved' ? 'text-emerald-600' : 'text-amber-500'}">
                                 ${v.status === 'Resolved' ? '✓ Resolved' : '• Pending Review'}
                             </span>
