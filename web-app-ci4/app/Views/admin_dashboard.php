@@ -696,7 +696,8 @@
             fetchLiveVents();
             
             let form = document.getElementById('bulkDeleteVentsForm');
-            let btn = form.querySelector('.delete-btn-vents');
+            let btn = document.querySelector('.delete-btn-vents');
+            if (!btn) return;
             if (isArchived) {
                 form.action = "<?= base_url('admin/vent/restore-multiple') ?>";
                 btn.innerHTML = "⟲ Restore Selected";
@@ -714,7 +715,8 @@
             fetchLiveIncidents();
             
             let form = document.getElementById('bulkDeleteIncidentsForm');
-            let btn = form.querySelector('.delete-btn-incidents');
+            let btn = document.querySelector('.delete-btn-incidents');
+            if (!btn) return;
             if (isArchived) {
                 form.action = "<?= base_url('admin/incident/restore-multiple') ?>";
                 btn.innerHTML = "⟲ Restore Selected";

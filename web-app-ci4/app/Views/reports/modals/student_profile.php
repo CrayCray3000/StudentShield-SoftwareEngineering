@@ -62,10 +62,10 @@
                     </h3>
                     <p class="text-xs text-gray-500 font-medium mb-2">How this student has been feeling over time</p>
                     <div class="flex flex-wrap gap-3 text-[10px] font-bold uppercase tracking-wider">
-                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span> <span class="text-gray-500">Safe</span></span>
-                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> <span class="text-gray-500">Watch</span></span>
-                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> <span class="text-gray-500">Concerning</span></span>
-                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> <span class="text-gray-500">Urgent</span></span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span> <span class="text-gray-500">Low</span></span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> <span class="text-gray-500">Medium</span></span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> <span class="text-gray-500">High</span></span>
+                        <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> <span class="text-gray-500">Critical</span></span>
                     </div>
                 </div>
                 <!-- Chart Container -->
@@ -199,10 +199,10 @@
 
         // Helper: map value to human-readable status
         function getRiskName(val) {
-            if(val >= 90) return 'Urgent';
-            if(val >= 70) return 'Concerning';
-            if(val >= 40) return 'Needs Attention';
-            return 'Doing Well';
+            if(val >= 85) return 'Critical';
+            if(val >= 65) return 'High';
+            if(val >= 35) return 'Medium';
+            return 'Low';
         }
 
         var options = {
@@ -251,10 +251,10 @@
                     style: { colors: '#6b7280', fontSize: '11px', fontWeight: 600 },
                     offsetX: -5,
                     formatter: function(val) {
-                        if(val === 100) return '🔴 Urgent';
-                        if(val === 75)  return '🟠 Concern';
-                        if(val === 50)  return '🟡 Watch';
-                        if(val === 25)  return '🟢 Safe';
+                        if(val === 100) return '🔴 Critical';
+                        if(val === 75)  return '🟠 High';
+                        if(val === 50)  return '🟡 Medium';
+                        if(val === 25)  return '🟢 Low';
                         return '';
                     }
                 }
@@ -278,10 +278,10 @@
             },
             annotations: {
                 yaxis: [
-                    { y: 0,  y2: 35,  fillColor: '#22c55e', opacity: 0.06 },
-                    { y: 35, y2: 60,  fillColor: '#eab308', opacity: 0.06 },
-                    { y: 60, y2: 80,  fillColor: '#f97316', opacity: 0.06 },
-                    { y: 80, y2: 100, fillColor: '#ef4444', opacity: 0.08 }
+                    { y: 0,  y2: 35,  fillColor: '#22c55e', opacity: 0.06, label: { text: 'Low', style: { color: '#166534', fontSize: '10px' } } },
+                    { y: 35, y2: 62,  fillColor: '#eab308', opacity: 0.06, label: { text: 'Medium', style: { color: '#854d0e', fontSize: '10px' } } },
+                    { y: 62, y2: 82,  fillColor: '#f97316', opacity: 0.06, label: { text: 'High', style: { color: '#9a3412', fontSize: '10px' } } },
+                    { y: 82, y2: 100, fillColor: '#ef4444', opacity: 0.08, label: { text: 'Critical', style: { color: '#991b1b', fontSize: '10px' } } }
                 ]
             }
         };
