@@ -92,14 +92,17 @@ emotion_classifier = pipeline(
     device=-1, truncation=True, max_length=512
 )
 
+local_model_path = os.path.join(base_dir, "models", "mdeberta_finetuned")
 model_hub_path = "ashlogg/student-shield-mdeberta"
+
+target_model = local_model_path if os.path.exists(local_model_path) else model_hub_path
 
 try:
     distress_classifier = pipeline(
-        "text-classification", model=model_hub_path,
+        "text-classification", model=target_model,
         device=-1, truncation=True, max_length=512
     )
-    logger.info(f"Loaded custom Fine-Tuned mDeBERTa model from Hub: {model_hub_path}")
+    logger.info(f"Loaded custom model: {target_model}")
 except Exception as e:
     logger.warning(f"Could not load custom model from Hub: {e}")
     fallback_model = "SamLowe/roberta-base-go_emotions"

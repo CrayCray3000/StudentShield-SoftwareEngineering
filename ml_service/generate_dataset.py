@@ -125,7 +125,7 @@ def generate_split(seeds, num_samples, aug, filename):
     df.to_csv(filename, index=False)
     print(f"Saved {len(df)} samples to {filename}")
 
-def generate_dataset(total_samples=1000):
+def generate_dataset(total_samples=3000):
     print("Initializing Synonym Augmenter...")
     try:
         aug = naw.SynonymAug(aug_src='wordnet', aug_p=0.4) 

@@ -12,16 +12,16 @@ Options -Indexes
 </IfModule>
 
 # ----------------------------------------------------------------------
-# IP Restriction for Admin Routes (optional)
-# Uncomment and replace YOUR.IP.ADDRESS.HERE with your actual IP.
+# IP Restriction for Admin Routes (DISABLED for production hosting)
+# To re-enable: uncomment the block below and replace the IP.
 # Find your IP at: https://whatismyipaddress.com
 # ----------------------------------------------------------------------
-<IfModule mod_rewrite.c>
-	RewriteEngine On
-	RewriteCond %{REQUEST_URI} ^/admin [NC]
-	RewriteCond %{REMOTE_ADDR} !^136\.158\.58\.234$
-	RewriteRule ^ - [F,L]
-</IfModule>
+# <IfModule mod_rewrite.c>
+# 	RewriteEngine On
+# 	RewriteCond %{REQUEST_URI} ^/admin [NC]
+# 	RewriteCond %{REMOTE_ADDR} !^YOUR\.IP\.HERE$
+# 	RewriteRule ^ - [F,L]
+# </IfModule>
 
 # ----------------------------------------------------------------------
 # Block direct access to sensitive files

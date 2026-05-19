@@ -249,7 +249,7 @@
             <?php endif; ?>
 
             <!-- Login Form -->
-            <form action="/login/authenticate" method="post" class="space-y-5 sm:space-y-6 relative z-10 w-full">
+            <form action="<?= base_url('login/authenticate') ?>" method="post" class="space-y-5 sm:space-y-6 relative z-10 w-full">
                 <?= csrf_field() ?>
                 
                 <div class="space-y-1.5 sm:space-y-2">

@@ -201,7 +201,7 @@
         <?php endif; ?>
 
         <!-- Login Form -->
-        <form action="/admin/login/authenticate" method="post" class="space-y-4 sm:space-y-5">
+        <form action="<?= base_url('admin/login/authenticate') ?>" method="post" class="space-y-4 sm:space-y-5">
             <?= csrf_field() ?>
             <div>
                 <label for="name" class="block text-[11px] sm:text-xs font-semibold text-white/80 mb-1.5 sm:mb-2 ml-1 uppercase tracking-wider">Admin ID</label>
@@ -241,7 +241,7 @@
 
         <!-- Footer -->
         <div class="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-white/10 text-center">
-            <a href="/login" class="inline-flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-white/40 hover:text-gold transition-colors font-semibold">
+            <a href="<?= base_url('login') ?>" class="inline-flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-white/40 hover:text-gold transition-colors font-semibold">
                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                 Back to Student Portal
             </a>

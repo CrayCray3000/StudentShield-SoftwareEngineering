@@ -7,11 +7,11 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'AuthController::studentLoginView');
 $routes->get('/login', 'AuthController::studentLoginView');
-$routes->post('/login/authenticate', 'AuthController::authenticateStudent');
+$routes->match(['get', 'post'], '/login/authenticate', 'AuthController::authenticateStudent');
 
 // Counselor/Admin Portals
 $routes->get('/admin/login', 'AuthController::adminLoginView');
-$routes->post('/admin/login/authenticate', 'AuthController::authenticateAdmin');
+$routes->match(['get', 'post'], '/admin/login/authenticate', 'AuthController::authenticateAdmin');
 $routes->get('/admin/otp', 'AuthController::otpView');
 $routes->post('/admin/verify-otp', 'AuthController::verifyOtp');
 $routes->post('/logout', 'AuthController::logout');

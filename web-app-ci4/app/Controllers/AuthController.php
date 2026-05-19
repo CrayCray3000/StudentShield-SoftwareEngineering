@@ -60,9 +60,13 @@ class AuthController extends BaseController
      */
     public function authenticateStudent()
     {
+        if (strtolower($this->request->getMethod()) === 'get') {
+            return redirect()->to('/login');
+        }
+
         $db = \Config\Database::connect();
-        $name = trim($this->request->getPost('name'));
-        $password = $this->request->getPost('password');
+        $name = trim((string) $this->request->getPost('name'));
+        $password = (string) $this->request->getPost('password');
 
         if (empty($name) || empty($password)) {
             return redirect()->back()->with('error', 'Please fill in all fields.');
@@ -107,9 +111,13 @@ class AuthController extends BaseController
      */
     public function authenticateAdmin()
     {
+        if (strtolower($this->request->getMethod()) === 'get') {
+            return redirect()->to('/admin/login');
+        }
+
         $db = \Config\Database::connect();
-        $name = trim($this->request->getPost('name'));
-        $password = $this->request->getPost('password');
+        $name = trim((string) $this->request->getPost('name'));
+        $password = (string) $this->request->getPost('password');
 
         if (empty($name) || empty($password)) {
             return redirect()->back()->with('error', 'Please fill in all fields.');
