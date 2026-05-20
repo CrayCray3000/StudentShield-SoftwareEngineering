@@ -958,7 +958,7 @@ def generate_drawio():
 
         <!-- ==================== RELATIONSHIPS ==================== -->
         <!-- users to subclass tables (1:1 relationships) -->
-        <mxCell id="rel_users_students" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="students_row_0" parent="1">
+        <mxCell id="rel_users_students" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="students_row_0" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="580" y="43"/>
@@ -966,21 +966,21 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_counselors" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="counselors_row_0" parent="1">
+        <mxCell id="rel_users_counselors" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="counselors_row_0" parent="1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_users_admins" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="admins_row_0" parent="1">
+        <mxCell id="rel_users_admins" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="admins_row_0" parent="1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
         <!-- users.id to child tables -->
-        <mxCell id="rel_users_vent_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="vent_logs_row_1" parent="1">
+        <mxCell id="rel_users_vent_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="vent_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_users_audit_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="audit_logs_row_1" parent="1">
+        <mxCell id="rel_users_audit_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="audit_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_users_sms_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="sms_logs_row_1" parent="1">
+        <mxCell id="rel_users_sms_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="sms_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1000" y="43"/>
@@ -990,7 +990,7 @@ def generate_drawio():
         </mxCell>
 
         <!-- users.id to bully_reports & email_logs -->
-        <mxCell id="rel_users_bully_reporter" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_1" parent="1">
+        <mxCell id="rel_users_bully_reporter" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="550" y="43"/>
@@ -998,7 +998,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_bully_victim" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_3" parent="1">
+        <mxCell id="rel_users_bully_victim" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_3" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="560" y="43"/>
@@ -1006,7 +1006,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_bully_bully" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_4" parent="1">
+        <mxCell id="rel_users_bully_bully" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_4" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="570" y="43"/>
@@ -1014,7 +1014,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_email_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="email_logs_row_1" parent="1">
+        <mxCell id="rel_users_email_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="email_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="540" y="43"/>
@@ -1099,36 +1099,36 @@ svg.ln circle{fill:none}
     </marker>
   </defs>
 
-  <!-- RELATIONSHIPS -->
+  <!-- RELATIONSHIPS (SHARP ORTHOGONAL LINES) -->
   <!-- 1. users to admins (subclass 1:1) -->
-  <path d="M 600,63 C 500,63 200,63 100,89" class="c-subclass" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroOne)"/>
+  <path d="M 600,63 H 580 V 89 H 454" class="c-subclass" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroOne)"/>
   
   <!-- 2. users to counselors (subclass 1:1) -->
-  <path d="M 954,63 C 1000,63 1050,63 1100,89" class="c-subclass" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroOne)"/>
+  <path d="M 954,63 H 974 V 89 H 1100" class="c-subclass" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroOne)"/>
   
   <!-- 3. users to students (subclass 1:1) -->
-  <path d="M 600,63 C 540,63 540,363 600,363" class="c-subclass" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroOne)"/>
+  <path d="M 600,63 H 580 V 363 H 600" class="c-subclass" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroOne)"/>
   
   <!-- 4. users to vent_logs (1:N) -->
-  <path d="M 954,63 C 1020,63 1040,349 1100,349" class="c-logs" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroMany)"/>
+  <path d="M 954,63 H 1020 V 349 H 1100" class="c-logs" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroMany)"/>
   
   <!-- 5. users to audit_logs (1:N) -->
-  <path d="M 954,63 C 1030,63 1020,699 1100,699" class="c-logs" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroMany)"/>
+  <path d="M 954,63 H 1030 V 699 H 1100" class="c-logs" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroMany)"/>
   
   <!-- 6. users to sms_logs (1:N) -->
-  <path d="M 954,63 C 1020,63 1020,719 929,719" class="c-alerts" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroMany)"/>
+  <path d="M 954,63 H 1010 V 719 H 929" class="c-alerts" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroMany)"/>
   
   <!-- 7. users to email_logs (1:N) -->
-  <path d="M 600,63 C 540,63 540,719 514,719" class="c-alerts" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroMany)"/>
+  <path d="M 600,63 H 540 V 719 H 514" class="c-alerts" fill="none" marker-start="url(#mark-mandOne)" marker-end="url(#mark-zeroMany)"/>
   
   <!-- 8. users to bully_reports (reporter 1:N) -->
-  <path d="M 600,63 C 550,63 550,349 514,349" class="c-reports" fill="none" marker-start="url(#mark-zeroOne)" marker-end="url(#mark-zeroMany)"/>
+  <path d="M 600,63 H 550 V 349 H 514" class="c-reports" fill="none" marker-start="url(#mark-zeroOne)" marker-end="url(#mark-zeroMany)"/>
   
   <!-- 9. users to bully_reports (victim 1:N) -->
-  <path d="M 600,63 C 560,63 560,401 514,401" class="c-reports" fill="none" marker-start="url(#mark-zeroOne)" marker-end="url(#mark-zeroMany)"/>
+  <path d="M 600,63 H 560 V 401 H 514" class="c-reports" fill="none" marker-start="url(#mark-zeroOne)" marker-end="url(#mark-zeroMany)"/>
   
   <!-- 10. users to bully_reports (bully 1:N) -->
-  <path d="M 600,63 C 570,63 570,427 514,427" class="c-reports" fill="none" marker-start="url(#mark-zeroOne)" marker-end="url(#mark-zeroMany)"/>
+  <path d="M 600,63 H 570 V 427 H 514" class="c-reports" fill="none" marker-start="url(#mark-zeroOne)" marker-end="url(#mark-zeroMany)"/>
 </svg>
 
 <!-- ENTITY TABLES -->
