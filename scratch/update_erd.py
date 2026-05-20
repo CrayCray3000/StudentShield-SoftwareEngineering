@@ -112,7 +112,7 @@ def generate_drawio():
         <mxCell id="students_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="students">
           <mxGeometry y="30" width="354" height="26" as="geometry"/>
         </mxCell>
-        <mxCell id="students_row_0_key" value="PK, FK" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;overflow=hidden;whiteSpace=wrap;html=1;fontColor=#C05621;" vertex="1" parent="students_row_0">
+        <mxCell id="students_row_0_key" value="PK, FK" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;overflow=hidden;whiteSpace=wrap;html=1;fontColor=#000000;" vertex="1" parent="students_row_0">
           <mxGeometry width="45" height="26" as="geometry"><mxRectangle width="45" height="26" as="alternateBounds"/></mxGeometry>
         </mxCell>
         <mxCell id="students_row_0_name" value="user_id" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=4;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="students_row_0">
@@ -233,7 +233,7 @@ def generate_drawio():
         <mxCell id="counselors_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="counselors">
           <mxGeometry y="30" width="354" height="26" as="geometry"/>
         </mxCell>
-        <mxCell id="counselors_row_0_key" value="PK, FK" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;overflow=hidden;whiteSpace=wrap;html=1;fontColor=#C05621;" vertex="1" parent="counselors_row_0">
+        <mxCell id="counselors_row_0_key" value="PK, FK" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;overflow=hidden;whiteSpace=wrap;html=1;fontColor=#000000;" vertex="1" parent="counselors_row_0">
           <mxGeometry width="45" height="26" as="geometry"><mxRectangle width="45" height="26" as="alternateBounds"/></mxGeometry>
         </mxCell>
         <mxCell id="counselors_row_0_name" value="user_id" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=4;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="counselors_row_0">
@@ -302,7 +302,7 @@ def generate_drawio():
         <mxCell id="admins_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="admins">
           <mxGeometry y="30" width="354" height="26" as="geometry"/>
         </mxCell>
-        <mxCell id="admins_row_0_key" value="PK, FK" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;overflow=hidden;whiteSpace=wrap;html=1;fontColor=#C05621;" vertex="1" parent="admins_row_0">
+        <mxCell id="admins_row_0_key" value="PK, FK" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;overflow=hidden;whiteSpace=wrap;html=1;fontColor=#000000;" vertex="1" parent="admins_row_0">
           <mxGeometry width="45" height="26" as="geometry"><mxRectangle width="45" height="26" as="alternateBounds"/></mxGeometry>
         </mxCell>
         <mxCell id="admins_row_0_name" value="user_id" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=4;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="admins_row_0">
@@ -958,7 +958,7 @@ def generate_drawio():
 
         <!-- ==================== RELATIONSHIPS ==================== -->
         <!-- users to subclass tables (1:1 relationships) -->
-        <mxCell id="rel_users_students" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#6366f1;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="students_row_0" parent="1">
+        <mxCell id="rel_users_students" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="students_row_0" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="505" y="43"/>
@@ -966,7 +966,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_counselors" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#6366f1;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="counselors_row_0" parent="1">
+        <mxCell id="rel_users_counselors" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="counselors_row_0" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="495" y="43"/>
@@ -974,7 +974,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_admins" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#6366f1;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="admins_row_0" parent="1">
+        <mxCell id="rel_users_admins" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="admins_row_0" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="485" y="43"/>
@@ -984,7 +984,7 @@ def generate_drawio():
         </mxCell>
 
         <!-- users.id to child tables -->
-        <mxCell id="rel_users_vent_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#64748b;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="vent_logs_row_1" parent="1">
+        <mxCell id="rel_users_vent_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="vent_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="910" y="43"/>
@@ -992,7 +992,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_audit_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#64748b;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="audit_logs_row_1" parent="1">
+        <mxCell id="rel_users_audit_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="audit_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="900" y="43"/>
@@ -1000,7 +1000,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_sms_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#10b981;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="sms_logs_row_1" parent="1">
+        <mxCell id="rel_users_sms_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;dashed=1;dashPattern=1 3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="sms_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="890" y="43"/>
@@ -1010,7 +1010,7 @@ def generate_drawio():
         </mxCell>
 
         <!-- users.id to bully_reports & email_logs -->
-        <mxCell id="rel_users_bully_reporter" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#f97316;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_1" parent="1">
+        <mxCell id="rel_users_bully_reporter" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="450" y="43"/>
@@ -1018,7 +1018,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_bully_victim" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#f97316;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_3" parent="1">
+        <mxCell id="rel_users_bully_victim" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_3" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="460" y="43"/>
@@ -1026,7 +1026,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_bully_bully" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#f97316;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_4" parent="1">
+        <mxCell id="rel_users_bully_bully" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_4" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="470" y="43"/>
@@ -1034,7 +1034,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_email_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#10b981;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="email_logs_row_1" parent="1">
+        <mxCell id="rel_users_email_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;dashed=1;dashPattern=1 3;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="email_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="440" y="43"/>
@@ -1072,24 +1072,24 @@ h1{text-align:center;font-size:24px;color:#1a202c;margin-bottom:6px}
 .ent tr:last-child{border-bottom:none}
 .ent td{padding:5px 10px;white-space:nowrap}
 .kc{width:42px;text-align:center;font-weight:700;font-size:11px;color:#a0aec0;border-right:1px solid #edf2f7}
-.kc.pk{color:#3182ce}
-.kc.fk{color:#dd6b20}
-.kc.pkfk{color:#805ad5}
+.kc.pk{color:#000000}
+.kc.fk{color:#4a5568}
+.kc.pkfk{color:#000000}
 .nc{font-weight:500;padding-left:10px}
-.pk-name{font-weight:700;color:#2b6cb0}
-.pkfk-name{font-weight:700;color:#6b46c1}
-.tc{color:#718096;font-size:11px;text-align:right;padding-right:8px;border-left:1px solid #edf2f7}
+.pk-name{font-weight:700;color:#000000;text-decoration:underline}
+.pkfk-name{font-weight:700;color:#000000;text-decoration:underline}
+.tc{color:#4a5568;font-size:11px;text-align:right;padding-right:8px;border-left:1px solid #edf2f7}
 svg.ln{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 svg.ln polyline{fill:none}
 svg.ln circle{fill:none}
-.c-subclass { stroke: #6366f1 !important; stroke-width: 2.2px !important; }
-.c-logs { stroke: #64748b !important; stroke-width: 2.2px !important; }
-.c-alerts { stroke: #10b981 !important; stroke-width: 2.2px !important; }
-.c-reports { stroke: #f97316 !important; stroke-width: 2.2px !important; }
-.leg{position:absolute;bottom:15px;right:20px;font-size:12px;color:#4a5568;line-height:1.6;text-align:left;background:#ffffff;padding:12px 18px;border-radius:8px;border:1px solid #cbd5e1;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);max-width: 320px;}
-.leg b{color:#1e293b}
-.leg .key-item { display: flex; align-items: center; margin-top: 4px; font-size: 11px; }
-.leg .color-box { width: 14px; height: 14px; border-radius: 3px; margin-right: 8px; flex-shrink: 0; }
+.c-subclass { stroke: #000000 !important; stroke-width: 2.2px !important; }
+.c-logs { stroke: #000000 !important; stroke-width: 2px !important; stroke-dasharray: 5,4 !important; }
+.c-alerts { stroke: #000000 !important; stroke-width: 2px !important; stroke-dasharray: 2,3 !important; }
+.c-reports { stroke: #000000 !important; stroke-width: 2.2px !important; }
+.leg{position:absolute;bottom:15px;right:20px;font-size:12px;color:#000000;line-height:1.6;text-align:left;background:#ffffff;padding:12px 18px;border-radius:8px;border:2px solid #000000;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);max-width: 320px;}
+.leg b{color:#000000}
+.leg .key-item { display: flex; align-items: center; margin-top: 6px; font-size: 11px; }
+.leg .style-line { width: 28px; margin-right: 10px; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -1295,12 +1295,12 @@ svg.ln circle{fill:none}
 <div class="leg">
   <b>PK</b> = Primary Key &nbsp; <b>FK</b> = Foreign Key<br>
   <b>UN</b> = Unsigned &nbsp; <b>AI</b> = Auto Increment<br>
-  <hr style="margin: 8px 0; border: none; border-top: 1px solid #edf2f7;">
-  <b>Relationship Types:</b>
-  <div class="key-item"><div class="color-box" style="background:#6366f1"></div>Subclass Profile (1:1 / 1:0..1)</div>
-  <div class="key-item"><div class="color-box" style="background:#64748b"></div>Venting & Audit Logs (1:N)</div>
-  <div class="key-item"><div class="color-box" style="background:#10b981"></div>SMS & Email Alerts (1:N)</div>
-  <div class="key-item"><div class="color-box" style="background:#f97316"></div>Bullying Reports (1:N)</div>
+  <hr style="margin: 8px 0; border: none; border-top: 1px solid #000000;">
+  <b>Relationship Styles:</b>
+  <div class="key-item"><div class="style-line" style="border-top: 2.5px solid #000000;"></div>Subclass Profile (1:1 / 1:0..1)</div>
+  <div class="key-item"><div class="style-line" style="border-top: 2px dashed #000000;"></div>Venting & Audit Logs (1:N)</div>
+  <div class="key-item"><div class="style-line" style="border-top: 2px dotted #000000;"></div>SMS & Email Alerts (1:N)</div>
+  <div class="key-item"><div class="style-line" style="border-top: 2.5px solid #000000;"></div>Bullying Reports (1:N)</div>
 </div>
 </div>
 </body>

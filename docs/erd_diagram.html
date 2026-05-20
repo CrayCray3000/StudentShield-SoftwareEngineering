@@ -17,24 +17,24 @@ h1{text-align:center;font-size:24px;color:#1a202c;margin-bottom:6px}
 .ent tr:last-child{border-bottom:none}
 .ent td{padding:5px 10px;white-space:nowrap}
 .kc{width:42px;text-align:center;font-weight:700;font-size:11px;color:#a0aec0;border-right:1px solid #edf2f7}
-.kc.pk{color:#3182ce}
-.kc.fk{color:#dd6b20}
-.kc.pkfk{color:#805ad5}
+.kc.pk{color:#000000}
+.kc.fk{color:#4a5568}
+.kc.pkfk{color:#000000}
 .nc{font-weight:500;padding-left:10px}
-.pk-name{font-weight:700;color:#2b6cb0}
-.pkfk-name{font-weight:700;color:#6b46c1}
-.tc{color:#718096;font-size:11px;text-align:right;padding-right:8px;border-left:1px solid #edf2f7}
+.pk-name{font-weight:700;color:#000000;text-decoration:underline}
+.pkfk-name{font-weight:700;color:#000000;text-decoration:underline}
+.tc{color:#4a5568;font-size:11px;text-align:right;padding-right:8px;border-left:1px solid #edf2f7}
 svg.ln{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 svg.ln polyline{fill:none}
 svg.ln circle{fill:none}
-.c-subclass { stroke: #6366f1 !important; stroke-width: 2.2px !important; }
-.c-logs { stroke: #64748b !important; stroke-width: 2.2px !important; }
-.c-alerts { stroke: #10b981 !important; stroke-width: 2.2px !important; }
-.c-reports { stroke: #f97316 !important; stroke-width: 2.2px !important; }
-.leg{position:absolute;bottom:15px;right:20px;font-size:12px;color:#4a5568;line-height:1.6;text-align:left;background:#ffffff;padding:12px 18px;border-radius:8px;border:1px solid #cbd5e1;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);max-width: 320px;}
-.leg b{color:#1e293b}
-.leg .key-item { display: flex; align-items: center; margin-top: 4px; font-size: 11px; }
-.leg .color-box { width: 14px; height: 14px; border-radius: 3px; margin-right: 8px; flex-shrink: 0; }
+.c-subclass { stroke: #000000 !important; stroke-width: 2.2px !important; }
+.c-logs { stroke: #000000 !important; stroke-width: 2px !important; stroke-dasharray: 5,4 !important; }
+.c-alerts { stroke: #000000 !important; stroke-width: 2px !important; stroke-dasharray: 2,3 !important; }
+.c-reports { stroke: #000000 !important; stroke-width: 2.2px !important; }
+.leg{position:absolute;bottom:15px;right:20px;font-size:12px;color:#000000;line-height:1.6;text-align:left;background:#ffffff;padding:12px 18px;border-radius:8px;border:2px solid #000000;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);max-width: 320px;}
+.leg b{color:#000000}
+.leg .key-item { display: flex; align-items: center; margin-top: 6px; font-size: 11px; }
+.leg .style-line { width: 28px; margin-right: 10px; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -240,12 +240,12 @@ svg.ln circle{fill:none}
 <div class="leg">
   <b>PK</b> = Primary Key &nbsp; <b>FK</b> = Foreign Key<br>
   <b>UN</b> = Unsigned &nbsp; <b>AI</b> = Auto Increment<br>
-  <hr style="margin: 8px 0; border: none; border-top: 1px solid #edf2f7;">
-  <b>Relationship Types:</b>
-  <div class="key-item"><div class="color-box" style="background:#6366f1"></div>Subclass Profile (1:1 / 1:0..1)</div>
-  <div class="key-item"><div class="color-box" style="background:#64748b"></div>Venting & Audit Logs (1:N)</div>
-  <div class="key-item"><div class="color-box" style="background:#10b981"></div>SMS & Email Alerts (1:N)</div>
-  <div class="key-item"><div class="color-box" style="background:#f97316"></div>Bullying Reports (1:N)</div>
+  <hr style="margin: 8px 0; border: none; border-top: 1px solid #000000;">
+  <b>Relationship Styles:</b>
+  <div class="key-item"><div class="style-line" style="border-top: 2.5px solid #000000;"></div>Subclass Profile (1:1 / 1:0..1)</div>
+  <div class="key-item"><div class="style-line" style="border-top: 2px dashed #000000;"></div>Venting & Audit Logs (1:N)</div>
+  <div class="key-item"><div class="style-line" style="border-top: 2px dotted #000000;"></div>SMS & Email Alerts (1:N)</div>
+  <div class="key-item"><div class="style-line" style="border-top: 2.5px solid #000000;"></div>Bullying Reports (1:N)</div>
 </div>
 </div>
 </body>
