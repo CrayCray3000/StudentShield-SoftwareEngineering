@@ -958,7 +958,7 @@ def generate_drawio():
 
         <!-- ==================== RELATIONSHIPS ==================== -->
         <!-- users to subclass tables (1:1 relationships) -->
-        <mxCell id="rel_users_students" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#444444;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="students_row_0" parent="1">
+        <mxCell id="rel_users_students" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#6366f1;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="students_row_0" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="505" y="43"/>
@@ -966,7 +966,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_counselors" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#444444;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="counselors_row_0" parent="1">
+        <mxCell id="rel_users_counselors" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#6366f1;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="counselors_row_0" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="495" y="43"/>
@@ -974,7 +974,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_admins" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#444444;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="admins_row_0" parent="1">
+        <mxCell id="rel_users_admins" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#6366f1;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="admins_row_0" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="485" y="43"/>
@@ -984,7 +984,7 @@ def generate_drawio():
         </mxCell>
 
         <!-- users.id to child tables -->
-        <mxCell id="rel_users_vent_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#333333;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="vent_logs_row_1" parent="1">
+        <mxCell id="rel_users_vent_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#64748b;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="vent_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="910" y="43"/>
@@ -992,7 +992,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_audit_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#333333;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="audit_logs_row_1" parent="1">
+        <mxCell id="rel_users_audit_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#64748b;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="audit_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="900" y="43"/>
@@ -1000,7 +1000,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_sms_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#333333;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="sms_logs_row_1" parent="1">
+        <mxCell id="rel_users_sms_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#10b981;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="sms_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="890" y="43"/>
@@ -1010,7 +1010,7 @@ def generate_drawio():
         </mxCell>
 
         <!-- users.id to bully_reports & email_logs -->
-        <mxCell id="rel_users_bully_reporter" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#333333;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_1" parent="1">
+        <mxCell id="rel_users_bully_reporter" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#f97316;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="450" y="43"/>
@@ -1018,7 +1018,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_bully_victim" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#333333;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_3" parent="1">
+        <mxCell id="rel_users_bully_victim" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#f97316;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_3" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="460" y="43"/>
@@ -1026,7 +1026,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_bully_bully" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#333333;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_4" parent="1">
+        <mxCell id="rel_users_bully_bully" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#f97316;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_4" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="470" y="43"/>
@@ -1034,7 +1034,7 @@ def generate_drawio():
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_email_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#333333;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="email_logs_row_1" parent="1">
+        <mxCell id="rel_users_email_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#10b981;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="email_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="440" y="43"/>
@@ -1080,11 +1080,16 @@ h1{text-align:center;font-size:24px;color:#1a202c;margin-bottom:6px}
 .pkfk-name{font-weight:700;color:#6b46c1}
 .tc{color:#718096;font-size:11px;text-align:right;padding-right:8px;border-left:1px solid #edf2f7}
 svg.ln{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-svg.ln polyline{stroke:#4a5568;stroke-width:1.2;fill:none}
-svg.ln line{stroke:#4a5568;stroke-width:1.2}
-svg.ln circle{stroke:#4a5568;stroke-width:1.2}
-.leg{position:absolute;bottom:15px;right:20px;font-size:12px;color:#718096;line-height:1.6;text-align:right;background:#edf2f7;padding:10px 15px;border-radius:6px;border:1px solid #e2e8f0}
-.leg b{color:#2d3748}
+svg.ln polyline{fill:none}
+svg.ln circle{fill:none}
+.c-subclass { stroke: #6366f1 !important; stroke-width: 2.2px !important; }
+.c-logs { stroke: #64748b !important; stroke-width: 2.2px !important; }
+.c-alerts { stroke: #10b981 !important; stroke-width: 2.2px !important; }
+.c-reports { stroke: #f97316 !important; stroke-width: 2.2px !important; }
+.leg{position:absolute;bottom:15px;right:20px;font-size:12px;color:#4a5568;line-height:1.6;text-align:left;background:#ffffff;padding:12px 18px;border-radius:8px;border:1px solid #cbd5e1;box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);max-width: 320px;}
+.leg b{color:#1e293b}
+.leg .key-item { display: flex; align-items: center; margin-top: 4px; font-size: 11px; }
+.leg .color-box { width: 14px; height: 14px; border-radius: 3px; margin-right: 8px; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -1096,61 +1101,61 @@ svg.ln circle{stroke:#4a5568;stroke-width:1.2}
 <svg class="ln" xmlns="http://www.w3.org/2000/svg">
   <!-- RELATIONSHIPS -->
   <!-- users.id (520, 63) to subclass tables (left routing) -->
-  <polyline points="520,63 505,63 505,303 520,303"/>
-  <polyline points="520,63 495,63 495,593 520,593"/>
-  <polyline points="520,63 485,63 485,783 520,783"/>
+  <polyline points="520,63 505,63 505,303 520,303" class="c-subclass"/>
+  <polyline points="520,63 495,63 495,593 520,593" class="c-subclass"/>
+  <polyline points="520,63 485,63 485,783 520,783" class="c-subclass"/>
   
   <!-- users.id (874, 63) to right child tables -->
-  <polyline points="874,63 910,63 910,89 960,89"/>
-  <polyline points="874,63 900,63 900,409 960,409"/>
-  <polyline points="874,63 890,63 890,689 960,689"/>
+  <polyline points="874,63 910,63 910,89 960,89" class="c-logs"/>
+  <polyline points="874,63 900,63 900,409 960,409" class="c-logs"/>
+  <polyline points="874,63 890,63 890,689 960,689" class="c-alerts"/>
   
   <!-- users.id (520, 63) to left child tables -->
-  <polyline points="520,63 450,63 450,369 414,369"/>
-  <polyline points="520,63 470,63 470,421 414,421"/>
-  <polyline points="520,63 490,63 490,447 414,447"/>
-  <polyline points="520,63 430,63 430,729 414,729"/>
+  <polyline points="520,63 450,63 450,369 414,369" class="c-reports"/>
+  <polyline points="520,63 470,63 470,421 414,421" class="c-reports"/>
+  <polyline points="520,63 490,63 490,447 414,447" class="c-reports"/>
+  <polyline points="520,63 430,63 430,729 414,729" class="c-alerts"/>
 
   <!-- Crow Foot Markers on left subclass endpoints (Zero or One / Mandatory One) -->
   <!-- on users side (Mandatory One) -->
-  <line x1="516" y1="57" x2="516" y2="69"/>
-  <line x1="511" y1="57" x2="511" y2="69"/>
+  <line x1="516" y1="57" x2="516" y2="69" class="c-subclass"/>
+  <line x1="511" y1="57" x2="511" y2="69" class="c-subclass"/>
   <!-- on students side (Zero or One) -->
-  <circle cx="511" cy="303" r="4" fill="none"/>
-  <line x1="516" y1="297" x2="516" y2="309"/>
+  <circle cx="511" cy="303" r="4" fill="none" class="c-subclass"/>
+  <line x1="516" y1="297" x2="516" y2="309" class="c-subclass"/>
   <!-- on counselors side (Zero or One) -->
-  <circle cx="511" cy="593" r="4" fill="none"/>
-  <line x1="516" y1="587" x2="516" y2="599"/>
+  <circle cx="511" cy="593" r="4" fill="none" class="c-subclass"/>
+  <line x1="516" y1="587" x2="516" y2="599" class="c-subclass"/>
   <!-- on admins side (Zero or One) -->
-  <circle cx="511" cy="783" r="4" fill="none"/>
-  <line x1="516" y1="777" x2="516" y2="789"/>
+  <circle cx="511" cy="783" r="4" fill="none" class="c-subclass"/>
+  <line x1="516" y1="777" x2="516" y2="789" class="c-subclass"/>
 
   <!-- 1:N Crow Foot Markers on right side -->
-  <line x1="877" y1="57" x2="877" y2="69"/>
-  <line x1="881" y1="57" x2="881" y2="69"/>
+  <line x1="877" y1="57" x2="877" y2="69" class="c-logs"/>
+  <line x1="881" y1="57" x2="881" y2="69" class="c-logs"/>
   <!-- vent_logs crow foot -->
-  <line x1="960" y1="89" x2="950" y2="82"/><line x1="960" y1="89" x2="950" y2="89"/><line x1="960" y1="89" x2="950" y2="96"/>
-  <circle cx="946" cy="89" r="4" fill="none"/>
+  <line x1="960" y1="89" x2="950" y2="82" class="c-logs"/><line x1="960" y1="89" x2="950" y2="89" class="c-logs"/><line x1="960" y1="89" x2="950" y2="96" class="c-logs"/>
+  <circle cx="946" cy="89" r="4" fill="none" class="c-logs"/>
   <!-- audit_logs crow foot -->
-  <line x1="960" y1="409" x2="950" y2="402"/><line x1="960" y1="409" x2="950" y2="409"/><line x1="960" y1="409" x2="950" y2="416"/>
-  <circle cx="946" cy="409" r="4" fill="none"/>
+  <line x1="960" y1="409" x2="950" y2="402" class="c-logs"/><line x1="960" y1="409" x2="950" y2="409" class="c-logs"/><line x1="960" y1="409" x2="950" y2="416" class="c-logs"/>
+  <circle cx="946" cy="409" r="4" fill="none" class="c-logs"/>
   <!-- sms_logs crow foot -->
-  <line x1="960" y1="689" x2="950" y2="682"/><line x1="960" y1="689" x2="950" y2="689"/><line x1="960" y1="689" x2="950" y2="696"/>
-  <circle cx="946" cy="689" r="4" fill="none"/>
+  <line x1="960" y1="689" x2="950" y2="682" class="c-alerts"/><line x1="960" y1="689" x2="950" y2="689" class="c-alerts"/><line x1="960" y1="689" x2="950" y2="696" class="c-alerts"/>
+  <circle cx="946" cy="689" r="4" fill="none" class="c-alerts"/>
 
   <!-- 1:N Crow Foot Markers on left side -->
   <!-- bully_reports reporter crow foot -->
-  <line x1="414" y1="369" x2="424" y2="362"/><line x1="414" y1="369" x2="424" y2="369"/><line x1="414" y1="369" x2="424" y2="376"/>
-  <circle cx="428" cy="369" r="4" fill="none"/>
+  <line x1="414" y1="369" x2="424" y2="362" class="c-reports"/><line x1="414" y1="369" x2="424" y2="369" class="c-reports"/><line x1="414" y1="369" x2="424" y2="376" class="c-reports"/>
+  <circle cx="428" cy="369" r="4" fill="none" class="c-reports"/>
   <!-- bully_reports victim crow foot -->
-  <line x1="414" y1="421" x2="424" y2="414"/><line x1="414" y1="421" x2="424" y2="421"/><line x1="414" y1="421" x2="424" y2="428"/>
-  <circle cx="428" cy="421" r="4" fill="none"/>
+  <line x1="414" y1="421" x2="424" y2="414" class="c-reports"/><line x1="414" y1="421" x2="424" y2="421" class="c-reports"/><line x1="414" y1="421" x2="424" y2="428" class="c-reports"/>
+  <circle cx="428" cy="421" r="4" fill="none" class="c-reports"/>
   <!-- bully_reports bully crow foot -->
-  <line x1="414" y1="447" x2="424" y2="440"/><line x1="414" y1="447" x2="424" y2="447"/><line x1="414" y1="447" x2="424" y2="454"/>
-  <circle cx="428" cy="447" r="4" fill="none"/>
+  <line x1="414" y1="447" x2="424" y2="440" class="c-reports"/><line x1="414" y1="447" x2="424" y2="447" class="c-reports"/><line x1="414" y1="447" x2="424" y2="454" class="c-reports"/>
+  <circle cx="428" cy="447" r="4" fill="none" class="c-reports"/>
   <!-- email_logs crow foot -->
-  <line x1="414" y1="729" x2="424" y2="722"/><line x1="414" y1="729" x2="424" y2="729"/><line x1="414" y1="729" x2="424" y2="736"/>
-  <circle cx="428" cy="729" r="4" fill="none"/>
+  <line x1="414" y1="729" x2="424" y2="722" class="c-alerts"/><line x1="414" y1="729" x2="424" y2="729" class="c-alerts"/><line x1="414" y1="729" x2="424" y2="736" class="c-alerts"/>
+  <circle cx="428" cy="729" r="4" fill="none" class="c-alerts"/>
 </svg>
 
 <!-- ENTITY TABLES -->
@@ -1288,9 +1293,14 @@ svg.ln circle{stroke:#4a5568;stroke-width:1.2}
 </div>
 
 <div class="leg">
-  <b>PK</b> = Primary Key &nbsp; <b>FK</b> = Foreign Key &nbsp; <b>PK,FK</b> = Composite PK/FK<br>
+  <b>PK</b> = Primary Key &nbsp; <b>FK</b> = Foreign Key<br>
   <b>UN</b> = Unsigned &nbsp; <b>AI</b> = Auto Increment<br>
-  Diagram updated to show normalized profile subclass tables.
+  <hr style="margin: 8px 0; border: none; border-top: 1px solid #edf2f7;">
+  <b>Relationship Types:</b>
+  <div class="key-item"><div class="color-box" style="background:#6366f1"></div>Subclass Profile (1:1 / 1:0..1)</div>
+  <div class="key-item"><div class="color-box" style="background:#64748b"></div>Venting & Audit Logs (1:N)</div>
+  <div class="key-item"><div class="color-box" style="background:#10b981"></div>SMS & Email Alerts (1:N)</div>
+  <div class="key-item"><div class="color-box" style="background:#f97316"></div>Bullying Reports (1:N)</div>
 </div>
 </div>
 </body>
