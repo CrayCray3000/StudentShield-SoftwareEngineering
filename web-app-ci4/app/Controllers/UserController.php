@@ -15,9 +15,15 @@ class UserController extends BaseController
 
         $db = \Config\Database::connect();
         $users = $db->table('users')
-            ->select('id, name, student_id, role, parent_email, parent_phone, section, adviser_name')
-            ->orderBy('role', 'DESC')
-            ->orderBy('name', 'ASC')
+            ->select('users.id, users.name, users.role, 
+                      students.student_id, students.section, students.adviser_name, students.grade_level,
+                      COALESCE(students.parent_phone, counselors.counselor_phone, admins.phone) AS parent_phone,
+                      COALESCE(students.parent_email, counselors.counselor_email, admins.email) AS parent_email')
+            ->join('students', 'students.user_id = users.id', 'left')
+            ->join('counselors', 'counselors.user_id = users.id', 'left')
+            ->join('admins', 'admins.user_id = users.id', 'left')
+            ->orderBy('users.role', 'DESC')
+            ->orderBy('users.name', 'ASC')
             ->get()->getResultArray();
 
         return view('manage_users', ['users' => $users]);
@@ -81,16 +87,36 @@ class UserController extends BaseController
 
         $db->table('users')->insert([
             'name'          => $name,
-            'student_id'    => $studentId,
             'role'          => $role,
             'passcode'      => $hashedPasscode,
-            'parent_email'  => $parentEmail,
-            'parent_phone'  => $parentPhone,
-            'section'       => $section,
-            'adviser_name'  => $adviserName,
         ]);
+        $newUserId = $db->insertID();
 
-        $this->logAudit('CREATE_USER', 'user', $db->insertID());
+        if ($role === 0) {
+            $db->table('students')->insert([
+                'user_id'      => $newUserId,
+                'student_id'   => $studentId,
+                'parent_phone' => $parentPhone,
+                'parent_email' => $parentEmail,
+                'section'      => $section,
+                'adviser_name' => $adviserName,
+                'grade_level'  => null,
+            ]);
+        } elseif ($role === 1) {
+            $db->table('counselors')->insert([
+                'user_id'          => $newUserId,
+                'counselor_email' => $parentEmail,
+                'counselor_phone' => $parentPhone,
+            ]);
+        } elseif ($role === 2) {
+            $db->table('admins')->insert([
+                'user_id' => $newUserId,
+                'email'   => $parentEmail,
+                'phone'   => $parentPhone,
+            ]);
+        }
+
+        $this->logAudit('CREATE_USER', 'user', $newUserId);
 
         return redirect()->to('/admin/users')->with('success', "User \"{$name}\" created successfully.");
     }
@@ -114,32 +140,77 @@ class UserController extends BaseController
         }
 
         $studentIdInput = trim($this->request->getPost('student_id') ?? '');
-        $updateData = [
-            'name'         => trim($this->request->getPost('name')),
-            'student_id'   => ($studentIdInput === '') ? null : $studentIdInput,
-            'role'         => $targetRole,
-            'parent_email' => trim($this->request->getPost('parent_email') ?? ''),
-            'parent_phone' => trim($this->request->getPost('parent_phone') ?? ''),
-            'section'      => trim($this->request->getPost('section') ?? ''),
-            'adviser_name' => trim($this->request->getPost('adviser_name') ?? ''),
-        ];
+        $parentEmail = trim($this->request->getPost('parent_email') ?? '');
+        $parentPhone = trim($this->request->getPost('parent_phone') ?? '');
+        $section = trim($this->request->getPost('section') ?? '');
+        $adviserName = trim($this->request->getPost('adviser_name') ?? '');
 
         if ($targetRole === 0) {
-            if (empty($updateData['section'])) {
+            if (empty($section)) {
                 return redirect()->back()->with('error', 'Section is required for students.');
             }
-            if (empty($updateData['adviser_name'])) {
+            if (empty($adviserName)) {
                 return redirect()->back()->with('error', 'Adviser Name is required for students.');
             }
         }
 
+        $userUpdate = [
+            'name' => trim($this->request->getPost('name')),
+            'role' => $targetRole,
+        ];
+
         // Only update password if provided
         $newPasscode = $this->request->getPost('passcode');
         if (!empty($newPasscode)) {
-            $updateData['passcode'] = password_hash($newPasscode, PASSWORD_BCRYPT);
+            $userUpdate['passcode'] = password_hash($newPasscode, PASSWORD_BCRYPT);
         }
 
-        $db->table('users')->where('id', $id)->update($updateData);
+        $db->table('users')->where('id', $id)->update($userUpdate);
+
+        // Delete profile records in other subclass tables to keep them clean
+        if ($targetRole !== 0) $db->table('students')->where('user_id', $id)->delete();
+        if ($targetRole !== 1) $db->table('counselors')->where('user_id', $id)->delete();
+        if ($targetRole !== 2) $db->table('admins')->where('user_id', $id)->delete();
+
+        // Upsert core profile fields into appropriate subclass table
+        if ($targetRole === 0) {
+            $studentData = [
+                'student_id'   => ($studentIdInput === '') ? null : $studentIdInput,
+                'parent_phone' => $parentPhone,
+                'parent_email' => $parentEmail,
+                'section'      => $section,
+                'adviser_name' => $adviserName,
+            ];
+            if ($db->table('students')->where('user_id', $id)->countAllResults() > 0) {
+                $db->table('students')->where('user_id', $id)->update($studentData);
+            } else {
+                $studentData['user_id'] = $id;
+                $db->table('students')->insert($studentData);
+            }
+        } elseif ($targetRole === 1) {
+            $counselorData = [
+                'counselor_email' => $parentEmail,
+                'counselor_phone' => $parentPhone,
+            ];
+            if ($db->table('counselors')->where('user_id', $id)->countAllResults() > 0) {
+                $db->table('counselors')->where('user_id', $id)->update($counselorData);
+            } else {
+                $counselorData['user_id'] = $id;
+                $db->table('counselors')->insert($counselorData);
+            }
+        } elseif ($targetRole === 2) {
+            $adminData = [
+                'email' => $parentEmail,
+                'phone' => $parentPhone,
+            ];
+            if ($db->table('admins')->where('user_id', $id)->countAllResults() > 0) {
+                $db->table('admins')->where('user_id', $id)->update($adminData);
+            } else {
+                $adminData['user_id'] = $id;
+                $db->table('admins')->insert($adminData);
+            }
+        }
+
         $this->logAudit('UPDATE_USER', 'user', (int)$id);
 
         return redirect()->to('/admin/users')->with('success', 'User updated successfully.');

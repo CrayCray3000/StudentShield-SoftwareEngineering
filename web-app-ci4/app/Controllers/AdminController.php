@@ -16,8 +16,9 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         // Fetch initially for SSR rendering
         $recent_vents = $db->table('vent_logs')
-            ->select('vent_logs.*, users.name, users.student_id, users.section, users.adviser_name')
+            ->select('vent_logs.*, users.name, students.student_id, students.section, students.adviser_name')
             ->join('users', 'users.id = vent_logs.user_id')
+            ->join('students', 'students.user_id = users.id', 'left')
             ->where('vent_logs.deleted_at IS NULL')
             ->orderBy('created_at', 'DESC')
             ->get()->getResultArray();
@@ -48,8 +49,9 @@ class AdminController extends BaseController
         $isArchived = $this->request->getGet('archived') == '1';
         
         $query = $db->table('vent_logs')
-                ->select('vent_logs.*, users.name, users.student_id, users.parent_phone, users.parent_email, users.section, users.adviser_name')
-                ->join('users', 'users.id = vent_logs.user_id', 'left');
+                ->select('vent_logs.*, users.name, students.student_id, students.parent_phone, students.parent_email, students.section, students.adviser_name')
+                ->join('users', 'users.id = vent_logs.user_id', 'left')
+                ->join('students', 'students.user_id = users.id', 'left');
                 
             if ($isArchived) {
                 $query->where('vent_logs.deleted_at IS NOT NULL');
@@ -139,8 +141,9 @@ class AdminController extends BaseController
         $isArchived = $this->request->getGet('archived') == '1';
         
         $query = $db->table('bully_reports')
-                ->select('bully_reports.*, bully_reports.incident_details as description, bully_reports.reporter_student_id as reporter_id, users.name, users.parent_phone, users.parent_email')
-                ->join('users', 'users.id = bully_reports.reporter_student_id', 'left');
+                ->select('bully_reports.*, bully_reports.incident_details as description, bully_reports.reporter_student_id as reporter_id, users.name, students.parent_phone, students.parent_email')
+                ->join('users', 'users.id = bully_reports.reporter_student_id', 'left')
+                ->join('students', 'students.user_id = users.id', 'left');
                 
             if ($isArchived) {
                 $query->where('bully_reports.deleted_at IS NOT NULL');
@@ -203,7 +206,11 @@ class AdminController extends BaseController
         
         // 1. Alert the Victim's Parent (SMS & Email)
         if (!empty($report->victim_student_id)) {
-            $victim = $db->table('users')->where('id', $report->victim_student_id)->get()->getRow();
+            $victim = $db->table('users')
+                ->select('users.*, students.parent_phone, students.parent_email')
+                ->join('students', 'students.user_id = users.id', 'left')
+                ->where('users.id', $report->victim_student_id)
+                ->get()->getRow();
             if ($victim) {
                 $victimMsg = "SVBSM Guidance Alert: A verified report indicates your child may be involved in a bullying incident as a victim. Please offer a warm check-in with your child tonight. Our counselors have confirmed the report and are actively investigating.";
                 if (!empty($victim->parent_phone)) $this->sendLocalSms($victim->parent_phone, $victimMsg);
@@ -213,7 +220,11 @@ class AdminController extends BaseController
         
         // 2. Alert the Bully's Parent (SMS & Email)
         if (!empty($report->bully_student_id)) {
-            $bully = $db->table('users')->where('id', $report->bully_student_id)->get()->getRow();
+            $bully = $db->table('users')
+                ->select('users.*, students.parent_phone, students.parent_email')
+                ->join('students', 'students.user_id = users.id', 'left')
+                ->where('users.id', $report->bully_student_id)
+                ->get()->getRow();
             if ($bully) {
                 $bullyMsg = "SVBSM Guidance Alert: A verified report involving your child regarding a disciplinary incident has been confirmed by our guidance team. Our administration is currently investigating. Please contact the school office tomorrow.";
                 if (!empty($bully->parent_phone)) $this->sendLocalSms($bully->parent_phone, $bullyMsg);
@@ -407,7 +418,16 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         
         // 1. Fetch User Data
-        $user = $db->table('users')->where('id', $id)->get()->getRowArray();
+        $user = $db->table('users')
+            ->select('users.*, 
+                      students.student_id, students.section, students.adviser_name, students.grade_level,
+                      COALESCE(students.parent_phone, counselors.counselor_phone, admins.phone) AS parent_phone,
+                      COALESCE(students.parent_email, counselors.counselor_email, admins.email) AS parent_email')
+            ->join('students', 'students.user_id = users.id', 'left')
+            ->join('counselors', 'counselors.user_id = users.id', 'left')
+            ->join('admins', 'admins.user_id = users.id', 'left')
+            ->where('users.id', $id)
+            ->get()->getRowArray();
         if (!$user) {
             return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
         }

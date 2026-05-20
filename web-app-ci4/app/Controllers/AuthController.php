@@ -125,8 +125,11 @@ class AuthController extends BaseController
 
         // Find user by name AND must be counselor (role=1) or super_admin (role=2)
         $user = $db->table('users')
-            ->where('name', $name)
-            ->whereIn('role', [1, 2])
+            ->select('users.*, COALESCE(counselors.counselor_email, admins.email) AS parent_email, COALESCE(counselors.counselor_phone, admins.phone) AS parent_phone')
+            ->join('counselors', 'counselors.user_id = users.id', 'left')
+            ->join('admins', 'admins.user_id = users.id', 'left')
+            ->where('users.name', $name)
+            ->whereIn('users.role', [1, 2])
             ->get()->getRowArray();
 
         if (!$user) {

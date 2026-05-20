@@ -124,7 +124,7 @@ class VentController extends BaseController
 
         // --- 4. TRIGGER ALERTS IF CRITICAL ---
         if ($riskLevel === 'CRITICAL') {
-            $user = $db->table('users')->where('id', $userId)->get()->getRow();
+            $user = $db->table('users')->select('users.*, students.parent_phone, students.parent_email')->join('students', 'students.user_id = users.id', 'left')->where('users.id', $userId)->get()->getRow();
             if ($user) {
                 $fullNameStr = $user->name ?? 'your child';
                 $firstName = explode(' ', trim($fullNameStr))[0];

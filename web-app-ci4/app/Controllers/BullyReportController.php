@@ -130,7 +130,13 @@ class BullyReportController extends BaseController
         // to prevent fake/malicious reports from triggering parent panic SMS blasts.
         
         // 1. Alert the Reporter (Email) — confirmation only, no sensitive details
-        $reporter = $db->table('users')->where('id', $userId)->get()->getRow();
+        $reporter = $db->table('users')
+            ->select('users.*, COALESCE(students.parent_email, counselors.counselor_email, admins.email) AS email')
+            ->join('students', 'students.user_id = users.id', 'left')
+            ->join('counselors', 'counselors.user_id = users.id', 'left')
+            ->join('admins', 'admins.user_id = users.id', 'left')
+            ->where('users.id', $userId)
+            ->get()->getRow();
         if ($reporter && !empty($reporter->email)) {
             $this->sendLocalEmail($reporter->email, "Thank you for speaking up. Your courageous report has been securely received by the SVBSM Counseling Team. A counselor will review it shortly. You are safe.");
         }
