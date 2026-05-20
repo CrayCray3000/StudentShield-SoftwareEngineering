@@ -12,18 +12,18 @@
             align-items: center;
             background-color: #ffffff;
             color: #000000;
-            margin: 40px;
+            margin: 15px 5px;
         }
 
         .headers {
             display: flex;
             justify-content: space-between;
-            width: 1000px;
+            width: 780px;
             margin-bottom: 10px;
         }
 
         .header-title {
-            width: 32%;
+            width: 245px;
             text-align: center;
             font-weight: bold;
             font-size: 1.75rem;
@@ -34,14 +34,14 @@
         .columns-container {
             display: flex;
             justify-content: space-between;
-            width: 1000px;
-            gap: 20px;
+            width: 780px;
+            gap: 22.5px;
         }
 
         .column {
-            width: 32%;
+            width: 245px;
             border: 1px solid #000;
-            padding: 20px;
+            padding: 15px;
             box-sizing: border-box;
             background-color: #fff;
             /* Ensures equal height if desired, but IPO usually flows naturally */
@@ -58,7 +58,7 @@
         }
 
         .column ul {
-            padding-left: 20px;
+            padding-left: 18px;
             margin-top: 5px;
             margin-bottom: 25px;
             font-size: 1.25rem;
@@ -70,7 +70,7 @@
         }
 
         .eval-section {
-            width: 1000px;
+            width: 780px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -102,7 +102,7 @@
             position: absolute;
             top: -20px;
             left: 0;
-            width: 1000px;
+            width: 780px;
             height: 120px;
             pointer-events: none;
         }
@@ -215,16 +215,16 @@
         </div>
         
         <!-- SVG Arrow connecting Output to Evaluation -->
-        <svg class="arrow-container" viewBox="0 0 1000 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="arrow-container" viewBox="0 0 780 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <!-- 
-              Arrow starts at X: 840 (center of Output column), Y: 0 
+              Arrow starts at X: 657.5 (center of Output column), Y: 0 
               Goes down to Y: 90 (center of eval box)
-              Goes left to X: 740 (right edge of eval box)
-              eval box is 450px wide. 1000/2 = 500 center. 500 + 225 = 725 right edge.
-              Output column center is approx 1000 - 160 = 840.
+              Goes left to X: 615 (right edge of eval box)
+              eval box is 450px wide. 780/2 = 390 center. 390 + 225 = 615 right edge.
+              Output column center is approx 657.5.
             -->
-            <path d="M 840,0 L 840,90 L 740,90" fill="none" stroke="black" stroke-width="2" />
-            <polygon points="725,90 740,85 740,95" fill="black" />
+            <path d="M 657.5,0 L 657.5,90 L 630,90" fill="none" stroke="black" stroke-width="2" />
+            <polygon points="615,90 630,85 630,95" fill="black" />
         </svg>
     </div>
 
