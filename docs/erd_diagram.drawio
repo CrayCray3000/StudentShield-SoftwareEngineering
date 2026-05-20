@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mxfile host="app.diagrams.net" type="device">
   <diagram name="ERD" id="erd1">
-    <mxGraphModel dx="1422" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1050" math="0" shadow="0">
+    <mxGraphModel dx="1422" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1550" pageHeight="1000" math="0" shadow="0">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
         
         <!-- ==================== users ==================== -->
         <mxCell id="users" value="users" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="520" y="20" width="354" height="212" as="geometry"/>
+          <mxGeometry x="600" y="20" width="354" height="212" as="geometry"/>
         </mxCell>
         <mxCell id="users_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="users">
           <mxGeometry y="30" width="354" height="26" as="geometry"/>
@@ -103,7 +103,7 @@
 
         <!-- ==================== students ==================== -->
         <mxCell id="students" value="students" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="520" y="260" width="354" height="264" as="geometry"/>
+          <mxGeometry x="600" y="320" width="354" height="264" as="geometry"/>
         </mxCell>
         <mxCell id="students_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="students">
           <mxGeometry y="30" width="354" height="26" as="geometry"/>
@@ -224,7 +224,7 @@
 
         <!-- ==================== counselors ==================== -->
         <mxCell id="counselors" value="counselors" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="520" y="550" width="354" height="160" as="geometry"/>
+          <mxGeometry x="1100" y="46" width="354" height="160" as="geometry"/>
         </mxCell>
         <mxCell id="counselors_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="counselors">
           <mxGeometry y="30" width="354" height="26" as="geometry"/>
@@ -293,7 +293,7 @@
 
         <!-- ==================== admins ==================== -->
         <mxCell id="admins" value="admins" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="520" y="740" width="354" height="160" as="geometry"/>
+          <mxGeometry x="100" y="46" width="354" height="160" as="geometry"/>
         </mxCell>
         <mxCell id="admins_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="admins">
           <mxGeometry y="30" width="354" height="26" as="geometry"/>
@@ -362,7 +362,7 @@
 
         <!-- ==================== vent_logs ==================== -->
         <mxCell id="vent_logs" value="vent_logs" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="960" y="20" width="329" height="290" as="geometry"/>
+          <mxGeometry x="1100" y="280" width="329" height="290" as="geometry"/>
         </mxCell>
         <mxCell id="vent_logs_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="vent_logs">
           <mxGeometry y="30" width="329" height="26" as="geometry"/>
@@ -496,7 +496,7 @@
 
         <!-- ==================== audit_logs ==================== -->
         <mxCell id="audit_logs" value="audit_logs" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="960" y="340" width="329" height="238" as="geometry"/>
+          <mxGeometry x="1100" y="630" width="329" height="238" as="geometry"/>
         </mxCell>
         <mxCell id="audit_logs_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="audit_logs">
           <mxGeometry y="30" width="329" height="26" as="geometry"/>
@@ -604,7 +604,7 @@
 
         <!-- ==================== sms_logs ==================== -->
         <mxCell id="sms_logs" value="sms_logs" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="960" y="620" width="329" height="212" as="geometry"/>
+          <mxGeometry x="600" y="650" width="329" height="212" as="geometry"/>
         </mxCell>
         <mxCell id="sms_logs_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="sms_logs">
           <mxGeometry y="30" width="329" height="26" as="geometry"/>
@@ -699,7 +699,7 @@
 
         <!-- ==================== bully_reports ==================== -->
         <mxCell id="bully_reports" value="bully_reports" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="0" y="300" width="414" height="316" as="geometry"/>
+          <mxGeometry x="100" y="280" width="414" height="316" as="geometry"/>
         </mxCell>
         <mxCell id="bully_reports_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="bully_reports">
           <mxGeometry y="30" width="414" height="26" as="geometry"/>
@@ -846,7 +846,7 @@
 
         <!-- ==================== email_logs ==================== -->
         <mxCell id="email_logs" value="email_logs" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="0" y="660" width="414" height="264" as="geometry"/>
+          <mxGeometry x="100" y="650" width="414" height="264" as="geometry"/>
         </mxCell>
         <mxCell id="email_logs_row_0" value="0" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;strokeColor=inherit;" vertex="1" parent="email_logs">
           <mxGeometry y="30" width="414" height="26" as="geometry"/>
@@ -954,87 +954,67 @@
 
         <!-- ==================== RELATIONSHIPS ==================== -->
         <!-- users to subclass tables (1:1 relationships) -->
-        <mxCell id="rel_users_students" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="students_row_0" parent="1">
+        <mxCell id="rel_users_students" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="students_row_0" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="505" y="43"/>
-              <mxPoint x="505" y="283"/>
+              <mxPoint x="580" y="43"/>
+              <mxPoint x="580" y="343"/>
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_counselors" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="counselors_row_0" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="495" y="43"/>
-              <mxPoint x="495" y="573"/>
-            </Array>
-          </mxGeometry>
+        <mxCell id="rel_users_counselors" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="counselors_row_0" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_users_admins" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="admins_row_0" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="485" y="43"/>
-              <mxPoint x="485" y="763"/>
-            </Array>
-          </mxGeometry>
+        <mxCell id="rel_users_admins" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToOne;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="admins_row_0" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
         <!-- users.id to child tables -->
-        <mxCell id="rel_users_vent_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="vent_logs_row_1" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="910" y="43"/>
-              <mxPoint x="910" y="82"/>
-            </Array>
-          </mxGeometry>
+        <mxCell id="rel_users_vent_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="vent_logs_row_1" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_users_audit_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="audit_logs_row_1" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="900" y="43"/>
-              <mxPoint x="900" y="402"/>
-            </Array>
-          </mxGeometry>
+        <mxCell id="rel_users_audit_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="audit_logs_row_1" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="rel_users_sms_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;dashed=1;dashPattern=1 3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="sms_logs_row_1" parent="1">
+        <mxCell id="rel_users_sms_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="sms_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="890" y="43"/>
-              <mxPoint x="890" y="682"/>
+              <mxPoint x="1000" y="43"/>
+              <mxPoint x="1000" y="719"/>
             </Array>
           </mxGeometry>
         </mxCell>
 
         <!-- users.id to bully_reports & email_logs -->
-        <mxCell id="rel_users_bully_reporter" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_1" parent="1">
+        <mxCell id="rel_users_bully_reporter" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="450" y="43"/>
-              <mxPoint x="450" y="362"/>
+              <mxPoint x="550" y="43"/>
+              <mxPoint x="550" y="349"/>
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_bully_victim" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_3" parent="1">
+        <mxCell id="rel_users_bully_victim" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_3" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="460" y="43"/>
-              <mxPoint x="460" y="414"/>
+              <mxPoint x="560" y="43"/>
+              <mxPoint x="560" y="401"/>
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_bully_bully" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_4" parent="1">
+        <mxCell id="rel_users_bully_bully" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERzeroToOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="bully_reports_row_4" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="470" y="43"/>
-              <mxPoint x="470" y="440"/>
+              <mxPoint x="570" y="43"/>
+              <mxPoint x="570" y="427"/>
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="rel_users_email_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2;dashed=1;dashPattern=1 3;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="email_logs_row_1" parent="1">
+        <mxCell id="rel_users_email_logs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERzeroToMany;endFill=0;startArrow=ERmandOne;startFill=0;strokeColor=#000000;strokeWidth=2.5;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="users_row_0" target="email_logs_row_1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="440" y="43"/>
-              <mxPoint x="440" y="722"/>
+              <mxPoint x="540" y="43"/>
+              <mxPoint x="540" y="719"/>
             </Array>
           </mxGeometry>
         </mxCell>
