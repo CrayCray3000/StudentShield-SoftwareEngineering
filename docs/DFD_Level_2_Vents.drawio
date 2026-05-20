@@ -12,7 +12,7 @@
         <mxCell id="p22" value="2.2&lt;br&gt;&lt;br&gt;Analyze&lt;br&gt;Sentiment" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="500" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="p23" value="2.3&lt;br&gt;&lt;br&gt;Encrypt&lt;br&gt;&amp; Store" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="p23" value="2.3&lt;br&gt;&lt;br&gt;Encrypt and&lt;br&gt;Store" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="700" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
         <mxCell id="p24" value="2.4&lt;br&gt;&lt;br&gt;Evaluate Alert&lt;br&gt;Threshold" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
@@ -21,7 +21,7 @@
 
         <!-- External Entities (Rounded Rectangles) -->
         <mxCell id="student" value="Student" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="60" y="350" width="120" height="60" as="geometry"/>
+          <mxGeometry x="60" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
         <mxCell id="ml" value="HuggingFace ML&lt;br&gt;Microservice" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="500" y="100" width="120" height="60" as="geometry"/>
@@ -35,12 +35,18 @@
           <mxGeometry x="680" y="110" width="160" height="40" as="geometry"/>
         </mxCell>
 
-        <!-- Flows (Orthogonal Edges) -->
-        <mxCell id="f1" value="Vent Text, Mood" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="student" target="p21">
+        <!-- Flows (Separated Parallel Edges) -->
+        <mxCell id="f1_text" value="Vent Text" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.25;entryX=0;entryY=0.375;" edge="1" parent="1" source="student" target="p21">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="f1_mood" value="Mood Rating" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.75;entryX=0;entryY=0.625;" edge="1" parent="1" source="student" target="p21">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         
-        <mxCell id="f2" value="Raw Vent &amp; ID" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p21" target="p22">
+        <mxCell id="f2_text" value="Raw Vent Text" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.33;entryX=0;entryY=0.33;" edge="1" parent="1" source="p21" target="p22">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="f2_id" value="Student ID" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.67;entryX=0;entryY=0.67;" edge="1" parent="1" source="p21" target="p22">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 

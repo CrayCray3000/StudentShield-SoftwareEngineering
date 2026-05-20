@@ -12,65 +12,39 @@
             align-items: center;
             background-color: #ffffff;
             color: #000000;
-            margin: 15px 5px;
+            margin: 20px 5px;
         }
 
         .headers {
             display: flex;
             justify-content: space-between;
             width: 980px;
+            gap: 40px;
             margin-bottom: 10px;
         }
 
         .header-title {
+            flex: 1;
             text-align: center;
             font-weight: bold;
-            font-size: 1.75rem;
+            font-size: 1.6rem;
             letter-spacing: 1px;
             text-transform: uppercase;
-        }
-
-        .input-header {
-            width: 440px;
-        }
-
-        .side-header {
-            width: 250px;
         }
 
         .columns-container {
             display: flex;
             justify-content: space-between;
             width: 980px;
-            gap: 20px;
+            gap: 40px;
         }
 
         .column {
+            flex: 1;
             border: 1px solid #000;
-            padding: 12px 15px;
+            padding: 15px 20px;
             box-sizing: border-box;
             background-color: #fff;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-column-container {
-            width: 440px;
-        }
-
-        .side-column {
-            width: 250px;
-        }
-
-        .input-sub-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .input-sub-column {
-            width: 50%;
             display: flex;
             flex-direction: column;
         }
@@ -78,22 +52,25 @@
         .section-title {
             text-align: center;
             font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-size: 1.25rem;
+        }
+
+        .column > .section-title:first-child {
             margin-top: 5px;
-            margin-bottom: 4px;
-            font-size: 1.45rem;
-            text-transform: uppercase;
         }
 
         .column ul {
-            padding-left: 18px;
-            margin-top: 3px;
-            margin-bottom: 12px;
-            font-size: 1.25rem;
-            line-height: 1.25;
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.35;
         }
 
         .column li {
-            margin-bottom: 3px;
+            margin-bottom: 6px;
         }
 
         .eval-section {
@@ -101,36 +78,36 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 30px;
+            margin-top: 40px;
             position: relative;
         }
 
         .eval-title {
             font-weight: bold;
-            font-size: 1.75rem;
+            font-size: 1.6rem;
             letter-spacing: 1px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-transform: uppercase;
         }
 
         .eval-box {
             border: 1px solid #000;
-            padding: 20px;
-            width: 450px;
+            padding: 15px 20px;
+            width: 500px;
             text-align: center;
             background-color: #fff;
-            font-size: 1.25rem;
-            line-height: 1.25;
+            font-size: 1.15rem;
+            line-height: 1.4;
             box-sizing: border-box;
         }
 
         /* SVG Arrow */
         .arrow-container {
             position: absolute;
-            top: -20px;
+            top: -40px;
             left: 0;
             width: 980px;
-            height: 120px;
+            height: 140px;
             pointer-events: none;
         }
     </style>
@@ -138,82 +115,75 @@
 <body>
 
     <div class="headers">
-        <div class="header-title input-header">INPUT</div>
-        <div class="header-title side-header">PROCESS</div>
-        <div class="header-title side-header">OUTPUT</div>
+        <div class="header-title">INPUT</div>
+        <div class="header-title">PROCESS</div>
+        <div class="header-title">OUTPUT</div>
     </div>
 
     <div class="columns-container">
         <!-- INPUT COLUMN -->
-        <div class="column input-column-container">
-            <div class="input-sub-container">
-                <!-- Left Sub-column: System Data & Hardware -->
-                <div class="input-sub-column">
-                    <div class="section-title">System Data</div>
-                    <ul>
-                        <li>Student venting messages &amp; journal entries</li>
-                        <li>Bullying incident reports (text and media attachments)</li>
-                        <li>User account credentials &amp; profiles</li>
-                        <li>Counselor configurations</li>
-                    </ul>
+        <div class="column">
+            <div class="section-title">SYSTEM DATA</div>
+            <ul>
+                <li>Student venting messages &amp; journal entries</li>
+                <li>Bullying incident reports (text and media attachments)</li>
+                <li>User account credentials &amp; profiles</li>
+                <li>Counselor configurations</li>
+            </ul>
 
-                    <div class="section-title">Hardware</div>
-                    <ul>
-                        <li>Computer Set / Laptop (Development &amp; testing)</li>
-                        <li>Client Web Browsers (End-user interface testing)</li>
-                        <li>Router / Internet Connection (System functionality)</li>
-                    </ul>
-                </div>
-                <!-- Right Sub-column: Development Software -->
-                <div class="input-sub-column">
-                    <div class="section-title">Development Software</div>
-                    <ul>
-                        <li>Windows 10 or higher (Development environment)</li>
-                        <li>Laragon (PHP + MySQL local server)</li>
-                        <li>PHP 8+ / CodeIgniter 4 (Backend logic)</li>
-                        <li>Python 3.10+ &amp; FastAPI (AI microservice)</li>
-                        <li>MySQL (Database storage with AES-256)</li>
-                        <li>Visual Studio Code (Code editing)</li>
-                        <li>HTML5, CSS3, JavaScript</li>
-                        <li>Tailwind CSS (Responsive design)</li>
-                        <li>Chart.js (Data visualization)</li>
-                        <li>Local SMS Gateway (Android-based)</li>
-                        <li>HuggingFace Transformers (mDeBERTa-v3 &amp; DistilRoBERTa)</li>
-                        <li>InfinityFree (Cloud Hosting for PHP &amp; MySQL)</li>
-                        <li>Microsoft Azure for Students (Hosting for FastAPI microservice)</li>
-                    </ul>
-                </div>
-            </div>
+            <div class="section-title">DEVELOPMENT SOFTWARE</div>
+            <ul>
+                <li>Windows 10 or higher (Development environment)</li>
+                <li>Laragon (PHP + MySQL local server)</li>
+                <li>PHP 8+ / CodeIgniter 4 (Backend logic)</li>
+                <li>Python 3.10+ &amp; FastAPI (AI microservice)</li>
+                <li>MySQL (Database storage with AES-256)</li>
+                <li>Visual Studio Code (Code editing)</li>
+                <li>HTML5, CSS3, JavaScript</li>
+                <li>Tailwind CSS5 (Responsive design)</li>
+                <li>Chart.js (Data visualization)</li>
+                <li>Local SMS Gateway (Android-based)</li>
+                <li>HuggingFace Transformers (mDeBERTa-v3 &amp; DistilRoBERTa)</li>
+                <li>InfinityFree (Cloud Hosting for PHP &amp; MySQL)</li>
+                <li>Microsoft Azure for Students (Hosting for FastAPI microservice)</li>
+            </ul>
+
+            <div class="section-title">HARDWARE</div>
+            <ul>
+                <li>Computer Set / Laptop (Development &amp; testing)</li>
+                <li>Client Web Browsers (End-user interface testing)</li>
+                <li>Router / Internet Connection (System functionality)</li>
+            </ul>
         </div>
 
         <!-- PROCESS COLUMN -->
-        <div class="column side-column">
-            <div class="section-title" style="text-transform: none;">Planning and defining<br>system objectives</div>
+        <div class="column">
+            <div class="section-title">Planning and defining system objectives</div>
             <ul>
                 <li>Identify functional modules: Venting Portal, Bullying Reports, NLP Dashboard.</li>
             </ul>
 
-            <div class="section-title" style="text-transform: none;">System Development</div>
+            <div class="section-title">System Development</div>
             <ul>
-                <li>Code frontend and backend using CodeIgniter 4, MySQL, HTML/CSS/JS.</li>
+                <li>Code frontend and backend using CodeIgniter 4, MySQL, HTML/CSS5/JS.</li>
                 <li>Build Python API for AI engine.</li>
                 <li>Integrate Android SMS Gateway for local text alerts.</li>
                 <li>Implement strict AES-256 encryption.</li>
             </ul>
 
-            <div class="section-title" style="text-transform: none;">Testing and Debugging</div>
+            <div class="section-title">Testing and Debugging</div>
             <ul>
                 <li>Local testing with Laragon and Python.</li>
                 <li>Unit testing and validation of AI tagging accuracy and Multilingual (Tagalog, English, Bisaya, Ilocano) text parsing.</li>
             </ul>
 
-            <div class="section-title" style="text-transform: none;">Validation Tools</div>
+            <div class="section-title">Validation Tools</div>
             <ul>
                 <li>Create system evaluation questionnaires (ISO 25010 metrics).</li>
                 <li>Collect feedback from school counselors, students, and psychiatrist.</li>
             </ul>
 
-            <div class="section-title" style="text-transform: none;">Statistical Analysis</div>
+            <div class="section-title">Statistical Analysis</div>
             <ul>
                 <li>Analyze user testing data (accuracy, ease of use).</li>
                 <li>Use data for final system validation.</li>
@@ -221,8 +191,8 @@
         </div>
 
         <!-- OUTPUT COLUMN -->
-        <div class="column side-column">
-            <div class="section-title" style="text-transform: none;">Developed and Validated<br>StudentShield System with<br>the following features:</div>
+        <div class="column">
+            <div class="section-title">Developed and Validated StudentShield System with the following features:</div>
             <ul>
                 <li>Web-based Safe Space portal with encrypted storage and media attachments.</li>
                 <li>Real-time automated text analysis for depression and bullying behavior.</li>
@@ -232,7 +202,7 @@
                 <li>Conditional Anonymity shielding ensuring user privacy.</li>
             </ul>
 
-            <div class="section-title" style="text-transform: none;">System Deliverables:</div>
+            <div class="section-title">System Deliverables:</div>
             <ul>
                 <li>NLP Risk Assessment Scores</li>
                 <li>Generated SMS Emergency Alerts</li>
@@ -249,16 +219,14 @@
         </div>
         
         <!-- SVG Arrow connecting Output to Evaluation -->
-        <svg class="arrow-container" viewBox="0 0 980 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="arrow-container" viewBox="0 0 980 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <!-- 
-              Arrow starts at X: 855 (center of Output column), Y: 0 
-              Goes down to Y: 90 (center of eval box)
-              Goes left to X: 715 (right edge of eval box)
-              eval box is 450px wide. 980/2 = 490 center. 490 + 225 = 715 right edge.
-              Output column center is approx 855.
+              Arrow starts at center of Output column: X: 830, Y: 0 
+              Goes down to Y: 105 (vertical alignment of eval box right side pointer)
+              Goes left to X: 755 (tip of arrow pointing to eval box right side)
             -->
-            <path d="M 855,0 L 855,90 L 730,90" fill="none" stroke="black" stroke-width="2" />
-            <polygon points="715,90 730,85 730,95" fill="black" />
+            <path d="M 830,0 L 830,105 L 755,105" fill="none" stroke="black" stroke-width="2" />
+            <polygon points="740,105 755,100 755,110" fill="black" />
         </svg>
     </div>
 
