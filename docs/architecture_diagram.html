@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StudentShield True MVC Architecture</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f8; padding: 20px; }
+        .canvas-container { position: relative; width: 1400px; height: 1150px; border: 4px solid #111; margin: 0 auto; background: #fff; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        
+        .group-box { position: absolute; border: 1px solid; border-radius: 8px; z-index: 0; background: transparent; }
+        .group-title { position: absolute; top: 10px; left: 15px; font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; background: #fff; padding: 0 4px; display: flex; align-items: center; gap: 6px; }
+
+        .node { position: absolute; width: 100px; height: 60px; background: #fff; border: 1px solid; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+        .node i { font-size: 18px; font-style: normal; margin-bottom: 2px; }
+        .node span { font-size: 10px; text-align: center; line-height: 1.1; font-weight: 600; color: #333; }
+        
+        .group-purple { border-color: #a855f7; } .group-purple .group-title { color: #a855f7; }
+        .group-orange { border-color: #f59e0b; } .group-orange .group-title { color: #f59e0b; }
+        .group-blue { border-color: #3b82f6; } .group-blue .group-title { color: #3b82f6; }
+        .group-green { border-color: #10b981; } .group-green .group-title { color: #10b981; }
+        .group-yellow { border-color: #eab308; } .group-yellow .group-title { color: #eab308; }
+        .group-red { border-color: #ef4444; } .group-red .group-title { color: #ef4444; }
+        .group-gray { border-color: #64748b; } .group-gray .group-title { color: #64748b; }
+
+        .node-orange { border-color: #f59e0b; color: #f59e0b; }
+        .node-green { border-color: #10b981; color: #10b981; }
+        .node-blue { border-color: #3b82f6; color: #3b82f6; }
+        .node-purple { border-color: #8b5cf6; color: #8b5cf6; }
+        .node-pink { border-color: #ec4899; color: #ec4899; }
+        .node-red { border-color: #ef4444; color: #ef4444; }
+        .node-indigo { border-color: #6366f1; color: #6366f1; }
+        .node-gray { border-color: #64748b; color: #64748b; }
+        .node-yellow { border-color: #fbbf24; color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <div class="canvas-container">
+        <svg id="wire-svg"></svg>
+
+        <!-- GROUPS -->
+        <div class="group-box group-purple" style="left: 50px; top: 50px; width: 200px; height: 360px;">
+            <div class="group-title"><i>👥</i> USERS</div>
+        </div>
+        <div class="group-box group-orange" style="left: 50px; top: 430px; width: 200px; height: 500px;">
+            <div class="group-title"><i>🖥️</i> PRESENTATION / VIEWS</div>
+        </div>
+        <div class="group-box group-blue" style="left: 350px; top: 50px; width: 250px; height: 360px;">
+            <div class="group-title"><i>🚦</i> CI4 ROUTING &amp; FILTERS</div>
+        </div>
+        <div class="group-box group-green" style="left: 350px; top: 430px; width: 250px; height: 630px;">
+            <div class="group-title"><i>⚙️</i> CONTROLLERS &amp; LOGIC</div>
+        </div>
+        <div class="group-box group-yellow" style="left: 700px; top: 50px; width: 250px; height: 360px;">
+            <div class="group-title"><i>🧠</i> AI RISK ENGINE</div>
+        </div>
+        <div class="group-box group-red" style="left: 700px; top: 430px; width: 250px; height: 400px;">
+            <div class="group-title"><i>📡</i> EXTERNAL ALERTS</div>
+        </div>
+        <div class="group-box group-gray" style="left: 1050px; top: 430px; width: 200px; height: 300px;">
+            <div class="group-title"><i>🗄️</i> DATA STORAGE</div>
+        </div>
+
+        <!-- NODES Layer 1 -->
+        <div class="node node-orange" style="left: 100px; top: 100px;"><i>👨‍🎓</i><span>Student</span></div>
+        <div class="node node-green" style="left: 100px; top: 220px;"><i>👨‍⚕️</i><span>Counselor</span></div>
+        <div class="node node-blue" style="left: 100px; top: 340px;"><i>🛡️</i><span>Super Admin</span></div>
+
+        <!-- NODES Views -->
+        <div class="node node-purple" style="left: 100px; top: 500px;"><i>🌐</i><span>HTML5 / CSS3</span></div>
+        <div class="node node-purple" style="left: 100px; top: 600px;"><i>🎨</i><span>Tailwind CSS</span></div>
+        <div class="node node-purple" style="left: 100px; top: 700px;"><i>⚡</i><span>JS &amp; AJAX</span></div>
+        <div class="node node-gray" style="left: 100px; top: 800px;"><i>📊</i><span>Chart.js</span></div>
+
+        <!-- NODES Routing -->
+        <div class="node node-gray" style="left: 425px; top: 100px;"><i>🛣️</i><span>CI4 Router</span></div>
+        <div class="node node-purple" style="left: 425px; top: 220px;"><i>🚥</i><span>IP &amp; Rate Limit</span></div>
+        <div class="node node-purple" style="left: 425px; top: 340px;"><i>🛂</i><span>AuthFilter (RBAC)</span></div>
+
+        <!-- NODES Controllers -->
+        <div class="node node-purple" style="left: 425px; top: 480px;"><i>🔑</i><span>Auth Controller</span></div>
+        <div class="node node-blue" style="left: 425px; top: 580px;"><i>🖥️</i><span>Dashboard Ctrl</span></div>
+        <div class="node node-pink" style="left: 425px; top: 680px;"><i>📝</i><span>Vent Controller</span></div>
+        <div class="node node-pink" style="left: 425px; top: 780px;"><i>⚠️</i><span>Bully Controller</span></div>
+        <div class="node node-pink" style="left: 425px; top: 880px;"><i>📋</i><span>Audit Logger</span></div>
+        <div class="node node-gray" style="left: 425px; top: 980px;"><i>🔒</i><span>AES-256 Crypto</span></div>
+
+        <!-- NODES AI -->
+        <div class="node node-red" style="left: 775px; top: 100px;"><i>🤖</i><span>Hugging Face API</span></div>
+        <div class="node node-red" style="left: 775px; top: 220px;"><i>🔍</i><span>Local Keyword Eng</span></div>
+        <div class="node node-red" style="left: 775px; top: 340px;"><i>⚖️</i><span>Risk Scorer</span></div>
+
+        <!-- NODES Alerts -->
+        <div class="node node-indigo" style="left: 775px; top: 500px;"><i>📱</i><span>PhilSMS Gateway</span></div>
+        <div class="node node-indigo" style="left: 775px; top: 620px;"><i>📧</i><span>Gmail SMTP</span></div>
+        <div class="node node-orange" style="left: 775px; top: 740px;"><i>👨‍👩‍👦</i><span>Parent</span></div>
+
+        <!-- NODES Data -->
+        <div class="node node-gray" style="left: 1100px; top: 500px; height: 80px; border-radius: 50%;"><i>🛢️</i><span style="margin-top:5px;">MySQL Database</span></div>
+        <div class="node node-gray" style="left: 1100px; top: 660px;"><i>📄</i><span>JSON Audit Logs</span></div>
+    </div>
+
+    <script>
+        const svg = document.getElementById('wire-svg');
+        const colors = ['f59e0b', '10b981', '3b82f6', '8b5cf6', 'ec4899', 'ef4444', '6366f1', '64748b'];
+        
+        let defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        colors.forEach(c => {
+            let marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+            marker.setAttribute("id", `arr-${c}`);
+            marker.setAttribute("markerWidth", "8");
+            marker.setAttribute("markerHeight", "8");
+            marker.setAttribute("refX", "7");
+            marker.setAttribute("refY", "4");
+            marker.setAttribute("orient", "auto");
+            let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", "M0,0 L8,4 L0,8");
+            path.setAttribute("fill", "none");
+            path.setAttribute("stroke", `#${c}`);
+            path.setAttribute("stroke-width", "2");
+            marker.appendChild(path);
+            defs.appendChild(marker);
+        });
+        svg.appendChild(defs);
+
+        function drawLine(lineObj) {
+            const points = lineObj.pts;
+            const colorCode = lineObj.color;
+            const radius = 8;
+            let d = `M ${points[0].x} ${points[0].y} `;
+            for (let i = 1; i < points.length; i++) {
+                let p = points[i];
+                let next = points[i+1];
+                if (next) {
+                    let prev = points[i-1];
+                    let dirInX = Math.sign(p.x - prev.x);
+                    let dirInY = Math.sign(p.y - prev.y);
+                    let dirOutX = Math.sign(next.x - p.x);
+                    let dirOutY = Math.sign(next.y - p.y);
+                    
+                    let distIn = Math.hypot(p.x - prev.x, p.y - prev.y);
+                    let distOut = Math.hypot(next.x - p.x, next.y - p.y);
+                    let actualRadius = Math.min(radius, distIn/2, distOut/2);
+
+                    let arcStartX = p.x - dirInX * actualRadius;
+                    let arcStartY = p.y - dirInY * actualRadius;
+                    let arcEndX = p.x + dirOutX * actualRadius;
+                    let arcEndY = p.y + dirOutY * actualRadius;
+                    
+                    d += `L ${arcStartX} ${arcStartY} `;
+                    d += `Q ${p.x} ${p.y} ${arcEndX} ${arcEndY} `;
+                } else {
+                    d += `L ${p.x} ${p.y}`;
+                }
+            }
+            let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", d);
+            path.setAttribute("fill", "none");
+            path.setAttribute("stroke", `#${colorCode}`);
+            path.setAttribute("stroke-width", "1.5");
+            path.setAttribute("marker-end", `url(#arr-${colorCode})`);
+            svg.appendChild(path);
+
+            // Add draggable handles for each point
+            points.forEach(p => {
+                let handle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                handle.setAttribute("cx", p.x);
+                handle.setAttribute("cy", p.y);
+                handle.setAttribute("r", "12"); // Made larger for easier clicking
+                handle.setAttribute("fill", `#${colorCode}`);
+                handle.setAttribute("fill-opacity", "0.4");
+                handle.setAttribute("cursor", "move");
+                handle.setAttribute("style", "pointer-events: all; transition: fill-opacity 0.2s;");
+                
+                handle.addEventListener('mouseenter', () => handle.setAttribute('fill-opacity', '0.8'));
+                handle.addEventListener('mouseleave', () => handle.setAttribute('fill-opacity', '0.4'));
+
+                svg.appendChild(handle);
+
+                handle.addEventListener('mousedown', function(e) {
+                    let isDragging = true;
+                    function onMouseMove(moveEvent) {
+                        if (!isDragging) return;
+                        let rect = svg.getBoundingClientRect();
+                        p.x = moveEvent.clientX - rect.left;
+                        p.y = moveEvent.clientY - rect.top;
+                        redrawAll();
+                    }
+                    function onMouseUp() {
+                        isDragging = false;
+                        document.removeEventListener('mousemove', onMouseMove);
+                        document.removeEventListener('mouseup', onMouseUp);
+                    }
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                });
+            });
+        }
+
+        function redrawAll() {
+            // clear svg except defs
+            const defs = svg.querySelector('defs');
+            svg.innerHTML = '';
+            if(defs) svg.appendChild(defs);
+            lines.forEach(line => drawLine(line));
+        }
+
+        const lines = [
+            // Users -> Router
+            { pts: [{x:200, y:130}, {x:425, y:130}], color: 'f59e0b' },
+            { pts: [{x:200, y:250}, {x:390, y:250}, {x:390, y:140}, {x:425, y:140}], color: '10b981' },
+            { pts: [{x:200, y:370}, {x:380, y:370}, {x:380, y:150}, {x:425, y:150}], color: '3b82f6' },
+
+            // Router -> Filters
+            { pts: [{x:475, y:160}, {x:475, y:220}], color: '64748b' },
+            { pts: [{x:475, y:280}, {x:475, y:340}], color: '8b5cf6' },
+
+            // Filters -> Controllers
+            { pts: [{x:475, y:400}, {x:475, y:480}], color: '8b5cf6' },
+            { pts: [{x:475, y:400}, {x:390, y:400}, {x:390, y:610}, {x:425, y:610}], color: '8b5cf6' },
+            { pts: [{x:475, y:400}, {x:380, y:400}, {x:380, y:710}, {x:425, y:710}], color: '8b5cf6' },
+            { pts: [{x:475, y:400}, {x:370, y:400}, {x:370, y:810}, {x:425, y:810}], color: '8b5cf6' },
+
+            // Vent -> AES
+            { pts: [{x:475, y:740}, {x:475, y:980}], color: 'ec4899' },
+
+            // Controllers -> Views
+            { pts: [{x:425, y:510}, {x:200, y:510}], color: '8b5cf6' },
+            { pts: [{x:425, y:610}, {x:350, y:610}, {x:350, y:530}, {x:200, y:530}], color: '3b82f6' },
+            { pts: [{x:425, y:610}, {x:350, y:610}, {x:350, y:630}, {x:200, y:630}], color: '3b82f6' },
+            { pts: [{x:425, y:610}, {x:350, y:610}, {x:350, y:730}, {x:200, y:730}], color: '3b82f6' },
+            { pts: [{x:425, y:610}, {x:350, y:610}, {x:350, y:830}, {x:200, y:830}], color: '3b82f6' },
+
+            // Vent -> AI Engine
+            { pts: [{x:525, y:710}, {x:670, y:710}, {x:670, y:130}, {x:775, y:130}], color: 'ec4899' },
+            { pts: [{x:525, y:710}, {x:660, y:710}, {x:660, y:250}, {x:775, y:250}], color: 'ec4899' },
+
+            // AI Engine -> Risk Scorer
+            { pts: [{x:825, y:160}, {x:825, y:340}], color: 'ef4444' },
+            { pts: [{x:825, y:280}, {x:825, y:340}], color: 'ef4444' },
+
+            // Scorer -> Alerts & Data
+            { pts: [{x:875, y:370}, {x:910, y:370}, {x:910, y:480}, {x:720, y:480}, {x:720, y:530}, {x:775, y:530}], color: 'ef4444' },
+            { pts: [{x:875, y:370}, {x:920, y:370}, {x:920, y:470}, {x:710, y:470}, {x:710, y:650}, {x:775, y:650}], color: 'ef4444' },
+            { pts: [{x:875, y:370}, {x:1030, y:370}, {x:1030, y:530}, {x:1100, y:530}], color: 'ef4444' },
+            
+            // Bully -> Alerts & Data
+            { pts: [{x:525, y:810}, {x:700, y:810}, {x:700, y:550}, {x:775, y:550}], color: 'ec4899' },
+            { pts: [{x:525, y:810}, {x:690, y:810}, {x:690, y:670}, {x:775, y:670}], color: 'ec4899' },
+            { pts: [{x:525, y:810}, {x:1060, y:810}, {x:1060, y:550}, {x:1100, y:550}], color: 'ec4899' },
+
+            // Controllers -> Data
+            { pts: [{x:525, y:510}, {x:1100, y:510}], color: '8b5cf6' },
+            { pts: [{x:525, y:610}, {x:1050, y:610}, {x:1050, y:570}, {x:1100, y:570}], color: '3b82f6' },
+            { pts: [{x:525, y:910}, {x:1050, y:910}, {x:1050, y:690}, {x:1100, y:690}], color: 'ec4899' },
+
+            // Alerts -> Parent
+            { pts: [{x:875, y:530}, {x:910, y:530}, {x:910, y:770}, {x:825, y:770}], color: '6366f1' },
+            { pts: [{x:875, y:650}, {x:900, y:650}, {x:900, y:770}, {x:825, y:770}], color: '6366f1' }
+        ];
+        redrawAll();
+    </script>
+</body>
+</html>

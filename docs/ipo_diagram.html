@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentShield IPO Diagram</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff;
+            color: #000000;
+            margin: 40px;
+        }
+
+        .headers {
+            display: flex;
+            justify-content: space-between;
+            width: 1000px;
+            margin-bottom: 10px;
+        }
+
+        .header-title {
+            width: 32%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .columns-container {
+            display: flex;
+            justify-content: space-between;
+            width: 1000px;
+            gap: 20px;
+        }
+
+        .column {
+            width: 32%;
+            border: 1px solid #000;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            /* Ensures equal height if desired, but IPO usually flows naturally */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+            text-transform: uppercase;
+        }
+
+        .column ul {
+            padding-left: 20px;
+            margin-top: 5px;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .column li {
+            margin-bottom: 6px;
+        }
+
+        .eval-section {
+            width: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        .eval-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .eval-box {
+            border: 1px solid #000;
+            padding: 20px;
+            width: 450px;
+            text-align: center;
+            background-color: #fff;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+
+        /* SVG Arrow */
+        .arrow-container {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 1000px;
+            height: 120px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="headers">
+        <div class="header-title">INPUT</div>
+        <div class="header-title">PROCESS</div>
+        <div class="header-title">OUTPUT</div>
+    </div>
+
+    <div class="columns-container">
+        <!-- INPUT COLUMN -->
+        <div class="column">
+            <div class="section-title">System Data</div>
+            <ul>
+                <li>Student venting messages &amp; journal entries</li>
+                <li>Bullying incident reports (text and media attachments)</li>
+                <li>User account credentials &amp; profiles</li>
+                <li>Counselor configurations</li>
+            </ul>
+
+            <div class="section-title">Development Software</div>
+            <ul>
+                <li>Windows 10 or higher (Development environment)</li>
+                <li>Laragon (PHP + MySQL local server)</li>
+                <li>PHP 8+ / CodeIgniter 4 (Backend logic)</li>
+                <li>Python 3.10+ &amp; FastAPI (AI microservice)</li>
+                <li>MySQL (Database storage with AES-256)</li>
+                <li>Visual Studio Code (Code editing)</li>
+                <li>HTML5, CSS3, JavaScript</li>
+                <li>Tailwind CSS (Responsive design)</li>
+                <li>Chart.js (Data visualization)</li>
+                <li>Local SMS Gateway (Android-based)</li>
+                <li>HuggingFace Transformers (mDeBERTa-v3 &amp; DistilRoBERTa)</li>
+                <li>InfinityFree (Cloud Hosting for PHP &amp; MySQL)</li>
+                <li>Microsoft Azure for Students (Hosting for FastAPI microservice)</li>
+            </ul>
+
+            <div class="section-title">Hardware</div>
+            <ul>
+                <li>Computer Set / Laptop (Development &amp; testing)</li>
+                <li>Client Web Browsers (End-user interface testing)</li>
+                <li>Router / Internet Connection (System functionality)</li>
+            </ul>
+        </div>
+
+        <!-- PROCESS COLUMN -->
+        <div class="column">
+            <div class="section-title" style="text-transform: none;">Planning and defining<br>system objectives</div>
+            <ul>
+                <li>Identify functional modules: Venting Portal, Bullying Reports, NLP Dashboard.</li>
+            </ul>
+
+            <div class="section-title" style="text-transform: none;">System Development</div>
+            <ul>
+                <li>Code frontend and backend using CodeIgniter 4, MySQL, HTML/CSS/JS.</li>
+                <li>Build Python API for AI engine.</li>
+                <li>Integrate Android SMS Gateway for local text alerts.</li>
+                <li>Implement strict AES-256 encryption.</li>
+            </ul>
+
+            <div class="section-title" style="text-transform: none;">Testing and Debugging</div>
+            <ul>
+                <li>Local testing with Laragon and Python.</li>
+                <li>Unit testing and validation of AI tagging accuracy and Multilingual (Tagalog, English, Bisaya, Ilocano) text parsing.</li>
+            </ul>
+
+            <div class="section-title" style="text-transform: none;">Validation Tools</div>
+            <ul>
+                <li>Create system evaluation questionnaires (ISO 25010 metrics).</li>
+                <li>Collect feedback from school counselors, students, and psychiatrist.</li>
+            </ul>
+
+            <div class="section-title" style="text-transform: none;">Statistical Analysis</div>
+            <ul>
+                <li>Analyze user testing data (accuracy, ease of use).</li>
+                <li>Use data for final system validation.</li>
+            </ul>
+        </div>
+
+        <!-- OUTPUT COLUMN -->
+        <div class="column">
+            <div class="section-title" style="text-transform: none;">Developed and Validated<br>StudentShield System with<br>the following features:</div>
+            <ul>
+                <li>Web-based Safe Space portal with encrypted storage and media attachments.</li>
+                <li>Real-time automated text analysis for depression and bullying behavior.</li>
+                <li>Immediate automatic SMS emergency alerts directed to parents.</li>
+                <li>Real-time Counselor Dashboard offering sorted case prioritizations.</li>
+                <li>Automated trend analytics for campus-wide psychological health.</li>
+                <li>Conditional Anonymity shielding ensuring user privacy.</li>
+            </ul>
+
+            <div class="section-title" style="text-transform: none;">System Deliverables:</div>
+            <ul>
+                <li>NLP Risk Assessment Scores</li>
+                <li>Generated SMS Emergency Alerts</li>
+                <li>Statistical trend reports for the Guidance Office</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- EVALUATION SECTION -->
+    <div class="eval-section">
+        <div class="eval-title">EVALUATION</div>
+        <div class="eval-box">
+            Analyzing final user acceptance scores from the Guidance office and testing panels.
+        </div>
+        
+        <!-- SVG Arrow connecting Output to Evaluation -->
+        <svg class="arrow-container" viewBox="0 0 1000 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 
+              Arrow starts at X: 840 (center of Output column), Y: 0 
+              Goes down to Y: 90 (center of eval box)
+              Goes left to X: 740 (right edge of eval box)
+              eval box is 450px wide. 1000/2 = 500 center. 500 + 225 = 725 right edge.
+              Output column center is approx 1000 - 160 = 840.
+            -->
+            <path d="M 840,0 L 840,90 L 740,90" fill="none" stroke="black" stroke-width="2" />
+            <polygon points="725,90 740,85 740,95" fill="black" />
+        </svg>
+    </div>
+
+</body>
+</html>

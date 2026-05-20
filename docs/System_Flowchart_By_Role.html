@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentShield - Role-Based Flowchart</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            padding: 40px;
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .mermaid-wrapper {
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            padding: 20px;
+            background-color: #fafbfa;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        .actions {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #4285f4;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 15px;
+        }
+        .btn:hover {
+            background-color: #3367d6;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #f1f3f4;
+            color: #3c4043;
+        }
+        .btn-secondary:hover {
+            background-color: #e8eaed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>StudentShield Flowchart</h1>
+    <p>This interactive diagram maps out the user journeys for Students, Counselors, and Admins.<br>It uses standard flowchart shapes: <strong>pill</strong> (start/end), <strong>parallelogram</strong> (input/form), <strong>diamond</strong> (decision), <strong>rectangle</strong> (process), and <strong>cylinder</strong> (database).</p>
+    
+    <div class="mermaid-wrapper">
+        <div class="mermaid" id="diagram">
+flowchart TD
+    %% Authentication Flow
+    Login([Start: Login Page]) --> Creds[/Input: Credentials/]
+    Creds --> Submit{Credentials Valid?}
+    Submit -->|No| Login
+    Submit -->|Yes| TFA[/Input: TFA Code/]
+    TFA --> CheckRole{Determine Role}
+
+    %% Role Branches
+    CheckRole -->|Student| SDash[Student Dashboard]
+    CheckRole -->|Counselor| CDash[Counselor Dashboard]
+    CheckRole -->|Admin| ADash[Admin Dashboard]
+
+    %% Student Flow
+    SDash --> SVent[/Form: Anonymous Vent/]
+    SDash --> SReport[/Form: Bullying Report/]
+    SVent --> VentProc[(Database: Vents & AI)]
+    SReport --> RepProc[(Database: Reports)]
+
+    %% Counselor Flow
+    CDash --> RTM[Process: Real-time Monitoring]
+    CDash --> BIR[Process: Incident Reports]
+    
+    RTM --> LIF[Display: Live Intelligence Feed]
+    LIF --> SBT[Display: Student Behavior]
+    RTM --> ADM[Display: Alert Delivery]
+    
+    BIR --> ReviewReport[Action: Review Case Details]
+    ReviewReport --> CheckInc{Is Incident Valid?}
+    CheckInc -->|True| VerifyAlert[Action: Verify & Alert Parents]
+    CheckInc -->|False| Reject[Action: Reject as False]
+    VerifyAlert --> SaveDec[(Database: Save Decision)]
+    Reject --> SaveDec
+
+    %% Admin Flow
+    ADash --> UM[Process: User Management]
+    UM --> ViewD[/Display: System Directory/]
+    UM --> AddU[Action: Add User]
+    UM --> EditU[Action: Edit User]
+    UM --> DelU[Action: Delete User]
+    
+    %% Logout
+    VentProc -.-> Logout([End: Logout])
+    RepProc -.-> Logout
+    SaveDec -.-> Logout
+    SBT -.-> Logout
+    ADM -.-> Logout
+    AddU -.-> Logout
+    EditU -.-> Logout
+    DelU -.-> Logout
+    ViewD -.-> Logout
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="btn btn-secondary" onclick="copyMermaid()">Copy Source for Draw.io</button>
+        <a href="https://app.diagrams.net/" target="_blank" class="btn">Open Draw.io</a>
+    </div>
+</div>
+
+<script>
+    mermaid.initialize({ 
+        startOnLoad: true, 
+        theme: 'default',
+        flowchart: { curve: 'basis' } // Makes lines smoother
+    });
+
+    function copyMermaid() {
+        const text = document.getElementById('diagram').textContent.trim();
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Copied! Now open Draw.io -> Arrange -> Insert -> Advanced -> Mermaid, and paste it there.');
+        });
+    }
+</script>
+
+</body>
+</html>

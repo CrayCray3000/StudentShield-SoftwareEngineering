@@ -20,7 +20,11 @@ __pycache__/
 *.so
 
 # Docs
-docs/
+docs/*
+!docs/**/*.html
+!docs/**/*.drawio
+!docs/**/*.md
+
 
 # Archives
 *.zip

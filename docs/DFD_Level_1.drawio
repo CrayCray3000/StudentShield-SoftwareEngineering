@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<mxfile host="app.diagrams.net" agent="System">
+  <diagram id="dfd_level_1_perfect" name="DFD Level 1">
+    <mxGraphModel dx="189" dy="122" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="e1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="Student" vertex="1">
+          <mxGeometry height="60" width="120" x="50" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="HuggingFace&#10;ML Model" vertex="1">
+          <mxGeometry height="60" width="120" x="50" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="p1" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="1.0&#10;Manage&#10;User Accounts" vertex="1">
+          <mxGeometry height="120" width="120" x="300" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="p2" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="2.0&#10;Analyze Vent&#10;Submissions" vertex="1">
+          <mxGeometry height="120" width="120" x="300" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="p3" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="3.0&#10;Process Bullying&#10;Reports" vertex="1">
+          <mxGeometry height="120" width="120" x="300" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=13;fontStyle=1;" value="D1 | users_tbl" vertex="1">
+          <mxGeometry height="50" width="140" x="550" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=13;fontStyle=1;" value="D2 | vents_tbl" vertex="1">
+          <mxGeometry height="50" width="140" x="550" y="335" as="geometry" />
+        </mxCell>
+        <mxCell id="d3" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=13;fontStyle=1;gradientColor=none;" value="D3 | bully_reports_tbl" vertex="1">
+          <mxGeometry height="50" width="140" x="550" y="535" as="geometry" />
+        </mxCell>
+        <mxCell id="d4" parent="1" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=13;fontStyle=1;" value="D4 | audit_logs_tbl" vertex="1">
+          <mxGeometry height="50" width="140" x="790" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="p4" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="4.0&#10;Monitor Cases&#10;&amp; Analytics" vertex="1">
+          <mxGeometry height="120" width="120" x="800" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="p5" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="5.0&#10;Dispatch&#10;Notifications" vertex="1">
+          <mxGeometry height="120" width="120" x="750" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="Counselor /&#10;Super Admin" vertex="1">
+          <mxGeometry height="60" width="140" x="1100" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="CloudSMS&#10;Gateway" vertex="1">
+          <mxGeometry height="60" width="140" x="1100" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="Gmail&#10;SMTP Server" vertex="1">
+          <mxGeometry height="60" width="140" x="1100" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=13;fontStyle=1;strokeColor=#000000;strokeWidth=2;fillColor=#ffffff;" value="Parent /&#10;Guardian" vertex="1">
+          <mxGeometry height="60" width="120" x="1350" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_0" edge="1" parent="1" source="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.25;entryX=0;entryY=0.5;" target="p1" value="Credentials">
+          <mxGeometry relative="1" x="0.6826" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="210" y="345" />
+              <mxPoint x="210" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_1" edge="1" parent="1" source="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="p2" value="Vent Text">
+          <mxGeometry relative="1" x="0.0769" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_2" edge="1" parent="1" source="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.75;entryX=0;entryY=0.5;" target="p3" value="Report Record">
+          <mxGeometry relative="1" x="0.4921" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="230" y="375" />
+              <mxPoint x="230" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_3" edge="1" parent="1" source="p2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.25;exitY=1;entryX=1;entryY=0.5;" target="e4" value="Vent Text">
+          <mxGeometry relative="1" x="0.1284" y="-10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="330" y="480" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_4" edge="1" parent="1" source="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;" value="Risk Classification">
+          <mxGeometry relative="1" x="-0.4982" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="110" y="430" />
+              <mxPoint x="360" y="430" />
+              <mxPoint x="360" y="421" />
+            </Array>
+            <mxPoint x="360" y="421" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_5" edge="1" parent="1" source="p1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;entryX=0;entryY=0.3;exitX=1.005;exitY=0.429;exitDx=0;exitDy=0;exitPerimeter=0;" target="d1" value="User Records">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-12" as="offset" />
+            <Array as="points">
+              <mxPoint x="416" y="152" />
+              <mxPoint x="416" y="150" />
+            </Array>
+            <mxPoint x="430" y="150" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_7" edge="1" parent="1" source="p2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="d2" value="Vent Record">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_8" edge="1" parent="1" source="p3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="d3" value="Report Record">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_9" edge="1" parent="1" source="d1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0.045;entryY=0.242;entryDx=0;entryDy=0;entryPerimeter=0;" target="p4" value="User Records">
+          <mxGeometry relative="1" x="-0.4475" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="730" y="160" />
+              <mxPoint x="730" y="330" />
+              <mxPoint x="805" y="330" />
+            </Array>
+            <mxPoint x="800" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_10" edge="1" parent="1" source="d2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="p4" value="Vent Records">
+          <mxGeometry relative="1" x="-0.2727" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_11" edge="1" parent="1" source="d3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;" target="p4" value="Report Records">
+          <mxGeometry relative="1" x="-0.1668" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="730" y="560" />
+              <mxPoint x="730" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_12" edge="1" parent="1" source="p2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;entryX=0.059;entryY=0.251;entryDx=0;entryDy=0;entryPerimeter=0;" target="p5" value="Verified Alert">
+          <mxGeometry relative="1" x="-0.378" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="360" y="270" />
+              <mxPoint x="710" y="270" />
+              <mxPoint x="710" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_13" edge="1" parent="1" source="p3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;entryX=0.5;entryY=1;" target="p5" value="Verified Alert">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-12" as="offset" />
+            <Array as="points">
+              <mxPoint x="360" y="660" />
+              <mxPoint x="810" y="660" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_14" edge="1" parent="1" source="p4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;entryX=0;entryY=0.3;exitX=0.999;exitY=0.406;exitDx=0;exitDy=0;exitPerimeter=0;" target="e2" value="Reports &amp; Analytics">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-12" as="offset" />
+            <Array as="points">
+              <mxPoint x="920" y="348" />
+            </Array>
+            <mxPoint x="920" y="350" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_15" edge="1" parent="1" source="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0;exitY=0.7;" target="p4" value="Verification Action">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="12" as="offset" />
+            <Array as="points">
+              <mxPoint x="970" y="372" />
+              <mxPoint x="970" y="372" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_16" edge="1" parent="1" source="p1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;entryX=0;entryY=0.5;" target="d4" value="Audit Entry">
+          <mxGeometry relative="1" x="0.5" as="geometry">
+            <mxPoint y="-12" as="offset" />
+            <Array as="points">
+              <mxPoint x="360" y="75" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_17" edge="1" parent="1" source="p4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" target="d4" value="Audit Entry">
+          <mxGeometry relative="1" x="-0.6" as="geometry">
+            <mxPoint y="-30" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_18" edge="1" parent="1" source="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;entryX=1;entryY=0.5;" target="d4" value="Audit Entry">
+          <mxGeometry relative="1" x="0.5" as="geometry">
+            <mxPoint y="-12" as="offset" />
+            <Array as="points">
+              <mxPoint x="1170" y="75" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_19" edge="1" parent="1" source="p5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.3;entryX=0;entryY=0.5;" target="e5" value="SMS Message">
+          <mxGeometry relative="1" x="0.3694" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="960" y="536" />
+              <mxPoint x="960" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_20" edge="1" parent="1" source="p5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.7;entryX=0;entryY=0.5;" target="e6" value="Email Message">
+          <mxGeometry relative="1" x="0.2079" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="960" y="584" />
+              <mxPoint x="960" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_21" edge="1" parent="1" source="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.3;" target="e3" value="SMS Message">
+          <mxGeometry relative="1" x="-0.3243" y="-10" as="geometry">
+            <mxPoint x="10" y="-10" as="offset" />
+            <Array as="points">
+              <mxPoint x="1290" y="500" />
+              <mxPoint x="1290" y="538" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge_22" edge="1" parent="1" source="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Helvetica;fontSize=12;fontStyle=1;fontColor=#000000;strokeColor=#000000;strokeWidth=1.5;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.7;" target="e3" value="Email Message">
+          <mxGeometry relative="1" x="-0.3243" y="-10" as="geometry">
+            <mxPoint x="-10" y="10" as="offset" />
+            <Array as="points">
+              <mxPoint x="1290" y="600" />
+              <mxPoint x="1290" y="562" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

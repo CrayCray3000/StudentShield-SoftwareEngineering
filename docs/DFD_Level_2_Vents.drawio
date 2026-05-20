@@ -1,0 +1,74 @@
+<mxfile host="app.diagrams.net" modified="2024-05-18T10:00:00.000Z" agent="Mozilla/5.0" version="21.2.1" type="device">
+  <diagram id="dfd_level_2_vents" name="DFD Level 2 (Vents)">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Processes (Circles) -->
+        <mxCell id="p21" value="2.1&lt;br&gt;&lt;br&gt;Receive&lt;br&gt;Vent Input" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="300" y="320" width="120" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="p22" value="2.2&lt;br&gt;&lt;br&gt;Analyze&lt;br&gt;Sentiment" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="500" y="320" width="120" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="p23" value="2.3&lt;br&gt;&lt;br&gt;Encrypt&lt;br&gt;&amp; Store" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="700" y="320" width="120" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="p24" value="2.4&lt;br&gt;&lt;br&gt;Evaluate Alert&lt;br&gt;Threshold" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="900" y="320" width="120" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- External Entities (Rounded Rectangles) -->
+        <mxCell id="student" value="Student" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="350" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="ml" value="HuggingFace ML&lt;br&gt;Microservice" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="500" y="100" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="proc5" value="To Process 5.0&lt;br&gt;(Dispatch Notifications)" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#64748b;strokeWidth=1;fontFamily=Helvetica;fontSize=12;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="880" y="550" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Data Stores (Open Rectangles) -->
+        <mxCell id="d2" value="&lt;div style=&quot;display: flex; height: 100%; align-items: center;&quot;&gt;&lt;div style=&quot;border-right: 1px solid #000; padding: 0 10px; height: 100%; display: flex; align-items: center;&quot;&gt;D2&lt;/div&gt;&lt;div style=&quot;padding-left: 10px;&quot;&gt;vents_tbl&lt;/div&gt;&lt;/div&gt;" style="shape=partialRectangle;right=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;align=left;" vertex="1" parent="1">
+          <mxGeometry x="680" y="110" width="160" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Flows (Orthogonal Edges) -->
+        <mxCell id="f1" value="Vent Text, Mood" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="student" target="p21">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="f2" value="Raw Vent &amp; ID" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p21" target="p22">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f3" value="Raw Text" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;entryX=0.25;entryY=1;exitX=0.25;exitY=0;" edge="1" parent="1" source="p22" target="ml">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f4" value="Risk Score" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;entryX=0.75;entryY=0;exitX=0.75;exitY=1;" edge="1" parent="1" source="ml" target="p22">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f5" value="Vent Analysis Result" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p22" target="p23">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f6" value="Encrypted Vent Record" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p23" target="d2">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="760" y="240"/><mxPoint x="760" y="240"/></Array></mxGeometry>
+        </mxCell>
+
+        <mxCell id="f7" value="Risk Assessment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p23" target="p24">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f8" value="High Risk Trigger" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p24" target="proc5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

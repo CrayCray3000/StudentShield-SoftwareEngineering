@@ -1,0 +1,63 @@
+<mxfile host="app.diagrams.net" modified="2024-05-18T10:00:00.000Z" agent="Mozilla/5.0" version="21.2.1" type="device">
+  <diagram id="dfd_level_2_reports" name="DFD Level 2 (Reports)">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Processes (Circles) -->
+        <mxCell id="p31" value="3.1&lt;br&gt;&lt;br&gt;Receive Report&lt;br&gt;&amp; Media" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="300" y="320" width="120" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="p32" value="3.2&lt;br&gt;&lt;br&gt;Validate&lt;br&gt;Constraints" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="500" y="320" width="120" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="p33" value="3.3&lt;br&gt;&lt;br&gt;Encrypt &amp;&lt;br&gt;Store Files" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="700" y="320" width="120" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="p34" value="3.4&lt;br&gt;&lt;br&gt;Queue&lt;br&gt;Verification" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="900" y="320" width="120" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- External Entities (Rounded Rectangles) -->
+        <mxCell id="student" value="Student" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="350" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="proc4" value="To Process 4.0&lt;br&gt;(Counselor Dashboard)" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#64748b;strokeWidth=1;fontFamily=Helvetica;fontSize=12;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="350" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Data Stores (Open Rectangles) -->
+        <mxCell id="d3" value="&lt;div style=&quot;display: flex; height: 100%; align-items: center;&quot;&gt;&lt;div style=&quot;border-right: 1px solid #000; padding: 0 10px; height: 100%; display: flex; align-items: center;&quot;&gt;D3&lt;/div&gt;&lt;div style=&quot;padding-left: 10px;&quot;&gt;bully_reports_tbl&lt;/div&gt;&lt;/div&gt;" style="shape=partialRectangle;right=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;align=left;" vertex="1" parent="1">
+          <mxGeometry x="680" y="550" width="160" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Flows (Orthogonal Edges) -->
+        <mxCell id="f1" value="Incident Details, Media" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="student" target="p31">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="f2" value="Report Data &amp; Media" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p31" target="p32">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f3" value="Verified Report Data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p32" target="p33">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f4" value="Encrypted Report Record" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p33" target="d3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f5" value="Report Reference" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p33" target="p34">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f6" value="Pending Report Trigger" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=classic;html=1;fontSize=11;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="p34" target="proc4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
