@@ -62,21 +62,31 @@ def make_dfd_level_0():
 
     <!-- System -> ML Flows (Inputs) -->
     <mxCell id="flow_sys_ml_1" value="Raw Vent Text" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;exitX=0.1;exitY=0;entryX=0.167;entryY=1;fontFamily=Helvetica;fontSize=11;strokeColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sys" target="ml">
-      <mxGeometry relative="1" as="geometry"/>
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-70" as="offset"/>
+      </mxGeometry>
     </mxCell>
     <mxCell id="flow_sys_ml_2" value="Student ID" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;exitX=0.3;exitY=0;entryX=0.333;entryY=1;fontFamily=Helvetica;fontSize=11;strokeColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sys" target="ml">
-      <mxGeometry relative="1" as="geometry"/>
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-35" as="offset"/>
+      </mxGeometry>
     </mxCell>
 
     <!-- ML -> System Flows (Outputs) -->
     <mxCell id="flow_ml_sys_1" value="Risk Score" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontFamily=Helvetica;fontSize=11;strokeColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="ml" target="sys">
-      <mxGeometry relative="1" as="geometry"/>
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="0" as="offset"/>
+      </mxGeometry>
     </mxCell>
     <mxCell id="flow_ml_sys_2" value="Risk Level" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;exitX=0.667;exitY=1;entryX=0.7;entryY=0;fontFamily=Helvetica;fontSize=11;strokeColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="ml" target="sys">
-      <mxGeometry relative="1" as="geometry"/>
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="35" as="offset"/>
+      </mxGeometry>
     </mxCell>
     <mxCell id="flow_ml_sys_3" value="Emotion Classification" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;exitX=0.833;exitY=1;entryX=0.9;entryY=0;fontFamily=Helvetica;fontSize=11;strokeColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="ml" target="sys">
-      <mxGeometry relative="1" as="geometry"/>
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="70" as="offset"/>
+      </mxGeometry>
     </mxCell>
 
     <!-- System -> Counselor Flows (Outputs) -->
