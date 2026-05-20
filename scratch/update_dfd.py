@@ -598,7 +598,50 @@ def update_files():
     with open(lvl2_reports_path, "w", encoding="utf-8") as f:
         f.write(lvl2_reports_xml)
 
-    print("Successfully updated all DFD diagrams!")
+    # 5. Combined Multi-page DFD Diagrams
+    import re
+    def extract_mxgraphmodel(xml_str):
+        match = re.search(r'(<mxGraphModel.*?</mxGraphModel>)', xml_str, re.DOTALL)
+        if match:
+            return match.group(1)
+        return xml_str
+
+    lvl0_model = extract_mxgraphmodel(lvl0_xml)
+    lvl1_model = extract_mxgraphmodel(lvl1_xml)
+    lvl2_vents_model = extract_mxgraphmodel(lvl2_vents_xml)
+    lvl2_reports_model = extract_mxgraphmodel(lvl2_reports_xml)
+
+    multi_page_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0" pages="4">
+  <diagram id="DFD_Level_0_Strict" name="Level 0 (Context)">
+    {lvl0_model}
+  </diagram>
+  <diagram id="DFD_Level_1_v5" name="Level 1 (Core)">
+    {lvl1_model}
+  </diagram>
+  <diagram id="DFD_Level_2_Vents.drawio" name="Level 2 (Vents AI)">
+    {lvl2_vents_model}
+  </diagram>
+  <diagram id="DFD_Level_2_Reports.drawio" name="Level 2 (Reports)">
+    {lvl2_reports_model}
+  </diagram>
+</mxfile>
+"""
+
+    combined_filenames = [
+        "StudentShield_DFD_Complete_Perfected.drawio",
+        "StudentShield_DFD_Complete_Perfected (1).drawio",
+        "StudentShield_DFD_Complete_Fixed.drawio",
+        "StudentShield_DFD_Complete (2).drawio"
+    ]
+
+    for name in combined_filenames:
+        path = os.path.join(base_dir, name)
+        print(f"Writing combined diagram to {path}...")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(multi_page_xml)
+
+    print("Successfully updated all DFD diagrams and multi-page complete files!")
 
 if __name__ == "__main__":
     update_files()

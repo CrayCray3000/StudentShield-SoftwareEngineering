@@ -7,7 +7,11 @@ files = [
     "DFD_Level_0.drawio",
     "DFD_Level_1.drawio",
     "DFD_Level_2_Vents.drawio",
-    "DFD_Level_2_Reports.drawio"
+    "DFD_Level_2_Reports.drawio",
+    "StudentShield_DFD_Complete_Perfected.drawio",
+    "StudentShield_DFD_Complete_Perfected (1).drawio",
+    "StudentShield_DFD_Complete_Fixed.drawio",
+    "StudentShield_DFD_Complete (2).drawio"
 ]
 
 violations = 0
