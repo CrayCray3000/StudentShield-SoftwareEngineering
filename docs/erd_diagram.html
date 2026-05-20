@@ -56,19 +56,19 @@ svg.ln circle{stroke:#4a5568;stroke-width:1.2}
   <polyline points="520,63 490,63 490,447 414,447"/>
   <polyline points="520,63 430,63 430,729 414,729"/>
 
-  <!-- 1:1 Crow Foot Markers on left subclass endpoints (mandatory one-to-one) -->
-  <!-- on users side -->
-  <line x1="523" y1="57" x2="523" y2="69"/>
-  <line x1="527" y1="57" x2="527" y2="69"/>
-  <!-- on students side -->
-  <line x1="523" y1="297" x2="523" y2="309"/>
-  <line x1="527" y1="297" x2="527" y2="309"/>
-  <!-- on counselors side -->
-  <line x1="523" y1="587" x2="523" y2="599"/>
-  <line x1="527" y1="587" x2="527" y2="599"/>
-  <!-- on admins side -->
-  <line x1="523" y1="777" x2="523" y2="789"/>
-  <line x1="527" y1="777" x2="527" y2="789"/>
+  <!-- Crow Foot Markers on left subclass endpoints (Zero or One / Mandatory One) -->
+  <!-- on users side (Mandatory One) -->
+  <line x1="516" y1="57" x2="516" y2="69"/>
+  <line x1="511" y1="57" x2="511" y2="69"/>
+  <!-- on students side (Zero or One) -->
+  <circle cx="511" cy="303" r="4" fill="none"/>
+  <line x1="516" y1="297" x2="516" y2="309"/>
+  <!-- on counselors side (Zero or One) -->
+  <circle cx="511" cy="593" r="4" fill="none"/>
+  <line x1="516" y1="587" x2="516" y2="599"/>
+  <!-- on admins side (Zero or One) -->
+  <circle cx="511" cy="783" r="4" fill="none"/>
+  <line x1="516" y1="777" x2="516" y2="789"/>
 
   <!-- 1:N Crow Foot Markers on right side -->
   <line x1="877" y1="57" x2="877" y2="69"/>
