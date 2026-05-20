@@ -21,8 +21,11 @@ __pycache__/
 
 # Docs
 docs/*
+!docs/*.html
 !docs/**/*.html
+!docs/*.drawio
 !docs/**/*.drawio
+!docs/*.md
 !docs/**/*.md
 
 
