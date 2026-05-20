@@ -105,7 +105,7 @@ svg.ln circle{stroke:#4a5568;stroke-width:1.2}
   <table>
     <tr><td class="kc pk">PK</td><td class="nc pk-name">id</td><td class="tc">INT(11) UN AI</td></tr>
     <tr><td class="kc"></td><td class="nc">name</td><td class="tc">VARCHAR(255)</td></tr>
-    <tr><td class="kc"></td><td class="nc">passcode</td><td class="tc">VARCHAR(255)</td></tr>
+    <tr><td class="kc"></td><td class="nc">password_hash</td><td class="tc">VARCHAR(255)</td></tr>
     <tr><td class="kc"></td><td class="nc">role</td><td class="tc">TINYINT(1)</td></tr>
     <tr><td class="kc"></td><td class="nc">remember_token</td><td class="tc">VARCHAR(255) NULL</td></tr>
     <tr><td class="kc"></td><td class="nc">created_at</td><td class="tc">DATETIME</td></tr>
@@ -161,9 +161,9 @@ svg.ln circle{stroke:#4a5568;stroke-width:1.2}
     <tr><td class="kc fk">FK</td><td class="nc">user_id</td><td class="tc">INT(11)</td></tr>
     <tr><td class="kc"></td><td class="nc">raw_text</td><td class="tc">TEXT</td></tr>
     <tr><td class="kc"></td><td class="nc">emotions</td><td class="tc">VARCHAR(255) NULL</td></tr>
-    <tr><td class="kc"></td><td class="nc">risk_percent</td><td class="tc">FLOAT NULL</td></tr>
+    <tr><td class="kc"></td><td class="nc">risk_percent</td><td class="tc">DECIMAL(5,2) NULL</td></tr>
     <tr><td class="kc"></td><td class="nc">risk_level</td><td class="tc">VARCHAR(50) NULL</td></tr>
-    <tr><td class="kc"></td><td class="nc">status</td><td class="tc">VARCHAR(50)</td></tr>
+    <tr><td class="kc"></td><td class="nc">status</td><td class="tc">ENUM</td></tr>
     <tr><td class="kc"></td><td class="nc">created_at</td><td class="tc">TIMESTAMP</td></tr>
     <tr><td class="kc"></td><td class="nc">updated_at</td><td class="tc">DATETIME NULL</td></tr>
     <tr><td class="kc"></td><td class="nc">deleted_at</td><td class="tc">DATETIME NULL</td></tr>

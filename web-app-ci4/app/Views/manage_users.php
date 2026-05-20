@@ -502,7 +502,7 @@
         } else {
             req.textContent = '';
             input.required = false;
-            input.placeholder = 'Enter passcode for student';
+            input.placeholder = 'Enter password for student';
         }
         toggleFieldsForRole('add');
     }

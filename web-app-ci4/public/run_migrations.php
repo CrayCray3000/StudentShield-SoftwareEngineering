@@ -160,5 +160,48 @@ if (!$droppedAny) {
     echo "<p style='color:orange;'>ℹ️ No deprecated columns found in <b>users</b> table to drop.</p>";
 }
 
+// 6. Refine users.passcode to users.password_hash if it exists
+$checkPasscode = $conn->query("SHOW COLUMNS FROM `users` LIKE 'passcode'");
+if ($checkPasscode && $checkPasscode->num_rows > 0) {
+    if ($conn->query("ALTER TABLE `users` CHANGE COLUMN `passcode` `password_hash` VARCHAR(255) NOT NULL")) {
+        echo "<p style='color:green;'>✅ Renamed <b>passcode</b> to <b>password_hash</b> in <b>users</b> table.</p>";
+    } else {
+        echo "<p style='color:red;'>❌ Failed to rename passcode to password_hash: {$conn->error}</p>";
+    }
+} else {
+    echo "<p style='color:orange;'>ℹ️ Column <b>passcode</b> already renamed or doesn't exist in <b>users</b>.</p>";
+}
+
+// 7. Refine risk_percent in vent_logs to DECIMAL(5,2)
+$checkRiskPercent = $conn->query("SHOW COLUMNS FROM `vent_logs` LIKE 'risk_percent'");
+if ($checkRiskPercent && $checkRiskPercent->num_rows > 0) {
+    $colInfo = $checkRiskPercent->fetch_assoc();
+    if (strpos(strtolower($colInfo['Type']), 'decimal') === false) {
+        if ($conn->query("ALTER TABLE `vent_logs` MODIFY COLUMN `risk_percent` DECIMAL(5,2) NULL")) {
+            echo "<p style='color:green;'>✅ Modified <b>risk_percent</b> in <b>vent_logs</b> to DECIMAL(5,2).</p>";
+        } else {
+            echo "<p style='color:red;'>❌ Failed to modify risk_percent: {$conn->error}</p>";
+        }
+    } else {
+        echo "<p style='color:orange;'>ℹ️ Column <b>risk_percent</b> is already DECIMAL(5,2).</p>";
+    }
+}
+
+// 8. Refine status in vent_logs to ENUM('Pending', 'Reviewed', 'Flagged')
+$checkStatus = $conn->query("SHOW COLUMNS FROM `vent_logs` LIKE 'status'");
+if ($checkStatus && $checkStatus->num_rows > 0) {
+    $colInfo = $checkStatus->fetch_assoc();
+    if (strpos(strtolower($colInfo['Type']), 'enum') === false) {
+        if ($conn->query("ALTER TABLE `vent_logs` MODIFY COLUMN `status` ENUM('Pending', 'Reviewed', 'Flagged') DEFAULT 'Pending'")) {
+            echo "<p style='color:green;'>✅ Modified <b>status</b> in <b>vent_logs</b> to ENUM('Pending', 'Reviewed', 'Flagged').</p>";
+        } else {
+            echo "<p style='color:red;'>❌ Failed to modify status: {$conn->error}</p>";
+        }
+    } else {
+        echo "<p style='color:orange;'>ℹ️ Column <b>status</b> is already ENUM in <b>vent_logs</b>.</p>";
+    }
+}
+
 $conn->close();
 echo "<h3>Database operations completed!</h3>";
+

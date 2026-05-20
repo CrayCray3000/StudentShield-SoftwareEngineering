@@ -433,7 +433,7 @@ class AdminController extends BaseController
         }
 
         // Remove sensitive info
-        unset($user['passcode']);
+        unset($user['password_hash']);
         
         // 2. Fetch Vents (wellness tracking data)
         $vents = $db->table('vent_logs')

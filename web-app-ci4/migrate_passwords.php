@@ -26,18 +26,18 @@ echo "=== StudentShield Password Migration ===\n";
 echo "Found {$total} users.\n\n";
 
 foreach ($users as $user) {
-    $passcode = $user['passcode'];
+    $pwHash = $user['password_hash'];
     
     // Bcrypt hashes always start with $2y$ (or $2a$, $2b$)
-    if (preg_match('/^\$2[aby]\$/', $passcode)) {
+    if (preg_match('/^\$2[aby]\$/', $pwHash)) {
         $alreadyHashed++;
         continue;
     }
     
     // This is a plaintext password — hash it
-    $hashed = password_hash($passcode, PASSWORD_BCRYPT);
+    $hashed = password_hash($pwHash, PASSWORD_BCRYPT);
     $db->table('users')->where('id', $user['id'])->update([
-        'passcode' => $hashed
+        'password_hash' => $hashed
     ]);
     
     echo "  [MIGRATED] User #{$user['id']} ({$user['name']})\n";

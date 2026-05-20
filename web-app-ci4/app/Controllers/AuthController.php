@@ -75,7 +75,7 @@ class AuthController extends BaseController
         // Find student by name (role = 0)
         $user = $db->table('users')->where(['name' => $name, 'role' => 0])->get()->getRowArray();
 
-        if ($user && password_verify($password, $user['passcode'])) {
+        if ($user && password_verify($password, $user['password_hash'])) {
 
             // Remember Me Feature
             if ($this->request->getPost('remember') === 'on') {
@@ -137,7 +137,7 @@ class AuthController extends BaseController
         }
 
         // Authenticate with bcrypt only — plaintext fallback removed for security
-        $passwordValid = password_verify($password, $user['passcode']);
+        $passwordValid = password_verify($password, $user['password_hash']);
 
         if ($passwordValid) {
             $roleNames = [1 => 'counselor', 2 => 'super_admin'];

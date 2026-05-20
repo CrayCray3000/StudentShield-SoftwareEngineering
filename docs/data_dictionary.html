@@ -82,9 +82,9 @@
         <td>The full name of the user.</td>
       </tr>
       <tr>
-        <td>passcode</td>
+        <td>password_hash</td>
         <td>VARCHAR(255)</td>
-        <td>Hashed password/passcode for user authentication.</td>
+        <td>Bcrypt hash of the user password.</td>
       </tr>
       <tr>
         <td>role</td>
@@ -295,7 +295,7 @@
       </tr>
       <tr>
         <td>risk_percent</td>
-        <td>FLOAT NULL</td>
+        <td>DECIMAL(5,2)</td>
         <td>Calculated risk percentage representing distress severity.</td>
       </tr>
       <tr>
@@ -305,8 +305,8 @@
       </tr>
       <tr>
         <td>status</td>
-        <td>VARCHAR(50)</td>
-        <td>Review status: Pending, Reviewed, or Flagged.</td>
+        <td>ENUM('Pending', 'Reviewed', 'Flagged')</td>
+        <td>Review status of the logged vent.</td>
       </tr>
       <tr>
         <td>created_at</td>

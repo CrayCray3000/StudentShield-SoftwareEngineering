@@ -88,7 +88,7 @@ class UserController extends BaseController
         $db->table('users')->insert([
             'name'          => $name,
             'role'          => $role,
-            'passcode'      => $hashedPasscode,
+            'password_hash' => $hashedPasscode,
         ]);
         $newUserId = $db->insertID();
 
@@ -162,7 +162,7 @@ class UserController extends BaseController
         // Only update password if provided
         $newPasscode = $this->request->getPost('passcode');
         if (!empty($newPasscode)) {
-            $userUpdate['passcode'] = password_hash($newPasscode, PASSWORD_BCRYPT);
+            $userUpdate['password_hash'] = password_hash($newPasscode, PASSWORD_BCRYPT);
         }
 
         $db->table('users')->where('id', $id)->update($userUpdate);

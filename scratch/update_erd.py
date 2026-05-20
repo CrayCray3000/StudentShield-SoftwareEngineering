@@ -46,7 +46,7 @@ def generate_drawio():
         <mxCell id="users_row_2_key" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;fontStyle=1;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="users_row_2">
           <mxGeometry width="34" height="26" as="geometry"><mxRectangle width="34" height="26" as="alternateBounds"/></mxGeometry>
         </mxCell>
-        <mxCell id="users_row_2_name" value="passcode" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="users_row_2">
+        <mxCell id="users_row_2_name" value="password_hash" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="users_row_2">
           <mxGeometry x="34" width="170" height="26" as="geometry"><mxRectangle width="170" height="26" as="alternateBounds"/></mxGeometry>
         </mxCell>
         <mxCell id="users_row_2_type" value="VARCHAR(255)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="users_row_2">
@@ -429,7 +429,7 @@ def generate_drawio():
         <mxCell id="vent_logs_row_4_name" value="risk_percent" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="vent_logs_row_4">
           <mxGeometry x="34" width="150" height="26" as="geometry"><mxRectangle width="150" height="26" as="alternateBounds"/></mxGeometry>
         </mxCell>
-        <mxCell id="vent_logs_row_4_type" value="FLOAT NULL" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="vent_logs_row_4">
+        <mxCell id="vent_logs_row_4_type" value="DECIMAL(5,2) NULL" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="vent_logs_row_4">
           <mxGeometry x="184" width="145" height="26" as="geometry"><mxRectangle width="145" height="26" as="alternateBounds"/></mxGeometry>
         </mxCell>
 
@@ -455,7 +455,7 @@ def generate_drawio():
         <mxCell id="vent_logs_row_6_name" value="status" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="vent_logs_row_6">
           <mxGeometry x="34" width="150" height="26" as="geometry"><mxRectangle width="150" height="26" as="alternateBounds"/></mxGeometry>
         </mxCell>
-        <mxCell id="vent_logs_row_6_type" value="VARCHAR(50)" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="vent_logs_row_6">
+        <mxCell id="vent_logs_row_6_type" value="ENUM" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;overflow=hidden;whiteSpace=wrap;html=1;" vertex="1" parent="vent_logs_row_6">
           <mxGeometry x="184" width="145" height="26" as="geometry"><mxRectangle width="145" height="26" as="alternateBounds"/></mxGeometry>
         </mxCell>
 
@@ -1160,7 +1160,7 @@ svg.ln circle{stroke:#4a5568;stroke-width:1.2}
   <table>
     <tr><td class="kc pk">PK</td><td class="nc pk-name">id</td><td class="tc">INT(11) UN AI</td></tr>
     <tr><td class="kc"></td><td class="nc">name</td><td class="tc">VARCHAR(255)</td></tr>
-    <tr><td class="kc"></td><td class="nc">passcode</td><td class="tc">VARCHAR(255)</td></tr>
+    <tr><td class="kc"></td><td class="nc">password_hash</td><td class="tc">VARCHAR(255)</td></tr>
     <tr><td class="kc"></td><td class="nc">role</td><td class="tc">TINYINT(1)</td></tr>
     <tr><td class="kc"></td><td class="nc">remember_token</td><td class="tc">VARCHAR(255) NULL</td></tr>
     <tr><td class="kc"></td><td class="nc">created_at</td><td class="tc">DATETIME</td></tr>
@@ -1216,9 +1216,9 @@ svg.ln circle{stroke:#4a5568;stroke-width:1.2}
     <tr><td class="kc fk">FK</td><td class="nc">user_id</td><td class="tc">INT(11)</td></tr>
     <tr><td class="kc"></td><td class="nc">raw_text</td><td class="tc">TEXT</td></tr>
     <tr><td class="kc"></td><td class="nc">emotions</td><td class="tc">VARCHAR(255) NULL</td></tr>
-    <tr><td class="kc"></td><td class="nc">risk_percent</td><td class="tc">FLOAT NULL</td></tr>
+    <tr><td class="kc"></td><td class="nc">risk_percent</td><td class="tc">DECIMAL(5,2) NULL</td></tr>
     <tr><td class="kc"></td><td class="nc">risk_level</td><td class="tc">VARCHAR(50) NULL</td></tr>
-    <tr><td class="kc"></td><td class="nc">status</td><td class="tc">VARCHAR(50)</td></tr>
+    <tr><td class="kc"></td><td class="nc">status</td><td class="tc">ENUM</td></tr>
     <tr><td class="kc"></td><td class="nc">created_at</td><td class="tc">TIMESTAMP</td></tr>
     <tr><td class="kc"></td><td class="nc">updated_at</td><td class="tc">DATETIME NULL</td></tr>
     <tr><td class="kc"></td><td class="nc">deleted_at</td><td class="tc">DATETIME NULL</td></tr>
