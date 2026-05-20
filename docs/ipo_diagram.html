@@ -18,12 +18,11 @@
         .headers {
             display: flex;
             justify-content: space-between;
-            width: 780px;
+            width: 980px;
             margin-bottom: 10px;
         }
 
         .header-title {
-            width: 245px;
             text-align: center;
             font-weight: bold;
             font-size: 1.75rem;
@@ -31,20 +30,47 @@
             text-transform: uppercase;
         }
 
+        .input-header {
+            width: 440px;
+        }
+
+        .side-header {
+            width: 250px;
+        }
+
         .columns-container {
             display: flex;
             justify-content: space-between;
-            width: 780px;
-            gap: 22.5px;
+            width: 980px;
+            gap: 20px;
         }
 
         .column {
-            width: 245px;
             border: 1px solid #000;
             padding: 12px 15px;
             box-sizing: border-box;
             background-color: #fff;
-            /* Ensures equal height if desired, but IPO usually flows naturally */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-column-container {
+            width: 440px;
+        }
+
+        .side-column {
+            width: 250px;
+        }
+
+        .input-sub-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .input-sub-column {
+            width: 50%;
             display: flex;
             flex-direction: column;
         }
@@ -71,7 +97,7 @@
         }
 
         .eval-section {
-            width: 780px;
+            width: 980px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -103,7 +129,7 @@
             position: absolute;
             top: -20px;
             left: 0;
-            width: 780px;
+            width: 980px;
             height: 120px;
             pointer-events: none;
         }
@@ -112,86 +138,105 @@
 <body>
 
     <div class="headers">
-        <div class="header-title">INPUT</div>
-        <div class="header-title">PROCESS</div>
-        <div class="header-title">OUTPUT</div>
+        <div class="header-title input-header">INPUT</div>
+        <div class="header-title side-header">PROCESS</div>
+        <div class="header-title side-header">OUTPUT</div>
     </div>
 
     <div class="columns-container">
         <!-- INPUT COLUMN -->
-        <div class="column">
-            <div class="section-title">System Data</div>
-            <ul>
-                <li>Venting messages, journal entries &amp; user accounts</li>
-                <li>Bullying reports (text and media attachments)</li>
-                <li>Counselor profiles &amp; configurations</li>
-            </ul>
+        <div class="column input-column-container">
+            <div class="input-sub-container">
+                <!-- Left Sub-column: System Data & Hardware -->
+                <div class="input-sub-column">
+                    <div class="section-title">System Data</div>
+                    <ul>
+                        <li>Student venting messages &amp; journal entries</li>
+                        <li>Bullying incident reports (text and media attachments)</li>
+                        <li>User account credentials &amp; profiles</li>
+                        <li>Counselor configurations</li>
+                    </ul>
 
-            <div class="section-title">Development Software</div>
-            <ul>
-                <li>PHP 8+ (CodeIgniter 4) &amp; MySQL (AES-256)</li>
-                <li>Python 3.10+ (FastAPI) &amp; HuggingFace Models</li>
-                <li>HTML5, CSS3, Tailwind CSS &amp; Chart.js</li>
-                <li>Laragon (Local Server), VS Code &amp; Git</li>
-                <li>Android-based SMS Gateway Integration</li>
-                <li>InfinityFree &amp; Azure Cloud hosting services</li>
-            </ul>
-
-            <div class="section-title">Hardware</div>
-            <ul>
-                <li>PC/Laptop, mobile devices &amp; router connection</li>
-            </ul>
+                    <div class="section-title">Hardware</div>
+                    <ul>
+                        <li>Computer Set / Laptop (Development &amp; testing)</li>
+                        <li>Client Web Browsers (End-user interface testing)</li>
+                        <li>Router / Internet Connection (System functionality)</li>
+                    </ul>
+                </div>
+                <!-- Right Sub-column: Development Software -->
+                <div class="input-sub-column">
+                    <div class="section-title">Development Software</div>
+                    <ul>
+                        <li>Windows 10 or higher (Development environment)</li>
+                        <li>Laragon (PHP + MySQL local server)</li>
+                        <li>PHP 8+ / CodeIgniter 4 (Backend logic)</li>
+                        <li>Python 3.10+ &amp; FastAPI (AI microservice)</li>
+                        <li>MySQL (Database storage with AES-256)</li>
+                        <li>Visual Studio Code (Code editing)</li>
+                        <li>HTML5, CSS3, JavaScript</li>
+                        <li>Tailwind CSS (Responsive design)</li>
+                        <li>Chart.js (Data visualization)</li>
+                        <li>Local SMS Gateway (Android-based)</li>
+                        <li>HuggingFace Transformers (mDeBERTa-v3 &amp; DistilRoBERTa)</li>
+                        <li>InfinityFree (Cloud Hosting for PHP &amp; MySQL)</li>
+                        <li>Microsoft Azure for Students (Hosting for FastAPI microservice)</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <!-- PROCESS COLUMN -->
-        <div class="column">
+        <div class="column side-column">
             <div class="section-title" style="text-transform: none;">Planning and defining<br>system objectives</div>
             <ul>
-                <li>Define functional requirements &amp; database schemas</li>
-                <li>Map venting, reporting, and dashboard objectives</li>
+                <li>Identify functional modules: Venting Portal, Bullying Reports, NLP Dashboard.</li>
             </ul>
 
             <div class="section-title" style="text-transform: none;">System Development</div>
             <ul>
-                <li>Code CodeIgniter backend &amp; MySQL schema</li>
-                <li>Build FastAPI service for NLP model inference</li>
-                <li>Integrate SMS gateway API &amp; AES-256 encryption</li>
+                <li>Code frontend and backend using CodeIgniter 4, MySQL, HTML/CSS/JS.</li>
+                <li>Build Python API for AI engine.</li>
+                <li>Integrate Android SMS Gateway for local text alerts.</li>
+                <li>Implement strict AES-256 encryption.</li>
             </ul>
 
             <div class="section-title" style="text-transform: none;">Testing and Debugging</div>
             <ul>
-                <li>Local debugging via Laragon and Python</li>
-                <li>Validate NLP accuracy &amp; multilingual parsing</li>
+                <li>Local testing with Laragon and Python.</li>
+                <li>Unit testing and validation of AI tagging accuracy and Multilingual (Tagalog, English, Bisaya, Ilocano) text parsing.</li>
             </ul>
 
             <div class="section-title" style="text-transform: none;">Validation Tools</div>
             <ul>
-                <li>Collect ISO 25010 user feedback surveys</li>
-                <li>Gather counselor, student, and psychiatrist input</li>
+                <li>Create system evaluation questionnaires (ISO 25010 metrics).</li>
+                <li>Collect feedback from school counselors, students, and psychiatrist.</li>
             </ul>
 
             <div class="section-title" style="text-transform: none;">Statistical Analysis</div>
             <ul>
-                <li>Analyze accuracy, usability, and final validation</li>
+                <li>Analyze user testing data (accuracy, ease of use).</li>
+                <li>Use data for final system validation.</li>
             </ul>
         </div>
 
         <!-- OUTPUT COLUMN -->
-        <div class="column">
-            <div class="section-title" style="text-transform: none;">Developed Platform Features</div>
+        <div class="column side-column">
+            <div class="section-title" style="text-transform: none;">Developed and Validated<br>StudentShield System with<br>the following features:</div>
             <ul>
-                <li>Safe space venting portal with encrypted journaling</li>
-                <li>Automated NLP risk analysis (depression/bullying)</li>
-                <li>Immediate SMS alerts &amp; conditional anonymity</li>
-                <li>Counselor dashboard with sorted case priorities</li>
-                <li>Campus-wide psychological trend analytics</li>
+                <li>Web-based Safe Space portal with encrypted storage and media attachments.</li>
+                <li>Real-time automated text analysis for depression and bullying behavior.</li>
+                <li>Immediate automatic SMS emergency alerts directed to parents.</li>
+                <li>Real-time Counselor Dashboard offering sorted case prioritizations.</li>
+                <li>Automated trend analytics for campus-wide psychological health.</li>
+                <li>Conditional Anonymity shielding ensuring user privacy.</li>
             </ul>
 
             <div class="section-title" style="text-transform: none;">System Deliverables:</div>
             <ul>
-                <li>NLP Risk Assessment Scores &amp; flag tags</li>
-                <li>Automatic SMS alerts &amp; system audit logs</li>
-                <li>Guidance office trend analysis reports</li>
+                <li>NLP Risk Assessment Scores</li>
+                <li>Generated SMS Emergency Alerts</li>
+                <li>Statistical trend reports for the Guidance Office</li>
             </ul>
         </div>
     </div>
@@ -204,16 +249,16 @@
         </div>
         
         <!-- SVG Arrow connecting Output to Evaluation -->
-        <svg class="arrow-container" viewBox="0 0 780 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="arrow-container" viewBox="0 0 980 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <!-- 
-              Arrow starts at X: 657.5 (center of Output column), Y: 0 
+              Arrow starts at X: 855 (center of Output column), Y: 0 
               Goes down to Y: 90 (center of eval box)
-              Goes left to X: 615 (right edge of eval box)
-              eval box is 450px wide. 780/2 = 390 center. 390 + 225 = 615 right edge.
-              Output column center is approx 657.5.
+              Goes left to X: 715 (right edge of eval box)
+              eval box is 450px wide. 980/2 = 490 center. 490 + 225 = 715 right edge.
+              Output column center is approx 855.
             -->
-            <path d="M 657.5,0 L 657.5,90 L 630,90" fill="none" stroke="black" stroke-width="2" />
-            <polygon points="615,90 630,85 630,95" fill="black" />
+            <path d="M 855,0 L 855,90 L 730,90" fill="none" stroke="black" stroke-width="2" />
+            <polygon points="715,90 730,85 730,95" fill="black" />
         </svg>
     </div>
 
