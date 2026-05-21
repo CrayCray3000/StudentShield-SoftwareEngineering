@@ -6,21 +6,21 @@
         <mxCell id="1" parent="0"/>
         
         <!-- Processes (Circles) -->
-        <mxCell id="p31" value="3.1&lt;br&gt;&lt;br&gt;Receive Report&lt;br&gt;and Media" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="p31" value="3.1&lt;br&gt;&lt;br&gt;Receive Report&lt;br&gt;and Media" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="300" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="p32" value="3.2&lt;br&gt;&lt;br&gt;Validate&lt;br&gt;Constraints" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="p32" value="3.2&lt;br&gt;&lt;br&gt;Validate&lt;br&gt;Constraints" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="500" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="p33" value="3.3&lt;br&gt;&lt;br&gt;Encrypt and&lt;br&gt;Store Files" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="p33" value="3.3&lt;br&gt;&lt;br&gt;Encrypt and&lt;br&gt;Store Files" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="700" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="p34" value="3.4&lt;br&gt;&lt;br&gt;Queue&lt;br&gt;Verification" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="p34" value="3.4&lt;br&gt;&lt;br&gt;Queue&lt;br&gt;Verification" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="900" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
 
-        <!-- External Entities (Rounded Rectangles) -->
-        <mxCell id="student" value="Student" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <!-- External Entities (Sharp Rectangles) -->
+        <mxCell id="student" value="Student" style="shape=rect;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="60" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
         <mxCell id="proc4" value="To Process 4.0&lt;br&gt;(Counselor Dashboard)" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#64748b;strokeWidth=1;fontFamily=Helvetica;fontSize=12;fontStyle=2;" vertex="1" parent="1">
@@ -28,7 +28,7 @@
         </mxCell>
 
         <!-- Data Stores (Open Rectangles) -->
-        <mxCell id="d3" value="&lt;div style=&quot;display: flex; height: 100%; align-items: center;&quot;&gt;&lt;div style=&quot;border-right: 1px solid #000; padding: 0 10px; height: 100%; display: flex; align-items: center;&quot;&gt;D3&lt;/div&gt;&lt;div style=&quot;padding-left: 10px;&quot;&gt;bully_reports_tbl&lt;/div&gt;&lt;/div&gt;" style="shape=partialRectangle;right=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;align=left;" vertex="1" parent="1">
+        <mxCell id="d3" value="&lt;div style=&quot;display: flex; height: 100%; align-items: center;&quot;&gt;&lt;div style=&quot;border-right: 1px solid #000; padding: 0 10px; height: 100%; display: flex; align-items: center;&quot;&gt;D3&lt;/div&gt;&lt;div style=&quot;padding-left: 10px;&quot;&gt;bully_reports_tbl&lt;/div&gt;&lt;/div&gt;" style="shape=partialRectangle;right=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;align=left;" vertex="1" parent="1">
           <mxGeometry x="680" y="550" width="160" height="40" as="geometry"/>
         </mxCell>
 

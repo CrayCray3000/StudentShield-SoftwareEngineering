@@ -25,13 +25,15 @@ class IpWhitelistFilter implements FilterInterface
     {
         $clientIp = $request->getIPAddress();
 
-        // If the client's IP is not in the allowed list, deny access completely
+        // Temporarily disabled for capstone defense demonstration
+        /*
         if (!in_array($clientIp, $this->allowedIps, true)) {
             $response = service('response');
             $response->setStatusCode(403);
             $response->setBody('<h1>403 Forbidden</h1><p>Your IP Address (' . htmlspecialchars($clientIp) . ') is not authorized to access this Administrative Panel.</p>');
             return $response;
         }
+        */
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)

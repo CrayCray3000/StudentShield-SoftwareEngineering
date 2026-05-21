@@ -19,6 +19,11 @@ class RateLimitFilter implements FilterInterface
 
     public function before(RequestInterface $request, $arguments = null)
     {
+        // Only rate limit POST requests (actual credential submissions)
+        if (strtolower($request->getMethod()) !== 'post') {
+            return;
+        }
+
         $ip = $request->getIPAddress();
         $key = md5($ip);
         $file = self::STORAGE_DIR . $key . '.json';
@@ -43,7 +48,16 @@ class RateLimitFilter implements FilterInterface
         if ($data['attempts'] >= self::MAX_ATTEMPTS) {
             $remaining = self::LOCKOUT_SECONDS - (time() - $data['first_attempt']);
             $minutes = ceil($remaining / 60);
-            return redirect()->back()->with('error', "Too many login attempts. Please try again in {$minutes} minutes.");
+            
+            // Safe redirect back with fallback if no Referer header exists (prevents RouterException)
+            $redirect = redirect();
+            if ($request->getServer('HTTP_REFERER')) {
+                return $redirect->back()->with('error', "Too many login attempts. Please try again in {$minutes} minutes.");
+            }
+            
+            $uriPath = $request->getUri()->getPath();
+            $target = (strpos($uriPath, 'admin') !== false) ? '/admin/login' : '/login';
+            return $redirect->to($target)->with('error', "Too many login attempts. Please try again in {$minutes} minutes.");
         }
 
         // Increment attempt count (will be called on POST to login endpoints)

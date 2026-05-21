@@ -6,32 +6,32 @@
         <mxCell id="1" parent="0"/>
         
         <!-- Processes (Circles) -->
-        <mxCell id="p21" value="2.1&lt;br&gt;&lt;br&gt;Receive&lt;br&gt;Vent Input" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="p21" value="2.1&lt;br&gt;&lt;br&gt;Receive&lt;br&gt;Vent Input" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="300" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="p22" value="2.2&lt;br&gt;&lt;br&gt;Analyze&lt;br&gt;Sentiment" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="p22" value="2.2&lt;br&gt;&lt;br&gt;Analyze&lt;br&gt;Sentiment" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="500" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="p23" value="2.3&lt;br&gt;&lt;br&gt;Encrypt and&lt;br&gt;Store" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="p23" value="2.3&lt;br&gt;&lt;br&gt;Encrypt and&lt;br&gt;Store" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="700" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="p24" value="2.4&lt;br&gt;&lt;br&gt;Evaluate Alert&lt;br&gt;Threshold" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="p24" value="2.4&lt;br&gt;&lt;br&gt;Evaluate Alert&lt;br&gt;Threshold" style="shape=ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="900" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
-
-        <!-- External Entities (Rounded Rectangles) -->
-        <mxCell id="student" value="Student" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+ 
+        <!-- External Entities (Sharp Rectangles) -->
+        <mxCell id="student" value="Student" style="shape=rect;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="60" y="320" width="120" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="ml" value="HuggingFace ML&lt;br&gt;Microservice" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="ml" value="HuggingFace ML&lt;br&gt;Microservice" style="shape=rect;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="500" y="100" width="120" height="60" as="geometry"/>
         </mxCell>
         <mxCell id="proc5" value="To Process 5.0&lt;br&gt;(Dispatch Notifications)" style="shape=rect;rounded=1;arcSize=15;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#64748b;strokeWidth=1;fontFamily=Helvetica;fontSize=12;fontStyle=2;" vertex="1" parent="1">
           <mxGeometry x="880" y="550" width="160" height="60" as="geometry"/>
         </mxCell>
-
+ 
         <!-- Data Stores (Open Rectangles) -->
-        <mxCell id="d2" value="&lt;div style=&quot;display: flex; height: 100%; align-items: center;&quot;&gt;&lt;div style=&quot;border-right: 1px solid #000; padding: 0 10px; height: 100%; display: flex; align-items: center;&quot;&gt;D2&lt;/div&gt;&lt;div style=&quot;padding-left: 10px;&quot;&gt;vents_tbl&lt;/div&gt;&lt;/div&gt;" style="shape=partialRectangle;right=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1;fontFamily=Helvetica;fontSize=14;align=left;" vertex="1" parent="1">
+        <mxCell id="d2" value="&lt;div style=&quot;display: flex; height: 100%; align-items: center;&quot;&gt;&lt;div style=&quot;border-right: 1px solid #000; padding: 0 10px; height: 100%; display: flex; align-items: center;&quot;&gt;D2&lt;/div&gt;&lt;div style=&quot;padding-left: 10px;&quot;&gt;vents_tbl&lt;/div&gt;&lt;/div&gt;" style="shape=partialRectangle;right=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=14;align=left;" vertex="1" parent="1">
           <mxGeometry x="680" y="110" width="160" height="40" as="geometry"/>
         </mxCell>
 
