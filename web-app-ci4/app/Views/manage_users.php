@@ -389,11 +389,11 @@
                         <input type="password" name="passcode" id="addPassInput" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Enter password">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
+                        <label id="addParentEmailLabel" class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
                         <input type="email" name="parent_email" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
+                        <label id="addParentPhoneLabel" class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
                         <input type="text" name="parent_phone" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
                     </div>
                     <div class="col-span-2 grid grid-cols-2 gap-4">
@@ -443,11 +443,11 @@
                         <input type="password" name="passcode" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Leave blank to keep current">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
+                        <label id="editParentEmailLabel" class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
                         <input type="email" name="parent_email" id="editParentEmail" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
+                        <label id="editParentPhoneLabel" class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
                         <input type="text" name="parent_phone" id="editParentPhone" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                     </div>
                     <div class="col-span-2 grid grid-cols-2 gap-4">
@@ -481,7 +481,11 @@
         const role = document.getElementById(prefix + 'Role').value;
         const sectionInput = document.getElementById(prefix + 'Section');
         const adviserInput = document.getElementById(prefix + 'Adviser');
-        
+        const emailLabel = document.getElementById(prefix + 'ParentEmailLabel');
+        const phoneLabel = document.getElementById(prefix + 'ParentPhoneLabel');
+
+        const isStaff = (role == 1 || role == 2);
+
         if (role == 0) {
             if(sectionInput) sectionInput.required = true;
             if(adviserInput) adviserInput.required = true;
@@ -489,6 +493,9 @@
             if(sectionInput) sectionInput.required = false;
             if(adviserInput) adviserInput.required = false;
         }
+
+        if (emailLabel) emailLabel.textContent = isStaff ? 'Email' : 'Parent Email';
+        if (phoneLabel) phoneLabel.textContent = isStaff ? 'Phone' : 'Parent Phone';
     }
 
     function toggleAddPassword() {
