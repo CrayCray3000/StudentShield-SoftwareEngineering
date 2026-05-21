@@ -135,90 +135,104 @@ class UserController extends BaseController
             return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
         }
 
-        $db = \Config\Database::connect();
+        try {
+            $db = \Config\Database::connect();
 
-        // Prevent editing yourself out of super admin
-        $currentUser = (int) session()->get('user_id');
-        $targetRole = (int) $this->request->getPost('role');
-        if ($id == $currentUser && $targetRole !== 2) {
-            return redirect()->back()->with('error', 'You cannot demote your own account.');
-        }
-
-        $studentIdInput = trim($this->request->getPost('student_id') ?? '');
-        $parentEmail = trim($this->request->getPost('parent_email') ?? '');
-        $parentPhone = trim($this->request->getPost('parent_phone') ?? '');
-        $section = trim($this->request->getPost('section') ?? '');
-        $adviserName = trim($this->request->getPost('adviser_name') ?? '');
-
-        if ($targetRole === 0) {
-            if (empty($section)) {
-                return redirect()->back()->with('error', 'Section is required for students.');
+            // Prevent editing yourself out of super admin
+            $currentUser = (int) session()->get('user_id');
+            $targetRole = (int) $this->request->getPost('role');
+            if ($id == $currentUser && $targetRole !== 2) {
+                return redirect()->back()->with('error', 'You cannot demote your own account.');
             }
-            if (empty($adviserName)) {
-                return redirect()->back()->with('error', 'Adviser Name is required for students.');
+
+            $studentIdInput = trim($this->request->getPost('student_id') ?? '');
+            $parentEmail = trim($this->request->getPost('parent_email') ?? '');
+            $parentPhone = trim($this->request->getPost('parent_phone') ?? '');
+            $section = trim($this->request->getPost('section') ?? '');
+            $adviserName = trim($this->request->getPost('adviser_name') ?? '');
+
+            if ($targetRole === 0) {
+                if (empty($section)) {
+                    return redirect()->back()->with('error', 'Section is required for students.');
+                }
+                if (empty($adviserName)) {
+                    return redirect()->back()->with('error', 'Adviser Name is required for students.');
+                }
             }
-        }
 
-        $userUpdate = [
-            'name' => trim($this->request->getPost('name')),
-            'role' => $targetRole,
-        ];
-
-        // Only update password if provided
-        $newPasscode = $this->request->getPost('passcode');
-        if (!empty($newPasscode)) {
-            $userUpdate['password_hash'] = password_hash($newPasscode, PASSWORD_BCRYPT);
-        }
-
-        $db->table('users')->where('id', $id)->update($userUpdate);
-
-        // Delete profile records in other subclass tables to keep them clean
-        if ($targetRole !== 0) $db->table('students')->where('user_id', $id)->delete();
-        if ($targetRole !== 1) $db->table('counselors')->where('user_id', $id)->delete();
-        if ($targetRole !== 2) $db->table('admins')->where('user_id', $id)->delete();
-
-        // Upsert core profile fields into appropriate subclass table
-        if ($targetRole === 0) {
-            $studentData = [
-                'student_id'   => ($studentIdInput === '') ? null : $studentIdInput,
-                'parent_phone' => $parentPhone,
-                'parent_email' => $parentEmail,
-                'section'      => $section,
-                'adviser_name' => $adviserName,
+            $userUpdate = [
+                'name' => trim($this->request->getPost('name')),
+                'role' => $targetRole,
             ];
-            if ($db->table('students')->where('user_id', $id)->countAllResults() > 0) {
-                $db->table('students')->where('user_id', $id)->update($studentData);
-            } else {
-                $studentData['user_id'] = $id;
-                $db->table('students')->insert($studentData);
+
+            // Only update password if provided
+            $newPasscode = $this->request->getPost('passcode');
+            if (!empty($newPasscode)) {
+                $userUpdate['password_hash'] = password_hash($newPasscode, PASSWORD_BCRYPT);
             }
-        } elseif ($targetRole === 1) {
-            $counselorData = [
-                'counselor_email' => $parentEmail,
-                'counselor_phone' => $parentPhone,
-            ];
-            if ($db->table('counselors')->where('user_id', $id)->countAllResults() > 0) {
-                $db->table('counselors')->where('user_id', $id)->update($counselorData);
-            } else {
-                $counselorData['user_id'] = $id;
-                $db->table('counselors')->insert($counselorData);
+
+            $db->transStart();
+
+            $db->table('users')->where('id', $id)->update($userUpdate);
+
+            // Delete profile records in other subclass tables to keep them clean
+            if ($targetRole !== 0) $db->table('students')->where('user_id', $id)->delete();
+            if ($targetRole !== 1) $db->table('counselors')->where('user_id', $id)->delete();
+            if ($targetRole !== 2) $db->table('admins')->where('user_id', $id)->delete();
+
+            // Upsert core profile fields into appropriate subclass table
+            if ($targetRole === 0) {
+                $studentData = [
+                    'student_id'   => ($studentIdInput === '') ? null : $studentIdInput,
+                    'parent_phone' => $parentPhone,
+                    'parent_email' => $parentEmail,
+                    'section'      => $section,
+                    'adviser_name' => $adviserName,
+                ];
+                if ($db->table('students')->where('user_id', $id)->countAllResults() > 0) {
+                    $db->table('students')->where('user_id', $id)->update($studentData);
+                } else {
+                    $studentData['user_id'] = $id;
+                    $studentData['grade_level'] = null;
+                    $db->table('students')->insert($studentData);
+                }
+            } elseif ($targetRole === 1) {
+                $counselorData = [
+                    'counselor_email' => $parentEmail,
+                    'counselor_phone' => $parentPhone,
+                ];
+                if ($db->table('counselors')->where('user_id', $id)->countAllResults() > 0) {
+                    $db->table('counselors')->where('user_id', $id)->update($counselorData);
+                } else {
+                    $counselorData['user_id'] = $id;
+                    $db->table('counselors')->insert($counselorData);
+                }
+            } elseif ($targetRole === 2) {
+                $adminData = [
+                    'email' => $parentEmail,
+                    'phone' => $parentPhone,
+                ];
+                if ($db->table('admins')->where('user_id', $id)->countAllResults() > 0) {
+                    $db->table('admins')->where('user_id', $id)->update($adminData);
+                } else {
+                    $adminData['user_id'] = $id;
+                    $db->table('admins')->insert($adminData);
+                }
             }
-        } elseif ($targetRole === 2) {
-            $adminData = [
-                'email' => $parentEmail,
-                'phone' => $parentPhone,
-            ];
-            if ($db->table('admins')->where('user_id', $id)->countAllResults() > 0) {
-                $db->table('admins')->where('user_id', $id)->update($adminData);
-            } else {
-                $adminData['user_id'] = $id;
-                $db->table('admins')->insert($adminData);
+
+            $db->transComplete();
+
+            if ($db->transStatus() === false) {
+                throw new \Exception('Database transaction failed.');
             }
+
+            $this->logAudit('UPDATE_USER', 'user', (int)$id);
+
+            return redirect()->to('/admin/users')->with('success', 'User updated successfully.');
+        } catch (\Exception $e) {
+            log_message('error', '[UserController::update] ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to update user. Please check the database and try again.');
         }
-
-        $this->logAudit('UPDATE_USER', 'user', (int)$id);
-
-        return redirect()->to('/admin/users')->with('success', 'User updated successfully.');
     }
 
     /**
