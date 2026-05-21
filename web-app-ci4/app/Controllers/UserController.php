@@ -38,87 +38,92 @@ class UserController extends BaseController
             return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
         }
 
-        $db = \Config\Database::connect();
-        $name        = trim($this->request->getPost('name'));
-        $role        = (int) $this->request->getPost('role');
-        $studentIdInput = trim($this->request->getPost('student_id') ?? '');
-        $studentId   = ($studentIdInput === '') ? null : $studentIdInput;
-        $parentEmail = trim($this->request->getPost('parent_email') ?? '');
-        $parentPhone = trim($this->request->getPost('parent_phone') ?? '');
-        $section     = trim($this->request->getPost('section') ?? '');
-        $adviserName = trim($this->request->getPost('adviser_name') ?? '');
-        $passcode    = $this->request->getPost('passcode') ?? '';
+        try {
+            $db = \Config\Database::connect();
+            $name        = trim($this->request->getPost('name'));
+            $role        = (int) $this->request->getPost('role');
+            $studentIdInput = trim($this->request->getPost('student_id') ?? '');
+            $studentId   = ($studentIdInput === '') ? null : $studentIdInput;
+            $parentEmail = trim($this->request->getPost('parent_email') ?? '');
+            $parentPhone = trim($this->request->getPost('parent_phone') ?? '');
+            $section     = trim($this->request->getPost('section') ?? '');
+            $adviserName = trim($this->request->getPost('adviser_name') ?? '');
+            $passcode    = $this->request->getPost('passcode') ?? '';
 
-        if (empty($name)) {
-            return redirect()->back()->with('error', 'Name is required.');
-        }
-        
-        if ($role === 0) {
-            if (empty($studentId)) {
-                return redirect()->back()->with('error', 'Student ID is required for students.');
+            if (empty($name)) {
+                return redirect()->back()->with('error', 'Name is required.');
             }
-            if (empty($section)) {
-                return redirect()->back()->with('error', 'Section is required for students.');
+            
+            if ($role === 0) {
+                if (empty($studentId)) {
+                    return redirect()->back()->with('error', 'Student ID is required for students.');
+                }
+                if (empty($section)) {
+                    return redirect()->back()->with('error', 'Section is required for students.');
+                }
+                if (empty($adviserName)) {
+                    return redirect()->back()->with('error', 'Adviser Name is required for students.');
+                }
             }
-            if (empty($adviserName)) {
-                return redirect()->back()->with('error', 'Adviser Name is required for students.');
-            }
-        }
 
-        // Check duplicate name
-        $existing = $db->table('users')->where('name', $name)->get()->getRow();
-        if ($existing) {
-            return redirect()->back()->with('error', 'A user with that name already exists.');
-        }
-
-        // Hash password for counselors & super admins
-        $hashedPasscode = '';
-        if ($role >= 1) {
-            if (empty($passcode)) {
-                return redirect()->back()->with('error', 'Password is required for staff accounts.');
+            // Check duplicate name
+            $existing = $db->table('users')->where('name', $name)->get()->getRow();
+            if ($existing) {
+                return redirect()->back()->with('error', 'A user with that name already exists.');
             }
-            $hashedPasscode = password_hash($passcode, PASSWORD_BCRYPT);
-        } else {
-            // Students also get a hashed password
-            if (!empty($passcode)) {
+
+            // Hash password for counselors & super admins
+            $hashedPasscode = '';
+            if ($role >= 1) {
+                if (empty($passcode)) {
+                    return redirect()->back()->with('error', 'Password is required for staff accounts.');
+                }
                 $hashedPasscode = password_hash($passcode, PASSWORD_BCRYPT);
+            } else {
+                // Students also get a hashed password
+                if (!empty($passcode)) {
+                    $hashedPasscode = password_hash($passcode, PASSWORD_BCRYPT);
+                }
             }
+
+            $db->table('users')->insert([
+                'name'          => $name,
+                'role'          => $role,
+                'password_hash' => $hashedPasscode,
+            ]);
+            $newUserId = $db->insertID();
+
+            if ($role === 0) {
+                $db->table('students')->insert([
+                    'user_id'      => $newUserId,
+                    'student_id'   => $studentId,
+                    'parent_phone' => $parentPhone,
+                    'parent_email' => $parentEmail,
+                    'section'      => $section,
+                    'adviser_name' => $adviserName,
+                    'grade_level'  => null,
+                ]);
+            } elseif ($role === 1) {
+                $db->table('counselors')->insert([
+                    'user_id'          => $newUserId,
+                    'counselor_email' => $parentEmail,
+                    'counselor_phone' => $parentPhone,
+                ]);
+            } elseif ($role === 2) {
+                $db->table('admins')->insert([
+                    'user_id' => $newUserId,
+                    'email'   => $parentEmail,
+                    'phone'   => $parentPhone,
+                ]);
+            }
+
+            $this->logAudit('CREATE_USER', 'user', $newUserId);
+
+            return redirect()->to('/admin/users')->with('success', "User \"{$name}\" created successfully.");
+        } catch (\Exception $e) {
+            log_message('error', 'UserController::create failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create user. Please check the database and try again.');
         }
-
-        $db->table('users')->insert([
-            'name'          => $name,
-            'role'          => $role,
-            'password_hash' => $hashedPasscode,
-        ]);
-        $newUserId = $db->insertID();
-
-        if ($role === 0) {
-            $db->table('students')->insert([
-                'user_id'      => $newUserId,
-                'student_id'   => $studentId,
-                'parent_phone' => $parentPhone,
-                'parent_email' => $parentEmail,
-                'section'      => $section,
-                'adviser_name' => $adviserName,
-                'grade_level'  => null,
-            ]);
-        } elseif ($role === 1) {
-            $db->table('counselors')->insert([
-                'user_id'          => $newUserId,
-                'counselor_email' => $parentEmail,
-                'counselor_phone' => $parentPhone,
-            ]);
-        } elseif ($role === 2) {
-            $db->table('admins')->insert([
-                'user_id' => $newUserId,
-                'email'   => $parentEmail,
-                'phone'   => $parentPhone,
-            ]);
-        }
-
-        $this->logAudit('CREATE_USER', 'user', $newUserId);
-
-        return redirect()->to('/admin/users')->with('success', "User \"{$name}\" created successfully.");
     }
 
     /**

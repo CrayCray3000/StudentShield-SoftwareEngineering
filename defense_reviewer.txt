@@ -1,0 +1,377 @@
+====================================================================================================
+                        STUDENTSHIELD CAPSTONE DEFENSE REVIEWER & STUDY GUIDE
+====================================================================================================
+Title: StudentShield: A Machine Learning-Based Emotional Distress Detection and Bullying Reporting
+       System with Automated SMS and Email Alerts for Saint Vincent Blessed School of Manila
+Authors (Proponents):
+  1. Enriquez, Justin Altamia
+  2. Melgarejo, John Carlo
+  3. Meneses, Vonn Christian Miel
+  4. Ramos, John Cris
+  5. Urayanza, Ashley Princess
+Adviser: Mr. Edward James V. Grageda
+Degree: Bachelor of Science in Information Technology (BSIT)
+Institution: National Teachers College (SAST - School of Arts, Science and Technology), Quiapo, Manila
+Client School / Setting: Saint Vincent Blessed School of Manila (SVBSM)
+                         732 Instruccion St., Sampaloc, Manila, 1000 Metro Manila
+Target User Groups: Junior High School Students, Guidance Counselors/Responders, IT/System Admins
+Defense Date: May 2026
+
+----------------------------------------------------------------------------------------------------
+                                TABLE OF CONTENTS
+----------------------------------------------------------------------------------------------------
+1. PROJECT PURPOSE & STATEMENT OF THE PROBLEM
+2. GENERAL & SPECIFIC OBJECTIVES OF THE STUDY
+3. SIGNIFICANCE OF THE STUDY & TARGET BENEFICIARIES
+4. THE TECHNICAL ARCHITECTURE & DECOUPLED STACK
+5. DEEP DIVE: THE NEURAL MACHINE LEARNING PIPELINE
+6. TWO-TIERED SAFETY NET & LOCAL HEURISTIC FALLBACK
+7. USER JOURNEYS & SYSTEM WORKFLOWS
+8. METHODOLOGY, SDLC, SAMPLING, AND STATISTICAL TREATMENT
+9. SYSTEM TEST PLAN (SCENARIOS BY MODULE)
+10. DREADED PANEL QUESTIONS & ANSWERS (DEFENSE TRAPS & SAFE PASSES)
+11. PRACTICAL ORAL DEFENSE TIPS FOR THE TEAM
+
+====================================================================================================
+                        1. PROJECT PURPOSE & STATEMENT OF THE PROBLEM
+====================================================================================================
+* The Core Problem: 
+  Junior High School students at SVBSM face modern digital threats (cyberbullying, online harassment)
+  and hidden mental distress. The school's traditional approach is reactive and decentralized: it
+  relies on manual, paper-based reporting, decentralized report management, and verbal reports.
+  This creates massive delays, paper trails, and a failure to intervene during the "Golden Hour"—the
+  critical window immediately following a student's expression of distress when support is most
+  effective. Parents are often the last to know, and guidance staff are overwhelmed with paperwork.
+
+* StudentShield's Core Purpose:
+  To provide SVBSM with a dependable, automated, and centralized platform for real-time risk
+  detection and proactive student intervention. By leveraging Natural Language Processing (NLP)
+  and automated dual-dispatch alerting (SMS + Email), the system bridges the school-to-home
+  communication gap, flags high-stress vulnerabilities instantly, and streamlines counseling workflows.
+
+====================================================================================================
+                        2. GENERAL & SPECIFIC OBJECTIVES OF THE STUDY
+====================================================================================================
+* General Objective:
+  To design and develop an NLP-powered monitoring, reporting, and intervention system (StudentShield)
+  for SVBSM Junior High School students that automates bullying detection, categorizes emotional
+  distress risks, and facilitates proactive, data-driven administrative interventions.
+
+* Specific Objectives:
+  1. Secure "Safe Space" Web Portal: Provide Junior High School students with a secure web page to
+     conditionally anonymously submit emotional vents and formal bullying incident reports (with options
+     to upload photo/video evidence).
+  2. Multi-Model AI Risk Classification Engine: Implement mDeBERTa-v3 and DistilRoBERTa to analyze 
+     vent texts and classify emotional distress into four tiers: Low, Medium, High, and Critical.
+  3. Behavioral Trajectory Tracking: Integrate a vector-based search algorithm (FAISS) to analyze 
+     a student's 14-day history and identify worsening trajectories of cumulative distress over time.
+  4. Real-Time Alerting System: Build automated parent and counselor notification gateways via SMS 
+     (using Semaphore SMS API or Local Android SMS Gateway) and Email (using secure SMTP via Gmail).
+  5. Security & Legal Compliance: Protect minor student disclosures using AES-256 data-at-rest 
+     encryption, password hashing (bcrypt), and validate system accuracy through pilot testing with the
+     SVBSM administration in compliance with the Data Privacy Act of 2012 (RA 10173).
+
+====================================================================================================
+                        3. SIGNIFICANCE OF THE STUDY & TARGET BENEFICIARIES
+====================================================================================================
+* Client School (SVBSM): Replaces vulnerable paper record storage with a secure, centralized database
+  compliant with DepEd rules. Streamlines the guidance counselor's daily workload.
+* Students: Provides an inviting, non-threatening digital safe space where they can vent or report
+  incidents anonymously, removing the fear of peer retaliation or initial judgment.
+* Guidance Counselors: Virtual assistant that filters through hundreds of vents, prioritizing
+  "High" and "Critical" cases so they can focus clinical support where it is urgently needed.
+* Parents/Guardians: Fills the communication gap. Parents are immediately alerted via automated SMS
+  and email during life-threatening crises, allowing home intervention to start alongside school protocols.
+* The Proponents: Deepened experience in combining PHP/CodeIgniter 4 backend with a Python/FastAPI
+  machine learning service, secure API keys, and AES-256 cryptographic protocols.
+* Legal Alignment: Directly helps the school comply with Republic Act No. 10627 (Anti-Bullying Act 
+  of 2013) and Republic Act No. 11036 (Philippine Mental Health Act).
+
+====================================================================================================
+                        4. THE TECHNICAL ARCHITECTURE & DECOUPLED STACK
+====================================================================================================
+StudentShield uses a decoupled, hybrid architecture to keep the client's operational cost low while
+maintaining secure, high-performance processing:
+
+* The Web App Layer (Orchestration & UI):
+  - Tech Stack: PHP 8.1+ / CodeIgniter 4.4 framework.
+  - Database: MySQL 8.0 (using InnoDB engine).
+  - Frontend: Tailwind CSS 3.0 & Vanilla JavaScript.
+  - Role: Manages student profiles, user authentication, counselor dashboards, audit logs, and handles
+    database storage. Decouples heavy AI computations to keep the student-facing portal lightweight, 
+    fast, and accessible even on slow school networks.
+  - Host: Portable to free or cheap hosting environments (e.g., InfinityFree during pilot, scalable
+    to AWS, HostGator, or DigitalOcean without changing backend code).
+
+* The Neural Hub Layer (ML Microservice):
+  - Tech Stack: Python 3.10+ / FastAPI 0.109 framework.
+  - Containers: Runs inside a Docker container for ease of environment configuration and stability.
+  - Role: Dedicated microservice that receives submitted text, runs parallel transformer pipelines,
+    computes distress and emotion matrices, queries historical vectors, and returns structured JSON responses.
+  - Host: Hosted on a Microsoft Azure Linux Virtual Machine running on traditional CPUs (low-cost).
+
+* The Security Layer (Strict Cryptography):
+  - All sensitive student data (vent texts, bullying incident files) is symmetrically encrypted at
+    the application level before database insertion using AES-256-GCM. Raw data only lives in memory
+    during an active, authorized counselor's login session. Passwords use bcrypt hashing.
+
+* The Dual-Dispatch Alert Layer:
+  - Automated Email: Gmail SMTP protocol using Google App Passwords to push structured HTML alerts.
+  - Automated SMS: Integrates both the Semaphore SMS API (cloud) and a Local Android SMS Gateway.
+    In the local gateway, the web application pushes HTTP POST requests to an Android phone running an
+    SMS gateway app on the school's local network, sending texts to parents without incurring heavy subscription fees.
+
+====================================================================================================
+                        5. DEEP DIVE: THE NEURAL MACHINE LEARNING PIPELINE
+====================================================================================================
+Every time a student submits a vent, the FastAPI service triggers a parallel inference pipeline:
+
+1. Primary Distress Classification (mDeBERTa-v3):
+   - Model: Fine-tuned multilingual DeBERTa-v3 (`ashlogg/student-shield-mdeberta`).
+   - Why: Multilingual capabilities excel at processing Tagalog-English code-switching ("Taglish"),
+     adolescent slang (e.g., "gg," "awit," "slay"), and Gen-Z colloquialisms. Standard monolingual
+     models often misclassify these or ignore them as noise.
+   - Fail-Safes: If the primary model API fails, the backend immediately routes to fail-safe models
+     `SamLowe/roberta-base-go_emotions` and `unitary/toxic-bert`.
+
+2. Granular Emotion Extraction (DistilRoBERTa):
+   - Model: `j-hartmann/emotion-english-distilroberta-base`.
+   - Why: Extracts probability scores for 7 core emotional states: sadness, fear, anger, disgust,
+     joy, surprise, and neutral. This allows the system to differentiate between active anger (raising
+     bullying flags) and deep sadness (raising self-harm/distress flags), adjusting weights accordingly.
+
+3. Semantic Crisis Matching (MiniLM):
+   - Model: `paraphrase-multilingual-MiniLM-L12-v2`.
+   - Why: High-dimensional vector generation (384 dimensions) to calculate cosine similarity between
+     the student's input and a pre-configured database of clinically significant "Crisis Anchors."
+     Crucially, these anchors cover multiple local dialects (English, Tagalog, Ilocano, Bisaya) to
+     catch creative suicidal ideation or threat phrases regardless of spelling variations.
+
+4. Contextual Behavioral Tracking (FAISS Vector Memory):
+   - Engine: Facebook AI Similarity Search (FAISS).
+   - Why: Psychological distress is cumulative; isolated text analysis fails to catch gradual decay.
+     FAISS indexes and retrieves the student's historical entries from the last 14 days. By calculating
+     the "Trend Velocity" (slope of risk escalation over 14 days), the system dynamically boosts the
+     risk score if a student exhibits a steady decline in mental wellness.
+
+5. Risk Classification Tiers:
+   - LOW (1% - 30%): Normal emotional release. Stored quietly, no counselor alert.
+   - MEDIUM (31% - 60%): Moderate frustration, light verbal insults. Flagged on dashboard.
+   - HIGH (61% - 85%): Severe distress or reports of physical fights. Urgent priority dashboard alert.
+   - CRITICAL (86% - 100%): Explicit self-harm intent, extreme abuse. Pushes immediate counselor popup,
+     sends automated SMTP email, and fires automated SMS to the parents.
+
+====================================================================================================
+                        6. TWO-TIERED SAFETY NET & LOCAL HEURISTIC FALLBACK
+====================================================================================================
+What if the machine learning service goes down due to internet cuts or server memory limits?
+StudentShield utilizes a safety-first "safety net for the safety net":
+
+* Tier 1 (Semantic Analysis): The Python FastAPI microservice runs its deep neural pipeline.
+* Tier 2 (Local Heuristic Fallback): Embedded directly in the PHP/CodeIgniter Application Layer.
+  - The PHP controller runs a local regex scanner on the raw text *before* encrypting it for database storage.
+  - It matches the text against a highly categorized local dictionary of extreme crisis words (e.g.,
+    "suicide", "laslas", "bigti", "mamatay", "physical abuse").
+* Decision Matrix:
+  - If both tiers are operational, the system evaluates the AI-computed risk score against the local
+    heuristic risk score and automatically applies the HIGHER of the two.
+  - If the Python FastAPI microservice is offline, the PHP layer silently triggers the Heuristic model
+    as a complete fallback. A critical entry containing severe self-harm words will STILL fire parent
+    SMS alerts and counselor notifications, ensuring zero gaps in crisis response.
+
+====================================================================================================
+                        7. USER JOURNEYS & SYSTEM WORKFLOWS
+====================================================================================================
+* The Student Journey:
+  1. Access: Students log in securely using their School ID and a private passcode.
+  2. "Safe Space" Venting: Submit text disclosures in conditional anonymity.
+  3. "Silent Panic" Button: Designed for active, immediate danger. A double-tap on a hidden panic UI
+     instantly bypasses typing and triggers a Code Red Parent and Counselor SMS alert with their identity.
+  4. Post-Vent Grounding UI: Upon submitting highly distressed vents, the interface transitions into
+     a beautiful, guided 60-second breathing animation to calm the student during their "Golden Hour."
+
+* The Counselor Journey:
+  1. Dashboard Overview: A visual hub displaying school-wide emotional metrics, trends, and hotspots.
+  2. AI-Assisted Triage: The counselor reads decrypted vents. To save time during high-volume periods,
+     the ML engine outputs automated critical bullet summaries of long vents.
+  3. Hotspot Analysis: The NLP engine extracts location names (e.g., "gym", "likod ng building") to
+     generate a visual Heatmap of bullying locations, helping the Principal optimize security patrols.
+  4. Parent Resolution Loop: 24 hours after a Critical risk alert is fired, the system automatically
+     sends a secure verification link to parents ("Has the issue been settled at home?") to collect
+     resolutions and close the case log.
+  5. Corroboration Logic: All bullying reports are marked as "Pending Review." Counselors must manually
+     verify reports before taking action to prevent fake reports or weaponization.
+
+====================================================================================================
+                        8. METHODOLOGY, SDLC, SAMPLING, AND STATISTICAL TREATMENT
+====================================================================================================
+* Methodology: Mixed-methods design evaluating technical performance (accuracy) and user usability.
+* Software Development Life Cycle (SDLC): Agile Scrum model.
+  - Why Agile: Machine learning systems involve heavy trial-and-error, dataset training adjustments,
+    and adaptive logic. Agile's iterative sprints allowed the team to adjust algorithms based on initial
+    testing (e.g., correcting sarcasm false positives or local slang weights) before final deployment.
+  - Sprints: Sprint 1 (CI4 foundation, UI, encryption); Sprint 2 (FastAPI pipeline, models integration);
+    Sprint 3 (FAISS vector and threshold tuning); Sprint 4 (Azure deployment, pilot testing, final checks).
+* Sampling Technique:
+  - Stratified Random Sampling: Used to select Junior High School student respondents across sections.
+    The required sample size is determined using Slovin's Formula to ensure statistical representation.
+  - Purposive Sampling: Used to select target guidance counselors and IT administrators based on their
+    expert professional roles inside SVBSM.
+* Data Gathering Tool: A standardized software evaluation questionnaire adapted from the ISO/IEC 25010
+  guidelines (focusing on functional suitability, usability, performance, and security).
+* Statistical Treatment:
+  - Percentage and Frequency Distribution: Profiles demographics and proportion of user ratings.
+  - Weighted Mean: Assesses Likert-scale responses from the ISO/IEC 25010 questionnaire.
+  - Confusion Matrix Metrics: Empirically measures the Python ML microservice using Precision, Recall,
+    F1-Score, and overall Accuracy against pre-classified synthetic distress test cases.
+
+====================================================================================================
+                        9. SYSTEM TEST PLAN (SCENARIOS BY MODULE)
+====================================================================================================
+* 1. Authentication Module:
+  - Check if student logs in with valid ID/Passcode.
+  - Check if invalid credentials are rejected.
+  - Check 2FA/OTP email delivery for counselor/super admin logins.
+  - Validate trusted device cookie bypassing OTP.
+  - Verify legacy plaintext passwords automatically upgrade to bcrypt hashes on first login.
+
+* 2. Vent Log Module:
+  - Validate successful vent submission.
+  - Confirm text is stored as encrypted AES-256 ciphertext in MySQL.
+  - Confirm FastAPI API returns valid JSON risk levels.
+  - Test Local Keyword Heuristics bypass when FastAPI is offline.
+  - Test sarcasm detector logic (downgrading "kms after math exam" to Medium/High).
+  - Verify SMS/Email dual dispatch to parents on Critical risks.
+  - Validate "Hide from Parents" toggle (suppresses parent SMS and flags counselor dashboard instead).
+  - Verify student-level rate limiter (blocks entries within 30 seconds).
+
+* 3. Bullying Report Module:
+  - Test self-reports and reports on behalf of peers.
+  - Test secure storage of incident details.
+  - Verify Stage 1 Alerts (notifies counselor).
+  - Verify Stage 2 Alerts (Manual counselor "Verify & Alert Parents" button alerts parents of both sides).
+  - Verify "Reject as Fake" stops parent alerts.
+  - Verify rate limiter (blocks report submissions within 120 seconds).
+
+* 4. Dashboard & Case Management:
+  - Confirm dashboard decrypts text in real-time only inside counselor's active session.
+  - Verify Risk pie chart counts and trend area chart AJAX updates.
+  - Test resolve, archive, restore, and bulk actions.
+  - Test student risk timeline profiling (graphing the 14-day history).
+
+* 5. User Management & Audit Log:
+  - Create, read, update, delete (CRUD) user logs.
+  - Block counselors from accessing administrative management pages.
+  - Verify super admin cannot demote or delete their own active account.
+  - Confirm audit log captures IP, User Agent, User ID, and timestamp for all counselor actions.
+
+====================================================================================================
+                        10. DREADED PANEL QUESTIONS & ANSWERS (DEFENSE TRAPS)
+====================================================================================================
+TRAP 1: "Why did you build custom models instead of just calling the OpenAI (ChatGPT) API? It's much simpler."
+  * DO NOT say: "Because ChatGPT is hard to code."
+  * SAFE ACADEMIC ANSWER: 
+    "Using proprietary cloud models like OpenAI presents three critical showstoppers:
+     1. Compliance & Security (RA 10173): Sending sensitive emotional disclosures of minor students to
+        foreign third-party servers violates the Data Privacy Act of 2012. Our architecture guarantees
+        all sensitive data is encrypted locally with AES-256 and processed in our own private VM environment.
+     2. Contextual Nuances: Generic cloud models are not fine-tuned for local Taglish code-switching or
+        highly localized Gen-Z school slang. Our mDeBERTa model is specifically tuned for this linguistic domain.
+     3. Financial Sustainability: A school-deployed platform must run on a sustainable budget. API token costs
+        scale rapidly. Our local, CPU-friendly microservice runs on a fixed-cost virtual machine with zero per-token fees."
+
+TRAP 2: "Is your system diagnosing mental illness? What if the AI misclassifies a serious suicidal case?"
+  * DO NOT say: "Our AI is 100% accurate and can replace clinical therapists."
+  * SAFE ACADEMIC ANSWER: 
+    "Absolutely not, Sir/Ma'am. StudentShield is strictly a screening and triaging framework, not a clinical 
+    diagnostic tool. The system operates on a 'Human-in-the-Loop' model in strict compliance with UNICEF 2021 
+    AI guidelines. The AI acts as a virtual assistant that prioritizes critical cases for human intervention, 
+    but all official counselors' decisions and student clinical care are managed manually. To prevent missed cases, 
+    we also developed a Local Heuristic Fallback using direct keywords, ensuring that even if the AI misclassifies 
+    or goes offline, explicit indicators of self-harm will always be caught."
+
+TRAP 3: "What happens if a student tries to trigger false critical alerts to spam parents or get peers in trouble?"
+  * DO NOT say: "We trust our students not to do that."
+  * SAFE ACADEMIC ANSWER:
+    "We have established robust defense mechanisms against system weaponization:
+     1. Bullying reports require Stage 1 manual verification. The counselor must review and verify the report 
+        before Stage 2 parent alerts are sent. No automated alerts are sent to the accused student's parents based 
+        on raw reports.
+     2. Rate limiters restrict submissions (30-sec limit for vents, 120-sec for bullying reports) to block spamming.
+     3. The Parent SMS for Critical vents is phrased as a 'high-stress wellness check' rather than an accusation, 
+        ensuring safety and prompting standard home check-ins without causing false disciplinary panics."
+
+TRAP 4: "Why did you use mDeBERTa-v3? Why not standard BERT or RoBERTa?"
+  * SAFE ACADEMIC ANSWER:
+    "DeBERTa-v3 (Decoding-enhanced BERT with Disentangled Attention) introduces ELECTRA-style pre-training, which He et 
+    al. (2021) demonstrated beats BERT and RoBERTa on all major classification benchmarks while utilizing far fewer 
+    parameters. Multilingual DeBERTa-v3 (mDeBERTa-v3) allows us to run inference with high contextual accuracy using 
+    traditional server CPU power. Crucially, its multilingual pre-training is uniquely suited to capture Taglish and 
+    Philippine Gen-Z slang, whereas standard BERT models fail on code-switching text."
+
+TRAP 5: "What if a student types sarcasm, e.g., 'KMS (kill myself) because our math quiz is so hard'? Won't this trigger parent panic?"
+  * SAFE ACADEMIC ANSWER:
+    "This was a key focus during system refinement. The system utilizes multi-dimensional ensemble checks:
+     1. DistilRoBERTa extracts emotional dimensions. For casual sarcasm, the fear/sadness vectors remain low 
+        while surprise/joy/neutral remain moderate, signaling a hyperbolic tone.
+     2. MiniLM vector matching measures the cosine distance against true clinical crisis anchors. Hyperbolic 
+        slang expressions do not match the semantic profile of active, planned self-harm.
+     3. Sarcasm logic automatically downgrades these to Medium/High (requiring quiet counselor review on the dashboard) 
+        rather than triggering a Critical level parent alarm, effectively separating hyperbole from genuine danger."
+
+TRAP 6: "What happens to the data if the school ceases operation or the project terminates? How is data protected?"
+  * SAFE ACADEMIC ANSWER:
+    "We use industry-standard AES-256 application-level encryption for all sensitive text before saving it to the MySQL 
+    database. Password hashes use bcrypt. If a data breach occurs, or if the server hosting environment is compromised, 
+    the raw data remains completely unreadable as hexadecimal strings since the decryption keys are stored separately 
+    within local environment files. Counselors can also securely soft-delete and purge records, fully aligning with 
+    the student's 'Right to be Forgotten' under the Data Privacy Act of 2012."
+
+TRAP 7: "Why did you use Agile methodology for a system with minor modifications?"
+  * SAFE ACADEMIC ANSWER:
+    "StudentShield is not a simple, static software package. Building a decoupled hybrid system that connects a PHP 
+    backend with a Python deep-learning service requires highly interactive iteration. Agile methodology allowed us to 
+    develop the core foundation in Sprint 1, integrate complex AI models in Sprint 2, tune the threshold vectors and 
+    sarcasm fallbacks in Sprint 3 based on initial evaluation data, and deploy the production-ready build in Sprint 4. 
+    This iterative approach prevented architecture failures that standard linear models (like Waterfall) would have missed."
+
+====================================================================================================
+                        11. PRACTICAL ORAL DEFENSE TIPS FOR THE TEAM
+====================================================================================================
+* Tip 1: Master the "Baton Pass"
+  Assign specific expert roles to each student to show unity and avoid speaking over each other:
+  - Melgarejo / Ramos (Systems Development & Web Stack): Best suited to answer questions about the PHP 
+    CodeIgniter 4 app, database design, local regex fallbacks, SMTP setups, and system deployment.
+  - Meneses / Enriquez (AI Integration & Data Science): Handlers of all machine learning questions, model weights, 
+    mDeBERTa, DistilRoBERTa, FAISS math vectors, and sarcasm logic.
+  - Urayanza (System Usability, Methodology & Compliance): Perfect to present Agile sprints, stratified 
+    sampling (Slovin's), ISO/IEC 25010 survey metrics, and RA 10173 privacy alignment.
+
+* Tip 2: Defend the Limitations
+  If the panel says, "Why doesn't the system work offline?" or "Why doesn't it have live 24/7 video chat counseling?"
+  Be ready to respond:
+  "That is a recognized limitation of our study. To avoid scope creep and keep the project financially sustainable 
+  for the school, we restricted the system to text-based submissions and offline-friendly SMS/Email alerting, 
+  which fits within the school's existing infrastructure. Expanding to real-time chat or offline syncing is 
+  recommended for future research."
+
+* Tip 3: Own the Statistics
+  Be prepared to explain the confusion matrix. If the panel asks, "What is more dangerous: a False Positive 
+  or a False Negative?"
+  Answer:
+  "In a crisis intervention system, a False Negative (missing a student in genuine critical distress) is far 
+  more dangerous than a False Positive (over-flagging a student). Therefore, we intentionally tuned our 
+  classification threshold to be highly sensitive. We implemented the Local Heuristic Fallback in PHP to guarantee 
+  we catch explicit critical indicators, and we rely on the guidance counselor's manual review to filter out 
+  false alarms."
+
+* Tip 4: Keep Answers Technical and Academic
+  Avoid phrases like "We think it works" or "We just copied the code." Always refer back to your literature 
+  and methodologies:
+  - "Based on the findings of He et al. (2021)..."
+  - "In compliance with the Data Privacy Act of 2012..."
+  - "Consistent with the Agile SDLC framework we adopted..."
+
+====================================================================================================
+                                      END OF REVIEWER
+====================================================================================================

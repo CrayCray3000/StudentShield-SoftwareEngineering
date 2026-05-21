@@ -163,9 +163,9 @@ class AuthController extends BaseController
                     }
                 }
             }
-
             // ── LAYER 6: TWO-FACTOR AUTHENTICATION (OTP) ──
             $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            log_message('critical', "OTP is: " . $otp);
             
             // Suspend actual login, save temporary session data
             session()->set([
