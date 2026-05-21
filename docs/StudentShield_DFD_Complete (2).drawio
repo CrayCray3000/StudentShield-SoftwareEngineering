@@ -67,7 +67,7 @@
     <mxCell id="flow_sys_coun_2" value="Dashboard Data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;exitX=1;exitY=0.3;entryX=0;entryY=0.35;fontFamily=Helvetica;fontSize=11;strokeColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sys" target="counselor">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
-    <mxCell id="flow_sys_coun_3" value="AI Insights" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;exitX=1;exitY=0.45;entryX=0;entryY=0.55;fontFamily=Helvetica;fontSize=11;strokeColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sys" target="counselor">
+    <mxCell id="flow_sys_coun_3" value="Venting Analysis Results" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;exitX=1;exitY=0.45;entryX=0;entryY=0.55;fontFamily=Helvetica;fontSize=11;strokeColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sys" target="counselor">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 
