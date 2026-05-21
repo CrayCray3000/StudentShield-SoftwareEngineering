@@ -122,7 +122,7 @@ class UserController extends BaseController
             return redirect()->to('/admin/users')->with('success', "User \"{$name}\" created successfully.");
         } catch (\Exception $e) {
             log_message('error', 'UserController::create failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'DB ERROR: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create user. Please check the database and try again.');
         }
     }
 
