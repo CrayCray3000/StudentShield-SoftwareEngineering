@@ -171,16 +171,22 @@ class UserController extends BaseController
                 $userUpdate['password_hash'] = password_hash($newPasscode, PASSWORD_BCRYPT);
             }
 
+            // Check subclass record existence BEFORE starting the transaction
+            // to avoid CI4 query builder state issues with countAllResults() inside transStart()
+            $studentExists  = $db->table('students')->where('user_id', $id)->countAllResults() > 0;
+            $counselorExists = $db->table('counselors')->where('user_id', $id)->countAllResults() > 0;
+            $adminExists    = $db->table('admins')->where('user_id', $id)->countAllResults() > 0;
+
             $db->transStart();
 
             $db->table('users')->where('id', $id)->update($userUpdate);
 
-            // Delete profile records in other subclass tables to keep them clean
+            // Delete profile records in other subclass tables to keep data clean
             if ($targetRole !== 0) $db->table('students')->where('user_id', $id)->delete();
             if ($targetRole !== 1) $db->table('counselors')->where('user_id', $id)->delete();
             if ($targetRole !== 2) $db->table('admins')->where('user_id', $id)->delete();
 
-            // Upsert core profile fields into appropriate subclass table
+            // Upsert core profile fields into the appropriate subclass table
             if ($targetRole === 0) {
                 $studentData = [
                     'student_id'   => ($studentIdInput === '') ? null : $studentIdInput,
@@ -189,10 +195,10 @@ class UserController extends BaseController
                     'section'      => $section,
                     'adviser_name' => $adviserName,
                 ];
-                if ($db->table('students')->where('user_id', $id)->countAllResults() > 0) {
+                if ($studentExists) {
                     $db->table('students')->where('user_id', $id)->update($studentData);
                 } else {
-                    $studentData['user_id'] = $id;
+                    $studentData['user_id']    = $id;
                     $studentData['grade_level'] = null;
                     $db->table('students')->insert($studentData);
                 }
@@ -201,7 +207,7 @@ class UserController extends BaseController
                     'counselor_email' => $parentEmail,
                     'counselor_phone' => $parentPhone,
                 ];
-                if ($db->table('counselors')->where('user_id', $id)->countAllResults() > 0) {
+                if ($counselorExists) {
                     $db->table('counselors')->where('user_id', $id)->update($counselorData);
                 } else {
                     $counselorData['user_id'] = $id;
@@ -212,7 +218,7 @@ class UserController extends BaseController
                     'email' => $parentEmail,
                     'phone' => $parentPhone,
                 ];
-                if ($db->table('admins')->where('user_id', $id)->countAllResults() > 0) {
+                if ($adminExists) {
                     $db->table('admins')->where('user_id', $id)->update($adminData);
                 } else {
                     $adminData['user_id'] = $id;
