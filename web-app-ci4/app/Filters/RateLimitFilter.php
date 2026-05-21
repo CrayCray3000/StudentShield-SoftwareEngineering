@@ -24,45 +24,55 @@ class RateLimitFilter implements FilterInterface
             return;
         }
 
-        $ip = $request->getIPAddress();
-        $key = md5($ip);
-        $file = self::STORAGE_DIR . $key . '.json';
+        try {
+            $ip = $request->getIPAddress();
+            $key = md5($ip);
+            $file = self::STORAGE_DIR . $key . '.json';
 
-        // Ensure directory exists
-        if (!is_dir(self::STORAGE_DIR)) {
-            mkdir(self::STORAGE_DIR, 0755, true);
-        }
-
-        // Read existing attempts
-        $data = ['attempts' => 0, 'first_attempt' => time()];
-        if (file_exists($file)) {
-            $data = json_decode(file_get_contents($file), true) ?: $data;
-
-            // Reset if lockout window has passed
-            if ((time() - $data['first_attempt']) > self::LOCKOUT_SECONDS) {
-                $data = ['attempts' => 0, 'first_attempt' => time()];
+            // Ensure directory exists
+            if (!is_dir(self::STORAGE_DIR)) {
+                @mkdir(self::STORAGE_DIR, 0755, true);
             }
-        }
 
-        // Check if locked out
-        if ($data['attempts'] >= self::MAX_ATTEMPTS) {
-            $remaining = self::LOCKOUT_SECONDS - (time() - $data['first_attempt']);
-            $minutes = ceil($remaining / 60);
-            
-            // Safe redirect back with fallback if no Referer header exists (prevents RouterException)
-            $redirect = redirect();
-            if ($request->getServer('HTTP_REFERER')) {
-                return $redirect->back()->with('error', "Too many login attempts. Please try again in {$minutes} minutes.");
+            // If directory still doesn't exist, skip rate limiting gracefully
+            if (!is_dir(self::STORAGE_DIR)) {
+                return;
             }
-            
-            $uriPath = $request->getUri()->getPath();
-            $target = (strpos($uriPath, 'admin') !== false) ? '/admin/login' : '/login';
-            return $redirect->to($target)->with('error', "Too many login attempts. Please try again in {$minutes} minutes.");
-        }
 
-        // Increment attempt count (will be called on POST to login endpoints)
-        $data['attempts']++;
-        file_put_contents($file, json_encode($data), LOCK_EX);
+            // Read existing attempts
+            $data = ['attempts' => 0, 'first_attempt' => time()];
+            if (file_exists($file)) {
+                $data = json_decode(@file_get_contents($file), true) ?: $data;
+
+                // Reset if lockout window has passed
+                if ((time() - $data['first_attempt']) > self::LOCKOUT_SECONDS) {
+                    $data = ['attempts' => 0, 'first_attempt' => time()];
+                }
+            }
+
+            // Check if locked out
+            if ($data['attempts'] >= self::MAX_ATTEMPTS) {
+                $remaining = self::LOCKOUT_SECONDS - (time() - $data['first_attempt']);
+                $minutes = ceil($remaining / 60);
+                
+                $redirect = redirect();
+                if ($request->getServer('HTTP_REFERER')) {
+                    return $redirect->back()->with('error', "Too many login attempts. Please try again in {$minutes} minutes.");
+                }
+                
+                $uriPath = $request->getUri()->getPath();
+                $target = (strpos($uriPath, 'admin') !== false) ? '/admin/login' : '/login';
+                return $redirect->to($target)->with('error', "Too many login attempts. Please try again in {$minutes} minutes.");
+            }
+
+            // Increment attempt count
+            $data['attempts']++;
+            @file_put_contents($file, json_encode($data), LOCK_EX);
+        } catch (\Throwable $e) {
+            // If rate limiting fails, allow the request through rather than crashing
+            log_message('error', 'RateLimitFilter error: ' . $e->getMessage());
+            return;
+        }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
