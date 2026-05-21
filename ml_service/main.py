@@ -377,7 +377,7 @@ def compile_regexes(patterns):
 CAT1_DIRECT = [
     r"\bsuicide\b", r"\bkill myself\b", r"\bend it all\b", r"\bcut myself\b",
     r"\bwant to die\b", r"\bno reason to live\b",
-    r"\bmagpakamatay\b", r"\blaslas\b", r"\btatalon\b", r"\bbibigti\b",
+    r"\bmagpakamatay\b", r"\blaslas\b", r"\btatalon\b", r"\bbibigti\b", r"\bsugatan\b",
     r"\bayoko na mabuhay\b", r"\bpatayin sarili ko\b", r"\btatapusin ko na buhay ko\b",
     r"\bgusto ko na mawala\b", r"\bgusto ko nang mamatay\b", r"\bgusto nako mamatay\b",
     r"\bmamatay\b", r"\bmagbibigti\b", r"\bsana kunin na ko ni lord\b",

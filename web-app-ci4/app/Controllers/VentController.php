@@ -68,7 +68,6 @@ class VentController extends BaseController
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
         $mlResult = json_decode($response, true);
         $sentimentScore = 0.0;
@@ -126,12 +125,14 @@ class VentController extends BaseController
         if ($riskLevel === 'CRITICAL') {
             $user = $db->table('users')->select('users.*, students.parent_phone, students.parent_email')->join('students', 'students.user_id = users.id', 'left')->where('users.id', $userId)->get()->getRow();
             if ($user) {
-                $fullNameStr = $user->name ?? 'your child';
-                $firstName = explode(' ', trim($fullNameStr))[0];
+                $studentName = $user->name ?? 'A student';
+                $firstName = explode(' ', trim($studentName))[0];
+
+                // ALWAYS alert the counselor for any CRITICAL vent
+                $this->triggerCounselorEmergencyAlert("URGENT: $studentName filed a CRITICAL vent. Please review the dashboard immediately.", "Counselor Emergency Alert");
 
                 if ($hideFromParents) {
                     // DOMESTIC ABUSE PRECAUTION: Do not notify parents! Over-notify the counselor instead!
-                    $studentName = $user->name ?? 'A student';
                     $this->triggerCounselorEmergencyAlert("RESTRICTED PROTOCOL: $studentName filed a CRITICAL vent and explicitly requested their parents NOT be notified. Review dashboard immediately.", "Counselor Emergency (Safety Override)");
                 }
                 else {
@@ -211,7 +212,6 @@ class VentController extends BaseController
 
         $response = curl_exec($curl);
         $err = curl_error($curl);
-        curl_close($curl);
 
         if ($err) {
             log_message('error', "Local Gateway cURL Error #: " . $err);
@@ -345,7 +345,6 @@ class VentController extends BaseController
             CURLOPT_HTTPHEADER => ["Content-Type: application/json", "Connection: close"],
         ]);
         curl_exec($curl);
-        curl_close($curl);
 
         // 2. Email the Counselor Office
         try {

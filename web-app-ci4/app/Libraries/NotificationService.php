@@ -48,7 +48,6 @@ class NotificationService
 
         $response = curl_exec($curl);
         $err = curl_error($curl);
-        curl_close($curl);
 
         if ($err) {
             log_message('error', "SMS Gateway cURL Error: {$err}");
