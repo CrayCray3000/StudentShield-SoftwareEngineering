@@ -35,6 +35,10 @@ torch.set_num_threads(2)
 ### Logging 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("ML_Service")
+# Suppress noisy Hugging Face download telemetry & unauthenticated warnings
+logging.getLogger("huggingface_hub").setLevel(logging.ERROR)
+logging.getLogger("filelock").setLevel(logging.ERROR)
+
 
 app = FastAPI(
     title="StudentShield ML Microservice",
@@ -581,6 +585,35 @@ JOKE_PATTERNS = [
     r"\bnagkatawa\b", r"\bkatawa kaayo\b",
     # Repeated punctuation (exaggeration signal)
     r"(!{3,})", r"(\?{3,})",
+    ### v7.2: Ironic / sardonic tone markers
+    # Detect bitter sarcasm WITHOUT explicit joke keywords.
+    # Common in Gen-Z venting: genuine frustration expressed through ironic praise.
+    # English ironic constructions
+    r"\bwhat a privilege\b",
+    r"\btruly living the dream\b",
+    r"\bliving the dream\b",
+    r"\babsolutely fantastic\b",
+    r"\bi just love\b.{0,40}\b(stress|disappoint|problem|same|waking up|every day)\b",
+    r"\bso lucky\b.{0,40}\b(everything|falls apart|worst|every time|consistently)\b",
+    r"\bmy favorite part\b",
+    r"\bsuch a\b.{0,10}\b(heartwarming|delightful|wonderful|lovely)\b",
+    r"\bnothing says\b.{0,30}\bquite like\b",
+    r"\bcharacter development\b",
+    r"\bcharacter.?building\b",
+    r"\bcharacter.?arc\b",
+    r"\bfun little talent\b",
+    r"\bhow delightful\b", r"\bhow wonderful\b",
+    r"\bwhat a joy\b", r"\bwhat a treat\b",
+    r"\bwhat a time to be alive\b",
+    r"\b(r[ée]sum[ée]|resume)\b.{0,20}\bsomeday\b",
+    r"\bthe consistency is\b.{0,15}\b(comforting|nice|great)\b",
+    # Taglish ironic constructions
+    r"\bthank you\b.{0,10}\btalaga\b.{0,20}\b(sa life|sa buhay|universe|mundo)\b",
+    r"\bang (galing|saya|comforting|nice)\b.{0,20}\b(talaga|naman)\b",
+    r"\bpero okay lang\b.{0,20}\bsanay\b",
+    r"\bsanay naman\b.{0,20}\bakong\b",
+    r"\bpara hindi.{0,15}(ma-?bore|mabore)\b",
+    r"\bdaily character development\b",
 ]
 
 ### COGNITIVE DISTORTIONS 
@@ -1135,9 +1168,19 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     ### RULE 1: Semantic similarity override 
     if semantic_score >= 0.78 and not has_cat1:
         if semantic_score >= 0.88:
-            risk       = "CRITICAL"
-            risk_score = max(0.95, risk_score)
-            reason     = f"CRITICAL: Semantic AI hard-override ({semantic_score:.0%}) to crisis language."
+            if is_joke:
+                # v7.2: Ironic/sardonic tone detected — high semantic match but
+                # likely bitter venting, not genuine crisis. Cap at HIGH.
+                risk       = "HIGH"
+                risk_score = max(0.82, risk_score)
+                reason     = (
+                    f"HIGH: Strong semantic match ({semantic_score:.0%}) to crisis language, "
+                    f"but ironic/sarcastic tone detected — monitoring for escalation."
+                )
+            else:
+                risk       = "CRITICAL"
+                risk_score = max(0.95, risk_score)
+                reason     = f"CRITICAL: Semantic AI hard-override ({semantic_score:.0%}) to crisis language."
         else:
             risk       = "HIGH"
             risk_score = max(0.80, risk_score)
@@ -1188,9 +1231,19 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     ### RULE 5: Emotional distress, Anhedonia, or Isolation 
     elif has_emotional or has_anhedonia or has_isolation:
         if is_joke:
-            risk       = "MEDIUM"
-            risk_score = max(0.4, risk_score)
-            reason     = "Distress/isolation keywords found but may be casual venting."
+            if signal_count >= 3:
+                # v7.2: Heavy compound distress through ironic tone is still
+                # clinically significant — bitter sarcasm masking real pain.
+                risk       = "HIGH"
+                risk_score = max(0.70, risk_score)
+                reason     = (
+                    f"HIGH: {signal_count} concurrent distress indicators detected "
+                    f"through ironic/sarcastic expression — monitoring for escalation."
+                )
+            else:
+                risk       = "MEDIUM"
+                risk_score = max(0.4, risk_score)
+                reason     = "Distress/isolation keywords found but may be casual venting."
         elif signal_count >= 2:
             risk       = "HIGH"
             risk_score = max(0.78, risk_score)
@@ -1335,14 +1388,29 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
         b_escalate, trajectory = manage_student_memory(
             student_id, text, risk, np.array([user_embedding])
         )
-        if trajectory == "ESCALATING" and risk not in ["HIGH", "CRITICAL"]:
-            risk       = "HIGH"
-            risk_score = max(0.75, risk_score)
-            reason     = "HIGH ESCALATION: Repeated worsening emotional distress over 14 days. " + reason
-        elif b_escalate and risk != "CRITICAL":
-            risk       = "CRITICAL"
-            risk_score = max(0.95, risk_score)
-            reason     = "CRITICAL ESCALATION: Repeated HIGH/CRITICAL distress over 14 days. " + reason
+        if b_escalate:
+            if risk == "HIGH":
+                risk       = "CRITICAL"
+                risk_score = max(0.95, risk_score)
+                reason     = "CRITICAL ESCALATION: Repeated HIGH/CRITICAL distress over 14 days. " + reason
+            elif risk == "MEDIUM":
+                risk       = "HIGH"
+                risk_score = max(0.78, risk_score)
+                reason     = "HIGH ESCALATION: Persistent MEDIUM distress with repeated high-risk history. " + reason
+            elif risk == "LOW":
+                risk       = "MEDIUM"
+                risk_score = max(0.45, risk_score)
+                reason     = "MEDIUM ESCALATION: Repeated high-risk history, monitoring mild vent. " + reason
+        elif trajectory == "ESCALATING":
+            if risk == "LOW":
+                risk       = "MEDIUM"
+                risk_score = max(0.45, risk_score)
+                reason     = "MEDIUM ESCALATION: Repeated worsening emotional distress over 14 days. " + reason
+            elif risk == "MEDIUM":
+                risk       = "HIGH"
+                risk_score = max(0.75, risk_score)
+                reason     = "HIGH ESCALATION: Repeated worsening emotional distress over 14 days. " + reason
+
 
     ## ┐
     ### STAGE 9: RISK PERCENTAGE BANDING                       
