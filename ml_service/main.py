@@ -108,20 +108,13 @@ try:
     )
     logger.info(f"Loaded custom model: {target_model}")
 except Exception as e:
-    logger.warning(f"Could not load custom model from Hub: {e}")
+    logger.warning(f"Could not load custom mDeBERTa model: {e}")
     fallback_model = "SamLowe/roberta-base-go_emotions"
-    try:
-        distress_classifier = pipeline(
-            "text-classification", model=fallback_model,
-            device=-1, truncation=True, max_length=512
-        )
-        logger.info(f"Loaded fallback model: {fallback_model}")
-    except Exception:
-        logger.warning("GoEmotions fallback unavailable. Using unitary/toxic-bert.")
-        distress_classifier = pipeline(
-            "text-classification", model="unitary/toxic-bert",
-            device=-1, truncation=True, max_length=512
-        )
+    distress_classifier = pipeline(
+        "text-classification", model=fallback_model,
+        device=-1, truncation=True, max_length=512
+    )
+    logger.info(f"Loaded fallback model: {fallback_model}")
 
 logger.info("Loading Multilingual Sentence-Transformer model...")
 semantic_model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
