@@ -1247,18 +1247,22 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
                 risk       = "MEDIUM"
                 risk_score = max(0.4, risk_score)
                 reason     = "Distress/isolation keywords found but may be casual venting."
-        elif signal_count >= 2:
+        elif signal_count >= 3:
             risk       = "HIGH"
             risk_score = max(0.78, risk_score)
             reason     = (
                 f"HIGH: Compound emotional signal — "
                 f"{signal_count} concurrent distress indicators detected."
             )
+        elif signal_count == 2:
+            risk       = "MEDIUM"
+            risk_score = max(0.68, risk_score)
+            reason     = "MEDIUM: Compound emotional signal (2 indicators)."
         else:
-            risk       = "MEDIUM" if not has_anhedonia else "HIGH"
-            risk_score = max(0.55 if not has_anhedonia else 0.75, risk_score)
+            risk       = "MEDIUM"
+            risk_score = max(0.55 if not has_anhedonia else 0.60, risk_score)
             reason     = (
-                f"{'HIGH' if has_anhedonia else 'MEDIUM'}: "
+                f"MEDIUM: "
                 f"{'Anhedonia/dissociation' if has_anhedonia else 'Emotional distress or social withdrawal'} detected."
             )
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
@@ -1266,11 +1270,11 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     ### RULE 5.5: Self-worth issues (NEW v7) 
     elif has_self_worth:
         if is_joke:
-            risk       = "MEDIUM"
-            risk_score = max(0.40, risk_score)
+            risk       = "LOW"
+            risk_score = max(0.35, risk_score)
             reason     = "Self-worth keywords found but context suggests casual expression."
-        elif signal_count >= 2:
-            # Self-worth + any other signal = HIGH (clinical concern)
+        elif signal_count >= 3:
+            # Self-worth + multiple signals = HIGH (clinical concern)
             risk       = "HIGH"
             risk_score = max(0.78, risk_score)
             reason     = (
@@ -1287,23 +1291,23 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     elif has_masked_dep:
         # Masked depression is clinically significant on its own — a student
         # who says "I'm fine around others but different alone" is disclosing
-        # a hidden struggle. Always HIGH unless evidence of pure joke context.
+        # a hidden struggle.
         if is_joke:
-            risk       = "MEDIUM"
-            risk_score = max(0.45, risk_score)
+            risk       = "LOW"
+            risk_score = max(0.35, risk_score)
             reason     = "Masked depression language detected but tone appears casual."
-        elif signal_count >= 2:
+        elif signal_count >= 3:
             risk       = "HIGH"
-            risk_score = max(0.80, risk_score)
+            risk_score = max(0.78, risk_score)
             reason     = (
                 f"HIGH: Masked depression compounded with "
                 f"{signal_count} concurrent distress signals — hidden suffering pattern."
             )
         else:
-            risk       = "HIGH"
-            risk_score = max(0.65, risk_score)
+            risk       = "MEDIUM"
+            risk_score = max(0.60, risk_score)
             reason     = (
-                "HIGH: Masked depression — student reports appearing normal to others "
+                "MEDIUM: Masked depression — student reports appearing normal to others "
                 "but experiencing different internal emotional state when alone."
             )
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
@@ -1328,11 +1332,11 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     # Alone → MEDIUM; compounded with distress signals → HIGH.
     elif has_relationship:
         if is_joke:
-            risk       = "MEDIUM"
-            risk_score = max(0.40, risk_score)
+            risk       = "LOW"
+            risk_score = max(0.35, risk_score)
             reason     = "Relationship keywords found but context suggests casual mention."
-        elif signal_count >= 2:
-            # Breakup + emotional distress / isolation / hopelessness = HIGH
+        elif signal_count >= 3:
+            # Breakup + multiple signals = HIGH
             risk       = "HIGH"
             risk_score = max(0.78, risk_score)
             reason     = (
@@ -1394,11 +1398,11 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
         if escalation_prob > 0:
             reason = f"[Predictive Recurrence Risk: {int(escalation_prob*100)}%] " + reason
         if b_escalate:
-            if risk == "HIGH":
+            if risk == "HIGH" and (trajectory == "ESCALATING" or escalation_prob > 0.6):
                 risk       = "CRITICAL"
-                risk_score = max(0.95, risk_score)
-                reason     = "CRITICAL ESCALATION: Repeated HIGH/CRITICAL distress over 14 days. " + reason
-            elif risk == "MEDIUM":
+                risk_score = max(0.92, risk_score)
+                reason     = "CRITICAL ESCALATION: Repeated HIGH distress with escalating trajectory. " + reason
+            elif risk == "MEDIUM" and trajectory == "ESCALATING":
                 risk       = "HIGH"
                 risk_score = max(0.78, risk_score)
                 reason     = "HIGH ESCALATION: Persistent MEDIUM distress with repeated high-risk history. " + reason
