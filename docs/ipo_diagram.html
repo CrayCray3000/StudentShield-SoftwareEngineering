@@ -93,12 +93,22 @@
         .eval-box {
             border: 1px solid #000;
             padding: 15px 20px;
-            width: 500px;
-            text-align: center;
+            width: 600px;
+            text-align: left;
             background-color: #fff;
             font-size: 1.15rem;
             line-height: 1.4;
             box-sizing: border-box;
+        }
+
+        .eval-box ul {
+            padding-left: 20px;
+            margin-top: 8px;
+            margin-bottom: 5px;
+        }
+
+        .eval-box li {
+            margin-bottom: 6px;
         }
 
         /* SVG Arrow */
@@ -123,6 +133,14 @@
     <div class="columns-container">
         <!-- INPUT COLUMN -->
         <div class="column">
+            <div class="section-title">USER ACTORS</div>
+            <ul>
+                <li><strong>Junior High School Students</strong> — Primary data submitters through vent entries and bullying incident reports.</li>
+                <li><strong>Guidance Counselors</strong> — System reviewers and responders who manage flagged cases.</li>
+                <li><strong>Super Administrators</strong> — System configurators who manage user accounts and enforce compliance.</li>
+                <li><strong>Parents / Guardians</strong> — Emergency alert recipients via SMS and email notifications.</li>
+            </ul>
+
             <div class="section-title">SYSTEM DATA</div>
             <ul>
                 <li>Student venting messages &amp; journal entries</li>
@@ -215,7 +233,13 @@
     <div class="eval-section">
         <div class="eval-title">EVALUATION</div>
         <div class="eval-box">
-            Analyzing final user acceptance scores from the Guidance office and testing panels.
+            Analyzing final user acceptance scores and feedback gathered from the following user groups:
+            <ul>
+                <li><strong>Junior High School Students</strong> — Evaluate usability of the Safe Space portal and Bully Report form through ISO/IEC 25010 questionnaire.</li>
+                <li><strong>Guidance Counselors</strong> — Assess functional suitability of the counselor dashboard, accuracy of risk classifications, and timeliness of automated alerts.</li>
+                <li><strong>IT / System Administrators</strong> — Evaluate backend performance, API reliability, encryption compliance, and audit log completeness.</li>
+                <li><strong>Parents / Guardians</strong> — Rate the clarity, timeliness, and usefulness of SMS and email emergency notifications received.</li>
+            </ul>
         </div>
         
         <!-- SVG Arrow connecting Output to Evaluation -->
@@ -223,10 +247,10 @@
             <!-- 
               Arrow starts at center of Output column: X: 830, Y: 0 
               Goes down to Y: 105 (vertical alignment of eval box right side pointer)
-              Goes left to X: 755 (tip of arrow pointing to eval box right side)
+              Goes left to X: 810 (tip of arrow pointing to eval box right side)
             -->
-            <path d="M 830,0 L 830,105 L 755,105" fill="none" stroke="black" stroke-width="2" />
-            <polygon points="740,105 755,100 755,110" fill="black" />
+            <path d="M 830,0 L 830,105 L 825,105" fill="none" stroke="black" stroke-width="2" />
+            <polygon points="810,105 825,100 825,110" fill="black" />
         </svg>
     </div>
 
