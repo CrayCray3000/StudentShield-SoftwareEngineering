@@ -92,7 +92,7 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 
 emotion_classifier = pipeline(
     "text-classification",
-    model="j-hartmann/emotion-english-distilroberta-base",
+    model="SamLowe/roberta-base-go_emotions",
     device=-1, truncation=True, max_length=512
 )
 
@@ -267,8 +267,8 @@ def get_semantic_similarity(text: str) -> float:
 
 def manage_student_memory(
     student_id: str, text: str, risk_level: str, embedding: np.ndarray
-) -> tuple[bool, str]:
-    if not student_id: return False, "INSUFFICIENT_DATA"
+) -> tuple[bool, str, float]:
+    if not student_id: return False, "INSUFFICIENT_DATA", 0.0
     index_path = os.path.join(MEMORY_DIR, f"{student_id}.index")
     meta_path  = os.path.join(MEMORY_DIR, f"{student_id}_meta.json")
     try:
@@ -291,6 +291,7 @@ def manage_student_memory(
         )
 
         trajectory = "INSUFFICIENT_DATA"
+        escalation_probability = 0.0
         recent_meta = [m for m in meta if m['timestamp'] > cutoff]
         if len(recent_meta) >= 3:
             risk_map = {"LOW": 1.0, "MEDIUM": 2.0, "HIGH": 3.0, "CRITICAL": 4.0}
@@ -300,10 +301,17 @@ def manage_student_memory(
             elif slope < -0.05: trajectory = "IMPROVING"
             else:               trajectory = "STABLE"
 
-        return (recent_severe >= 3), trajectory
+            # Predictive Recurrence Probability Model (Proxy for Random Forest)
+            base_prob = 0.2
+            slope_factor = max(0, min(1, slope * 2)) 
+            severity_factor = min(1.0, recent_severe / 3.0) * 0.3
+            freq_factor = min(1.0, len(recent_meta) / 10.0) * 0.2
+            escalation_probability = round(min(0.99, base_prob + slope_factor + severity_factor + freq_factor), 2)
+
+        return (recent_severe >= 3), trajectory, escalation_probability
     except Exception as e:
         logger.error(f"FAISS Memory Engine error: {e}")
-        return False, "INSUFFICIENT_DATA"
+        return False, "INSUFFICIENT_DATA", 0.0
 
 def get_risk_components(translated_text: str, normalized_text: str) -> tuple[float, float]:
     try:
@@ -311,11 +319,13 @@ def get_risk_components(translated_text: str, normalized_text: str) -> tuple[flo
         max_neg_emo_conf  = 0.0
 
         emotion_weights = {
-            "sadness": 1.0, "fear": 0.9, "anger": 0.8,
-            "disgust": 0.6, "neutral": 0.0, "surprise": 0.0, "joy": 0.0,
-            "grief": 1.0, "disappointment": 0.7,
-            "nervousness": 0.7, "annoyance": 0.5, "disapproval": 0.45,
-            "remorse": 0.8, "embarrassment": 0.55,
+            "sadness": 1.0, "fear": 0.9, "anger": 0.8, "grief": 1.0, "remorse": 0.8,
+            "disgust": 0.6, "disappointment": 0.7, "nervousness": 0.7, "embarrassment": 0.55,
+            "annoyance": 0.5, "disapproval": 0.45, "confusion": 0.2, "neutral": 0.0,
+            "surprise": 0.0, "joy": 0.0, "admiration": 0.0, "amusement": 0.0,
+            "approval": 0.0, "caring": 0.0, "desire": 0.0, "excitement": 0.0,
+            "fascination": 0.0, "gratitude": 0.0, "love": 0.0, "optimism": 0.0,
+            "pride": 0.0, "realization": 0.0, "relief": 0.0
         }
 
         trans_sentences = nltk.sent_tokenize(translated_text)
@@ -1385,9 +1395,11 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     ## ┘
     if student_id:
         user_embedding = semantic_model.encode(text)
-        b_escalate, trajectory = manage_student_memory(
+        b_escalate, trajectory, escalation_prob = manage_student_memory(
             student_id, text, risk, np.array([user_embedding])
         )
+        if escalation_prob > 0:
+            reason = f"[Predictive Recurrence Risk: {int(escalation_prob*100)}%] " + reason
         if b_escalate:
             if risk == "HIGH":
                 risk       = "CRITICAL"
