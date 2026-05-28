@@ -25,7 +25,7 @@ class IpWhitelistFilter implements FilterInterface
     {
         $clientIp = $request->getIPAddress();
 
-        // Temporarily disabled for capstone defense demonstration
+        // Temporarily disabled for capstone defense demonstration (just remove the comment to re enable)
         /*
         if (!in_array($clientIp, $this->allowedIps, true)) {
             $response = service('response');

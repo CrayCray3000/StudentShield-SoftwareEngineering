@@ -32,13 +32,13 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('/admin/vent/delete-multiple', 'AdminController::deleteMultipleVents');
     $routes->post('/admin/vent/restore/(:num)', 'AdminController::restoreVent/$1');
     $routes->post('/admin/vent/restore-multiple', 'AdminController::restoreMultipleVents');
-    
+
     $routes->get('/admin/api/vents', 'AdminController::fetchVents');
     $routes->get('/admin/api/incidents', 'AdminController::fetchIncidents');
     $routes->get('/admin/api/alerts', 'AdminController::fetchAlertLogs');
     $routes->get('/admin/api/student-profile/(:num)', 'AdminController::getStudentProfile/$1');
     $routes->get('/admin/evidence/(:segment)', 'AdminController::evidence/$1');
-    
+
     $routes->post('/admin/incident/resolve/(:num)', 'AdminController::resolveIncident/$1');
     $routes->post('/admin/incident/verify/(:num)', 'AdminController::verifyIncident/$1');
     $routes->post('/admin/incident/reject/(:num)', 'AdminController::rejectIncident/$1');

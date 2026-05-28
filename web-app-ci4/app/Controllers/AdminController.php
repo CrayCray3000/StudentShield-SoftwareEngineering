@@ -8,7 +8,7 @@ class AdminController extends BaseController
     {
         parent::initController($request, $response, $logger);
         helper('cookie');
-        
+
         // Auto-migrate logic removed: schema alterations should be handled by CI4 Migrations.
     }
     public function dashboard()
@@ -22,7 +22,7 @@ class AdminController extends BaseController
             ->where('vent_logs.deleted_at IS NULL')
             ->orderBy('created_at', 'DESC')
             ->get()->getResultArray();
-            
+
         $encrypter = \Config\Services::encrypter();
         foreach ($recent_vents as &$vent) {
             try {
@@ -40,25 +40,25 @@ class AdminController extends BaseController
 
     public function fetchVents()
     {
-        if (!session()->get('isLoggedIn') || !in_array((int)session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
             return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
         }
-        
+
         // AJAX endpoint
         $db = \Config\Database::connect();
         $isArchived = $this->request->getGet('archived') == '1';
-        
+
         $query = $db->table('vent_logs')
-                ->select('vent_logs.*, users.name, students.student_id, students.parent_phone, students.parent_email, students.section, students.adviser_name')
-                ->join('users', 'users.id = vent_logs.user_id', 'left')
-                ->join('students', 'students.user_id = users.id', 'left');
-                
-            if ($isArchived) {
-                $query->where('vent_logs.deleted_at IS NOT NULL');
-            } else {
-                $query->where('vent_logs.deleted_at IS NULL');
-            }
-            
+            ->select('vent_logs.*, users.name, students.student_id, students.parent_phone, students.parent_email, students.section, students.adviser_name')
+            ->join('users', 'users.id = vent_logs.user_id', 'left')
+            ->join('students', 'students.user_id = users.id', 'left');
+
+        if ($isArchived) {
+            $query->where('vent_logs.deleted_at IS NOT NULL');
+        } else {
+            $query->where('vent_logs.deleted_at IS NULL');
+        }
+
         $vents = $query->orderBy('created_at', 'DESC')
             ->limit(500)
             ->get()->getResultArray();
@@ -73,7 +73,7 @@ class AdminController extends BaseController
                 // Fallback for older non-encrypted plain text vents
             }
         }
-            
+
         return $this->response->setJSON($vents);
     }
 
@@ -81,7 +81,7 @@ class AdminController extends BaseController
     {
         $db = \Config\Database::connect();
         $db->table('vent_logs')->where('id', $id)->update(['status' => 'Resolved']);
-        $this->logAudit('RESOLVE', 'vent', (int)$id);
+        $this->logAudit('RESOLVE', 'vent', (int) $id);
         return redirect()->to('/admin/dashboard')->with('message', "Vent Entry #$id resolved.");
     }
 
@@ -90,7 +90,7 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         // Soft Delete: set deleted_at timestamp instead of permanent removal
         $db->table('vent_logs')->where('id', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
-        $this->logAudit('SOFT_DELETE', 'vent', (int)$id);
+        $this->logAudit('SOFT_DELETE', 'vent', (int) $id);
         return redirect()->to('/admin/dashboard')->with('message', "Vent Entry #$id archived (soft-deleted).");
     }
 
@@ -102,18 +102,18 @@ class AdminController extends BaseController
             // Soft Delete: set deleted_at timestamp instead of permanent removal
             $db->table('vent_logs')->whereIn('id', $ids)->update(['deleted_at' => date('Y-m-d H:i:s')]);
             foreach ($ids as $id) {
-                $this->logAudit('BULK_SOFT_DELETE', 'vent', (int)$id);
+                $this->logAudit('BULK_SOFT_DELETE', 'vent', (int) $id);
             }
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Vents archived (soft-deleted).");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No vents selected for deletion.");
     }
-    
+
     public function restoreVent($id)
     {
         $db = \Config\Database::connect();
         $db->table('vent_logs')->where('id', $id)->update(['deleted_at' => null]);
-        $this->logAudit('RESTORE', 'vent', (int)$id);
+        $this->logAudit('RESTORE', 'vent', (int) $id);
         return redirect()->to('/admin/dashboard')->with('message', "Vent Entry #$id unarchived and restored.");
     }
 
@@ -124,33 +124,33 @@ class AdminController extends BaseController
             $db = \Config\Database::connect();
             $db->table('vent_logs')->whereIn('id', $ids)->update(['deleted_at' => null]);
             foreach ($ids as $id) {
-                $this->logAudit('BULK_RESTORE', 'vent', (int)$id);
+                $this->logAudit('BULK_RESTORE', 'vent', (int) $id);
             }
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Vents unarchived and restored.");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No vents selected for restoration.");
     }
-    
+
     public function fetchIncidents()
     {
-        if (!session()->get('isLoggedIn') || !in_array((int)session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
             return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
         }
-        
+
         $db = \Config\Database::connect();
         $isArchived = $this->request->getGet('archived') == '1';
-        
+
         $query = $db->table('bully_reports')
-                ->select('bully_reports.*, bully_reports.incident_details as description, bully_reports.reporter_student_id as reporter_id, users.name, students.parent_phone, students.parent_email')
-                ->join('users', 'users.id = bully_reports.reporter_student_id', 'left')
-                ->join('students', 'students.user_id = users.id', 'left');
-                
-            if ($isArchived) {
-                $query->where('bully_reports.deleted_at IS NOT NULL');
-            } else {
-                $query->where('bully_reports.deleted_at IS NULL');
-            }
-            
+            ->select('bully_reports.*, bully_reports.incident_details as description, bully_reports.reporter_student_id as reporter_id, users.name, students.parent_phone, students.parent_email')
+            ->join('users', 'users.id = bully_reports.reporter_student_id', 'left')
+            ->join('students', 'students.user_id = users.id', 'left');
+
+        if ($isArchived) {
+            $query->where('bully_reports.deleted_at IS NOT NULL');
+        } else {
+            $query->where('bully_reports.deleted_at IS NULL');
+        }
+
         $incidents = $query->orderBy('created_at', 'DESC')
             ->limit(500)
             ->get()->getResultArray();
@@ -165,15 +165,15 @@ class AdminController extends BaseController
                 // Fallback for older non-encrypted plain text descriptions
             }
         }
-            
+
         return $this->response->setJSON($incidents);
     }
-    
+
     public function resolveIncident($id)
     {
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update(['status' => 'resolved']);
-        $this->logAudit('RESOLVE', 'incident', (int)$id);
+        $this->logAudit('RESOLVE', 'incident', (int) $id);
         return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id resolved.");
     }
 
@@ -188,14 +188,14 @@ class AdminController extends BaseController
     public function verifyIncident($id)
     {
         $db = \Config\Database::connect();
-        
+
         // Update status to verified
         $db->table('bully_reports')->where('id', $id)->update([
-            'status'     => 'verified',
+            'status' => 'verified',
             'updated_at' => date('Y-m-d H:i:s')
         ]);
-        $this->logAudit('VERIFY_AND_ALERT', 'incident', (int)$id);
-        
+        $this->logAudit('VERIFY_AND_ALERT', 'incident', (int) $id);
+
         // Fetch the full report record
         $report = $db->table('bully_reports')->where('id', $id)->get()->getRow();
         if (!$report) {
@@ -203,7 +203,7 @@ class AdminController extends BaseController
         }
 
         // --- Execute Automated Parent SMS & Email Blast (Stage 2) ---
-        
+
         // 1. Alert the Victim's Parent (SMS & Email)
         if (!empty($report->victim_student_id)) {
             $victim = $db->table('users')
@@ -213,11 +213,13 @@ class AdminController extends BaseController
                 ->get()->getRow();
             if ($victim) {
                 $victimMsg = "SVBSM Guidance Alert: A verified report indicates your child may be involved in a bullying incident as a victim. Please offer a warm check-in with your child tonight. Our counselors have confirmed the report and are actively investigating.";
-                if (!empty($victim->parent_phone)) $this->sendLocalSms($victim->parent_phone, $victimMsg);
-                if (!empty($victim->parent_email)) $this->sendLocalEmail($victim->parent_email, $victimMsg);
+                if (!empty($victim->parent_phone))
+                    $this->sendLocalSms($victim->parent_phone, $victimMsg);
+                if (!empty($victim->parent_email))
+                    $this->sendLocalEmail($victim->parent_email, $victimMsg);
             }
         }
-        
+
         // 2. Alert the Bully's Parent (SMS & Email)
         if (!empty($report->bully_student_id)) {
             $bully = $db->table('users')
@@ -227,8 +229,10 @@ class AdminController extends BaseController
                 ->get()->getRow();
             if ($bully) {
                 $bullyMsg = "SVBSM Guidance Alert: A verified report involving your child regarding a disciplinary incident has been confirmed by our guidance team. Our administration is currently investigating. Please contact the school office tomorrow.";
-                if (!empty($bully->parent_phone)) $this->sendLocalSms($bully->parent_phone, $bullyMsg);
-                if (!empty($bully->parent_email)) $this->sendLocalEmail($bully->parent_email, $bullyMsg);
+                if (!empty($bully->parent_phone))
+                    $this->sendLocalSms($bully->parent_phone, $bullyMsg);
+                if (!empty($bully->parent_email))
+                    $this->sendLocalEmail($bully->parent_email, $bullyMsg);
             }
         }
 
@@ -242,10 +246,10 @@ class AdminController extends BaseController
     {
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update([
-            'status'     => 'rejected_fake',
+            'status' => 'rejected_fake',
             'updated_at' => date('Y-m-d H:i:s')
         ]);
-        $this->logAudit('REJECT_FAKE', 'incident', (int)$id);
+        $this->logAudit('REJECT_FAKE', 'incident', (int) $id);
         return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id marked as unverified/fake. No parent alerts were sent.");
     }
 
@@ -257,16 +261,17 @@ class AdminController extends BaseController
     {
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update([
-            'status'     => 'pending_review',
+            'status' => 'pending_review',
             'updated_at' => date('Y-m-d H:i:s')
         ]);
-        $this->logAudit('UNDO_TO_PENDING', 'incident', (int)$id);
+        $this->logAudit('UNDO_TO_PENDING', 'incident', (int) $id);
         return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id has been reset to Pending Review.");
     }
 
     private function sendLocalSms($phone, $message)
     {
-        if (empty($phone)) return false;
+        if (empty($phone))
+            return false;
 
         $cleanPhone = ltrim($phone, '+');
         if (str_starts_with($cleanPhone, '63') && strlen($cleanPhone) == 12) {
@@ -285,37 +290,39 @@ class AdminController extends BaseController
         ]);
         curl_exec($curl);
         curl_close($curl);
-        
+
         return true;
     }
-    
+
     private function sendLocalEmail($emailAddress, $messageBody)
     {
-        if(empty($emailAddress)) return false;
+        if (empty($emailAddress))
+            return false;
         try {
             $email = \Config\Services::email();
-            
+
             $smtpUser = env('email.SMTPUser', '');
             $smtpPass = env('email.SMTPPass', '');
-            
+
             $email->initialize([
                 'protocol' => 'smtp',
                 'SMTPHost' => env('email.SMTPHost', 'smtp.gmail.com'),
                 'SMTPUser' => $smtpUser,
                 'SMTPPass' => $smtpPass,
-                'SMTPPort' => (int)env('email.SMTPPort', 587),
+                'SMTPPort' => (int) env('email.SMTPPort', 587),
                 'SMTPCrypto' => env('email.SMTPCrypto', 'tls'),
                 'SMTPTimeout' => 5,
                 'mailType' => 'html',
                 'charset' => 'utf-8',
             ]);
-            
+
             $email->setFrom($smtpUser, 'SVBSM Wellness Team');
             $email->setTo($emailAddress);
             $email->setSubject('StudentShield: Protective Services Notification');
             $email->setMessage("<div style='font-family: Arial; padding: 20px; background: #f9f9f9; border: 1px solid #ddd;'><h3>Counseling Alert</h3><p>" . esc($messageBody, 'html') . "</p></div>");
             $email->send(false);
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
     }
 
     public function deleteIncident($id)
@@ -323,7 +330,7 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
         // Soft Delete
         $db->table('bully_reports')->where('id', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
-        $this->logAudit('SOFT_DELETE', 'incident', (int)$id);
+        $this->logAudit('SOFT_DELETE', 'incident', (int) $id);
         return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id archived (soft-deleted).");
     }
 
@@ -335,18 +342,18 @@ class AdminController extends BaseController
             // Soft Delete
             $db->table('bully_reports')->whereIn('id', $ids)->update(['deleted_at' => date('Y-m-d H:i:s')]);
             foreach ($ids as $id) {
-                $this->logAudit('BULK_SOFT_DELETE', 'incident', (int)$id);
+                $this->logAudit('BULK_SOFT_DELETE', 'incident', (int) $id);
             }
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Incident Reports archived (soft-deleted).");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No incidents selected for deletion.");
     }
-    
+
     public function restoreIncident($id)
     {
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update(['deleted_at' => null]);
-        $this->logAudit('RESTORE', 'incident', (int)$id);
+        $this->logAudit('RESTORE', 'incident', (int) $id);
         return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id unarchived and restored.");
     }
 
@@ -357,19 +364,19 @@ class AdminController extends BaseController
             $db = \Config\Database::connect();
             $db->table('bully_reports')->whereIn('id', $ids)->update(['deleted_at' => null]);
             foreach ($ids as $id) {
-                $this->logAudit('BULK_RESTORE', 'incident', (int)$id);
+                $this->logAudit('BULK_RESTORE', 'incident', (int) $id);
             }
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Incident Reports unarchived and restored.");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No incidents selected for restoration.");
     }
-    
+
     public function fetchAlertLogs()
     {
-        if (!session()->get('isLoggedIn') || !in_array((int)session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
             return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
         }
-        
+
         // Ensure alerts log file exists, otherwise return empty array
         $logFile = WRITEPATH . 'logs/alerts.json';
         if (!file_exists($logFile)) {
@@ -378,12 +385,12 @@ class AdminController extends BaseController
 
         $logsContent = file_get_contents($logFile);
         $logs = json_decode($logsContent, true) ?: [];
-        
+
         // Sort descending by timestamp
-        usort($logs, function($a, $b) {
+        usort($logs, function ($a, $b) {
             return strtotime($b['timestamp']) - strtotime($a['timestamp']);
         });
-        
+
         // Return latest 50
         $logs = array_slice($logs, 0, 50);
 
@@ -392,7 +399,7 @@ class AdminController extends BaseController
 
     public function evidence($fileName)
     {
-        if (!session()->get('isLoggedIn') || !in_array((int)session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
             return $this->response->setStatusCode(401)->setBody('Unauthorized');
         }
 
@@ -411,12 +418,12 @@ class AdminController extends BaseController
 
     public function getStudentProfile($id)
     {
-        if (!session()->get('isLoggedIn') || !in_array((int)session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
             return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
         }
 
         $db = \Config\Database::connect();
-        
+
         // 1. Fetch User Data
         $user = $db->table('users')
             ->select('users.*, 
@@ -434,7 +441,7 @@ class AdminController extends BaseController
 
         // Remove sensitive info
         unset($user['password_hash']);
-        
+
         // 2. Fetch Vents (wellness tracking data)
         $vents = $db->table('vent_logs')
             ->where('user_id', $id)
@@ -442,7 +449,7 @@ class AdminController extends BaseController
             ->orderBy('created_at', 'ASC')
             ->limit(30)
             ->get()->getResultArray();
-            
+
         $encrypter = \Config\Services::encrypter();
         $timelineData = [];
         foreach ($vents as &$vent) {
@@ -450,15 +457,20 @@ class AdminController extends BaseController
                 if (ctype_xdigit($vent['raw_text'])) {
                     $vent['raw_text'] = $encrypter->decrypt(hex2bin($vent['raw_text']));
                 }
-            } catch (\Exception $e) {}
-            
+            } catch (\Exception $e) {
+            }
+
             // Format for ApexCharts datetime axis (timestamps in ms)
             $risk = $vent['risk_level'] ?? 'LOW';
             $riskUpper = strtoupper($risk);
-            if ($riskUpper === 'CRITICAL') $y = 100;
-            elseif ($riskUpper === 'HIGH') $y = 75;
-            elseif ($riskUpper === 'MEDIUM') $y = 50;
-            else $y = 25;
+            if ($riskUpper === 'CRITICAL')
+                $y = 100;
+            elseif ($riskUpper === 'HIGH')
+                $y = 75;
+            elseif ($riskUpper === 'MEDIUM')
+                $y = 50;
+            else
+                $y = 25;
 
             $timelineData[] = [
                 'x' => strtotime($vent['created_at']) * 1000,
@@ -472,9 +484,9 @@ class AdminController extends BaseController
         $incidents = $db->table('bully_reports')
             ->select('id, status, created_at, reporter_student_id, victim_student_id, bully_student_id')
             ->groupStart()
-                ->where('reporter_student_id', $id)
-                ->orWhere('victim_student_id', $id)
-                ->orWhere('bully_student_id', $id)
+            ->where('reporter_student_id', $id)
+            ->orWhere('victim_student_id', $id)
+            ->orWhere('bully_student_id', $id)
             ->groupEnd()
             ->orderBy('created_at', 'DESC')
             ->limit(15)

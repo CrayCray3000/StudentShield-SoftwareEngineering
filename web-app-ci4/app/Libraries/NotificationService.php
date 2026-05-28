@@ -25,7 +25,8 @@ class NotificationService
      */
     public static function sendSms(string $phone, string $message): bool
     {
-        if (empty($phone)) return false;
+        if (empty($phone))
+            return false;
 
         $gatewayUrl = env('sms.GatewayUrl', '');
         if (empty($gatewayUrl)) {
@@ -38,12 +39,12 @@ class NotificationService
 
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL            => $gatewayUrl,
+            CURLOPT_URL => $gatewayUrl,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT        => 30,
-            CURLOPT_CUSTOMREQUEST  => 'POST',
-            CURLOPT_POSTFIELDS     => $payload,
-            CURLOPT_HTTPHEADER     => ['Content-Type: application/json', 'Connection: close'],
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Connection: close'],
         ]);
 
         $response = curl_exec($curl);
@@ -63,7 +64,8 @@ class NotificationService
      */
     public static function sendEmail(string $to, string $subject, string $htmlBody): bool
     {
-        if (empty($to)) return false;
+        if (empty($to))
+            return false;
 
         $smtpUser = env('email.SMTPUser', '');
         $smtpPass = env('email.SMTPPass', '');
@@ -76,15 +78,15 @@ class NotificationService
         try {
             $email = \Config\Services::email();
             $email->initialize([
-                'protocol'    => 'smtp',
-                'SMTPHost'    => env('email.SMTPHost', 'smtp.gmail.com'),
-                'SMTPUser'    => $smtpUser,
-                'SMTPPass'    => $smtpPass,
-                'SMTPPort'    => (int) env('email.SMTPPort', 587),
-                'SMTPCrypto'  => env('email.SMTPCrypto', 'tls'),
+                'protocol' => 'smtp',
+                'SMTPHost' => env('email.SMTPHost', 'smtp.gmail.com'),
+                'SMTPUser' => $smtpUser,
+                'SMTPPass' => $smtpPass,
+                'SMTPPort' => (int) env('email.SMTPPort', 587),
+                'SMTPCrypto' => env('email.SMTPCrypto', 'tls'),
                 'SMTPTimeout' => 10,
-                'mailType'    => 'html',
-                'charset'     => 'utf-8',
+                'mailType' => 'html',
+                'charset' => 'utf-8',
             ]);
 
             $email->setFrom($smtpUser, 'SVBSM Wellness Team');
