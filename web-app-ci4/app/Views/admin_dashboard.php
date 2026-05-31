@@ -795,7 +795,7 @@
                         }
 
                         // Status formatting
-                        let isResolved = vent.status === 'Resolved';
+                        let isResolved = vent.status === 'Resolved' || vent.status === 'Reviewed';
                         let statusColor = isResolved ? 'text-[#0B5E2E] bg-[#0B5E2E]/10' : 'text-gray-600 bg-gray-50';
                         
                         // Formatting dates with day name for Philippine context

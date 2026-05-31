@@ -110,7 +110,7 @@ class AdminController extends BaseController
     public function resolveVent($id)
     {
         $db = \Config\Database::connect();
-        $db->table('vent_logs')->where('id', $id)->update(['status' => 'Resolved']);
+        $db->table('vent_logs')->where('id', $id)->update(['status' => 'Reviewed']);
         $this->logAudit('RESOLVE', 'vent', (int) $id);
         return redirect()->to('/admin/dashboard')->with('message', "Vent Entry #$id resolved.");
     }
