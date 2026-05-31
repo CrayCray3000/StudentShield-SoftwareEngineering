@@ -169,46 +169,77 @@ class CaseSummaryController extends BaseController
             'resolved'    => count(array_filter($bullyReports, fn($r) => in_array($r['status'], ['resolved', 'Resolved']))),
         ];
 
-        // 6. SMS logs
-        $smsLogs = $db->table('sms_logs')
-            ->where('student_id', $studentId)
-            ->orderBy('timestamp', 'DESC')
-            ->limit(50)
-            ->get()->getResultArray();
+        // 6. SMS logs (table may not exist on some deployments)
+        $smsLogs = [];
+        try {
+            if ($db->tableExists('sms_logs')) {
+                $smsLogs = $db->table('sms_logs')
+                    ->where('student_id', $studentId)
+                    ->orderBy('timestamp', 'DESC')
+                    ->limit(50)
+                    ->get()->getResultArray();
+            }
+        } catch (\Exception $e) {
+            log_message('warning', 'sms_logs query skipped: ' . $e->getMessage());
+        }
 
-        // 7. Email logs
-        $emailLogs = $db->table('email_logs')
-            ->where('student_id', $studentId)
-            ->orderBy('timestamp', 'DESC')
-            ->limit(50)
-            ->get()->getResultArray();
+        // 7. Email logs (table may not exist on some deployments)
+        $emailLogs = [];
+        try {
+            if ($db->tableExists('email_logs')) {
+                $emailLogs = $db->table('email_logs')
+                    ->where('student_id', $studentId)
+                    ->orderBy('timestamp', 'DESC')
+                    ->limit(50)
+                    ->get()->getResultArray();
+            }
+        } catch (\Exception $e) {
+            log_message('warning', 'email_logs query skipped: ' . $e->getMessage());
+        }
 
         // 8. Counselor notes
-        $notes = $db->table('counselor_notes')
-            ->select('counselor_notes.*, users.name as counselor_name')
-            ->join('users', 'users.id = counselor_notes.counselor_id', 'left')
-            ->where('counselor_notes.student_id', $studentId)
-            ->where('counselor_notes.deleted_at IS NULL')
-            ->orderBy('counselor_notes.created_at', 'DESC')
-            ->get()->getResultArray();
+        $notes = [];
+        try {
+            $notes = $db->table('counselor_notes')
+                ->select('counselor_notes.*, users.name as counselor_name')
+                ->join('users', 'users.id = counselor_notes.counselor_id', 'left')
+                ->where('counselor_notes.student_id', $studentId)
+                ->where('counselor_notes.deleted_at IS NULL')
+                ->orderBy('counselor_notes.created_at', 'DESC')
+                ->get()->getResultArray();
+        } catch (\Exception $e) {
+            log_message('warning', 'counselor_notes query skipped: ' . $e->getMessage());
+        }
 
         // 9. Case status history
-        $statusHistory = $db->table('case_status_history')
-            ->select('case_status_history.*, users.name as changed_by_name')
-            ->join('users', 'users.id = case_status_history.changed_by', 'left')
-            ->where('case_status_history.student_id', $studentId)
-            ->orderBy('case_status_history.created_at', 'DESC')
-            ->get()->getResultArray();
+        $statusHistory = [];
+        try {
+            $statusHistory = $db->table('case_status_history')
+                ->select('case_status_history.*, users.name as changed_by_name')
+                ->join('users', 'users.id = case_status_history.changed_by', 'left')
+                ->where('case_status_history.student_id', $studentId)
+                ->orderBy('case_status_history.created_at', 'DESC')
+                ->get()->getResultArray();
+        } catch (\Exception $e) {
+            log_message('warning', 'case_status_history query skipped: ' . $e->getMessage());
+        }
 
         $currentStatus = !empty($statusHistory) ? $statusHistory[0]['status'] : 'active_monitoring';
 
-        // 10. Audit logs for this student
-        $auditLogs = $db->table('audit_logs')
-            ->where('entity_type', 'student')
-            ->where('entity_id', $studentId)
-            ->orderBy('created_at', 'DESC')
-            ->limit(20)
-            ->get()->getResultArray();
+        // 10. Audit logs for this student (table may not exist on some deployments)
+        $auditLogs = [];
+        try {
+            if ($db->tableExists('audit_logs')) {
+                $auditLogs = $db->table('audit_logs')
+                    ->where('entity_type', 'student')
+                    ->where('entity_id', $studentId)
+                    ->orderBy('created_at', 'DESC')
+                    ->limit(20)
+                    ->get()->getResultArray();
+            }
+        } catch (\Exception $e) {
+            log_message('warning', 'audit_logs query skipped: ' . $e->getMessage());
+        }
 
         // 11. Build unified timeline
         $timeline = [];
@@ -417,32 +448,77 @@ class CaseSummaryController extends BaseController
      */
     private function ensureTables($db): void
     {
-        if (!$db->tableExists('counselor_notes')) {
-            $db->query("CREATE TABLE IF NOT EXISTS counselor_notes (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                student_id INT NOT NULL,
-                counselor_id INT NOT NULL,
-                note_type ENUM('observation','recommendation','intervention','follow_up','general') DEFAULT 'general',
-                content TEXT NOT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-                deleted_at DATETIME NULL DEFAULT NULL,
-                FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
-                FOREIGN KEY (counselor_id) REFERENCES users(id) ON DELETE CASCADE
-            )");
-        }
+        // NOTE: No FOREIGN KEY constraints — InfinityFree shared hosting rejects them.
+        try {
+            if (!$db->tableExists('counselor_notes')) {
+                $db->query("CREATE TABLE IF NOT EXISTS counselor_notes (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    student_id INT NOT NULL,
+                    counselor_id INT NOT NULL,
+                    note_type ENUM('observation','recommendation','intervention','follow_up','general') DEFAULT 'general',
+                    content TEXT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                    deleted_at DATETIME NULL DEFAULT NULL,
+                    INDEX idx_student (student_id),
+                    INDEX idx_counselor (counselor_id)
+                )");
+            }
 
-        if (!$db->tableExists('case_status_history')) {
-            $db->query("CREATE TABLE IF NOT EXISTS case_status_history (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                student_id INT NOT NULL,
-                status ENUM('active_monitoring','intervention_ongoing','parent_consultation_required','escalated','under_investigation','resolved','closed') NOT NULL,
-                remarks TEXT NULL,
-                changed_by INT NOT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
-                FOREIGN KEY (changed_by) REFERENCES users(id) ON DELETE CASCADE
-            )");
+            if (!$db->tableExists('case_status_history')) {
+                $db->query("CREATE TABLE IF NOT EXISTS case_status_history (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    student_id INT NOT NULL,
+                    status ENUM('active_monitoring','intervention_ongoing','parent_consultation_required','escalated','under_investigation','resolved','closed') NOT NULL,
+                    remarks TEXT NULL,
+                    changed_by INT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_student (student_id),
+                    INDEX idx_changed_by (changed_by)
+                )");
+            }
+
+            if (!$db->tableExists('sms_logs')) {
+                $db->query("CREATE TABLE IF NOT EXISTS sms_logs (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    student_id INT NOT NULL,
+                    parent_number VARCHAR(20) NULL,
+                    alert_type VARCHAR(50) DEFAULT 'risk_alert',
+                    message TEXT NULL,
+                    sent_status VARCHAR(20) DEFAULT 'pending',
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_student (student_id)
+                )");
+            }
+
+            if (!$db->tableExists('email_logs')) {
+                $db->query("CREATE TABLE IF NOT EXISTS email_logs (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    student_id INT NOT NULL,
+                    recipient_email VARCHAR(255) NULL,
+                    subject VARCHAR(255) NULL,
+                    body TEXT NULL,
+                    sent_status VARCHAR(20) DEFAULT 'pending',
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_student (student_id)
+                )");
+            }
+
+            if (!$db->tableExists('audit_logs')) {
+                $db->query("CREATE TABLE IF NOT EXISTS audit_logs (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT NULL,
+                    action VARCHAR(100) NOT NULL,
+                    entity_type VARCHAR(50) NOT NULL,
+                    entity_id INT NOT NULL,
+                    ip_address VARCHAR(45) NULL,
+                    user_agent TEXT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_entity (entity_type, entity_id)
+                )");
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'ensureTables failed: ' . $e->getMessage());
         }
     }
 }
