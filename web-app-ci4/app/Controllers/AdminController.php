@@ -49,18 +49,22 @@ class AdminController extends BaseController
 
         $db = \Config\Database::connect();
         
+        $pager = null;
         $logs = [];
         if ($db->tableExists('audit_logs')) {
-            $logs = $db->table('audit_logs')
+            $auditModel = new \App\Models\AuditLogModel();
+            $logs = $auditModel
                 ->select('audit_logs.*, users.name as actor_name, users.role as actor_role')
                 ->join('users', 'users.id = audit_logs.user_id', 'left')
                 ->orderBy('audit_logs.created_at', 'DESC')
-                ->limit(300) // Show last 300 logs
-                ->get()->getResultArray();
+                ->paginate(50);
+                
+            $pager = $auditModel->pager;
         }
 
         return view('admin_audit_logs', [
-            'logs' => $logs
+            'logs' => $logs,
+            'pager' => $pager
         ]);
     }
 

@@ -187,6 +187,23 @@
                     </tbody>
                 </table>
             </div>
+            
+            <?php if (isset($pager) && $pager->getPageCount() > 1): ?>
+            <style>
+                .pagination { display: flex; list-style: none; padding: 0; margin: 0; gap: 0.25rem; }
+                .pagination li a, .pagination li span { padding: 0.5rem 0.75rem; border: 1px solid #e5ebe5; border-radius: 0.375rem; font-size: 0.875rem; color: #4b5563; text-decoration: none; background: white; }
+                .pagination li.active a, .pagination li.active span { background-color: #166534; color: white; border-color: #166534; }
+                .pagination li a:hover { background-color: #f9fafb; }
+            </style>
+            <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between flex-wrap gap-4">
+                <span class="text-sm text-gray-500">
+                    Showing <?= ($pager->getCurrentPage() - 1) * 50 + 1 ?> to <?= min($pager->getCurrentPage() * 50, $pager->getTotal()) ?> of <?= $pager->getTotal() ?> entries
+                </span>
+                <div class="flex items-center">
+                    <?= $pager->links() ?>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
     </main>
 
