@@ -170,7 +170,7 @@ class CaseSummaryController extends BaseController
                             ->join('users', 'users.id = audit_logs.user_id', 'left')
                             ->where('audit_logs.entity_type', 'incident')
                             ->where('audit_logs.entity_id', $report['id'])
-                            ->whereIn('audit_logs.action', ['VERIFY_INCIDENT', 'REJECT_FAKE'])
+                            ->whereIn('audit_logs.action', ['VERIFY_AND_ALERT', 'VERIFY_INCIDENT', 'REJECT_FAKE'])
                             ->orderBy('audit_logs.created_at', 'DESC')
                             ->limit(1)
                             ->get()->getRow();
