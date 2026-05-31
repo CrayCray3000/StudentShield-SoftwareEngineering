@@ -98,8 +98,23 @@
                     <svg class="h-5 w-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     Action History
                 </h2>
-                <div class="flex items-center gap-2">
-                    <input type="text" id="searchLogs" placeholder="Search actor or action..." class="text-sm px-4 py-2 border border-gray-200 rounded-lg outline-none focus:border-primary">
+            </div>
+            <div class="px-6 py-3 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
+                <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-sm relative">
+                    <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    <input type="text" id="searchLogs" placeholder="Search actor or action..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-1 focus:ring-[#0B5E2E]/20 transition-all">
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <select id="filterCategoryLogs" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E]">
+                        <option value="all">All Categories</option>
+                        <option value="INCIDENT">Incident</option>
+                        <option value="VENT">Vent</option>
+                        <option value="SYSTEM">System (Login/Logout)</option>
+                        <option value="STUDENT">Student</option>
+                        <option value="USER">User</option>
+                    </select>
+                    <input type="date" id="filterDateLogs" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] text-gray-600">
+                    <button type="button" id="clearFiltersLogs" class="text-xs font-semibold text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg border border-gray-200 transition-colors">✕ Clear</button>
                 </div>
             </div>
             
@@ -115,7 +130,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <?php foreach ($logs as $log): ?>
-                        <tr class="hover:bg-gray-50/50 transition-colors">
+                        <tr class="hover:bg-gray-50/50 transition-colors" data-category="<?= strtoupper($log['entity_type']) ?>" data-date="<?= date('Y-m-d', strtotime($log['created_at'])) ?>">
                             <td class="px-6 py-4 text-xs text-gray-500 whitespace-nowrap">
                                 <?= date('M d, Y h:i A', strtotime($log['created_at'])) ?>
                             </td>
@@ -208,17 +223,39 @@
     </main>
 
     <script>
-        document.getElementById('searchLogs').addEventListener('keyup', function() {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#logsTable tbody tr');
-            
+        function applyAuditFilters() {
+            const search = document.getElementById('searchLogs').value.toLowerCase();
+            const category = document.getElementById('filterCategoryLogs').value;
+            const dateVal = document.getElementById('filterDateLogs').value;
+            const rows = document.querySelectorAll('#logsTable tbody tr');
+            let visibleCount = 0;
+
             rows.forEach(row => {
-                if (row.innerText.toLowerCase().includes(filter)) {
+                const matchSearch = row.innerText.toLowerCase().includes(search);
+                const matchCategory = category === 'all' || row.getAttribute('data-category') === category;
+                const matchDate = !dateVal || row.getAttribute('data-date') === dateVal;
+
+                if (matchSearch && matchCategory && matchDate) {
                     row.style.display = '';
+                    visibleCount++;
                 } else {
                     row.style.display = 'none';
                 }
             });
+
+            // Update visible count badge
+            const badge = document.getElementById('visibleCount');
+            if (badge) badge.textContent = visibleCount + ' result' + (visibleCount !== 1 ? 's' : '');
+        }
+
+        document.getElementById('searchLogs').addEventListener('keyup', applyAuditFilters);
+        document.getElementById('filterCategoryLogs').addEventListener('change', applyAuditFilters);
+        document.getElementById('filterDateLogs').addEventListener('change', applyAuditFilters);
+        document.getElementById('clearFiltersLogs').addEventListener('click', function() {
+            document.getElementById('searchLogs').value = '';
+            document.getElementById('filterCategoryLogs').value = 'all';
+            document.getElementById('filterDateLogs').value = '';
+            applyAuditFilters();
         });
     </script>
 </body>
