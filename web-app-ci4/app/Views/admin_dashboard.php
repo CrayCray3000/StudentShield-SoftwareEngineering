@@ -1256,8 +1256,8 @@
                 
                 $('#ventsTableBody tr').filter(function() {
                     let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
-                    let matchesStatus = statusValue === 'all' || $(this).data('status') === statusValue;
-                    let matchesDate = !dateValue || $(this).data('date') === dateValue;
+                    let matchesStatus = statusValue === 'all' || $(this).attr('data-status') === statusValue;
+                    let matchesDate = !dateValue || $(this).attr('data-date') === dateValue;
                     
                     $(this).toggle(matchesSearch && matchesStatus && matchesDate);
                 });
@@ -1270,18 +1270,32 @@
                 
                 $('#incidentsTableBody tr').filter(function() {
                     let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
-                    let matchesStatus = statusValue === 'all' || $(this).data('status') === statusValue;
-                    let matchesDate = !dateValue || $(this).data('date') === dateValue;
+                    let matchesStatus = statusValue === 'all' || $(this).attr('data-status') === statusValue;
+                    let matchesDate = !dateValue || $(this).attr('data-date') === dateValue;
                     
                     $(this).toggle(matchesSearch && matchesStatus && matchesDate);
                 });
             }
 
+            // Restore filter state from localStorage if exists
+            if (localStorage.getItem('ventsFilterStatus')) $('#filterStatusVents').val(localStorage.getItem('ventsFilterStatus'));
+            if (localStorage.getItem('ventsFilterDate')) $('#filterDateVents').val(localStorage.getItem('ventsFilterDate'));
+            if (localStorage.getItem('incidentsFilterStatus')) $('#filterStatusIncidents').val(localStorage.getItem('incidentsFilterStatus'));
+            if (localStorage.getItem('incidentsFilterDate')) $('#filterDateIncidents').val(localStorage.getItem('incidentsFilterDate'));
+
             $('#searchVents').on('keyup', applyVentsFilter);
-            $('#filterStatusVents, #filterDateVents').on('change', applyVentsFilter);
+            $('#filterStatusVents, #filterDateVents').on('change', function() {
+                localStorage.setItem('ventsFilterStatus', $('#filterStatusVents').val());
+                localStorage.setItem('ventsFilterDate', $('#filterDateVents').val());
+                applyVentsFilter();
+            });
 
             $('#searchIncidents').on('keyup', applyIncidentsFilter);
-            $('#filterStatusIncidents, #filterDateIncidents').on('change', applyIncidentsFilter);
+            $('#filterStatusIncidents, #filterDateIncidents').on('change', function() {
+                localStorage.setItem('incidentsFilterStatus', $('#filterStatusIncidents').val());
+                localStorage.setItem('incidentsFilterDate', $('#filterDateIncidents').val());
+                applyIncidentsFilter();
+            });
 
             // Fetch immediately upon load for 0-lag experience
             fetchLiveVents();
