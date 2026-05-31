@@ -79,6 +79,17 @@
             .print-break {
                 page-break-before: always;
             }
+            /* Force Grids in Print to prevent vertical stacking */
+            .grid {
+                display: grid !important;
+            }
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+            .md\:grid-cols-4 {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            }
+
             .dashboard-card {
                 box-shadow: none !important;
                 border: 1px solid #e2e8f0 !important;
@@ -340,7 +351,7 @@
                                 <th class="pb-3">Case ID</th>
                                 <th class="pb-3">Role</th>
                                 <th class="pb-3">Incident Details</th>
-                                <th class="pb-3">Status</th>
+                                <th class="pb-3">Verification Status</th>
                                 <th class="pb-3">Date Reported</th>
                             </tr>
                         </thead>
@@ -745,12 +756,21 @@
 
                 const dateStr = new Date(r.created_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'});
                 
+                let statusBadge = '';
+                if (r.status === 'verified') {
+                    statusBadge = '<span class="px-2.5 py-1 rounded-md bg-green-100 text-green-800 font-bold border border-green-200 flex items-center w-max"><svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Verified True</span>';
+                } else if (r.status === 'rejected_fake') {
+                    statusBadge = '<span class="px-2.5 py-1 rounded-md bg-red-100 text-red-800 font-bold border border-red-200 flex items-center w-max"><svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>False Report</span>';
+                } else {
+                    statusBadge = '<span class="px-2.5 py-1 rounded-md bg-yellow-100 text-yellow-800 font-bold border border-yellow-200 flex items-center w-max"><svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Pending Review</span>';
+                }
+
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50/50 transition-colors">
                         <td class="py-3.5 font-semibold text-emerald-950">#${r.id}</td>
                         <td class="py-3.5"><span class="px-2.5 py-0.5 rounded-full text-xs font-medium ${roleBadge}">${role}</span></td>
                         <td class="py-3.5 max-w-xs truncate">${r.incident_details}</td>
-                        <td class="py-3.5 capitalize font-medium text-xs">${r.status.replace('_', ' ')}</td>
+                        <td class="py-3.5 text-xs">${statusBadge}</td>
                         <td class="py-3.5 text-gray-400">${dateStr}</td>
                     </tr>
                 `;
