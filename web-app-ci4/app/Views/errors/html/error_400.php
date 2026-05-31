@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
+    <link rel="shortcut icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
     <meta charset="utf-8">
     <title><?= lang('Errors.badRequest') ?></title>
 

@@ -1,6 +1,9 @@
 <!doctype html>
 <html>
 <head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
+    <link rel="shortcut icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
     <meta charset="UTF-8">
     <meta name="robots" content="noindex">
 
