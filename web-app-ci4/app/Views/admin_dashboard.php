@@ -900,6 +900,7 @@
                 isFirstLoadVents = false;
                 
                 toggleDeleteBtn('.vent-checkbox', '.delete-btn-vents');
+                applyVentsFilter();
                 },
                 error: function(xhr) {
                     if(xhr.status === 401) {
@@ -1054,7 +1055,7 @@
                 document.getElementById('incidentsTableBody').innerHTML = html;
                 
                 toggleDeleteBtn('.incident-checkbox', '.delete-btn-incidents');
-                $('#searchIncidents').trigger('keyup');
+                applyIncidentsFilter();
                 
                 },
                 error: function(xhr) {
