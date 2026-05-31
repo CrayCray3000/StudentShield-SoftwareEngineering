@@ -366,10 +366,18 @@
             
             <!-- Table Container -->
             <div class="overflow-x-auto custom-scrollbar flex flex-col">
-                <div class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100">
-                    <div class="flex items-center gap-2 flex-1 max-w-sm relative">
+                <div class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
+                    <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-sm relative">
                         <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                         <input type="text" id="searchVents" placeholder="Search entries, names, or risk levels..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-1 focus:ring-[#0B5E2E]/20 transition-all">
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <select id="filterStatusVents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E]">
+                            <option value="all">All Statuses</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="unresolved">Action Required</option>
+                        </select>
+                        <input type="date" id="filterDateVents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] text-gray-600">
                     </div>
                     <button type="button" onclick="submitBulkDeleteVents()" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents hidden">
                         📦 Archive Selected
@@ -421,10 +429,18 @@
             </div>
             
             <div class="overflow-x-auto custom-scrollbar flex flex-col">
-                <div class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100">
-                    <div class="flex items-center gap-2 flex-1 max-w-sm relative">
+                <div class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
+                    <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-sm relative">
                         <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                         <input type="text" id="searchIncidents" placeholder="Search reporters, accused, or descriptions..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] focus:ring-1 focus:ring-[#E04B3F]/20 transition-all">
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <select id="filterStatusIncidents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F]">
+                            <option value="all">All Statuses</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="unresolved">Action Required</option>
+                        </select>
+                        <input type="date" id="filterDateIncidents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] text-gray-600">
                     </div>
                     <button type="button" onclick="submitBulkDeleteIncidents()" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents hidden">
                         📦 Archive Selected
@@ -792,7 +808,7 @@
                         const animDelay = isFirstLoadVents ? `style="animation-delay: ${index * 0.05}s"` : '';
                         const animClass = isFirstLoadVents ? 'animate-slide-up opacity-0' : '';
 
-                        html += `<tr class="transition-all duration-300 transform hover:-translate-y-[1px] ${bgColor} ${animClass}" ${animDelay}>
+                        const rawDate = dateObj.toISOString().split('T')[0]; const ventStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${ventStatus}" data-date="${rawDate}" class="transition-all duration-300 transform hover:-translate-y-[1px] ${bgColor} ${animClass}" ${animDelay}>
                             ${vent.risk_level === 'CRITICAL' && !isResolved ? `` : ''}
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center relative z-10">
                                 <input type="checkbox" name="vent_ids[]" value="${vent.id}" class="vent-checkbox rounded border-gray-300 text-primary h-4 w-4">
@@ -944,7 +960,7 @@
 
                         let evidenceBadge = incident.evidence_file ? `<span class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">📎 Evidence Attached</span>` : '';
 
-                        html += `<tr class="transition-colors duration-200 ${bgColor}">
+                        const rawDate = dateObj.toISOString().split('T')[0]; const incidentStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${incidentStatus}" data-date="${rawDate}" class="transition-colors duration-200 ${bgColor}">
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center">
                                 <input type="checkbox" name="incident_ids[]" value="${incident.id}" class="incident-checkbox rounded border-gray-300 text-primary h-4 w-4">
                             </td>
@@ -1233,19 +1249,39 @@
             });
 
             // Search Filters
-            $('#searchVents').on('keyup', function() {
-                let value = $(this).val().toLowerCase();
+            function applyVentsFilter() {
+                let searchValue = $('#searchVents').val().toLowerCase();
+                let statusValue = $('#filterStatusVents').val();
+                let dateValue = $('#filterDateVents').val();
+                
                 $('#ventsTableBody tr').filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
+                    let matchesStatus = statusValue === 'all' || $(this).data('status') === statusValue;
+                    let matchesDate = !dateValue || $(this).data('date') === dateValue;
+                    
+                    $(this).toggle(matchesSearch && matchesStatus && matchesDate);
                 });
-            });
+            }
 
-            $('#searchIncidents').on('keyup', function() {
-                let value = $(this).val().toLowerCase();
+            function applyIncidentsFilter() {
+                let searchValue = $('#searchIncidents').val().toLowerCase();
+                let statusValue = $('#filterStatusIncidents').val();
+                let dateValue = $('#filterDateIncidents').val();
+                
                 $('#incidentsTableBody tr').filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
+                    let matchesStatus = statusValue === 'all' || $(this).data('status') === statusValue;
+                    let matchesDate = !dateValue || $(this).data('date') === dateValue;
+                    
+                    $(this).toggle(matchesSearch && matchesStatus && matchesDate);
                 });
-            });
+            }
+
+            $('#searchVents').on('keyup', applyVentsFilter);
+            $('#filterStatusVents, #filterDateVents').on('change', applyVentsFilter);
+
+            $('#searchIncidents').on('keyup', applyIncidentsFilter);
+            $('#filterStatusIncidents, #filterDateIncidents').on('change', applyIncidentsFilter);
 
             // Fetch immediately upon load for 0-lag experience
             fetchLiveVents();
