@@ -1,0 +1,38 @@
+
+=================== d:\laragon\www\student shield\ml_service\main.py ===================
+Line 46: "Advanced NLP for Emotion, Depression, Bullying, Sarcasm, "
+Line 47: "Sexual Harassment, Academic Pressure, Self-Worth, and Masked Depression Detection"
+Line 94: "text-classification",
+Line 106: "text-classification", model=target_model,
+Line 114: "text-classification", model=fallback_model,
+Line 132: # Added for the 7 new depression patterns
+Line 184: # Added for the 7 new depression patterns
+Line 300: severity_factor = min(1.0, recent_severe / 3.0) * 0.3
+Line 302: escalation_probability = round(min(0.99, base_prob + slope_factor + severity_factor + freq_factor), 2)
+Line 466: r"\bdepressed\b", r"\bdepression\b", r"can't take this anymore",
+Line 875: ### NEW: MASKED DEPRESSION
+Line 880: MASKED_DEPRESSION = [
+Line 887: r"\bhiding\b.{0,20}\b(pain|sadness|depression|feelings|how i feel)\b",
+Line 893: r"\bmasking\b.{0,20}\b(depression|pain|sadness|feelings)\b",
+Line 894: r"\bhigh.?functioning\b.{0,20}\b(depression|anxiety)\b",
+Line 1063: COMPILED_REGEXES['masked_dep']  = compile_regexes(MASKED_DEPRESSION) # NEW v7
+Line 1128: expert_reasoning.append("Masked depression pattern: hides feelings when around others.")
+Line 1158: ### Rule 5.7: Masked depression          ← NEW v7
+Line 1198: reason = "CRITICAL: Masked Depression — sarcasm disguising explicit suicidal intent."
+Line 1208: reason     = "HIGH: Masked Depression — sarcasm disguising preparation signals."
+Line 1290: ### RULE 5.7: Masked depression (NEW v7)
+Line 1292: # Masked depression is clinically significant on its own — a student
+Line 1298: reason     = "Masked depression language detected but tone appears casual."
+Line 1303: f"HIGH: Masked depression compounded with "
+Line 1310: "MEDIUM: Masked depression — student reports appearing normal to others "
+Line 1371: reason     = "MEDIUM: Academic pressure or performance anxiety detected."
+
+=================== d:\laragon\www\student shield\web-app-ci4\app\Controllers\VentController.php ===================
+Line 88: // Severity mapping for comparison
+Line 89: $severityLevels = ['LOW' => 1, 'MEDIUM' => 2, 'HIGH' => 3, 'CRITICAL' => 4];
+Line 91: $currentSeverity = $severityLevels[$riskLevel] ?? 1;
+Line 92: $localSeverity = $severityLevels[$localResult['risk_level']] ?? 1;
+Line 95: if ($localSeverity > $currentSeverity) {
+Line 400: * Local keyword-based risk classification fallback.
+Line 480: 'pagod na ako', 'depressed', 'depression', 'di ko na kaya', 'ayoko na',
+Line 524: // MEDIUM — Verbal Abuse, Cyberbullying, Masked Depression

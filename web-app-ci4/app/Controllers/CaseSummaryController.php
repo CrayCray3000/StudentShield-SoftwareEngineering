@@ -159,6 +159,30 @@ class CaseSummaryController extends BaseController
                 }
             } catch (\Exception $e) {
             }
+
+            // Fetch the staff member who verified/rejected this report
+            $report['reviewed_by_name'] = null;
+            if (in_array($report['status'], ['verified', 'rejected_fake'])) {
+                try {
+                    if ($db->tableExists('audit_logs')) {
+                        $audit = $db->table('audit_logs')
+                            ->select('users.name')
+                            ->join('users', 'users.id = audit_logs.user_id', 'left')
+                            ->where('audit_logs.entity_type', 'incident')
+                            ->where('audit_logs.entity_id', $report['id'])
+                            ->whereIn('audit_logs.action', ['VERIFY_INCIDENT', 'REJECT_FAKE'])
+                            ->orderBy('audit_logs.created_at', 'DESC')
+                            ->limit(1)
+                            ->get()->getRow();
+                        
+                        if ($audit) {
+                            $report['reviewed_by_name'] = $audit->name;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    log_message('warning', 'Failed to fetch reviewer from audit_logs: ' . $e->getMessage());
+                }
+            }
         }
 
         $bullyStats = [

@@ -757,12 +757,14 @@
                 const dateStr = new Date(r.created_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'});
                 
                 let statusBadge = '';
+                let reviewerInfo = r.reviewed_by_name ? `<span class="text-[9px] text-gray-500 font-normal leading-tight mt-0.5">by ${r.reviewed_by_name}</span>` : '';
+
                 if (r.status === 'verified') {
-                    statusBadge = '<span class="px-2.5 py-1 rounded-md bg-green-100 text-green-800 font-bold border border-green-200 flex items-center w-max"><svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Verified True</span>';
+                    statusBadge = `<span class="px-2.5 py-1 rounded-md bg-green-100 text-green-800 font-bold border border-green-200 flex flex-col w-max"><div class="flex items-center"><svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Verified True</div>${reviewerInfo}</span>`;
                 } else if (r.status === 'rejected_fake') {
-                    statusBadge = '<span class="px-2.5 py-1 rounded-md bg-red-100 text-red-800 font-bold border border-red-200 flex items-center w-max"><svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>False Report</span>';
+                    statusBadge = `<span class="px-2.5 py-1 rounded-md bg-red-100 text-red-800 font-bold border border-red-200 flex flex-col w-max"><div class="flex items-center"><svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>False Report</div>${reviewerInfo}</span>`;
                 } else {
-                    statusBadge = '<span class="px-2.5 py-1 rounded-md bg-yellow-100 text-yellow-800 font-bold border border-yellow-200 flex items-center w-max"><svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Pending Review</span>';
+                    statusBadge = `<span class="px-2.5 py-1 rounded-md bg-yellow-100 text-yellow-800 font-bold border border-yellow-200 flex items-center w-max"><svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Pending Review</span>`;
                 }
 
                 tbody.innerHTML += `
