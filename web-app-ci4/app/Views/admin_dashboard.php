@@ -353,10 +353,6 @@
                     Live Intelligence Feed
                 </h2>
                 <div class="flex items-center gap-4">
-                    <label class="flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-300 transition-colors" for="toggleArchivedVents">
-                        <input type="checkbox" id="toggleArchivedVents" class="rounded border-gray-300 text-[#0B5E2E] shadow-sm w-3.5 h-3.5" onchange="toggleVentsView(this.checked)">
-                        <span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Show Archived</span>
-                    </label>
                     <div class="flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 live-dot"></span>
                         <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">Live Syncing</span>
@@ -376,6 +372,7 @@
                             <option value="all">All Statuses</option>
                             <option value="resolved">Resolved</option>
                             <option value="unresolved">Action Required</option>
+                            <option value="archived">Archived Records</option>
                         </select>
                         <input type="date" id="filterDateVents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] text-gray-600">
                     </div>
@@ -421,10 +418,6 @@
                     Bullying Incident Reports
                 </h2>
                 <div class="flex items-center gap-4">
-                    <label class="flex items-center gap-2 cursor-pointer bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-full border border-gray-300 transition-colors" for="toggleArchivedIncidents">
-                        <input type="checkbox" id="toggleArchivedIncidents" class="rounded border-gray-300 text-[#0B5E2E] shadow-sm w-3.5 h-3.5" onchange="toggleIncidentsView(this.checked)">
-                        <span class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Show Archived</span>
-                    </label>
                 </div>
             </div>
             
@@ -439,6 +432,7 @@
                             <option value="all">All Statuses</option>
                             <option value="resolved">Resolved</option>
                             <option value="unresolved">Action Required</option>
+                            <option value="archived">Archived Records</option>
                         </select>
                         <input type="date" id="filterDateIncidents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] text-gray-600">
                     </div>
@@ -1257,7 +1251,7 @@
                 
                 $('#ventsTableBody tr').filter(function() {
                     let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
-                    let matchesStatus = statusValue === 'all' || $(this).attr('data-status') === statusValue;
+                    let matchesStatus = statusValue === 'all' || statusValue === 'archived' || $(this).attr('data-status') === statusValue;
                     let matchesDate = !dateValue || $(this).attr('data-date') === dateValue;
                     
                     $(this).toggle(matchesSearch && matchesStatus && matchesDate);
@@ -1271,7 +1265,7 @@
                 
                 $('#incidentsTableBody tr').filter(function() {
                     let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
-                    let matchesStatus = statusValue === 'all' || $(this).attr('data-status') === statusValue;
+                    let matchesStatus = statusValue === 'all' || statusValue === 'archived' || $(this).attr('data-status') === statusValue;
                     let matchesDate = !dateValue || $(this).attr('data-date') === dateValue;
                     
                     $(this).toggle(matchesSearch && matchesStatus && matchesDate);
@@ -1285,20 +1279,49 @@
             if (localStorage.getItem('incidentsFilterDate')) $('#filterDateIncidents').val(localStorage.getItem('incidentsFilterDate'));
 
             $('#searchVents').on('keyup', applyVentsFilter);
-            $('#filterStatusVents, #filterDateVents').on('change', function() {
-                localStorage.setItem('ventsFilterStatus', $('#filterStatusVents').val());
-                localStorage.setItem('ventsFilterDate', $('#filterDateVents').val());
+            $('#filterStatusVents').on('change', function() {
+                let val = $(this).val();
+                localStorage.setItem('ventsFilterStatus', val);
+                
+                if (val === 'archived') {
+                    if (!showArchivedVents) toggleVentsView(true);
+                    else applyVentsFilter();
+                } else {
+                    if (showArchivedVents) toggleVentsView(false);
+                    else applyVentsFilter();
+                }
+            });
+            $('#filterDateVents').on('change', function() {
+                localStorage.setItem('ventsFilterDate', $(this).val());
                 applyVentsFilter();
             });
 
             $('#searchIncidents').on('keyup', applyIncidentsFilter);
-            $('#filterStatusIncidents, #filterDateIncidents').on('change', function() {
-                localStorage.setItem('incidentsFilterStatus', $('#filterStatusIncidents').val());
-                localStorage.setItem('incidentsFilterDate', $('#filterDateIncidents').val());
+            $('#filterStatusIncidents').on('change', function() {
+                let val = $(this).val();
+                localStorage.setItem('incidentsFilterStatus', val);
+                
+                if (val === 'archived') {
+                    if (!showArchivedIncidents) toggleIncidentsView(true);
+                    else applyIncidentsFilter();
+                } else {
+                    if (showArchivedIncidents) toggleIncidentsView(false);
+                    else applyIncidentsFilter();
+                }
+            });
+            $('#filterDateIncidents').on('change', function() {
+                localStorage.setItem('incidentsFilterDate', $(this).val());
                 applyIncidentsFilter();
             });
 
             // Fetch immediately upon load for 0-lag experience
+            // If localStorage has 'archived' filter, switch view before first fetch
+            if (localStorage.getItem('ventsFilterStatus') === 'archived') {
+                showArchivedVents = true;
+            }
+            if (localStorage.getItem('incidentsFilterStatus') === 'archived') {
+                showArchivedIncidents = true;
+            }
             fetchLiveVents();
             fetchLiveIncidents();
             fetchAlertLogs();
