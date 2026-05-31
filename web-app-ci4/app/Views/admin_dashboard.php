@@ -366,7 +366,11 @@
             
             <!-- Table Container -->
             <div class="overflow-x-auto custom-scrollbar flex flex-col">
-                <div class="px-6 py-2 flex justify-end bg-white">
+                <div class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100">
+                    <div class="flex items-center gap-2 flex-1 max-w-sm relative">
+                        <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        <input type="text" id="searchVents" placeholder="Search entries, names, or risk levels..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-1 focus:ring-[#0B5E2E]/20 transition-all">
+                    </div>
                     <button type="button" onclick="submitBulkDeleteVents()" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents hidden">
                         📦 Archive Selected
                     </button>
@@ -417,7 +421,11 @@
             </div>
             
             <div class="overflow-x-auto custom-scrollbar flex flex-col">
-                <div class="px-6 py-2 flex justify-end bg-white">
+                <div class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100">
+                    <div class="flex items-center gap-2 flex-1 max-w-sm relative">
+                        <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        <input type="text" id="searchIncidents" placeholder="Search reporters, accused, or descriptions..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] focus:ring-1 focus:ring-[#E04B3F]/20 transition-all">
+                    </div>
                     <button type="button" onclick="submitBulkDeleteIncidents()" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents hidden">
                         📦 Archive Selected
                     </button>
@@ -1030,6 +1038,8 @@
                 document.getElementById('incidentsTableBody').innerHTML = html;
                 
                 toggleDeleteBtn('.incident-checkbox', '.delete-btn-incidents');
+                $('#searchIncidents').trigger('keyup');
+                
                 },
                 error: function(xhr) {
                     if(xhr.status === 401) {
@@ -1220,6 +1230,21 @@
                 if($('.incident-checkbox:checked').length !== $('.incident-checkbox').length) {
                     $('#selectAllIncidents').prop('checked', false);
                 }
+            });
+
+            // Search Filters
+            $('#searchVents').on('keyup', function() {
+                let value = $(this).val().toLowerCase();
+                $('#ventsTableBody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            $('#searchIncidents').on('keyup', function() {
+                let value = $(this).val().toLowerCase();
+                $('#incidentsTableBody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
 
             // Fetch immediately upon load for 0-lag experience
