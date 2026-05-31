@@ -266,4 +266,39 @@ class UserController extends BaseController
 
         return redirect()->to('/admin/users')->with('success', "User \"{$user->name}\" deleted.");
     }
+
+    /**
+     * Unlock a student's reporting privileges after a disciplinary meeting.
+     * Resets the is_locked flag and clears all false report strikes.
+     */
+    public function unlock($id)
+    {
+        $role = (int) session()->get('role');
+        if ($role !== 1 && $role !== 2) {
+            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
+        }
+
+        $db = \Config\Database::connect();
+        $user = $db->table('users')->where('id', $id)->get()->getRow();
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+
+        // Reset the lock flag
+        $db->table('users')->where('id', $id)->update([
+            'is_locked' => 0,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        // Reset all rejected_fake reports back to reviewed (so strikes are cleared)
+        $db->table('bully_reports')
+            ->where('reporter_student_id', $id)
+            ->where('status', 'rejected_fake')
+            ->update(['status' => 'strike_cleared']);
+
+        $this->logAudit('UNLOCK_ACCOUNT', 'user', (int)$id);
+
+        return redirect()->to('/admin/users')->with('success', "Student \"{$user->name}\" has been unlocked. Reporting privileges restored.");
+    }
 }

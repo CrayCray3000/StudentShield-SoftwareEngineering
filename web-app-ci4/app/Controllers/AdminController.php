@@ -241,16 +241,84 @@ class AdminController extends BaseController
 
     /**
      * Reject a fake/malicious report without sending any parent alerts.
+     * 
+     * ── False Report Strike System (3-Strike Progressive Discipline) ──
+     * Strike 1: Warning shown to student on next login
+     * Strike 2: Parent/guardian notified via SMS & Email
+     * Strike 3: Student's reporting privileges auto-locked (is_locked = 1)
      */
     public function rejectIncident($id)
     {
         $db = \Config\Database::connect();
+
+        // Fetch the report to identify the reporter
+        $report = $db->table('bully_reports')->where('id', $id)->get()->getRow();
+
         $db->table('bully_reports')->where('id', $id)->update([
             'status' => 'rejected_fake',
             'updated_at' => date('Y-m-d H:i:s')
         ]);
         $this->logAudit('REJECT_FAKE', 'incident', (int) $id);
-        return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id marked as unverified/fake. No parent alerts were sent.");
+
+        // ── Strike System Enforcement ──
+        $strikeMsg = '';
+        if ($report && !empty($report->reporter_student_id)) {
+            $reporterId = $report->reporter_student_id;
+
+            // Count total false reports by this student
+            $totalStrikes = (int) $db->table('bully_reports')
+                ->where('reporter_student_id', $reporterId)
+                ->where('status', 'rejected_fake')
+                ->where('deleted_at IS NULL')
+                ->countAllResults();
+
+            if ($totalStrikes === 2) {
+                // ── Strike 2: Notify parent/guardian ──
+                $student = $db->table('users')
+                    ->select('users.name, students.parent_phone, students.parent_email')
+                    ->join('students', 'students.user_id = users.id', 'left')
+                    ->where('users.id', $reporterId)
+                    ->get()->getRow();
+
+                if ($student) {
+                    $parentMsg = "SVBSM Guidance Notice: Your child ({$student->name}) has received a 2nd warning for filing false incident reports on the StudentShield system. One more violation will result in temporary suspension of their reporting privileges. Please discuss responsible use of the school's safety tools with your child.";
+                    if (!empty($student->parent_phone))
+                        $this->sendLocalSms($student->parent_phone, $parentMsg);
+                    if (!empty($student->parent_email))
+                        $this->sendLocalEmail($student->parent_email, $parentMsg);
+                }
+                $strikeMsg = " [STRIKE 2/3 — Parent notified]";
+
+            } elseif ($totalStrikes >= 3) {
+                // ── Strike 3: Auto-lock the student's reporting privileges ──
+                $db->table('users')->where('id', $reporterId)->update([
+                    'is_locked' => 1,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
+                $this->logAudit('AUTO_LOCK_ACCOUNT', 'user', (int) $reporterId);
+
+                // Notify parent about suspension
+                $student = $db->table('users')
+                    ->select('users.name, students.parent_phone, students.parent_email')
+                    ->join('students', 'students.user_id = users.id', 'left')
+                    ->where('users.id', $reporterId)
+                    ->get()->getRow();
+
+                if ($student) {
+                    $lockMsg = "SVBSM Guidance Alert: Your child ({$student->name}) has had their incident reporting privileges temporarily suspended due to 3 confirmed false reports. To restore access, please visit the Guidance Office for a disciplinary meeting.";
+                    if (!empty($student->parent_phone))
+                        $this->sendLocalSms($student->parent_phone, $lockMsg);
+                    if (!empty($student->parent_email))
+                        $this->sendLocalEmail($student->parent_email, $lockMsg);
+                }
+                $strikeMsg = " [STRIKE 3/3 — Account LOCKED]";
+
+            } else {
+                $strikeMsg = " [STRIKE {$totalStrikes}/3]";
+            }
+        }
+
+        return redirect()->to('/admin/dashboard')->with('message', "Incident Report #$id marked as unverified/fake. No parent alerts were sent.{$strikeMsg}");
     }
 
     /**

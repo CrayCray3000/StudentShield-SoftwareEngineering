@@ -8,12 +8,34 @@ class BullyReportController extends BaseController
 {
     public function index()
     {
+        $this->ensureIsLockedColumn();
+
+        // Block locked students from accessing the bullying report form
+        $userId = session()->get('user_id');
+        if ($userId) {
+            $db = \Config\Database::connect();
+            $user = $db->table('users')->where('id', $userId)->get()->getRowArray();
+            if (!empty($user['is_locked'])) {
+                return redirect()->to('/student/dashboard')->with('error', 'Your reporting privileges have been suspended. Please visit the Guidance Office.');
+            }
+        }
+
         return view('reports/bullying_form');
     }
 
     public function submit()
     {
         if (!$this->request->is('post')) return redirect()->to('/report/bullying');
+
+        // Block locked students from submitting reports
+        $userId = session()->get('user_id');
+        if ($userId) {
+            $db2 = \Config\Database::connect();
+            $user = $db2->table('users')->where('id', $userId)->get()->getRowArray();
+            if (!empty($user['is_locked'])) {
+                return redirect()->to('/student/dashboard')->with('error', 'Your reporting privileges have been suspended.');
+            }
+        }
 
         // Security: Anti-Spam Rate Limiting (1 Bullying Report per 120 seconds)
         // Malicious scripts cannot spam-deplete the SMS Gateway.
@@ -211,5 +233,22 @@ class BullyReportController extends BaseController
             $email->setMessage("<div style='font-family: Arial; padding: 20px; background: #f9f9f9; border: 1px solid #ddd;'><h3>Counseling Alert</h3><p>" . esc($messageBody, 'html') . "</p></div>");
             $email->send(false);
         } catch (\Exception $e) {}
+    }
+
+    /**
+     * Safely ensure the is_locked column exists in the users table.
+     * This runs once per session and is InfinityFree-safe.
+     */
+    private function ensureIsLockedColumn(): void
+    {
+        try {
+            $db = \Config\Database::connect();
+            $fields = $db->getFieldNames('users');
+            if (!in_array('is_locked', $fields)) {
+                $db->query("ALTER TABLE users ADD COLUMN is_locked TINYINT(1) NOT NULL DEFAULT 0");
+            }
+        } catch (\Exception $e) {
+            // Silently skip if column already exists or ALTER fails
+        }
     }
 }

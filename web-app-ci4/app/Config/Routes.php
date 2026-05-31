@@ -61,6 +61,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('/admin/users/create', 'UserController::create');
     $routes->post('/admin/users/update/(:num)', 'UserController::update/$1');
     $routes->post('/admin/users/delete/(:num)', 'UserController::delete/$1');
+    $routes->post('/admin/users/unlock/(:num)', 'UserController::unlock/$1');
 
     $routes->get('/report/bullying', 'BullyReportController::index');
     $routes->post('/report/bullying/submit', 'BullyReportController::submit');
