@@ -68,7 +68,7 @@
                 background: white !important;
                 background-image: none !important;
                 color: black !important;
-                font-size: 12px !important;
+                font-size: 11px !important;
             }
             .no-print {
                 display: none !important;
@@ -81,9 +81,9 @@
             }
             .dashboard-card {
                 box-shadow: none !important;
-                border: 1px solid #ddd !important;
-                border-radius: 0 !important;
-                margin-bottom: 20px !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 8px !important;
+                margin-bottom: 15px !important;
                 page-break-inside: avoid;
             }
             .print-container {
@@ -91,6 +91,34 @@
                 max-width: 100% !important;
                 padding: 0 !important;
                 margin: 0 !important;
+            }
+            /* Premium Ink-saving light colors for Student Banner under print */
+            .bg-gradient-to-r {
+                background: #f8fafc !important;
+                background-image: none !important;
+                color: #0f172a !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 12px !important;
+                padding: 16px !important;
+            }
+            .bg-gradient-to-r * {
+                color: #0f172a !important;
+            }
+            .bg-gradient-to-r span, .bg-gradient-to-r strong, .bg-gradient-to-r h2 {
+                color: #0f172a !important;
+            }
+            .bg-white\/10 {
+                background: #f8fafc !important;
+                border: 1px solid #cbd5e1 !important;
+                color: #0f172a !important;
+                box-shadow: none !important;
+            }
+            .bg-white\/10 p {
+                color: #0f172a !important;
+            }
+            /* Prevent weird half-page cuts */
+            h2, h3, h4, tr, .dashboard-card {
+                page-break-inside: avoid;
             }
             /* Hide skeleton loader in print */
             #skeleton-loader {
@@ -115,18 +143,24 @@
 <body class="font-sans antialiased text-gray-900 leading-normal">
 
     <!-- Header Navigation (Non-print) -->
-    <header class="no-print bg-[#166534] border-b-4 border-[#EAB308] text-white py-4 px-6 md:px-8 flex justify-between items-center shadow-md">
-        <div class="flex items-center gap-3">
+    <header class="no-print bg-[#166534] border-b-4 border-[#EAB308] text-white py-3 px-6 md:px-8 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-4">
             <a href="/admin/dashboard" class="text-white hover:text-[#EAB308] transition-colors flex items-center gap-2">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                <span class="font-heading font-semibold text-lg hidden md:inline">Back to Dashboard</span>
             </a>
+            <div class="flex items-center gap-3">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-9 w-9 object-contain">
+                <div>
+                    <h1 class="font-heading font-extrabold text-sm tracking-wider uppercase leading-none">SVBS School</h1>
+                    <p class="text-[9px] text-[#EAB308] font-bold uppercase tracking-widest mt-0.5">StudentShield Portal</p>
+                </div>
+            </div>
         </div>
         <div class="flex items-center gap-4">
-            <button onclick="window.print()" class="bg-[#EAB308] hover:bg-[#D9AA2E] text-slate-900 font-bold px-5 py-2 rounded-xl transition-all flex items-center gap-2 shadow">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button onclick="window.print()" class="bg-[#EAB308] hover:bg-[#D9AA2E] text-slate-900 font-bold px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-2 shadow">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                 </svg>
                 Print / Export PDF
@@ -135,10 +169,19 @@
     </header>
 
     <!-- Print-only official header -->
-    <div class="hidden print:flex flex-col items-center text-center border-b-2 border-gray-800 pb-4 mb-6">
-        <h1 class="text-2xl font-bold font-heading uppercase text-emerald-800 tracking-wider">StudentShield</h1>
-        <p class="text-xs text-gray-500 font-medium tracking-wide mt-1">OFFICIAL STUDENT WELLNESS CASE SUMMARY REPORT</p>
-        <p class="text-[10px] text-gray-400 font-mono mt-1">CONFIDENTIAL & PRIVILEGED • FOR COUNSELOR & ADMINISTRATION USE ONLY</p>
+    <div class="hidden print:flex items-center justify-between border-b-2 border-emerald-800 pb-3 mb-6">
+        <div class="flex items-center gap-4">
+            <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-14 w-14 object-contain">
+            <div class="text-left">
+                <h1 class="text-base font-bold font-heading uppercase text-emerald-950 tracking-wider">San Vicente Blessed Sacrament School</h1>
+                <p class="text-[10px] text-emerald-800 font-bold font-heading tracking-wider mt-0.5">STUDENTSHIELD CASE MANAGEMENT PORTAL</p>
+                <p class="text-[8px] text-gray-500 font-mono mt-0.5">CONFIDENTIAL STUDENT WELLNESS & COUNSELING DOSSIER</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <span class="text-[8px] font-bold text-red-600 border border-red-200 bg-red-50 px-2 py-0.5 rounded font-mono uppercase tracking-widest">CONFIDENTIAL</span>
+            <p class="text-[8px] text-gray-400 font-mono mt-1">Printed: <span class="print-date"></span></p>
+        </div>
     </div>
 
     <!-- Main Container -->
