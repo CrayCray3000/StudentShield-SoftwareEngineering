@@ -58,6 +58,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
 
     // Super Admin — User Management
     $routes->get('/admin/users', 'UserController::index');
+    $routes->get('/admin/audit-logs', 'AdminController::auditLogs');
     $routes->post('/admin/users/create', 'UserController::create');
     $routes->post('/admin/users/update/(:num)', 'UserController::update/$1');
     $routes->post('/admin/users/delete/(:num)', 'UserController::delete/$1');

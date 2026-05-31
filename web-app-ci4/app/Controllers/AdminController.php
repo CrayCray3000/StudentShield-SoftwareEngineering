@@ -38,6 +38,32 @@ class AdminController extends BaseController
         return view('admin_dashboard', $data);
     }
 
+    /**
+     * Display the System Audit Logs page for administrative oversight.
+     */
+    public function auditLogs()
+    {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+            return redirect()->to('/admin/login');
+        }
+
+        $db = \Config\Database::connect();
+        
+        $logs = [];
+        if ($db->tableExists('audit_logs')) {
+            $logs = $db->table('audit_logs')
+                ->select('audit_logs.*, users.name as actor_name, users.role as actor_role')
+                ->join('users', 'users.id = audit_logs.user_id', 'left')
+                ->orderBy('audit_logs.created_at', 'DESC')
+                ->limit(300) // Show last 300 logs
+                ->get()->getResultArray();
+        }
+
+        return view('admin_audit_logs', [
+            'logs' => $logs
+        ]);
+    }
+
     public function fetchVents()
     {
         if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
