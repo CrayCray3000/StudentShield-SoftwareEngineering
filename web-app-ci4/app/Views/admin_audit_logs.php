@@ -151,6 +151,10 @@
                                         $summary = "<span class='text-blue-600 font-semibold'>Resolved Vent Log #{$log['entity_id']}</span>";
                                     } elseif ($log['action'] == 'SOFT_DELETE') {
                                         $summary = "<span class='text-gray-500 font-semibold'>Archived Vent Log #{$log['entity_id']}</span>";
+                                    } elseif ($log['action'] == 'USER_LOGIN') {
+                                        $summary = "<span class='text-indigo-600 font-semibold'>Logged into the system</span>";
+                                    } elseif ($log['action'] == 'USER_LOGOUT') {
+                                        $summary = "<span class='text-gray-500 font-semibold'>Logged out of the system</span>";
                                     }
                                     
                                     echo "<p class='text-sm text-gray-800'>{$summary}</p>";
@@ -167,6 +171,8 @@
                                         $bgClass = 'bg-blue-100 text-blue-800';
                                     } elseif ($entity == 'STUDENT' || $entity == 'USER') {
                                         $bgClass = 'bg-purple-100 text-purple-800';
+                                    } elseif ($entity == 'SYSTEM') {
+                                        $bgClass = 'bg-indigo-100 text-indigo-800';
                                     }
                                 ?>
                                 <span class="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider <?= $bgClass ?>">

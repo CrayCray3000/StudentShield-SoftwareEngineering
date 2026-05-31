@@ -102,6 +102,7 @@ class AuthController extends BaseController
                 'role_name'  => 'student',
                 'isLoggedIn' => true,
             ]);
+            $this->logAudit('USER_LOGIN', 'system', $user['id']);
             return redirect()->to('/student/dashboard');
         }
         return redirect()->back()->with('error', 'Invalid Student credentials.');
@@ -159,6 +160,7 @@ class AuthController extends BaseController
                             'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
                             'isLoggedIn' => true,
                         ]);
+                        $this->logAudit('USER_LOGIN', 'system', $user['id']);
                         return redirect()->to('/admin/dashboard');
                     }
                 }
@@ -291,6 +293,8 @@ class AuthController extends BaseController
                 'isLoggedIn' => true,
             ]);
 
+            $this->logAudit('USER_LOGIN', 'system', $userId);
+
             // Clear temporary OTP tokens
             session()->remove(['otp', 'otp_expires', 'otp_attempts', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
 
@@ -304,6 +308,10 @@ class AuthController extends BaseController
     public function logout()
     {
         $role = session()->get('role');
+        
+        if (session()->get('user_id')) {
+            $this->logAudit('USER_LOGOUT', 'system', session()->get('user_id'));
+        }
         
         // Remove DB token and cookies
         if (session()->get('user_id')) {
