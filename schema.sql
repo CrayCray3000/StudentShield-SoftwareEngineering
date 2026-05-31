@@ -106,3 +106,27 @@ CREATE TABLE IF NOT EXISTS email_logs (
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS counselor_notes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    counselor_id INT NOT NULL,
+    note_type ENUM('observation', 'recommendation', 'intervention', 'follow_up', 'general') DEFAULT 'general',
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME NULL DEFAULT NULL,
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (counselor_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS case_status_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    status ENUM('active_monitoring', 'intervention_ongoing', 'parent_consultation_required', 'escalated', 'under_investigation', 'resolved', 'closed') NOT NULL,
+    remarks TEXT NULL,
+    changed_by INT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (changed_by) REFERENCES users(id) ON DELETE CASCADE
+);

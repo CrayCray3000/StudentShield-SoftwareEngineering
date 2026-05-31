@@ -39,6 +39,14 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/admin/api/student-profile/(:num)', 'AdminController::getStudentProfile/$1');
     $routes->get('/admin/evidence/(:segment)', 'AdminController::evidence/$1');
 
+    // Case Summary Report Module
+    $routes->get('/admin/case-summary/(:num)', 'CaseSummaryController::index/$1');
+    $routes->get('/admin/api/case-summary/(:num)', 'CaseSummaryController::apiData/$1');
+    $routes->post('/admin/case-summary/(:num)/note', 'CaseSummaryController::addNote/$1');
+    $routes->post('/admin/case-summary/(:num)/status', 'CaseSummaryController::updateStatus/$1');
+    $routes->post('/admin/case-summary/note/delete/(:num)', 'CaseSummaryController::deleteNote/$1');
+
+
     $routes->post('/admin/incident/resolve/(:num)', 'AdminController::resolveIncident/$1');
     $routes->post('/admin/incident/verify/(:num)', 'AdminController::verifyIncident/$1');
     $routes->post('/admin/incident/reject/(:num)', 'AdminController::rejectIncident/$1');

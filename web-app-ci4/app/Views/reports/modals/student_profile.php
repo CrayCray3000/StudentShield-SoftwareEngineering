@@ -39,13 +39,23 @@
                     </div>
                 </div>
             </div>
-            <button onclick="closeStudentProfile()"
-                class="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors text-white/80 hover:text-white">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+            <div class="flex items-center gap-3">
+                <a id="spViewCaseSummaryBtn" href="#" 
+                   class="px-4 py-2 bg-[#EAB308] hover:bg-[#D9AA2E] text-slate-900 font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    View Case Summary
+                </a>
+                <button onclick="closeStudentProfile()"
+                    class="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors text-white/80 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
         </div>
+
 
         <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 bg-gray-50/30">
             <!-- Parent Info Mini-card -->
@@ -130,6 +140,9 @@
     function openStudentProfile(userId) {
         document.getElementById('studentProfileModal').classList.remove('hidden');
         document.getElementById('studentProfileModal').classList.add('flex');
+        
+        document.getElementById('spViewCaseSummaryBtn').href = "<?= base_url('admin/case-summary') ?>/" + userId;
+
 
         // Provide a premium skeleton loading experience
         document.getElementById('spInitials').innerHTML = '<div class="h-8 w-8 bg-white/20 rounded-full animate-pulse"></div>';
