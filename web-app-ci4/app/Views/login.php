@@ -56,105 +56,99 @@
         @media (max-width: 1280px) { html { font-size: 14px; } }
         /* Disable automatic shrinking below 1024 to rely natively on tailwind mobile classes instead for pixel-perfect touch control */
         
-        body { font-family: 'Inter', sans-serif; background-color: #06401E; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #0B1914; overflow-x: hidden; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-student {
-            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 15s ease infinite alternate;
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+            background: radial-gradient(circle at top center, #132a1e 0%, #06120b 100%);
         }
 
         .bg-grid {
-            background-size: 50px 50px;
+            background-size: 40px 40px;
             background-image:
-                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
             mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
             -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
             position: absolute; inset: 0; z-index: 0;
         }
 
         .student-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
+            background: rgba(18, 38, 28, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
         }
 
         .input-dark {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1.5px solid rgba(255, 255, 255, 0.08); /* Fixed parsing error inside my head, continuing */
-            color: #ffffff;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            color: #f1f5f9;
             transition: all 0.3s ease;
         }
         .input-dark:focus {
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 0 4px rgba(242, 195, 0, 0.2);
-            border-color: #F2C300;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 3px rgba(217, 170, 46, 0.15);
+            border-color: rgba(217, 170, 46, 0.8);
         }
-        .input-dark::placeholder { color: rgba(255,255,255,0.6); }
+        .input-dark::placeholder { color: rgba(255,255,255,0.4); }
 
         .glow-blob {
-            position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.15; z-index: 0;
-            animation: pulseGlow 10s ease-in-out infinite alternate; pointer-events: none;
+            position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12; z-index: 0;
+            animation: pulseGlow 15s ease-in-out infinite alternate; pointer-events: none;
             will-change: transform, opacity;
             transform: translateZ(0);
         }
         @keyframes pulseGlow {
-            0% { opacity: 0.1; transform: scale(0.9) translate(0,0) translateZ(0); }
-            100% { opacity: 0.2; transform: scale(1.1) translate(-20px, 20px) translateZ(0); }
+            0% { opacity: 0.08; transform: scale(0.95) translate(0,0) translateZ(0); }
+            100% { opacity: 0.15; transform: scale(1.05) translate(-15px, 15px) translateZ(0); }
         }
         
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
+            25% { transform: translateX(-4px); }
+            50% { transform: translateX(4px); }
+            75% { transform: translateX(-4px); }
         }
         
         /* Gold gradient button */
         .submit-btn {
-            background: linear-gradient(135deg, #F2C300, #FFD233);
-            color: #042E15;
+            background: linear-gradient(135deg, #cda434, #e6c55e);
+            color: #0A1C11;
             position: relative; overflow: hidden;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 8px 25px -5px rgba(242, 195, 0, 0.4);
+            box-shadow: 0 4px 15px -3px rgba(217, 170, 46, 0.2);
         }
         .submit-btn::after {
             content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent);
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
             transform: skewX(-20deg) translateX(-150%);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .submit-btn:hover {
-            box-shadow: 0 15px 35px -5px rgba(242, 195, 0, 0.6);
-            transform: translateY(-2px) scale(1.02);
-            background: linear-gradient(135deg, #FFD233, #ffe066);
+            box-shadow: 0 8px 25px -5px rgba(217, 170, 46, 0.4);
+            transform: translateY(-1px) scale(1.01);
+            background: linear-gradient(135deg, #dfb745, #f5d675);
         }
         .submit-btn:hover::after { transform: skewX(-20deg) translateX(150%); }
         
         /* Dynamic Spotlight Effect */
         .spotlight {
             background: radial-gradient(
-                700px circle at var(--x) var(--y),
-                rgba(242, 195, 0, 0.15), /* Gold glow */
+                600px circle at var(--x) var(--y),
+                rgba(217, 170, 46, 0.05),
                 transparent 80%
             );
         }
 
         /* Splash Screen Animations */
         @keyframes scaleIn {
-            0% { transform: translateY(20px) scale(0.9); opacity: 0; }
+            0% { transform: translateY(15px) scale(0.95); opacity: 0; }
             100% { transform: translateY(0) scale(1); opacity: 1; }
         }
         @keyframes typing {
@@ -188,7 +182,7 @@
             <!-- Logo -->
             <div class="relative mb-6 flex items-center justify-center w-24 h-24 sm:w-32 sm:h-32">
                 <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" 
-                     class="relative w-full h-full object-contain z-10 drop-shadow-[0_0_20px_rgba(242,195,0,0.3)] animate-pulse"
+                     class="relative w-full h-full object-contain z-10 drop-shadow-[0_0_20px_rgba(217,170,46,0.3)] animate-pulse"
                      id="splashLogoImg">
             </div>
             
@@ -228,7 +222,7 @@
             <div class="text-center mb-8 sm:mb-10">
                 <!-- Logo: smaller on mobile, larger on larger screens -->
                 <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mx-auto mb-5 sm:mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
-                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
                 
                 <h1 class="text-[1.75em] sm:text-[2rem] font-heading font-black tracking-tight text-white mb-2 leading-tight">Student <span class="text-gold">Portal</span></h1>
                 <p class="text-white/60 font-medium text-[14px] sm:text-[15px]">Sign in to your private dashboard</p>
@@ -320,63 +314,64 @@
     <!-- Modals -->
     <div id="termsModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('termsModal')"></div>
-        <div class="relative bg-[#0a1c11] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
-            <div class="p-6 border-b border-white/10 flex justify-between items-center">
-                <h2 class="text-xl font-heading font-bold text-white">Terms & Conditions</h2>
-                <button type="button" onclick="closeModal('termsModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times"></i></button>
+        <div class="relative bg-[#0d2114] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
+            <div class="p-5 sm:p-6 border-b border-white/10 flex justify-between items-center">
+                <h2 class="text-lg sm:text-xl font-heading font-bold text-white">Terms & Conditions</h2>
+                <button type="button" onclick="closeModal('termsModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times text-lg"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto text-white/80 text-sm space-y-4 font-sans leading-relaxed">
-                <p><strong class="text-gold">1. Purpose:</strong> StudentShield is a secure platform dedicated to enabling students to report incidents, seek guidance, and vent in a safe environment. It is provided for student well-being and must not be misused.</p>
-                <p><strong class="text-gold">2. Eligibility:</strong> You must be a registered student of this institution. If you are under 18, you must have explicit consent from your guardian to use this platform.</p>
-                <p><strong class="text-gold">3. Acceptable Use:</strong> Users are prohibited from submitting false reports, engaging in harassment, or using the platform for malicious intent. Abuse of the system may result in disciplinary action.</p>
-                <p><strong class="text-gold">4. Confidentiality & Anonymity:</strong> All interactions are strictly confidential and anonymous by default. However, in cases of imminent threat to life, self-harm, or severe danger, designated administrators may access identifiable information to provide immediate intervention and ensure student safety.</p>
-                <p><strong class="text-gold">5. Interventions:</strong> Based on the severity of the reports, school counselors or administrators may intervene. By using this platform, you agree to this proactive approach to your safety.</p>
-                <p><strong class="text-gold">6. Not an Emergency Service:</strong> StudentShield is not a substitute for emergency services. If you are in immediate danger, please contact local emergency authorities.</p>
+            <div class="p-5 sm:p-6 overflow-y-auto text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed">
+                <p><strong class="text-gold">1. Acceptance of Terms:</strong> By accessing and using StudentShield, you agree to comply with these Terms & Conditions. This platform is designed to promote a safe and supportive school environment.</p>
+                <p><strong class="text-gold">2. Eligibility & Guardian Consent:</strong> You must be an actively enrolled student. If you are under 18 years of age, you represent that you have obtained verifiable consent from your parent or legal guardian to use this service.</p>
+                <p><strong class="text-gold">3. Acceptable Use:</strong> The platform must be used responsibly. Submitting false reports, impersonating others, or using the platform to harass or bully others is strictly prohibited and may result in disciplinary action from the school.</p>
+                <p><strong class="text-gold">4. Confidentiality vs. Anonymity:</strong> While reports and venting logs are kept confidential, total anonymity is waived in cases where there is an imminent threat to life, self-harm, or severe danger. Authorized school administrators reserve the right to identify users to prevent harm.</p>
+                <p><strong class="text-gold">5. Interventions:</strong> School counselors or designated safety officers may intervene based on the severity of the submitted reports to ensure the physical and mental well-being of the students involved.</p>
+                <p><strong class="text-gold">6. Not an Emergency Service:</strong> StudentShield is not a real-time emergency response system. If you are in immediate danger, please contact local emergency authorities or proceed to the nearest hospital or police station.</p>
             </div>
             <div class="p-4 border-t border-white/10 bg-black/20 text-right rounded-b-2xl">
-                <button type="button" onclick="closeModal('termsModal')" class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
+                <button type="button" onclick="closeModal('termsModal')" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
             </div>
         </div>
     </div>
 
     <div id="privacyModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('privacyModal')"></div>
-        <div class="relative bg-[#0a1c11] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
-            <div class="p-6 border-b border-white/10 flex justify-between items-center">
-                <h2 class="text-xl font-heading font-bold text-white">Data Privacy Policy</h2>
-                <button type="button" onclick="closeModal('privacyModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times"></i></button>
+        <div class="relative bg-[#0d2114] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
+            <div class="p-5 sm:p-6 border-b border-white/10 flex justify-between items-center">
+                <h2 class="text-lg sm:text-xl font-heading font-bold text-white">Data Privacy Policy</h2>
+                <button type="button" onclick="closeModal('privacyModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times text-lg"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto text-white/80 text-sm space-y-4 font-sans leading-relaxed">
-                <p><strong class="text-gold">1. Data Collection:</strong> We collect only the necessary information required for the platform to function effectively. This includes your secure login credentials, submitted incident reports, and venting logs.</p>
-                <p><strong class="text-gold">2. Purpose of Data:</strong> The collected data is used exclusively to provide guidance, ensure school safety, identify trends in bullying or harassment, and offer a supportive environment.</p>
-                <p><strong class="text-gold">3. Data Protection:</strong> All data transmitted through StudentShield is secured using industry-standard end-to-end encryption. Strict access controls ensure that only authorized personnel can view sensitive information.</p>
-                <p><strong class="text-gold">4. Third-Party Sharing:</strong> We do not sell, trade, or share your data with external third parties. Information may only be disclosed if mandated by law or necessary for emergency medical or police intervention.</p>
-                <p><strong class="text-gold">5. User Rights:</strong> You have the right to request the deletion of your data and to review the reports you have submitted, subject to school policies and legal constraints.</p>
+            <div class="p-5 sm:p-6 overflow-y-auto text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed">
+                <p>This policy outlines how we handle your personal data in strict compliance with the Data Privacy Act of 2012 (Republic Act No. 10173) of the Philippines.</p>
+                <p><strong class="text-gold">1. Data Collection & Legitimate Purpose:</strong> We collect personal information and sensitive personal information (such as your name, ID, and health/incident reports) solely for the legitimate purpose of processing incident reports, providing guidance counseling, and ensuring a safe educational environment.</p>
+                <p><strong class="text-gold">2. Data Processing & Protection:</strong> Your data is protected using end-to-end encryption and strict organizational, physical, and technical security measures. Only designated, authorized school personnel (such as counselors and the Data Protection Officer) have access to identifiable information.</p>
+                <p><strong class="text-gold">3. Data Retention & Disposal:</strong> We retain your personal data only for as long as necessary to fulfill the stated purposes or as required by school policy and the law. Once the retention period expires, data is securely disposed of or anonymized.</p>
+                <p><strong class="text-gold">4. Third-Party Sharing:</strong> We do not sell or share your data with third parties for marketing. Information may only be disclosed to law enforcement, medical professionals, or government authorities if mandated by law or necessary for emergency intervention to protect your vital interests.</p>
+                <p><strong class="text-gold">5. Data Subject Rights:</strong> As a data subject under RA 10173, you have the right to be informed, object to processing, access, rectify, erase, or block your personal data, as well as the right to data portability and the right to file a complaint with the National Privacy Commission (NPC) for any damages. To exercise these rights, you or your guardian may contact the school's Data Protection Officer (DPO).</p>
             </div>
             <div class="p-4 border-t border-white/10 bg-black/20 text-right rounded-b-2xl">
-                <button type="button" onclick="closeModal('privacyModal')" class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
+                <button type="button" onclick="closeModal('privacyModal')" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
             </div>
         </div>
     </div>
 
     <div id="guardianModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('guardianModal')"></div>
-        <div class="relative bg-[#0a1c11] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
-            <div class="p-6 border-b border-white/10 flex justify-between items-center">
-                <h2 class="text-xl font-heading font-bold text-white">Guardian Consent</h2>
-                <button type="button" onclick="closeModal('guardianModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times"></i></button>
+        <div class="relative bg-[#0d2114] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
+            <div class="p-5 sm:p-6 border-b border-white/10 flex justify-between items-center">
+                <h2 class="text-lg sm:text-xl font-heading font-bold text-white">Guardian Consent</h2>
+                <button type="button" onclick="closeModal('guardianModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times text-lg"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto text-white/80 text-sm space-y-4 font-sans leading-relaxed">
-                <p>If you are under 18 years of age, you must obtain consent from your parent or legal guardian to use StudentShield. By checking this box, you confirm that:</p>
+            <div class="p-5 sm:p-6 overflow-y-auto text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed">
+                <p>In compliance with the Data Privacy Act of 2012 (RA 10173), processing the personal data and sensitive personal information of minors requires the explicit, free, and informed consent of a parent or legal guardian. By checking this box, you confirm that:</p>
                 <ul class="list-disc pl-5 space-y-2">
-                    <li>Your guardian acknowledges the platform's purpose to support student well-being and safety.</li>
-                    <li>Your guardian consents to the collection of necessary data for safety monitoring as outlined in our Privacy Policy.</li>
-                    <li>Your guardian understands that school authorities may intervene if you are deemed at significant risk of harm.</li>
+                    <li>Your parent or legal guardian has reviewed and agreed to the Terms & Conditions and Data Privacy Policy of StudentShield.</li>
+                    <li>They consent to the collection, processing, and retention of your personal and sensitive personal information for the purposes of school safety and counseling.</li>
+                    <li>They understand that in cases of imminent threat, self-harm, or severe danger to your vital interests, the school may lift anonymity to provide critical and life-saving interventions.</li>
                 </ul>
-                <p class="mt-4 italic text-white/50 text-xs">If you have not obtained this consent, please do not proceed with using the platform.</p>
+                <p class="mt-4 italic text-white/50 text-xs">If you have not discussed this with your parent or guardian, please do so before creating an account or logging in.</p>
             </div>
             <div class="p-4 border-t border-white/10 bg-black/20 text-right rounded-b-2xl">
-                <button type="button" onclick="closeModal('guardianModal')" class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
+                <button type="button" onclick="closeModal('guardianModal')" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
             </div>
         </div>
     </div>
