@@ -280,12 +280,30 @@
                     </div>
                 </div>
 
-                <div class="flex items-center mt-2 group">
-                    <input id="remember" name="remember" type="checkbox"
-                           class="w-4 h-4 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity">
-                    <label for="remember" class="ml-2.5 text-[13px] sm:text-[14px] font-semibold text-white/70 group-hover:text-white transition-colors cursor-pointer select-none">
-                        Remember me on this device
-                    </label>
+                <div class="flex flex-col gap-3 mt-4 mb-2">
+                    <div class="flex items-start group">
+                        <input id="terms" name="terms" type="checkbox" required
+                               class="w-4 h-4 mt-0.5 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
+                        <label for="terms" class="ml-2.5 text-[12px] sm:text-[13px] font-semibold text-white/70 group-hover:text-white transition-colors cursor-pointer select-none leading-snug">
+                            I agree to the <a href="#" class="text-gold hover:underline">Terms & Conditions</a> and <a href="#" class="text-gold hover:underline">Data Privacy Policy</a>.
+                        </label>
+                    </div>
+
+                    <div class="flex items-start group">
+                        <input id="guardian_consent" name="guardian_consent" type="checkbox" required
+                               class="w-4 h-4 mt-0.5 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
+                        <label for="guardian_consent" class="ml-2.5 text-[12px] sm:text-[13px] font-semibold text-white/70 group-hover:text-white transition-colors cursor-pointer select-none leading-snug">
+                            I confirm that I have my Guardian's consent to use this platform.
+                        </label>
+                    </div>
+
+                    <div class="flex items-center group pt-1">
+                        <input id="remember" name="remember" type="checkbox"
+                               class="w-4 h-4 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
+                        <label for="remember" class="ml-2.5 text-[13px] sm:text-[14px] font-semibold text-white/70 group-hover:text-white transition-colors cursor-pointer select-none">
+                            Remember me on this device
+                        </label>
+                    </div>
                 </div>
 
                 <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 sm:gap-3 h-[54px] sm:h-[60px] mt-8 sm:mt-10 group/btn">
