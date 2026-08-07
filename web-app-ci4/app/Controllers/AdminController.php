@@ -571,10 +571,12 @@ class AdminController extends BaseController
                 $y = 25;
 
             $timelineData[] = [
-                'x' => strtotime($vent['created_at']) * 1000,
-                'y' => $y,
-                'risk_label' => $riskUpper,
-                'sentiment' => $vent['risk_percent'] ?? '0'
+                'x'                    => strtotime($vent['created_at']) * 1000,
+                'y'                    => $y,
+                'risk_label'           => $riskUpper,
+                'sentiment'            => $vent['risk_percent'] ?? '0',
+                'trajectory'           => $vent['trajectory'] ?? 'INSUFFICIENT_DATA',
+                'escalation_prob'      => (float)($vent['escalation_probability'] ?? 0.0),
             ];
         }
 
@@ -590,11 +592,18 @@ class AdminController extends BaseController
             ->limit(15)
             ->get()->getResultArray();
 
+        // Derive the most-recent trajectory for the counselor badge
+        $latestVent = !empty($vents) ? end($vents) : null;
+        $currentTrajectory       = $latestVent['trajectory']           ?? 'INSUFFICIENT_DATA';
+        $currentEscalationProb   = (float)($latestVent['escalation_probability'] ?? 0.0);
+
         return $this->response->setJSON([
-            'user' => $user,
-            'timeline' => $timelineData,
-            'vents' => array_reverse($vents),
-            'incidents' => $incidents
+            'user'               => $user,
+            'timeline'           => $timelineData,
+            'vents'              => array_reverse($vents),
+            'incidents'          => $incidents,
+            'current_trajectory' => $currentTrajectory,
+            'escalation_prob'    => $currentEscalationProb,
         ]);
     }
 }

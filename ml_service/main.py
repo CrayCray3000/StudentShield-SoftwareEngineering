@@ -241,6 +241,8 @@ class MLResponse(BaseModel):
     risk_score: float
     risk_level: str
     flag_reason: Optional[str] = None
+    trajectory: Optional[str] = None
+    escalation_probability: Optional[float] = None
 
 
 # HELPER FUNCTIONS
@@ -1001,20 +1003,7 @@ async def root_health_check():
         "message": "Send POST requests to /analyze-text to classify vents.",
     }
 
-@app.post("/analyze-text", response_model=MLResponse)
-@limiter.limit("30/minute")
-async def analyze_text(request: Request, payload: TextPayload, api_key: str = Depends(verify_api_key)):
-    text       = payload.raw_text
-    student_id = payload.student_id
-
-    if not text.strip():
-        raise HTTPException(status_code=400, detail="Text payload cannot be empty")
-
-    # Security: Input length validation (prevent memory abuse)
-    MAX_INPUT_CHARS = 5000
-    if len(text) > MAX_INPUT_CHARS:
-        raise HTTPException(status_code=400, detail=f"Input too long ({len(text)} chars). Max is {MAX_INPUT_CHARS}.")
-
+def analyze_text_sync(text: str, student_id: str = None) -> dict:
     ## ┐
     ### STAGE 0: SLANG NORMALIZATION & GLOBAL TRANSLATION      
     ## ┘
@@ -1324,7 +1313,7 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
         else:
             risk       = "MEDIUM"
             risk_score = max(0.6, risk_score)
-            reason     = "Verbal cyberbullying or toxicity detected."
+            reason = "Verbal cyberbullying or toxicity detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
     ### RULE 6.3: Relationship distress (NEW v7.1) 
@@ -1390,6 +1379,10 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     ## ┐
     ### STAGE 8: CONTEXTUAL MEMORY (FAISS RAG)                 
     ## ┘
+    # Defaults — overwritten below if student_id is present
+    trajectory     = "INSUFFICIENT_DATA"
+    escalation_prob = 0.0
+
     if student_id:
         user_embedding = semantic_model.encode(text)
         b_escalate, trajectory, escalation_prob = manage_student_memory(
@@ -1438,9 +1431,36 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     risk_percent = int(round(max(lo, min(hi, risk_percent))))
 
     return {
-        "risk_score": float(risk_percent),
-        "risk_level":   risk,
-        "flag_reason":  reason,
+        "risk_score":             float(risk_percent),
+        "risk_level":             risk,
+        "flag_reason":            reason,
+        "reasoning":              reason,
+        "trajectory":             trajectory,
+        "escalation_probability": round(float(escalation_prob), 2),
+    }
+
+
+@app.post("/analyze-text", response_model=MLResponse)
+@limiter.limit("30/minute")
+async def analyze_text(request: Request, payload: TextPayload, api_key: str = Depends(verify_api_key)):
+    text       = payload.raw_text
+    student_id = payload.student_id
+
+    if not text.strip():
+        raise HTTPException(status_code=400, detail="Text payload cannot be empty")
+
+    # Security: Input length validation (prevent memory abuse)
+    MAX_INPUT_CHARS = 5000
+    if len(text) > MAX_INPUT_CHARS:
+        raise HTTPException(status_code=400, detail=f"Input too long ({len(text)} chars). Max is {MAX_INPUT_CHARS}.")
+
+    res = analyze_text_sync(text, student_id)
+    return {
+        "risk_score":             res["risk_score"],
+        "risk_level":             res["risk_level"],
+        "flag_reason":            res["flag_reason"],
+        "trajectory":             res.get("trajectory", "INSUFFICIENT_DATA"),
+        "escalation_probability": res.get("escalation_probability", 0.0),
     }
 
 

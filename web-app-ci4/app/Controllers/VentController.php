@@ -70,12 +70,16 @@ class VentController extends BaseController
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         $mlResult = json_decode($response, true);
-        $sentimentScore = 0.0;
-        $riskLevel = 'LOW';
+        $sentimentScore        = 0.0;
+        $riskLevel             = 'LOW';
+        $trajectory            = 'INSUFFICIENT_DATA';
+        $escalationProbability = 0.0;
 
         if ($mlResult && isset($mlResult['risk_level'])) {
-            $sentimentScore = isset($mlResult['risk_score']) ? $mlResult['risk_score'] : (isset($mlResult['risk_percent']) ? $mlResult['risk_percent'] : 0.0);
-            $riskLevel = $mlResult['risk_level'];
+            $sentimentScore        = isset($mlResult['risk_score']) ? $mlResult['risk_score'] : (isset($mlResult['risk_percent']) ? $mlResult['risk_percent'] : 0.0);
+            $riskLevel             = $mlResult['risk_level'];
+            $trajectory            = $mlResult['trajectory'] ?? 'INSUFFICIENT_DATA';
+            $escalationProbability = (float)($mlResult['escalation_probability'] ?? 0.0);
         }
         else {
             log_message('error', 'ML Service Error (HTTP ' . $httpCode . '): ' . ($curlError ?: 'Invalid response: ' . $response));
@@ -110,13 +114,15 @@ class VentController extends BaseController
         $emotions = $this->request->getPost('emotions') ?? '';
 
         $db->table('vent_logs')->insert([
-            'user_id' => $userId,
-            'raw_text' => $encryptedText,
-            'emotions' => $emotions,
-            'risk_percent' => $sentimentScore,
-            'risk_level' => $riskLevel,
-            'status' => 'Pending',
-            'created_at' => date('Y-m-d H:i:s')
+            'user_id'                => $userId,
+            'raw_text'               => $encryptedText,
+            'emotions'               => $emotions,
+            'risk_percent'           => $sentimentScore,
+            'risk_level'             => $riskLevel,
+            'trajectory'             => $trajectory,
+            'escalation_probability' => $escalationProbability,
+            'status'                 => 'Pending',
+            'created_at'             => date('Y-m-d H:i:s')
         ]);
 
         $hideFromParents = $this->request->getPost('hide_from_parents') === '1';

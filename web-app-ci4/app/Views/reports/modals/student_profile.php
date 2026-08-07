@@ -24,6 +24,8 @@
                         <span id="spCriticalBadge"
                             class="hidden px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-red-500/20 text-red-100 border border-red-500/30">High
                             Risk Pattern</span>
+                        <span id="spTrajectoryBadge"
+                            class="hidden px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider"></span>
                     </h2>
                     <div class="flex flex-wrap gap-4 mt-2 text-white/80 text-sm font-medium">
                         <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-[#EAB308]" fill="none"
@@ -159,6 +161,7 @@
         document.getElementById('studentRiskChart').innerHTML = '<div style="height:280px;width:100%;" class="bg-gray-100 rounded-xl animate-pulse border border-gray-200 flex items-center justify-center text-gray-400 font-medium text-sm">Loading wellness data...</div>';
 
         document.getElementById('spCriticalBadge').classList.add('hidden');
+        document.getElementById('spTrajectoryBadge').classList.add('hidden');
 
         var PROFILE_API_BASE = "<?= base_url('admin/api/student-profile') ?>";
         fetch(PROFILE_API_BASE + '/' + userId)
@@ -182,6 +185,25 @@
                 document.getElementById('spSection').innerText = u.section || 'Unassigned';
                 document.getElementById('spParentEmail').innerText = u.parent_email || 'N/A';
                 document.getElementById('spParentPhone').innerText = u.parent_phone || 'N/A';
+
+                // Render trajectory badge from FAISS 14-day memory
+                var trajectoryBadge = document.getElementById('spTrajectoryBadge');
+                var traj = (data.current_trajectory || 'INSUFFICIENT_DATA').toUpperCase();
+                var prob = data.escalation_prob || 0;
+                trajectoryBadge.classList.remove('hidden');
+                if (traj === 'ESCALATING') {
+                    trajectoryBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-red-500/20 text-red-100 border border-red-500/40';
+                    trajectoryBadge.innerHTML = '&#x2197; Escalating (' + Math.round(prob * 100) + '%)';
+                } else if (traj === 'IMPROVING') {
+                    trajectoryBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-100 border border-emerald-500/30';
+                    trajectoryBadge.innerHTML = '&#x2198; Improving';
+                } else if (traj === 'STABLE') {
+                    trajectoryBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-500/20 text-blue-100 border border-blue-500/30';
+                    trajectoryBadge.innerHTML = '&#x2192; Stable';
+                } else {
+                    trajectoryBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-white/10 text-white/50 border border-white/20';
+                    trajectoryBadge.innerHTML = '&#x2015; No History';
+                }
 
                 // Render Chart
                 renderWellnessChart(data.timeline);

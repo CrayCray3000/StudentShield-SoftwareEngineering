@@ -92,6 +92,11 @@ class AuthFilter implements FilterInterface
         if ($role == 1 && strpos($uriStr, 'student') !== false) {
             return redirect()->to('/admin/dashboard')->with('error', 'Staff must use the Dashboard portal.');
         }
+
+        // Prevent Counselors from accessing Super Admin Management functions
+        if ($role == 1 && (strpos($uriStr, 'admin/users') !== false || strpos($uriStr, 'admin/audit-logs') !== false)) {
+            return redirect()->to('/admin/dashboard')->with('error', 'Unauthorized. Super Admin access required.');
+        }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)

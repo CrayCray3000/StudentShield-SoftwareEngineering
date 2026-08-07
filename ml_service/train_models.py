@@ -1,9 +1,11 @@
 import os
 import evaluate
 import numpy as np
+from collections import Counter
 from datasets import load_dataset
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer, EarlyStoppingCallback
 import torch
+from torch import nn
 
 # Suppress HuggingFace warnings for cleaner console output
 os.environ["HTTP_PROXY"] = ""
@@ -18,6 +20,35 @@ def compute_metrics(eval_pred):
     predictions = np.argmax(predictions, axis=1)
     return clf_metrics.compute(predictions=predictions, references=labels)
 
+
+# ── Custom Trainer with Class-Weighted Loss ──────────────────────────
+# Your dataset is IMBALANCED (more bullying samples than neutral).
+# A standard Trainer treats every sample equally, so the model learns
+# to just predict the majority class.  This subclass injects inverse-
+# frequency weights into CrossEntropyLoss so the model pays MORE
+# attention to the minority class → higher overall accuracy.
+class WeightedTrainer(Trainer):
+    def __init__(self, class_weights=None, **kwargs):
+        super().__init__(**kwargs)
+        if class_weights is not None:
+            self.class_weights = torch.tensor(class_weights, dtype=torch.float32)
+        else:
+            self.class_weights = None
+
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+        labels = inputs.pop("labels")
+        outputs = model(**inputs)
+        logits = outputs.logits
+        if self.class_weights is not None:
+            # Cast to logits.dtype to avoid Half vs Float mismatch errors
+            weight = self.class_weights.to(device=logits.device, dtype=logits.dtype)
+            loss_fn = nn.CrossEntropyLoss(weight=weight)
+        else:
+            loss_fn = nn.CrossEntropyLoss()
+        loss = loss_fn(logits, labels)
+        return (loss, outputs) if return_outputs else loss
+
+
 def fine_tune_model(model_name, output_dir, dataset):
     print(f"\n{'='*50}")
     print(f"Starting Fine-Tuning Pipeline for: {model_name}")
@@ -29,7 +60,8 @@ def fine_tune_model(model_name, output_dir, dataset):
     
     # 2. Tokenize Dataset
     def tokenize_function(examples):
-        return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=512)
+        # 128 tokens captures full Taglish context without wasting GPU memory
+        return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=128)
         
     tokenized_datasets = dataset.map(tokenize_function, batched=True)
     
@@ -37,31 +69,58 @@ def fine_tune_model(model_name, output_dir, dataset):
     train_dataset = tokenized_datasets["train"]
     eval_dataset = tokenized_datasets["validation"]
 
-    # 3. Hyperparameter Configuration
-    # We use max_steps=4 strictly to circumvent hardware timeouts on non-GPU CPU hosts.
-    # In a full production cloud slice, remove max_steps and rely on num_train_epochs=3.
+    # ── Compute inverse-frequency class weights ──────────────────────
+    label_counts = Counter(train_dataset["label"])
+    total = sum(label_counts.values())
+    num_classes = len(label_counts)
+    # Formula: weight_i = total / (num_classes * count_i)
+    class_weights = [total / (num_classes * label_counts[i]) for i in range(num_classes)]
+    print(f"  Class distribution: {dict(label_counts)}")
+    print(f"  Computed class weights: {[f'{w:.3f}' for w in class_weights]}")
+
+    # 3. Hyperparameter Configuration (Maximum Accuracy Settings)
+    # mDeBERTa-v3-base is ~280M params (~5x heavier than DistilBERT).
+    # On a T4 GPU (16GB VRAM) we MUST reduce per-device batch size to 4.
+    # We compensate with gradient_accumulation_steps=4 so the effective
+    # batch size is still 16, keeping training stable without OOM crashes.
     training_args = TrainingArguments(
         output_dir=output_dir,
-        learning_rate=3e-5,
-        per_device_train_batch_size=8,
-        per_device_eval_batch_size=8,
-        num_train_epochs=5,
+        # ── CRITICAL: mDeBERTa-v3 is very sensitive to LR on small data.
+        # 1.5e-5 caused immediate collapse (always predicts one class).
+        # 3e-6 is conservative enough to learn without gradient explosion.
+        learning_rate=3e-6,
+        per_device_train_batch_size=4,
+        per_device_eval_batch_size=4,
+        gradient_accumulation_steps=4,
+        num_train_epochs=15,           # Give it plenty of time; early stopping will cut it short
         weight_decay=0.01,
+        warmup_ratio=0.2,              # 20% warmup — more gradual ramp for small datasets
+        lr_scheduler_type="cosine",    # Cosine annealing > linear decay for transformers
+        # NOTE: label_smoothing_factor is intentionally REMOVED — it is a silent no-op
+        # when compute_loss is overridden and caused confusing behaviour.
+        adam_epsilon=1e-6,             # Required fix for DeBERTa-v3 NaN loss
+        max_grad_norm=1.0,             # Gradient clipping prevents nan
+        fp16=False,                    # mDeBERTa-v3 CRASHES with fp16; keep disabled
         eval_strategy="epoch",
         save_strategy="epoch",
         load_best_model_at_end=True,
-        # Hardware Configuration: Full Epoch Deep Learning Enabled
+        metric_for_best_model="accuracy",
+        greater_is_better=True,
         logging_steps=10,
-        use_cpu=not torch.cuda.is_available() # Fallback safely to CPU if no CUDA GPU exists
+        use_cpu=not torch.cuda.is_available(),
+        report_to="none",
+        dataloader_num_workers=0
     )
 
-    # 4. Trainer Initialization
-    trainer = Trainer(
+    # 4. Trainer Initialization (with class-weighted loss)
+    trainer = WeightedTrainer(
+        class_weights=class_weights,
         model=model,
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         compute_metrics=compute_metrics,
+        callbacks=[EarlyStoppingCallback(early_stopping_patience=3)]
     )
 
     # 5. Training Loop
