@@ -285,7 +285,7 @@
                         <input id="terms" name="terms" type="checkbox" required
                                class="w-4 h-4 mt-0.5 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
                         <label for="terms" class="ml-2.5 text-[12px] sm:text-[13px] font-semibold text-white/70 group-hover:text-white transition-colors cursor-pointer select-none leading-snug">
-                            I agree to the <a href="#" class="text-gold hover:underline">Terms & Conditions</a> and <a href="#" class="text-gold hover:underline">Data Privacy Policy</a>.
+                            I agree to the <button type="button" onclick="openModal('termsModal')" class="text-gold hover:underline focus:outline-none">Terms & Conditions</button> and <button type="button" onclick="openModal('privacyModal')" class="text-gold hover:underline focus:outline-none">Data Privacy Policy</button>.
                         </label>
                     </div>
 
@@ -293,7 +293,7 @@
                         <input id="guardian_consent" name="guardian_consent" type="checkbox" required
                                class="w-4 h-4 mt-0.5 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
                         <label for="guardian_consent" class="ml-2.5 text-[12px] sm:text-[13px] font-semibold text-white/70 group-hover:text-white transition-colors cursor-pointer select-none leading-snug">
-                            I confirm that I have my Guardian's consent to use this platform.
+                            I confirm that I have my <button type="button" onclick="openModal('guardianModal')" class="text-gold hover:underline focus:outline-none">Guardian's consent</button> to use this platform.
                         </label>
                     </div>
 
@@ -315,6 +315,70 @@
             
         </div>
         
+    </div>
+
+    <!-- Modals -->
+    <div id="termsModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('termsModal')"></div>
+        <div class="relative bg-[#0a1c11] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                <h2 class="text-xl font-heading font-bold text-white">Terms & Conditions</h2>
+                <button type="button" onclick="closeModal('termsModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto text-white/80 text-sm space-y-4 font-sans leading-relaxed">
+                <p><strong class="text-gold">1. Purpose:</strong> StudentShield is a secure platform dedicated to enabling students to report incidents, seek guidance, and vent in a safe environment. It is provided for student well-being and must not be misused.</p>
+                <p><strong class="text-gold">2. Eligibility:</strong> You must be a registered student of this institution. If you are under 18, you must have explicit consent from your guardian to use this platform.</p>
+                <p><strong class="text-gold">3. Acceptable Use:</strong> Users are prohibited from submitting false reports, engaging in harassment, or using the platform for malicious intent. Abuse of the system may result in disciplinary action.</p>
+                <p><strong class="text-gold">4. Confidentiality & Anonymity:</strong> All interactions are strictly confidential and anonymous by default. However, in cases of imminent threat to life, self-harm, or severe danger, designated administrators may access identifiable information to provide immediate intervention and ensure student safety.</p>
+                <p><strong class="text-gold">5. Interventions:</strong> Based on the severity of the reports, school counselors or administrators may intervene. By using this platform, you agree to this proactive approach to your safety.</p>
+                <p><strong class="text-gold">6. Not an Emergency Service:</strong> StudentShield is not a substitute for emergency services. If you are in immediate danger, please contact local emergency authorities.</p>
+            </div>
+            <div class="p-4 border-t border-white/10 bg-black/20 text-right rounded-b-2xl">
+                <button type="button" onclick="closeModal('termsModal')" class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacyModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('privacyModal')"></div>
+        <div class="relative bg-[#0a1c11] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                <h2 class="text-xl font-heading font-bold text-white">Data Privacy Policy</h2>
+                <button type="button" onclick="closeModal('privacyModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto text-white/80 text-sm space-y-4 font-sans leading-relaxed">
+                <p><strong class="text-gold">1. Data Collection:</strong> We collect only the necessary information required for the platform to function effectively. This includes your secure login credentials, submitted incident reports, and venting logs.</p>
+                <p><strong class="text-gold">2. Purpose of Data:</strong> The collected data is used exclusively to provide guidance, ensure school safety, identify trends in bullying or harassment, and offer a supportive environment.</p>
+                <p><strong class="text-gold">3. Data Protection:</strong> All data transmitted through StudentShield is secured using industry-standard end-to-end encryption. Strict access controls ensure that only authorized personnel can view sensitive information.</p>
+                <p><strong class="text-gold">4. Third-Party Sharing:</strong> We do not sell, trade, or share your data with external third parties. Information may only be disclosed if mandated by law or necessary for emergency medical or police intervention.</p>
+                <p><strong class="text-gold">5. User Rights:</strong> You have the right to request the deletion of your data and to review the reports you have submitted, subject to school policies and legal constraints.</p>
+            </div>
+            <div class="p-4 border-t border-white/10 bg-black/20 text-right rounded-b-2xl">
+                <button type="button" onclick="closeModal('privacyModal')" class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="guardianModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('guardianModal')"></div>
+        <div class="relative bg-[#0a1c11] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                <h2 class="text-xl font-heading font-bold text-white">Guardian Consent</h2>
+                <button type="button" onclick="closeModal('guardianModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto text-white/80 text-sm space-y-4 font-sans leading-relaxed">
+                <p>If you are under 18 years of age, you must obtain consent from your parent or legal guardian to use StudentShield. By checking this box, you confirm that:</p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>Your guardian acknowledges the platform's purpose to support student well-being and safety.</li>
+                    <li>Your guardian consents to the collection of necessary data for safety monitoring as outlined in our Privacy Policy.</li>
+                    <li>Your guardian understands that school authorities may intervene if you are deemed at significant risk of harm.</li>
+                </ul>
+                <p class="mt-4 italic text-white/50 text-xs">If you have not obtained this consent, please do not proceed with using the platform.</p>
+            </div>
+            <div class="p-4 border-t border-white/10 bg-black/20 text-right rounded-b-2xl">
+                <button type="button" onclick="closeModal('guardianModal')" class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
+            </div>
+        </div>
     </div>
 
 <script>
@@ -369,6 +433,20 @@
         const overlay = document.getElementById('spotlight-overlay');
         overlay.style.setProperty('--x', `${e.clientX}px`);
         overlay.style.setProperty('--y', `${e.clientY}px`);
+    }
+
+    function openModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = '';
     }
 
     document.querySelector('form').addEventListener('submit', function() {
