@@ -56,64 +56,70 @@
         @media (max-width: 1280px) { html { font-size: 14px; } }
         /* Disable automatic shrinking below 1024 to rely natively on tailwind mobile classes instead for pixel-perfect touch control */
         
-        body { font-family: 'Inter', sans-serif; background-color: #0B1914; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #06401E; overflow-x: hidden; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-student {
-            background: radial-gradient(circle at top center, #132a1e 0%, #06120b 100%);
+            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite alternate;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
 
         .bg-grid {
-            background-size: 40px 40px;
+            background-size: 50px 50px;
             background-image:
-                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
             mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
             -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
             position: absolute; inset: 0; z-index: 0;
         }
 
         .student-card {
-            background: rgba(18, 38, 28, 0.6);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
         }
 
         .input-dark {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1.5px solid rgba(255, 255, 255, 0.08);
-            color: #f1f5f9;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.08); /* Fixed parsing error inside my head, continuing */
+            color: #ffffff;
             transition: all 0.3s ease;
         }
         .input-dark:focus {
-            background: rgba(0, 0, 0, 0.4);
-            box-shadow: 0 0 0 3px rgba(217, 170, 46, 0.15);
-            border-color: rgba(217, 170, 46, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(242, 195, 0, 0.2);
+            border-color: #F2C300;
         }
-        .input-dark::placeholder { color: rgba(255,255,255,0.4); }
+        .input-dark::placeholder { color: rgba(255,255,255,0.6); }
 
         .glow-blob {
-            position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12; z-index: 0;
-            animation: pulseGlow 15s ease-in-out infinite alternate; pointer-events: none;
+            position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.15; z-index: 0;
+            animation: pulseGlow 10s ease-in-out infinite alternate; pointer-events: none;
             will-change: transform, opacity;
             transform: translateZ(0);
         }
         @keyframes pulseGlow {
-            0% { opacity: 0.08; transform: scale(0.95) translate(0,0) translateZ(0); }
-            100% { opacity: 0.15; transform: scale(1.05) translate(-15px, 15px) translateZ(0); }
+            0% { opacity: 0.1; transform: scale(0.9) translate(0,0) translateZ(0); }
+            100% { opacity: 0.2; transform: scale(1.1) translate(-20px, 20px) translateZ(0); }
         }
         
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            50% { transform: translateX(4px); }
-            75% { transform: translateX(-4px); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
         }
         
         /* Gold gradient button */
