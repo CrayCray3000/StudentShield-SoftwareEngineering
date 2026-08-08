@@ -6,6 +6,7 @@
     <link rel="shortcut icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <title>Case Summary Report - StudentShield</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -1101,51 +1102,57 @@
         let activeMeetingId = null;
 
         function startVideoMeeting() {
+            const btn = document.getElementById('btnStartVideoMeeting');
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> Starting...';
+
             // Dismiss the pending badge
             document.getElementById('pendingRequestBadge').classList.add('hidden');
-            // Call the backend to create an active meeting session for this student
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
             fetch(`/admin/case-summary/${studentId}/meeting/start`, {
                 method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrfToken }
             })
             .then(res => res.json())
             .then(data => {
+                btn.disabled = false;
+                btn.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> Video Meeting';
                 if (data.status === 'success') {
                     activeMeetingId = data.meeting_id;
                     const roomName = data.room_name;
                     showVideoMeetingModal(roomName);
-                    
                     document.getElementById('btnStartVideoMeeting').classList.add('hidden');
                     document.getElementById('btnEndVideoMeeting').classList.remove('hidden');
                     document.getElementById('btnEndVideoMeeting').classList.add('flex');
                 } else {
-                    alert("Failed to start meeting: " + (data.message || 'Unknown error'));
+                    alert('Failed to start meeting: ' + (data.message || 'Unknown error'));
                 }
             })
             .catch(err => {
-                console.error("Start meeting error:", err);
-                alert("Error starting video meeting.");
+                btn.disabled = false;
+                btn.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> Video Meeting';
+                console.error('Start meeting error:', err);
+                alert('Error starting video meeting.');
             });
         }
 
         function endVideoMeeting() {
+            if (!confirm('End the video session for this student?')) return;
+            // Close modal immediately for a snappy UX, then fire the request
+            hideVideoMeetingModal();
+            document.getElementById('btnStartVideoMeeting').classList.remove('hidden');
+            document.getElementById('btnEndVideoMeeting').classList.add('hidden');
+            document.getElementById('btnEndVideoMeeting').classList.remove('flex');
+            activeMeetingId = null;
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
             fetch(`/admin/case-summary/${studentId}/meeting/cancel`, {
                 method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrfToken }
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    hideVideoMeetingModal();
-                    document.getElementById('btnStartVideoMeeting').classList.remove('hidden');
-                    document.getElementById('btnEndVideoMeeting').classList.add('hidden');
-                    document.getElementById('btnEndVideoMeeting').classList.remove('flex');
-                    activeMeetingId = null;
-                }
-            })
-            .catch(err => {
-                console.error("End meeting error:", err);
-            });
+            .catch(err => console.error('End meeting error:', err));
         }
 
         function showVideoMeetingModal(roomName) {
