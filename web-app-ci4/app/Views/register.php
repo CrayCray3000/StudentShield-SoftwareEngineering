@@ -289,6 +289,19 @@
                     </div>
                 </div>
 
+                <div class="mt-4">
+                    <label class="flex items-start gap-3 cursor-pointer group/checkbox">
+                        <div class="relative flex items-center justify-center mt-0.5">
+                            <input type="checkbox" name="terms" id="terms" required class="peer sr-only" <?= set_checkbox('terms', '1') ?>>
+                            <div class="w-5 h-5 border-2 border-white/20 rounded-md bg-white/5 peer-checked:bg-gold peer-checked:border-gold transition-all duration-300"></div>
+                            <i class="fas fa-check absolute text-[11px] text-[#0A1C11] opacity-0 peer-checked:opacity-100 transition-opacity duration-300 pointer-events-none"></i>
+                        </div>
+                        <span class="text-[12px] sm:text-[13px] text-white/70 leading-snug">
+                            I agree to the <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-semibold underline underline-offset-2 transition-colors">Terms and Conditions</button> & <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-semibold underline underline-offset-2 transition-colors">Data Privacy Policy</button>.
+                        </span>
+                    </label>
+                </div>
+
                 <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-3 h-[54px] mt-8 group/btn">
                     <span id="btnText" class="font-heading text-[16px] tracking-wide pt-0.5 text-primary-light mix-blend-multiply">Submit Registration</span>
                     <i id="btnIcon" class="fas fa-paper-plane text-primary-light mix-blend-multiply text-sm group-hover/btn:translate-x-1.5 group-hover/btn:-translate-y-1.5 transition-all duration-300"></i>
@@ -305,7 +318,90 @@
         </div>
     </div>
 
+    <!-- Terms and Conditions Modal -->
+    <div id="termsModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0" id="termsBackdrop" onclick="closeTermsModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="bg-[#0f2c1b] border border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col relative z-10 transform scale-95 opacity-0 transition-all duration-300" id="termsContentBox">
+            <!-- Header -->
+            <div class="p-5 sm:p-6 border-b border-white/10 flex items-center justify-between">
+                <h2 class="text-xl sm:text-2xl font-heading font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-shield-alt text-gold"></i> Terms & Data Privacy
+                </h2>
+                <button type="button" onclick="closeTermsModal()" class="w-8 h-8 rounded-full bg-white/5 hover:bg-red-500/20 text-white/60 hover:text-red-400 flex items-center justify-center transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Body -->
+            <div class="p-5 sm:p-6 overflow-y-auto custom-scrollbar text-white/80 space-y-4 text-sm sm:text-base leading-relaxed">
+                <p>Welcome to Student Shield! By registering an account, you agree to the following terms regarding your usage and how we handle your data.</p>
+                
+                <h3 class="text-gold font-semibold text-base sm:text-lg mt-4">1. Purpose of the Portal</h3>
+                <p>Student Shield is a secure platform designed for San Vicente Bañera National High School students to report incidents (such as bullying or conflicts) and to express concerns ("Vents") to the Guidance Counselor. This platform is strictly for school-related well-being and disciplinary matters.</p>
+
+                <h3 class="text-gold font-semibold text-base sm:text-lg mt-4">2. Data Collection and Privacy</h3>
+                <p>In compliance with the <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>, we assure you that:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Any personal information (Name, Student ID, Contact Info) collected during registration will be kept strictly confidential.</li>
+                    <li>Reports and Vents submitted through this system are end-to-end secured and only accessible by authorized school personnel (e.g., Guidance Counselors and Administrators).</li>
+                    <li>Your identity will remain protected, and any evidence you upload will be handled with the utmost sensitivity.</li>
+                </ul>
+
+                <h3 class="text-gold font-semibold text-base sm:text-lg mt-4">3. Honest Reporting</h3>
+                <p>You agree to provide true, accurate, and complete information when reporting incidents. Submitting false reports or fabricating evidence with the intent to harm another student's reputation is a violation of school policy and may result in disciplinary action.</p>
+
+                <h3 class="text-gold font-semibold text-base sm:text-lg mt-4">4. Account Security</h3>
+                <p>You are responsible for maintaining the confidentiality of your password. Do not share your account credentials with anyone. If you suspect your account has been compromised, notify the guidance office immediately.</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-5 sm:p-6 border-t border-white/10 bg-black/20 rounded-b-2xl sm:rounded-b-3xl flex justify-end">
+                <button type="button" onclick="closeTermsModal()" class="bg-gold hover:bg-gold-light text-black font-bold py-2.5 px-6 rounded-xl transition-colors">
+                    I Understand
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(217, 170, 46, 0.5); }
+    </style>
+
 <script>
+    function openTermsModal() {
+        const modal = document.getElementById('termsModal');
+        const backdrop = document.getElementById('termsBackdrop');
+        const content = document.getElementById('termsContentBox');
+        
+        modal.classList.remove('hidden');
+        // Small delay to allow display block to apply before animating opacity
+        setTimeout(() => {
+            backdrop.classList.remove('opacity-0');
+            content.classList.remove('opacity-0', 'scale-95');
+            content.classList.add('opacity-100', 'scale-100');
+        }, 10);
+    }
+
+    function closeTermsModal() {
+        const modal = document.getElementById('termsModal');
+        const backdrop = document.getElementById('termsBackdrop');
+        const content = document.getElementById('termsContentBox');
+        
+        backdrop.classList.add('opacity-0');
+        content.classList.remove('opacity-100', 'scale-100');
+        content.classList.add('opacity-0', 'scale-95');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300); // Wait for transition
+    }
+
     function updateSpotlight(e) {
         const overlay = document.getElementById('spotlight-overlay');
         overlay.style.setProperty('--x', `${e.clientX}px`);

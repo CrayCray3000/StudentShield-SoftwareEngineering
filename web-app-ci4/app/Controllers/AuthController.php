@@ -361,8 +361,14 @@ class AuthController extends BaseController
         $parentPhone = filter_var($parentContact, FILTER_VALIDATE_EMAIL) ? null : $parentContact;
         $parentEmail = filter_var($parentContact, FILTER_VALIDATE_EMAIL) ? $parentContact : null;
 
+        $terms = $this->request->getPost('terms');
+
         if (empty($name) || empty($studentId) || empty($password)) {
             return redirect()->back()->withInput()->with('error', 'Name, Student ID, and Password are required.');
+        }
+
+        if (!$terms) {
+            return redirect()->back()->withInput()->with('error', 'You must agree to the Terms and Conditions.');
         }
 
         if ($password !== $confirmPassword) {
