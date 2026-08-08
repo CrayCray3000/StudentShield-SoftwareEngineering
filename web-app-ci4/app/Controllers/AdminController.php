@@ -35,7 +35,47 @@ class AdminController extends BaseController
         }
         $data['recent_vents'] = $recent_vents;
 
+        // Fetch pending virtual meeting requests
+        $pendingMeetingsCount = 0;
+        if ($db->tableExists('virtual_meetings')) {
+            $pendingMeetingsCount = $db->table('virtual_meetings')
+                                       ->where('status', 'requested')
+                                       ->countAllResults();
+        }
+        $data['pending_meetings_count'] = $pendingMeetingsCount;
+
+
         return view('admin_dashboard', $data);
+    }
+
+    /**
+     * API endpoint: returns pending meeting request count and student list for AJAX polling.
+     */
+    public function getPendingMeetings()
+    {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized'])->setStatusCode(401);
+        }
+
+        $db = \Config\Database::connect();
+
+        if (!$db->tableExists('virtual_meetings')) {
+            return $this->response->setJSON(['status' => 'success', 'count' => 0, 'requests' => []]);
+        }
+
+        $requests = $db->table('virtual_meetings vm')
+            ->select('vm.id, vm.student_id, vm.created_at as requested_at, u.name as student_name, s.student_id as student_number, s.section')
+            ->join('users u', 'u.id = vm.student_id', 'left')
+            ->join('students s', 's.user_id = vm.student_id', 'left')
+            ->where('vm.status', 'requested')
+            ->orderBy('vm.created_at', 'DESC')
+            ->get()->getResultArray();
+
+        return $this->response->setJSON([
+            'status'   => 'success',
+            'count'    => count($requests),
+            'requests' => $requests,
+        ]);
     }
 
     /**
