@@ -339,11 +339,13 @@ class AuthController extends BaseController
         if (session()->get('isLoggedIn')) {
             return redirect()->to('/student/dashboard');
         }
+        helper(['form', 'url']);
         return view('register');
     }
 
     public function processStudentRegistration()
     {
+        helper(['form', 'url']);
         $db = \Config\Database::connect();
         $db->transStart();
 
