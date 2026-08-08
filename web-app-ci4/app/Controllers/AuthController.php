@@ -375,8 +375,24 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('error', 'Passwords do not match.');
         }
 
-        if (strlen($password) < 6) {
-            return redirect()->back()->withInput()->with('error', 'Password must be at least 6 characters.');
+        if (strlen($password) < 8) {
+            return redirect()->back()->withInput()->with('error', 'Password must be at least 8 characters long.');
+        }
+
+        if (!preg_match('/[A-Z]/', $password)) {
+            return redirect()->back()->withInput()->with('error', 'Password must contain at least one uppercase letter.');
+        }
+
+        if (!preg_match('/[a-z]/', $password)) {
+            return redirect()->back()->withInput()->with('error', 'Password must contain at least one lowercase letter.');
+        }
+
+        if (!preg_match('/[0-9]/', $password)) {
+            return redirect()->back()->withInput()->with('error', 'Password must contain at least one number.');
+        }
+
+        if (!preg_match('/[\W_]/', $password)) {
+            return redirect()->back()->withInput()->with('error', 'Password must contain at least one special character (e.g., @, #, $, etc.).');
         }
 
         // Check if username (name) or student_id already exists

@@ -274,6 +274,13 @@
                                    class="w-full pl-11 pr-4 py-3 input-dark rounded-xl text-[15px] font-bold outline-none tracking-[0.1em]"
                                    placeholder="••••••••">
                         </div>
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 mt-2 text-[11px] text-white/50" id="password-criteria">
+                            <div id="req-length" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> At least 8 chars</div>
+                            <div id="req-upper" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> 1 Uppercase</div>
+                            <div id="req-lower" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> 1 Lowercase</div>
+                            <div id="req-number" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> 1 Number</div>
+                            <div id="req-special" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> 1 Special char</div>
+                        </div>
                     </div>
 
                     <div class="space-y-1.5">
@@ -286,6 +293,7 @@
                                    class="w-full pl-11 pr-4 py-3 input-dark rounded-xl text-[15px] font-bold outline-none tracking-[0.1em]"
                                    placeholder="••••••••">
                         </div>
+                        <p id="password-match-msg" class="text-[11px] text-red-400 mt-1 hidden font-medium flex items-center gap-1"><i class="fas fa-exclamation-circle"></i> Passwords do not match</p>
                     </div>
                 </div>
 
@@ -408,7 +416,22 @@
         overlay.style.setProperty('--y', `${e.clientY}px`);
     }
 
-    document.querySelector('form').addEventListener('submit', function() {
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const pass = document.getElementById('password').value;
+        const confirmPass = document.getElementById('password_confirm').value;
+        
+        const hasLength = pass.length >= 8;
+        const hasUpper = /[A-Z]/.test(pass);
+        const hasLower = /[a-z]/.test(pass);
+        const hasNumber = /[0-9]/.test(pass);
+        const hasSpecial = /[^A-Za-z0-9]/.test(pass);
+        
+        if (!hasLength || !hasUpper || !hasLower || !hasNumber || !hasSpecial || pass !== confirmPass) {
+            e.preventDefault();
+            alert('Please ensure your password meets all security requirements and that passwords match.');
+            return;
+        }
+
         const btn = document.getElementById('submitBtn');
         const text = document.getElementById('btnText');
         const icon = document.getElementById('btnIcon');
@@ -418,6 +441,54 @@
         icon.classList.add('hidden');
         spinner.classList.remove('hidden');
     });
+
+    document.getElementById('password').addEventListener('input', function(e) {
+        const val = e.target.value;
+        
+        const reqs = {
+            'req-length': val.length >= 8,
+            'req-upper': /[A-Z]/.test(val),
+            'req-lower': /[a-z]/.test(val),
+            'req-number': /[0-9]/.test(val),
+            'req-special': /[^A-Za-z0-9]/.test(val)
+        };
+
+        for (const [id, isValid] of Object.entries(reqs)) {
+            const el = document.getElementById(id);
+            const icon = el.querySelector('i');
+            
+            if (isValid) {
+                el.classList.add('text-green-400');
+                el.classList.remove('text-white/50');
+                icon.classList.remove('fa-circle', 'text-[6px]');
+                icon.classList.add('fa-check-circle', 'text-[11px]');
+            } else {
+                el.classList.remove('text-green-400');
+                el.classList.add('text-white/50');
+                icon.classList.remove('fa-check-circle', 'text-[11px]');
+                icon.classList.add('fa-circle', 'text-[6px]');
+            }
+        }
+        checkPasswordMatch();
+    });
+
+    document.getElementById('password_confirm').addEventListener('input', checkPasswordMatch);
+
+    function checkPasswordMatch() {
+        const pass = document.getElementById('password').value;
+        const confirm = document.getElementById('password_confirm').value;
+        const msg = document.getElementById('password-match-msg');
+        
+        if (confirm.length > 0) {
+            if (pass !== confirm) {
+                msg.classList.remove('hidden');
+            } else {
+                msg.classList.add('hidden');
+            }
+        } else {
+            msg.classList.add('hidden');
+        }
+    }
 </script>
 </body>
 </html>
