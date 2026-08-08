@@ -200,31 +200,19 @@
             <form action="<?= base_url('register/process') ?>" method="post" class="space-y-4 relative z-10 w-full">
                 <?= csrf_field() ?>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-1.5">
-                        <label for="name" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Full Name</label>
-                        <div class="relative group/input">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
-                            </div>
-                            <input type="text" name="name" id="name" required value="<?= set_value('name') ?>"
-                                   class="w-full pl-11 pr-4 py-3 input-dark rounded-xl text-[15px] font-bold outline-none"
-                                   placeholder="Juan Dela Cruz">
+                <div class="space-y-1.5">
+                    <label for="name" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Full Name</label>
+                    <div class="relative group/input">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
                         </div>
+                        <input type="text" name="name" id="name" required value="<?= set_value('name') ?>"
+                               class="w-full pl-11 pr-4 py-3 input-dark rounded-xl text-[15px] font-bold outline-none"
+                               placeholder="Juan Dela Cruz">
                     </div>
+                </div>
 
-                    <div class="space-y-1.5">
-                        <label for="student_id_number" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Student ID Number</label>
-                        <div class="relative group/input">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fas fa-id-card text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
-                            </div>
-                            <input type="text" name="student_id_number" id="student_id_number" required value="<?= set_value('student_id_number') ?>"
-                                   class="w-full pl-11 pr-4 py-3 input-dark rounded-xl text-[15px] font-bold outline-none"
-                                   placeholder="2024-XXXXX">
-                        </div>
-                    </div>
-                    
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
                         <label for="grade_level" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Grade Level</label>
                         <div class="relative group/input">
@@ -251,7 +239,7 @@
                     </div>
                 </div>
 
-                <div class="space-y-1.5 pt-2">
+                <div class="space-y-1.5">
                     <label for="parent_contact" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Parent/Guardian Contact (Phone/Email)</label>
                     <div class="relative group/input">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">

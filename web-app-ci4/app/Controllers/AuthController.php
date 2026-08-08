@@ -350,12 +350,14 @@ class AuthController extends BaseController
         $db->transStart();
 
         $name = trim((string) $this->request->getPost('name'));
-        $studentId = trim((string) $this->request->getPost('student_id_number'));
         $gradeLevel = trim((string) $this->request->getPost('grade_level'));
         $section = trim((string) $this->request->getPost('section'));
         $parentContact = trim((string) $this->request->getPost('parent_contact'));
         $password = (string) $this->request->getPost('password');
         $confirmPassword = (string) $this->request->getPost('password_confirm');
+
+        // Auto-generate a unique system student ID: SS-YYYYMMDD-XXXX
+        $studentId = 'SS-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -5));
 
         // Detect if parentContact is email or phone
         $parentPhone = filter_var($parentContact, FILTER_VALIDATE_EMAIL) ? null : $parentContact;
@@ -363,8 +365,8 @@ class AuthController extends BaseController
 
         $terms = $this->request->getPost('terms');
 
-        if (empty($name) || empty($studentId) || empty($password)) {
-            return redirect()->back()->withInput()->with('error', 'Name, Student ID, and Password are required.');
+        if (empty($name) || empty($password)) {
+            return redirect()->back()->withInput()->with('error', 'Name and Password are required.');
         }
 
         if (!$terms) {
@@ -395,15 +397,9 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('error', 'Password must contain at least one special character (e.g., @, #, $, etc.).');
         }
 
-        // Check if username (name) or student_id already exists
         $existingUser = $db->table('users')->where('name', $name)->get()->getRow();
         if ($existingUser) {
             return redirect()->back()->withInput()->with('error', 'That name is already registered.');
-        }
-
-        $existingStudent = $db->table('students')->where('student_id', $studentId)->get()->getRow();
-        if ($existingStudent) {
-            return redirect()->back()->withInput()->with('error', 'That Student ID is already registered.');
         }
 
         // Insert into users table
