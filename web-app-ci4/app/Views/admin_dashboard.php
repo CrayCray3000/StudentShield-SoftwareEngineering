@@ -236,16 +236,16 @@
                 <!-- Status indicator -->
                 <div class="hidden lg:flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/15">
                     <span class="w-2 h-2 rounded-full bg-[#EAB308] live-dot"></span>
-                    <span class="text-xs font-semibold text-[#FACC15]">System Active</span>
+                    <span class="text-xs font-semibold text-[#FACC15]">Active</span>
                 </div>
 
                 <!-- Pending Meeting Requests (Live Polling Bell) -->
-                <div class="relative hidden lg:block" id="meetingNotifWrapper">
-                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()" class="relative flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full border border-white/15 transition-all duration-200 focus:outline-none">
-                        <svg class="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="relative" id="meetingNotifWrapper">
+                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()" class="relative flex items-center gap-2 bg-red-500/20 hover:bg-red-500/30 px-3 py-1.5 rounded-full border border-red-400/30 transition-all duration-200 focus:outline-none">
+                        <svg class="w-4 h-4 text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
-                        <span class="text-xs font-semibold text-white/90">Session Requests</span>
+                        <span class="text-xs font-semibold text-white/90 hidden sm:inline">Sessions</span>
                         <span id="meetingBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1.5 -right-1.5 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold shadow-lg animate-pulse">
                             <?= esc($pending_meetings_count ?? 0) ?>
                         </span>
@@ -268,43 +268,49 @@
 
                 <!-- Role Badge -->
                 <?php if (session()->get('role') == 2): ?>
-                    <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-semibold">Super Admin</span>
+                    <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-bold tracking-wide">⭐ Super Admin</span>
                 <?php else: ?>
-                    <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
+                    <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
                 <?php endif; ?>
 
-                <!-- User Management (Super Admin Only) -->
-                <?php if (session()->get('role') == 2): ?>
-                    <a href="/admin/dashboard" class="hidden md:flex items-center gap-2 text-sm font-medium text-[#EAB308] bg-white/10 px-3 py-2 rounded-lg transition-colors border-l border-white/20 ml-2">
-                        <svg class="h-4 w-4 text-[#EAB308]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-                        Dashboard
-                    </a>
-                    <a href="/admin/users" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors border-l border-white/20 ml-2">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                        Users
-                    </a>
-                    <a href="/admin/pending-registrations" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-                        Registrations
-                    </a>
-                    <a href="/admin/audit-logs" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        Audit Logs
-                    </a>
-                <?php else: ?>
-                    <!-- Counselor: Pending Registrations link -->
-                    <a href="/admin/pending-registrations" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-                        Registrations
-                    </a>
-                <?php endif; ?>
-
-                <form action="<?= base_url('logout') ?>" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    Logout
-                </button></form>
+                <!-- Navigation Menu Dropdown (role-aware) -->
+                <div class="relative" id="navMenuWrapper">
+                    <button onclick="toggleNavMenu()" id="navMenuBtn" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg border border-white/15 transition-all duration-200 focus:outline-none">
+                        <svg class="w-4 h-4 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        <span class="text-xs font-semibold text-white/80 hidden sm:inline">Menu</span>
+                    </button>
+                    <div id="navMenuDropdown" class="hidden absolute right-0 top-full mt-2 w-52 bg-[#1a2d1e] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden py-1">
+                        <!-- Shared: Dashboard -->
+                        <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                            Dashboard
+                        </a>
+                        <!-- Shared: Registrations -->
+                        <a href="/admin/pending-registrations" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                            Registrations
+                        </a>
+                        <?php if (session()->get('role') == 2): ?>
+                        <!-- Super Admin only -->
+                        <div class="mx-4 my-1 border-t border-white/10"></div>
+                        <a href="/admin/users" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                            Manage Users
+                        </a>
+                        <a href="/admin/audit-logs" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            Audit Logs
+                        </a>
+                        <?php endif; ?>
+                        <div class="mx-4 my-1 border-t border-white/10"></div>
+                        <form action="<?= base_url('logout') ?>" method="POST"><?= csrf_field() ?>
+                            <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-300 hover:text-red-200 hover:bg-red-500/10 transition-colors">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -1451,6 +1457,20 @@
             });
             document.getElementById('bulkDeleteIncidentsForm').submit();
         }
+
+        /* ── Nav Menu Dropdown ─────────────────────────────────────── */
+        let navMenuOpen = false;
+        window.toggleNavMenu = function () {
+            navMenuOpen = !navMenuOpen;
+            document.getElementById('navMenuDropdown').classList.toggle('hidden', !navMenuOpen);
+        };
+        document.addEventListener('click', function (e) {
+            const wrapper = document.getElementById('navMenuWrapper');
+            if (wrapper && !wrapper.contains(e.target) && navMenuOpen) {
+                navMenuOpen = false;
+                document.getElementById('navMenuDropdown').classList.add('hidden');
+            }
+        });
 
         /* ── Meeting Request Bell ──────────────────────────────────── */
         (function () {
