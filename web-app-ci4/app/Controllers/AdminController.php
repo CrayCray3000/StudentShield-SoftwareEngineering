@@ -620,17 +620,26 @@ class AdminController extends BaseController
 
         $db = \Config\Database::connect();
 
-        // --- Safety net: add is_active column if the production DB is missing it ---
+        // --- Safety net: provision missing columns on production DB ---
         try {
             $columns = $db->getFieldNames('users');
+
             if (!in_array('is_active', $columns)) {
-                $db->query('ALTER TABLE users ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1');
-                log_message('info', 'AdminController: auto-added is_active column to users table on production.');
+                $db->query('ALTER TABLE users ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 0');
+                log_message('info', 'AdminController: auto-added is_active column (DEFAULT 0) to users table.');
+            } else {
+                // Fix column default if it was incorrectly set to 1
+                $db->query('ALTER TABLE users MODIFY COLUMN is_active TINYINT(1) NOT NULL DEFAULT 0');
+            }
+
+            if (!in_array('created_at', $columns)) {
+                $db->query('ALTER TABLE users ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
+                log_message('info', 'AdminController: auto-added created_at column to users table.');
             }
         } catch (\Throwable $e) {
             log_message('error', 'AdminController::pendingRegistrations column-check failed: ' . $e->getMessage());
         }
-        // -------------------------------------------------------------------------
+        // ---------------------------------------------------------------
 
         $pendingUsers = [];
         try {
