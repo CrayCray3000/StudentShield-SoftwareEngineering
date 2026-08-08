@@ -239,6 +239,33 @@
                     <span class="text-xs font-semibold text-[#FACC15]">System Active</span>
                 </div>
 
+                <!-- Pending Meeting Requests (Live Polling Bell) -->
+                <div class="relative hidden lg:block" id="meetingNotifWrapper">
+                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()" class="relative flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full border border-white/15 transition-all duration-200 focus:outline-none">
+                        <svg class="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        <span class="text-xs font-semibold text-white/90">Session Requests</span>
+                        <span id="meetingBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1.5 -right-1.5 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold shadow-lg animate-pulse">
+                            <?= esc($pending_meetings_count ?? 0) ?>
+                        </span>
+                    </button>
+
+                    <!-- Dropdown panel -->
+                    <div id="meetingDropdown" class="hidden absolute right-0 top-full mt-2 w-80 bg-[#1a1f2e] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
+                        <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between">
+                            <span class="text-sm font-bold text-[#FACC15]">📹 Pending Session Requests</span>
+                            <span id="dropdownCount" class="text-xs text-white/50"></span>
+                        </div>
+                        <div id="meetingRequestsList" class="max-h-72 overflow-y-auto divide-y divide-white/5">
+                            <div class="px-4 py-4 text-center text-white/40 text-sm" id="noRequestsMsg">No pending requests</div>
+                        </div>
+                        <div class="px-4 py-2.5 border-t border-white/10 text-center">
+                            <span class="text-[10px] text-white/30" id="lastCheckedLabel">Checking...</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Role Badge -->
                 <?php if (session()->get('role') == 2): ?>
                     <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-semibold">Super Admin</span>
@@ -1424,6 +1451,108 @@
             });
             document.getElementById('bulkDeleteIncidentsForm').submit();
         }
+
+        /* ── Meeting Request Bell ──────────────────────────────────── */
+        (function () {
+            const POLL_INTERVAL = 15000; // 15 s
+            let dropdownOpen = false;
+            let lastCount = <?= (int) ($pending_meetings_count ?? 0) ?>;
+
+            // Toggle dropdown visibility
+            window.toggleMeetingDropdown = function () {
+                dropdownOpen = !dropdownOpen;
+                document.getElementById('meetingDropdown').classList.toggle('hidden', !dropdownOpen);
+                if (dropdownOpen) fetchMeetings();
+            };
+
+            // Close when clicking outside
+            document.addEventListener('click', function (e) {
+                const wrapper = document.getElementById('meetingNotifWrapper');
+                if (wrapper && !wrapper.contains(e.target) && dropdownOpen) {
+                    dropdownOpen = false;
+                    document.getElementById('meetingDropdown').classList.add('hidden');
+                }
+            });
+
+            function timeAgo(dateStr) {
+                if (!dateStr) return '';
+                const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+                if (diff < 60) return diff + 's ago';
+                if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+                if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+                return Math.floor(diff / 86400) + 'd ago';
+            }
+
+            function renderList(requests) {
+                const list = document.getElementById('meetingRequestsList');
+                const noMsg = document.getElementById('noRequestsMsg');
+                const countLabel = document.getElementById('dropdownCount');
+
+                countLabel.textContent = requests.length
+                    ? requests.length + ' pending'
+                    : '';
+
+                if (!requests.length) {
+                    list.innerHTML = '';
+                    list.appendChild(noMsg);
+                    noMsg.classList.remove('hidden');
+                    return;
+                }
+
+                noMsg.classList.add('hidden');
+                list.innerHTML = requests.map(function (r) {
+                    const name = r.student_name || 'Unknown Student';
+                    const section = r.section ? ' · ' + r.section : '';
+                    const sid = r.student_number ? ' (' + r.student_number + ')' : '';
+                    const ago = timeAgo(r.requested_at);
+                    const link = '/admin/case-summary/' + r.student_id;
+                    return `<a href="${link}" class="flex items-start gap-3 px-4 py-3 hover:bg-white/5 transition-colors group">
+                        <span class="mt-0.5 w-8 h-8 rounded-full bg-red-500/20 border border-red-400/30 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        </span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-white truncate group-hover:text-[#FACC15] transition-colors">${name}${sid}</p>
+                            <p class="text-[11px] text-white/50">${section.replace(' · ', '')}${section ? '' : '&nbsp;'} <span class="ml-1 text-white/30">${ago}</span></p>
+                        </div>
+                        <span class="text-[10px] text-[#FACC15] font-semibold self-center opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">View →</span>
+                    </a>`;
+                }).join('');
+            }
+
+            function updateBadge(count) {
+                const badge = document.getElementById('meetingBadge');
+                badge.textContent = count;
+                if (count > 0) {
+                    badge.classList.remove('hidden');
+                    // Brief shake animation on new requests
+                    if (count > lastCount) {
+                        const btn = document.getElementById('meetingBellBtn');
+                        btn.classList.add('ring-2', 'ring-red-400/60');
+                        setTimeout(() => btn.classList.remove('ring-2', 'ring-red-400/60'), 2000);
+                    }
+                } else {
+                    badge.classList.add('hidden');
+                }
+                lastCount = count;
+            }
+
+            function fetchMeetings() {
+                fetch('/admin/api/pending-meetings', { credentials: 'same-origin' })
+                    .then(function (res) { return res.json(); })
+                    .then(function (data) {
+                        if (data.status !== 'success') return;
+                        updateBadge(data.count);
+                        if (dropdownOpen) renderList(data.requests || []);
+                        const label = document.getElementById('lastCheckedLabel');
+                        if (label) label.textContent = 'Updated ' + timeAgo(new Date().toISOString());
+                    })
+                    .catch(function () { /* silent */ });
+            }
+
+            // Run immediately, then on interval
+            fetchMeetings();
+            setInterval(fetchMeetings, POLL_INTERVAL);
+        })();
     </script>
 
     <!-- Hidden Bulk Forms -->
