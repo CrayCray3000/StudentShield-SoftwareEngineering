@@ -94,6 +94,74 @@
     <!-- Main Content (Centered) -->
     <div class="w-full max-w-6xl mx-auto px-6 py-16 mt-10 relative z-20 flex flex-col items-center">
         
+        <!-- Active Meeting Banner -->
+        <?php if (!empty($activeMeeting)): ?>
+        <div class="w-full max-w-5xl mb-8 bg-primary/20 border border-primary/40 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between shadow-lg backdrop-blur-md animate-[scaleIn_0.3s_ease-out]">
+            <div class="flex items-center gap-4 mb-4 sm:mb-0">
+                <div class="w-12 h-12 rounded-full bg-primary/30 flex items-center justify-center border border-primary/50 text-white animate-pulse">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-lg">Your counselor has started a video session</h3>
+                    <p class="text-white/70 text-sm">Join the session now to speak directly with your counselor.</p>
+                </div>
+            </div>
+            <button onclick="joinJitsiMeeting('<?= esc($activeMeeting['meet_link']) ?>')" class="bg-primary text-white font-bold py-3 px-8 rounded-xl hover:bg-primary-light transition-colors shadow-md flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Join Video Session
+            </button>
+        </div>
+
+        <!-- Jitsi Meeting Modal -->
+        <div id="jitsiModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div class="bg-gray-900 rounded-2xl w-full max-w-5xl h-[80vh] flex flex-col overflow-hidden border border-gray-700 shadow-2xl relative">
+                <div class="flex items-center justify-between p-4 border-b border-gray-700 bg-gray-800">
+                    <h3 class="text-white font-bold">Counseling Video Session</h3>
+                    <button onclick="closeJitsiMeeting()" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <div id="jitsiContainer" class="flex-1 w-full h-full bg-black"></div>
+            </div>
+        </div>
+
+        <script src="https://meet.jit.si/external_api.js"></script>
+        <script>
+            let jitsiApi = null;
+            function joinJitsiMeeting(roomName) {
+                document.getElementById('jitsiModal').classList.remove('hidden');
+                document.getElementById('jitsiModal').classList.add('flex');
+                const domain = 'meet.jit.si';
+                const options = {
+                    roomName: roomName,
+                    width: '100%',
+                    height: '100%',
+                    parentNode: document.getElementById('jitsiContainer'),
+                    userInfo: {
+                        displayName: 'Student'
+                    },
+                    configOverwrite: { 
+                        startWithAudioMuted: false, 
+                        startWithVideoMuted: false,
+                        prejoinPageEnabled: false
+                    },
+                    interfaceConfigOverwrite: {
+                        DISABLE_JOIN_LEAVE_NOTIFICATIONS: true
+                    }
+                };
+                jitsiApi = new JitsiMeetExternalAPI(domain, options);
+            }
+
+            function closeJitsiMeeting() {
+                if(jitsiApi) jitsiApi.dispose();
+                document.getElementById('jitsiModal').classList.add('hidden');
+                document.getElementById('jitsiModal').classList.remove('flex');
+            }
+        </script>
+        <?php endif; ?>
+        
         <!-- Header Section -->
         <div class="text-center mb-12 sm:mb-16">
             <p class="text-gold/90 text-sm font-semibold tracking-widest uppercase mb-4">Select Action</p>

@@ -430,6 +430,62 @@ class CaseSummaryController extends BaseController
     }
 
     /**
+     * Start a virtual meeting for a student.
+     */
+    public function startVirtualMeeting($studentId)
+    {
+        if (!$this->guardAccess()) {
+            return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
+        }
+
+        $meetLink = $this->request->getPost('meet_link');
+        if (empty($meetLink) || !filter_var($meetLink, FILTER_VALIDATE_URL)) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Valid meeting link is required']);
+        }
+
+        $db = \Config\Database::connect();
+        $this->ensureTables($db);
+
+        // Cancel existing active meetings
+        $db->table('virtual_meetings')
+           ->where('student_id', $studentId)
+           ->where('status', 'active')
+           ->update(['status' => 'cancelled']);
+
+        $db->table('virtual_meetings')->insert([
+            'student_id'   => (int) $studentId,
+            'counselor_id' => (int) session()->get('user_id'),
+            'meet_link'    => $meetLink,
+            'status'       => 'active',
+            'created_at'   => date('Y-m-d H:i:s'),
+        ]);
+
+        $this->logAudit('START_MEETING', 'student', (int) $studentId);
+
+        return $this->response->setJSON(['success' => true, 'message' => 'Meeting started successfully']);
+    }
+
+    /**
+     * Cancel/end an active virtual meeting.
+     */
+    public function cancelMeeting($studentId)
+    {
+        if (!$this->guardAccess()) {
+            return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
+        }
+
+        $db = \Config\Database::connect();
+        $db->table('virtual_meetings')
+           ->where('student_id', $studentId)
+           ->where('status', 'active')
+           ->update(['status' => 'completed']);
+
+        $this->logAudit('END_MEETING', 'student', (int) $studentId);
+
+        return $this->response->setJSON(['success' => true, 'message' => 'Meeting ended successfully']);
+    }
+
+    /**
      * Soft-delete a counselor note.
      */
     public function deleteNote($noteId)
@@ -539,6 +595,19 @@ class CaseSummaryController extends BaseController
                     user_agent TEXT NULL,
                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                     INDEX idx_entity (entity_type, entity_id)
+                )");
+            }
+
+            if (!$db->tableExists('virtual_meetings')) {
+                $db->query("CREATE TABLE IF NOT EXISTS virtual_meetings (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    student_id INT NOT NULL,
+                    counselor_id INT NOT NULL,
+                    meet_link VARCHAR(255) NOT NULL,
+                    status ENUM('active', 'completed', 'cancelled') DEFAULT 'active',
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_student (student_id),
+                    INDEX idx_counselor (counselor_id)
                 )");
             }
         } catch (\Exception $e) {

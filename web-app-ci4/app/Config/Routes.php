@@ -48,8 +48,9 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('/admin/case-summary/(:num)/note', 'CaseSummaryController::addNote/$1');
     $routes->post('/admin/case-summary/(:num)/status', 'CaseSummaryController::updateStatus/$1');
     $routes->post('/admin/case-summary/note/delete/(:num)', 'CaseSummaryController::deleteNote/$1');
-
-
+    $routes->post('/admin/case-summary/(:num)/meeting/start', 'VirtualMeetingController::start/$1');
+    $routes->post('/admin/case-summary/(:num)/meeting/cancel', 'VirtualMeetingController::end/$1');
+    $routes->get('/student/api/meeting/status', 'VirtualMeetingController::getActiveMeeting');
     $routes->post('/admin/incident/resolve/(:num)', 'AdminController::resolveIncident/$1');
     $routes->post('/admin/incident/verify/(:num)', 'AdminController::verifyIncident/$1');
     $routes->post('/admin/incident/reject/(:num)', 'AdminController::rejectIncident/$1');

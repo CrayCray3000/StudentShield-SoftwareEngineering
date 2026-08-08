@@ -28,9 +28,21 @@ class StudentDashboardController extends BaseController
             // Gracefully skip if table doesn't exist
         }
 
+        // Fetch active virtual meeting
+        $activeMeeting = null;
+        if ($db->tableExists('virtual_meetings')) {
+            $activeMeeting = $db->table('virtual_meetings')
+                                ->where('student_id', $userId)
+                                ->where('status', 'active')
+                                ->orderBy('created_at', 'DESC')
+                                ->get()
+                                ->getRowArray();
+        }
+
         return view('student_dashboard', [
             'falseReportStrikes' => $falseReportCount,
             'isLocked'           => $isLocked,
+            'activeMeeting'      => $activeMeeting,
         ]);
     }
 }

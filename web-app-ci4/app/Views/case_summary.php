@@ -250,9 +250,23 @@
                         <p class="text-[10px] text-emerald-200 font-bold uppercase tracking-widest">Case Status</p>
                         <p id="currentStatusText" class="text-lg font-heading font-bold text-white mt-0.5">Active Monitoring</p>
                     </div>
-                    <button onclick="openStatusModal()" class="no-print bg-white text-emerald-900 hover:bg-emerald-50 font-bold px-3 py-1.5 rounded-lg text-xs transition shadow-sm">
-                        Manage Case
-                    </button>
+                    <div class="flex flex-col gap-2">
+                        <button onclick="openStatusModal()" class="no-print bg-white text-emerald-900 hover:bg-emerald-50 font-bold px-3 py-1.5 rounded-lg text-xs transition shadow-sm">
+                            Manage Case
+                        </button>
+                        <button id="btnStartVideoMeeting" onclick="startVideoMeeting()" class="no-print bg-[#EAB308] hover:bg-[#D9AA2E] text-slate-900 font-bold px-3 py-1.5 rounded-lg text-xs transition shadow-sm flex items-center justify-center gap-1">
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Video Meeting
+                        </button>
+                        <button id="btnEndVideoMeeting" onclick="endVideoMeeting()" class="hidden no-print bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition shadow-sm flex items-center justify-center gap-1">
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            End Meeting
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -515,6 +529,27 @@
             </form>
         </div>
     </div>
+
+    <!-- Video Meeting Modal (Jitsi) -->
+    <div id="videoMeetingModal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="bg-gray-900 text-white p-4 flex justify-between items-center">
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <svg class="w-5 h-5 text-[#EAB308]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    StudentShield Secure Video Meeting
+                </h3>
+                <button onclick="hideVideoMeetingModal()" class="text-gray-400 hover:text-white transition">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <div id="jitsiContainer" class="flex-1 bg-black"></div>
+        </div>
+    </div>
+
+    <!-- Jitsi Meet API -->
+    <script src="https://meet.jit.si/external_api.js"></script>
 
     <!-- Scripting & AJAX Orchestration -->
     <script>
@@ -1034,6 +1069,102 @@
                 console.error("Status update error:", err);
                 alert("Failed to update status.");
             });
+        }
+
+        let jitsiApi = null;
+        let activeMeetingId = null;
+
+        function startVideoMeeting() {
+            // Call the backend to create an active meeting session for this student
+            fetch(`/admin/case-summary/${studentId}/meeting/start`, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    activeMeetingId = data.meeting_id;
+                    const roomName = data.room_name;
+                    showVideoMeetingModal(roomName);
+                    
+                    document.getElementById('btnStartVideoMeeting').classList.add('hidden');
+                    document.getElementById('btnEndVideoMeeting').classList.remove('hidden');
+                    document.getElementById('btnEndVideoMeeting').classList.add('flex');
+                } else {
+                    alert("Failed to start meeting: " + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(err => {
+                console.error("Start meeting error:", err);
+                alert("Error starting video meeting.");
+            });
+        }
+
+        function endVideoMeeting() {
+            fetch(`/admin/case-summary/${studentId}/meeting/cancel`, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    hideVideoMeetingModal();
+                    document.getElementById('btnStartVideoMeeting').classList.remove('hidden');
+                    document.getElementById('btnEndVideoMeeting').classList.add('hidden');
+                    document.getElementById('btnEndVideoMeeting').classList.remove('flex');
+                    activeMeetingId = null;
+                }
+            })
+            .catch(err => {
+                console.error("End meeting error:", err);
+            });
+        }
+
+        function showVideoMeetingModal(roomName) {
+            document.getElementById('videoMeetingModal').classList.remove('hidden');
+            document.getElementById('videoMeetingModal').classList.add('flex');
+
+            const domain = 'meet.jit.si';
+            const options = {
+                roomName: roomName,
+                width: '100%',
+                height: '100%',
+                parentNode: document.querySelector('#jitsiContainer'),
+                userInfo: {
+                    displayName: 'Counselor (StudentShield)'
+                },
+                configOverwrite: {
+                    startWithAudioMuted: false,
+                    startWithVideoMuted: false,
+                    prejoinPageEnabled: false
+                },
+                interfaceConfigOverwrite: {
+                    SHOW_JITSI_WATERMARK: false,
+                    SHOW_BRAND_WATERMARK: false,
+                    SHOW_POWERED_BY: false,
+                    TOOLBAR_BUTTONS: [
+                        'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+                        'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
+                        'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
+                        'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
+                        'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security'
+                    ]
+                }
+            };
+            jitsiApi = new JitsiMeetExternalAPI(domain, options);
+            
+            jitsiApi.addListener('videoConferenceLeft', () => {
+                hideVideoMeetingModal();
+            });
+        }
+
+        function hideVideoMeetingModal() {
+            document.getElementById('videoMeetingModal').classList.add('hidden');
+            document.getElementById('videoMeetingModal').classList.remove('flex');
+            if (jitsiApi) {
+                jitsiApi.dispose();
+                jitsiApi = null;
+            }
         }
 
         // Bootstrap load
