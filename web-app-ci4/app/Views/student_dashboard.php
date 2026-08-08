@@ -94,9 +94,9 @@
     <!-- Main Content (Centered) -->
     <div class="w-full max-w-6xl mx-auto px-6 py-16 mt-10 relative z-20 flex flex-col items-center">
         
-        <!-- Active Meeting Banner -->
-        <?php if (!empty($activeMeeting)): ?>
-        <div class="w-full max-w-5xl mb-8 bg-primary/20 border border-primary/40 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between shadow-lg backdrop-blur-md animate-[scaleIn_0.3s_ease-out]">
+        <!-- Meeting Status Area (Request / Pending / Active) -->
+        <!-- Active Meeting Banner (counselor started) -->
+        <div id="activeMeetingBanner" class="<?= empty($activeMeeting) ? 'hidden' : '' ?> w-full max-w-5xl mb-8 bg-primary/20 border border-primary/40 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between shadow-lg backdrop-blur-md animate-[scaleIn_0.3s_ease-out]">
             <div class="flex items-center gap-4 mb-4 sm:mb-0">
                 <div class="w-12 h-12 rounded-full bg-primary/30 flex items-center justify-center border border-primary/50 text-white animate-pulse">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -108,9 +108,37 @@
                     <p class="text-white/70 text-sm">Join the session now to speak directly with your counselor.</p>
                 </div>
             </div>
-            <button onclick="joinJitsiMeeting('<?= esc($activeMeeting['meet_link']) ?>')" class="bg-primary text-white font-bold py-3 px-8 rounded-xl hover:bg-primary-light transition-colors shadow-md flex items-center gap-2">
+            <button id="btnJoinMeeting" onclick="joinJitsiMeeting(currentRoomName)" class="bg-primary text-white font-bold py-3 px-8 rounded-xl hover:bg-primary-light transition-colors shadow-md flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 Join Video Session
+            </button>
+        </div>
+
+        <!-- Pending Request Banner (student waiting for counselor) -->
+        <div id="pendingRequestBanner" class="hidden w-full max-w-5xl mb-8 bg-yellow-500/10 border border-yellow-500/30 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between shadow-lg backdrop-blur-md">
+            <div class="flex items-center gap-4 mb-4 sm:mb-0">
+                <div class="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center border border-yellow-500/40 text-yellow-400">
+                    <svg class="w-6 h-6 animate-spin" style="animation-duration:3s" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-lg">Session request sent ✓</h3>
+                    <p class="text-white/70 text-sm">Your counselor has been notified. Please wait — they will start the session shortly.</p>
+                </div>
+            </div>
+            <button onclick="cancelSessionRequest()" class="text-red-400 hover:text-red-300 border border-red-500/30 hover:border-red-400 font-semibold py-2 px-5 rounded-xl text-sm transition-colors">
+                Cancel Request
+            </button>
+        </div>
+
+        <!-- Request Session Button (idle state, no active meeting or pending request) -->
+        <div id="requestSessionArea" class="<?= !empty($activeMeeting) ? 'hidden' : '' ?> w-full max-w-5xl mb-8 flex justify-end">
+            <button onclick="requestVideoSession()" id="btnRequestSession" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold py-2.5 px-6 rounded-xl text-sm transition-colors flex items-center gap-2 backdrop-blur-sm">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Request a Video Session
             </button>
         </div>
 
@@ -130,7 +158,11 @@
         <script src="https://meet.jit.si/external_api.js"></script>
         <script>
             let jitsiApi = null;
+            let currentRoomName = '<?= !empty($activeMeeting) ? esc($activeMeeting['meet_link']) : '' ?>';
+
+            // ---- Jitsi join/close ----
             function joinJitsiMeeting(roomName) {
+                if (!roomName) return;
                 document.getElementById('jitsiModal').classList.remove('hidden');
                 document.getElementById('jitsiModal').classList.add('flex');
                 const domain = 'meet.jit.si';
@@ -139,28 +171,107 @@
                     width: '100%',
                     height: '100%',
                     parentNode: document.getElementById('jitsiContainer'),
-                    userInfo: {
-                        displayName: 'Student'
-                    },
-                    configOverwrite: { 
-                        startWithAudioMuted: false, 
+                    userInfo: { displayName: 'Student' },
+                    configOverwrite: {
+                        startWithAudioMuted: false,
                         startWithVideoMuted: false,
                         prejoinPageEnabled: false
                     },
-                    interfaceConfigOverwrite: {
-                        DISABLE_JOIN_LEAVE_NOTIFICATIONS: true
-                    }
+                    interfaceConfigOverwrite: { DISABLE_JOIN_LEAVE_NOTIFICATIONS: true }
                 };
                 jitsiApi = new JitsiMeetExternalAPI(domain, options);
             }
 
             function closeJitsiMeeting() {
-                if(jitsiApi) jitsiApi.dispose();
+                if (jitsiApi) jitsiApi.dispose();
                 document.getElementById('jitsiModal').classList.add('hidden');
                 document.getElementById('jitsiModal').classList.remove('flex');
             }
+
+            // ---- Request a session ----
+            function requestVideoSession() {
+                const btn = document.getElementById('btnRequestSession');
+                btn.disabled = true;
+                btn.textContent = 'Sending request...';
+
+                fetch('/student/meeting/request', {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' }
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showPendingState();
+                    } else {
+                        btn.disabled = false;
+                        btn.innerHTML = `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> Request a Video Session`;
+                    }
+                })
+                .catch(() => { btn.disabled = false; });
+            }
+
+            function cancelSessionRequest() {
+                fetch('/student/meeting/cancel-request', {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' }
+                })
+                .then(r => r.json())
+                .then(() => showIdleState())
+                .catch(() => {});
+            }
+
+            // ---- UI state helpers ----
+            function showIdleState() {
+                document.getElementById('activeMeetingBanner').classList.add('hidden');
+                document.getElementById('pendingRequestBanner').classList.add('hidden');
+                document.getElementById('requestSessionArea').classList.remove('hidden');
+                const btn = document.getElementById('btnRequestSession');
+                btn.disabled = false;
+                btn.innerHTML = `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> Request a Video Session`;
+            }
+
+            function showPendingState() {
+                document.getElementById('activeMeetingBanner').classList.add('hidden');
+                document.getElementById('pendingRequestBanner').classList.remove('hidden');
+                document.getElementById('requestSessionArea').classList.add('hidden');
+            }
+
+            function showActiveMeetingState(roomName) {
+                currentRoomName = roomName;
+                document.getElementById('pendingRequestBanner').classList.add('hidden');
+                document.getElementById('requestSessionArea').classList.add('hidden');
+                document.getElementById('activeMeetingBanner').classList.remove('hidden');
+            }
+
+            // ---- Poll every 8 seconds for meeting status ----
+            function pollMeetingStatus() {
+                fetch('/student/api/meeting/status', {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        if (data.has_meeting) {
+                            showActiveMeetingState(data.meet_link);
+                        } else if (data.has_request) {
+                            showPendingState();
+                        } else {
+                            // only revert to idle if not currently showing an active meeting
+                            const activeBanner = document.getElementById('activeMeetingBanner');
+                            if (activeBanner.classList.contains('hidden')) {
+                                showIdleState();
+                            }
+                        }
+                    }
+                })
+                .catch(() => {});
+            }
+
+            // Init poll
+            pollMeetingStatus();
+            setInterval(pollMeetingStatus, 8000);
         </script>
-        <?php endif; ?>
+
         
         <!-- Header Section -->
         <div class="text-center mb-12 sm:mb-16">

@@ -254,6 +254,11 @@
                         <button onclick="openStatusModal()" class="no-print bg-white text-emerald-900 hover:bg-emerald-50 font-bold px-3 py-1.5 rounded-lg text-xs transition shadow-sm">
                             Manage Case
                         </button>
+                        <!-- Student Pending Request Badge -->
+                        <div id="pendingRequestBadge" class="hidden no-print bg-yellow-400/20 border border-yellow-400/50 text-yellow-300 text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 animate-pulse">
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                            Student requested a session
+                        </div>
                         <button id="btnStartVideoMeeting" onclick="startVideoMeeting()" class="no-print bg-[#EAB308] hover:bg-[#D9AA2E] text-slate-900 font-bold px-3 py-1.5 rounded-lg text-xs transition shadow-sm flex items-center justify-center gap-1">
                             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -563,6 +568,27 @@
         document.querySelectorAll('.print-date').forEach(el => {
             el.innerText = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         });
+
+        // Check if student has a pending session request
+        function checkPendingRequest() {
+            fetch(`/admin/api/case-summary/${studentId}/meeting/pending`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(r => r.json())
+            .then(data => {
+                const badge = document.getElementById('pendingRequestBadge');
+                if (data.pending && badge) {
+                    badge.classList.remove('hidden');
+                    badge.classList.add('flex');
+                } else if (badge) {
+                    badge.classList.add('hidden');
+                    badge.classList.remove('flex');
+                }
+            })
+            .catch(() => {});
+        }
+        checkPendingRequest();
+        setInterval(checkPendingRequest, 15000);
 
         // Load Page Data
         function loadCaseData() {
@@ -1075,6 +1101,8 @@
         let activeMeetingId = null;
 
         function startVideoMeeting() {
+            // Dismiss the pending badge
+            document.getElementById('pendingRequestBadge').classList.add('hidden');
             // Call the backend to create an active meeting session for this student
             fetch(`/admin/case-summary/${studentId}/meeting/start`, {
                 method: 'POST',

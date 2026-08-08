@@ -130,3 +130,14 @@ CREATE TABLE IF NOT EXISTS case_status_history (
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (changed_by) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS virtual_meetings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    counselor_id INT NOT NULL,
+    meet_link VARCHAR(255) NOT NULL,
+    status ENUM('active', 'completed', 'cancelled') DEFAULT 'active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (counselor_id) REFERENCES users(id) ON DELETE CASCADE
+);

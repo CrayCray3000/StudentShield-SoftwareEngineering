@@ -3,16 +3,15 @@ $db = new mysqli('localhost', 'root', '', 'student_shield');
 if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
-$sql = "CREATE TABLE IF NOT EXISTS bully_reports (
-  id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  reporter_student_id INT(11) UNSIGNED NULL,
-  reporter_type ENUM('self', 'bystander') DEFAULT 'self',
-  victim_student_id INT(11) UNSIGNED NULL,
-  bully_student_id INT(11) UNSIGNED NULL,
-  incident_details TEXT NULL,
-  status ENUM('pending_review', 'verified', 'rejected_fake') DEFAULT 'pending_review',
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+$sql = "CREATE TABLE IF NOT EXISTS virtual_meetings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    counselor_id INT NOT NULL,
+    meet_link VARCHAR(255) NOT NULL,
+    status ENUM('active', 'completed', 'cancelled') DEFAULT 'active',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (counselor_id) REFERENCES users(id) ON DELETE CASCADE
 )";
 if ($db->query($sql) === TRUE) {
     echo "Table bully_reports created successfully";

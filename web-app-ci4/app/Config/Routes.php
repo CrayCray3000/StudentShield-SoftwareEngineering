@@ -50,7 +50,11 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('/admin/case-summary/note/delete/(:num)', 'CaseSummaryController::deleteNote/$1');
     $routes->post('/admin/case-summary/(:num)/meeting/start', 'VirtualMeetingController::start/$1');
     $routes->post('/admin/case-summary/(:num)/meeting/cancel', 'VirtualMeetingController::end/$1');
+    $routes->get('/admin/api/case-summary/(:num)/meeting/pending', 'VirtualMeetingController::getPendingRequest/$1');
     $routes->get('/student/api/meeting/status', 'VirtualMeetingController::getActiveMeeting');
+    $routes->post('/student/meeting/request', 'VirtualMeetingController::requestMeeting');
+    $routes->post('/student/meeting/cancel-request', 'VirtualMeetingController::cancelRequest');
+
     $routes->post('/admin/incident/resolve/(:num)', 'AdminController::resolveIncident/$1');
     $routes->post('/admin/incident/verify/(:num)', 'AdminController::verifyIncident/$1');
     $routes->post('/admin/incident/reject/(:num)', 'AdminController::rejectIncident/$1');
