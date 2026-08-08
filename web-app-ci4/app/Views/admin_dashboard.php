@@ -1526,15 +1526,15 @@
                     const sid = r.student_number ? ' (' + r.student_number + ')' : '';
                     const ago = timeAgo(r.requested_at);
                     const link = '/admin/case-summary/' + r.student_id;
-                    return `<a href="${link}" class="flex items-start gap-3 px-4 py-3 hover:bg-white/5 transition-colors group">
-                        <span class="mt-0.5 w-8 h-8 rounded-full bg-red-500/20 border border-red-400/30 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    return `<a href="${link}" class="flex items-start gap-3 px-4 py-3 hover:bg-green-50 transition-colors group">
+                        <span class="mt-0.5 w-8 h-8 rounded-full bg-red-100 border border-red-200 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                         </span>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-semibold text-white truncate group-hover:text-[#FACC15] transition-colors">${name}${sid}</p>
-                            <p class="text-[11px] text-white/50">${section.replace(' · ', '')}${section ? '' : '&nbsp;'} <span class="ml-1 text-white/30">${ago}</span></p>
+                            <p class="text-sm font-semibold text-gray-800 truncate group-hover:text-[#166534] transition-colors">${name}${sid}</p>
+                            <p class="text-[11px] text-gray-400">${section.replace(' · ', '')}${section ? '' : '&nbsp;'} <span class="ml-1 text-gray-300">${ago}</span></p>
                         </div>
-                        <span class="text-[10px] text-[#FACC15] font-semibold self-center opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">View →</span>
+                        <span class="text-[10px] text-[#166534] font-semibold self-center opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">View →</span>
                     </a>`;
                 }).join('');
             }
