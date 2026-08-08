@@ -311,6 +311,11 @@
                     <i id="btnIcon" class="fas fa-arrow-right text-primary-light mix-blend-multiply text-[13px] sm:text-sm group-hover/btn:translate-x-1.5 group-hover/btn:scale-110 transition-all duration-300"></i>
                     <svg id="btnSpinner" class="animate-spin h-5 w-5 text-primary-light mix-blend-multiply hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
+
+                <p class="text-center text-white/50 text-[12px] sm:text-[13px] mt-5">
+                    Don't have an account?
+                    <a href="<?= base_url('register') ?>" class="text-yellow-400 hover:text-yellow-300 font-semibold transition-colors duration-200">Register here</a>
+                </p>
             </form>
             
         </div>
