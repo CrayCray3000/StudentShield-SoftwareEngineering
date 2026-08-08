@@ -77,6 +77,11 @@ class AuthController extends BaseController
 
         $pwHash = $user['password_hash'] ?? $user['passcode'] ?? '';
         if ($user && password_verify($password, $pwHash)) {
+            
+            // Approval-Based Registration Check
+            if (isset($user['is_active']) && $user['is_active'] == 0) {
+                return redirect()->back()->with('error', 'Your account is still pending approval by the guidance office.');
+            }
 
             // Remember Me Feature
             if ($this->request->getPost('remember') === 'on') {
@@ -327,6 +332,85 @@ class AuthController extends BaseController
             return redirect()->to('/admin/login');
         }
         return redirect()->to('/login');
+    }
+
+    public function studentRegisterView()
+    {
+        if (session()->get('isLoggedIn')) {
+            return redirect()->to('/student/dashboard');
+        }
+        return view('register');
+    }
+
+    public function processStudentRegistration()
+    {
+        $db = \Config\Database::connect();
+        $db->transStart();
+
+        $name = trim((string) $this->request->getPost('name'));
+        $studentId = trim((string) $this->request->getPost('student_id_number'));
+        $gradeLevel = trim((string) $this->request->getPost('grade_level'));
+        $section = trim((string) $this->request->getPost('section'));
+        $parentContact = trim((string) $this->request->getPost('parent_contact'));
+        $password = (string) $this->request->getPost('password');
+        $confirmPassword = (string) $this->request->getPost('password_confirm');
+
+        // Detect if parentContact is email or phone
+        $parentPhone = filter_var($parentContact, FILTER_VALIDATE_EMAIL) ? null : $parentContact;
+        $parentEmail = filter_var($parentContact, FILTER_VALIDATE_EMAIL) ? $parentContact : null;
+
+        if (empty($name) || empty($studentId) || empty($password)) {
+            return redirect()->back()->withInput()->with('error', 'Name, Student ID, and Password are required.');
+        }
+
+        if ($password !== $confirmPassword) {
+            return redirect()->back()->withInput()->with('error', 'Passwords do not match.');
+        }
+
+        if (strlen($password) < 6) {
+            return redirect()->back()->withInput()->with('error', 'Password must be at least 6 characters.');
+        }
+
+        // Check if username (name) or student_id already exists
+        $existingUser = $db->table('users')->where('name', $name)->get()->getRow();
+        if ($existingUser) {
+            return redirect()->back()->withInput()->with('error', 'That name is already registered.');
+        }
+
+        $existingStudent = $db->table('students')->where('student_id', $studentId)->get()->getRow();
+        if ($existingStudent) {
+            return redirect()->back()->withInput()->with('error', 'That Student ID is already registered.');
+        }
+
+        // Insert into users table
+        $db->table('users')->insert([
+            'name' => $name,
+            'role' => 0, // Student
+            'password_hash' => password_hash($password, PASSWORD_BCRYPT),
+            'is_active' => 0 // Pending approval
+        ]);
+
+        $userId = $db->insertID();
+
+        // Insert into students table
+        $db->table('students')->insert([
+            'user_id' => $userId,
+            'student_id' => $studentId,
+            'grade_level' => $gradeLevel,
+            'section' => $section,
+            'parent_phone' => $parentPhone,
+            'parent_email' => $parentEmail,
+        ]);
+
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            return redirect()->back()->withInput()->with('error', 'Registration failed. Please try again.');
+        }
+
+        $this->logAudit('USER_REGISTERED', 'system', $userId);
+
+        return redirect()->to('/login')->with('success', 'Registration successful! Your account is pending approval by the guidance office.');
     }
 
     private function shouldUseSecureCookie(): bool

@@ -606,4 +606,47 @@ class AdminController extends BaseController
             'escalation_prob'    => $currentEscalationProb,
         ]);
     }
+
+    /**
+     * View pending student registrations (Approval-Based Registration)
+     */
+    public function pendingRegistrations()
+    {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+            return redirect()->to('/admin/login');
+        }
+
+        $db = \Config\Database::connect();
+        
+        $pendingUsers = $db->table('users')
+            ->select('users.id as user_id, users.name, users.created_at, students.student_id, students.grade_level, students.section, students.parent_phone, students.parent_email')
+            ->join('students', 'students.user_id = users.id', 'left')
+            ->where('users.role', 0)
+            ->where('users.is_active', 0)
+            ->orderBy('users.created_at', 'ASC')
+            ->get()->getResultArray();
+
+        return view('admin_pending_registrations', [
+            'pendingUsers' => $pendingUsers
+        ]);
+    }
+
+    /**
+     * Approve a pending student account.
+     */
+    public function approveStudent($userId)
+    {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+            return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
+        }
+
+        $db = \Config\Database::connect();
+        
+        // Update user to active
+        $db->table('users')->where('id', $userId)->update(['is_active' => 1]);
+
+        $this->logAudit('STUDENT_APPROVED', 'system', $userId);
+
+        return redirect()->to('/admin/pending-registrations')->with('success', 'Student account has been approved and activated.');
+    }
 }

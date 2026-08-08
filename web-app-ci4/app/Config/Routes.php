@@ -9,6 +9,9 @@ $routes->get('/', 'AuthController::studentLoginView');
 $routes->get('/login', 'AuthController::studentLoginView');
 $routes->match(['GET', 'POST'], '/login/authenticate', 'AuthController::authenticateStudent');
 
+$routes->get('/register', 'AuthController::studentRegisterView');
+$routes->post('/register/process', 'AuthController::processStudentRegistration');
+
 // Counselor/Admin Portals
 $routes->get('/admin/login', 'AuthController::adminLoginView');
 $routes->match(['GET', 'POST'], '/admin/login/authenticate', 'AuthController::authenticateAdmin');
@@ -63,6 +66,10 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->post('/admin/users/update/(:num)', 'UserController::update/$1');
     $routes->post('/admin/users/delete/(:num)', 'UserController::delete/$1');
     $routes->post('/admin/users/unlock/(:num)', 'UserController::unlock/$1');
+
+    // Registration Approval Routes
+    $routes->get('/admin/pending-registrations', 'AdminController::pendingRegistrations');
+    $routes->post('/admin/approve-student/(:num)', 'AdminController::approveStudent/$1');
 
     $routes->get('/report/bullying', 'BullyReportController::index');
     $routes->post('/report/bullying/submit', 'BullyReportController::submit');
