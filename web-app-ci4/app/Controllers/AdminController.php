@@ -608,7 +608,9 @@ class AdminController extends BaseController
     }
 
     /**
-     * View pending student registrations (Approval-Based Registration)
+     * View pending student registrations (Approval-Based Registration).
+     * Automatically provisions the is_active column on the production DB
+     * if it has not been migrated yet, so the page never shows Whoops.
      */
     public function pendingRegistrations()
     {
@@ -617,14 +619,32 @@ class AdminController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        
-        $pendingUsers = $db->table('users')
-            ->select('users.id as user_id, users.name, users.created_at, students.student_id, students.grade_level, students.section, students.parent_phone, students.parent_email')
-            ->join('students', 'students.user_id = users.id', 'left')
-            ->where('users.role', 0)
-            ->where('users.is_active', 0)
-            ->orderBy('users.created_at', 'ASC')
-            ->get()->getResultArray();
+
+        // --- Safety net: add is_active column if the production DB is missing it ---
+        try {
+            $columns = $db->getFieldNames('users');
+            if (!in_array('is_active', $columns)) {
+                $db->query('ALTER TABLE users ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 1');
+                log_message('info', 'AdminController: auto-added is_active column to users table on production.');
+            }
+        } catch (\Throwable $e) {
+            log_message('error', 'AdminController::pendingRegistrations column-check failed: ' . $e->getMessage());
+        }
+        // -------------------------------------------------------------------------
+
+        $pendingUsers = [];
+        try {
+            $pendingUsers = $db->table('users')
+                ->select('users.id as user_id, users.name, users.created_at, students.student_id, students.grade_level, students.section, students.parent_phone, students.parent_email')
+                ->join('students', 'students.user_id = users.id', 'left')
+                ->where('users.role', 0)
+                ->where('users.is_active', 0)
+                ->orderBy('users.created_at', 'ASC')
+                ->get()->getResultArray();
+        } catch (\Throwable $e) {
+            log_message('error', 'AdminController::pendingRegistrations query failed: ' . $e->getMessage());
+            $pendingUsers = [];
+        }
 
         return view('admin_pending_registrations', [
             'pendingUsers' => $pendingUsers
@@ -641,12 +661,14 @@ class AdminController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        
-        // Update user to active
-        $db->table('users')->where('id', $userId)->update(['is_active' => 1]);
 
-        $this->logAudit('STUDENT_APPROVED', 'system', $userId);
-
-        return redirect()->to('/admin/pending-registrations')->with('success', 'Student account has been approved and activated.');
+        try {
+            $db->table('users')->where('id', $userId)->update(['is_active' => 1]);
+            $this->logAudit('STUDENT_APPROVED', 'system', $userId);
+            return redirect()->to('/admin/pending-registrations')->with('success', 'Student account has been approved and activated.');
+        } catch (\Throwable $e) {
+            log_message('error', 'AdminController::approveStudent failed: ' . $e->getMessage());
+            return redirect()->to('/admin/pending-registrations')->with('error', 'Could not approve student. Please try again.');
+        }
     }
 }
