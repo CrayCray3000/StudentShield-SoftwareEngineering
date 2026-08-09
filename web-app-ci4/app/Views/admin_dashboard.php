@@ -252,7 +252,7 @@
                     </button>
 
                     <!-- Dropdown panel -->
-                    <div id="meetingDropdown" class="hidden absolute right-0 top-full mt-2 w-80 bg-[#1a1f2e] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
+                    <div id="meetingDropdown" class="hidden absolute right-0 top-full mt-2 w-80 bg-[#1a2d1e] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
                         <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between">
                             <span class="text-sm font-bold text-white">📹 Pending Session Requests</span>
                             <span id="dropdownCount" class="text-xs text-white/50"></span>
