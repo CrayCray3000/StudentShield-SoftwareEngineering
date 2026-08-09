@@ -296,13 +296,13 @@ class VirtualMeetingController extends Controller
         $out['table_exists'] = $db->tableExists('virtual_meetings');
 
         if ($out['table_exists']) {
-            $col = $db->query("SHOW COLUMNS FROM virtual_meetings WHERE Field = 'counselor_id'")->getRowArray();
-            $out['counselor_id_nullable'] = ($col['Null'] === 'YES');
-            $out['counselor_id_column'] = $col;
+            // Show full table definition on live server
+            $ddl = $db->query("SHOW CREATE TABLE virtual_meetings")->getRowArray();
+            $out['live_table_ddl'] = $ddl['Create Table'];
 
             // Find a real student
             $student = $db->table('users')->where('role', 0)->limit(1)->get()->getRowArray();
-            $out['test_student'] = $student;
+            $out['test_student_id'] = $student['id'] ?? null;
 
             if ($student) {
                 try {
@@ -314,16 +314,17 @@ class VirtualMeetingController extends Controller
                         'created_at'   => date('Y-m-d H:i:s'),
                     ]);
                     $insertedId = $db->insertID();
-                    $out['insert_success'] = true;
-                    $out['inserted_id'] = $insertedId;
+                    // Read it back BEFORE deleting to confirm status
+                    $readBack = $db->table('virtual_meetings')->where('id', $insertedId)->get()->getRowArray();
+                    $out['inserted_row_status'] = $readBack['status'] ?? 'ROW NOT FOUND';
+                    $out['inserted_row'] = $readBack;
                     $db->table('virtual_meetings')->where('id', $insertedId)->delete();
+                    $out['insert_success'] = true;
                 } catch (\Throwable $e) {
                     $out['insert_success'] = false;
                     $out['insert_error'] = $e->getMessage();
                 }
             }
-
-            $out['existing_rows'] = $db->table('virtual_meetings')->get()->getResultArray();
         }
 
         return $this->response->setHeader('Content-Type', 'application/json')
