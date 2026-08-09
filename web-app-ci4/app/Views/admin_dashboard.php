@@ -1557,7 +1557,7 @@
             }
 
             function fetchMeetings() {
-                fetch('/admin/api/pending-meetings', { credentials: 'same-origin' })
+                fetch('<?= base_url('admin/api/pending-meetings') ?>', { credentials: 'same-origin' })
                     .then(function (res) { return res.json(); })
                     .then(function (data) {
                         if (data.status !== 'success') return;

@@ -143,15 +143,27 @@ class VirtualMeetingController extends Controller
         $roomName = 'StudentShield_' . $studentId . '_' . bin2hex(random_bytes(4));
 
         $data = [
-            'student_id' => $studentId,
             'counselor_id' => $counselorId,
             'meet_link' => $roomName,
             'status' => 'active',
             'created_at' => date('Y-m-d H:i:s')
         ];
 
-        $builder->insert($data);
-        $meetingId = $db->insertID();
+        // Attempt to update a pending request if exists, otherwise insert new
+        $updated = $builder->where('student_id', $studentId)
+                           ->where('status', 'requested')
+                           ->update($data);
+
+        if (!$updated) {
+            $data['student_id'] = $studentId;
+            $builder->insert($data);
+            $meetingId = $db->insertID();
+        } else {
+            $meetingId = $builder->where('student_id', $studentId)
+                                 ->where('status', 'active')
+                                 ->orderBy('id', 'DESC')
+                                 ->get()->getRowArray()['id'];
+        }
 
         return $this->response->setJSON([
             'status' => 'success',
@@ -177,11 +189,17 @@ class VirtualMeetingController extends Controller
 
         $db = Database::connect();
         $builder = $db->table('virtual_meetings');
-        
-        // Update all active meetings for this student to ended
+
+        // Mark active meetings as ended
         $builder->where('student_id', $studentId)
                 ->where('status', 'active')
                 ->update(['status' => 'ended']);
+
+        // Also cancel any lingering 'requested' rows so student isn't stuck
+        $db->table('virtual_meetings')
+           ->where('student_id', $studentId)
+           ->where('status', 'requested')
+           ->update(['status' => 'cancelled']);
 
         return $this->response->setJSON([
             'status' => 'success',

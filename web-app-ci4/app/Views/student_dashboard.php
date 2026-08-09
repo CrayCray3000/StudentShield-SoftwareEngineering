@@ -195,7 +195,7 @@
                 btn.disabled = true;
                 btn.textContent = 'Sending request...';
 
-                fetch('/student/meeting/request', {
+                fetch('<?= base_url('student/meeting/request') ?>', {
                     method: 'POST',
                     headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' }
                 })
@@ -212,7 +212,7 @@
             }
 
             function cancelSessionRequest() {
-                fetch('/student/meeting/cancel-request', {
+                fetch('<?= base_url('student/meeting/cancel-request') ?>', {
                     method: 'POST',
                     headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' }
                 })
@@ -246,7 +246,7 @@
 
             // ---- Poll every 8 seconds for meeting status ----
             function pollMeetingStatus() {
-                fetch('/student/api/meeting/status', {
+                fetch('<?= base_url('student/api/meeting/status') ?>', {
                     headers: { 'X-Requested-With': 'XMLHttpRequest' }
                 })
                 .then(r => r.json())
