@@ -172,7 +172,7 @@ class VentController extends BaseController
         } catch (\Throwable $e) {
             log_message('error', 'VentController::submit fatal: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
             if ($this->request->isAJAX()) {
-                return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'A server error occurred. Please try again.']);
+                return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'DEBUG: ' . $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine()]);
             }
             return redirect()->back()->with('error', 'A server error occurred. Please try again.');
         }
