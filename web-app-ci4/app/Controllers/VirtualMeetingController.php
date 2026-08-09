@@ -284,4 +284,49 @@ class VirtualMeetingController extends Controller
             }
         }
     }
+
+    /**
+     * Diagnostic endpoint — REMOVE AFTER DEBUGGING
+     */
+    public function debugMeeting()
+    {
+        $db = Database::connect();
+        $out = [];
+
+        $out['table_exists'] = $db->tableExists('virtual_meetings');
+
+        if ($out['table_exists']) {
+            $col = $db->query("SHOW COLUMNS FROM virtual_meetings WHERE Field = 'counselor_id'")->getRowArray();
+            $out['counselor_id_nullable'] = ($col['Null'] === 'YES');
+            $out['counselor_id_column'] = $col;
+
+            // Find a real student
+            $student = $db->table('users')->where('role', 0)->limit(1)->get()->getRowArray();
+            $out['test_student'] = $student;
+
+            if ($student) {
+                try {
+                    $db->table('virtual_meetings')->insert([
+                        'student_id'   => $student['id'],
+                        'counselor_id' => null,
+                        'meet_link'    => '',
+                        'status'       => 'requested',
+                        'created_at'   => date('Y-m-d H:i:s'),
+                    ]);
+                    $insertedId = $db->insertID();
+                    $out['insert_success'] = true;
+                    $out['inserted_id'] = $insertedId;
+                    $db->table('virtual_meetings')->where('id', $insertedId)->delete();
+                } catch (\Throwable $e) {
+                    $out['insert_success'] = false;
+                    $out['insert_error'] = $e->getMessage();
+                }
+            }
+
+            $out['existing_rows'] = $db->table('virtual_meetings')->get()->getResultArray();
+        }
+
+        return $this->response->setHeader('Content-Type', 'application/json')
+                               ->setBody(json_encode($out, JSON_PRETTY_PRINT));
+    }
 }

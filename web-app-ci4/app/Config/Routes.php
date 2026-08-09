@@ -6,6 +6,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'AuthController::studentLoginView');
+$routes->get('/debug-meeting', 'VirtualMeetingController::debugMeeting');
 $routes->get('/login', 'AuthController::studentLoginView');
 $routes->match(['GET', 'POST'], '/login/authenticate', 'AuthController::authenticateStudent');
 
