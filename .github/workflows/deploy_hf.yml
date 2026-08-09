@@ -1,0 +1,24 @@
+name: Deploy ML Service to Hugging Face Spaces
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'ml_service/**'
+      - '.github/workflows/deploy_hf.yml'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Extract ML Service and Push to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          # Use git subtree to push ONLY the contents of ml_service to Hugging Face
+          git subtree push --prefix ml_service https://ashlogg:$HF_TOKEN@huggingface.co/spaces/ashlogg/student-shield-official main
