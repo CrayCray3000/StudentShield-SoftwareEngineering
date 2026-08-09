@@ -1,6 +1,5 @@
 <?php
-$conn = mysqli_connect('localhost', 'root', '', 'student_shield');
-mysqli_query($conn, "ALTER TABLE virtual_meetings MODIFY COLUMN status VARCHAR(50) DEFAULT 'requested'");
-mysqli_query($conn, "ALTER TABLE virtual_meetings ADD COLUMN schedule_date DATE NULL DEFAULT NULL AFTER status");
-mysqli_query($conn, "ALTER TABLE virtual_meetings ADD COLUMN schedule_time TIME NULL DEFAULT NULL AFTER schedule_date");
-echo mysqli_error($conn);
+$mysqli = new mysqli("localhost", "root", "", "student_shield");
+if ($mysqli->connect_error) die("Connection failed: " . $mysqli->connect_error);
+$res = $mysqli->query("ALTER TABLE virtual_meetings MODIFY counselor_id INT(11) NULL DEFAULT NULL;");
+if (!$res) { echo "Alter error: " . $mysqli->error; } else { echo "Altered counselor_id to NULL!\n"; }

@@ -39,7 +39,7 @@ class VirtualMeetingController extends Controller
 
         $builder->insert([
             'student_id'   => $studentId,
-            'counselor_id' => 0, // Will be assigned when counselor starts the meeting
+            'counselor_id' => null, // Will be assigned when counselor starts the meeting
             'meet_link'    => '',
             'status'       => 'requested',
             'created_at'   => date('Y-m-d H:i:s'),
@@ -261,7 +261,7 @@ class VirtualMeetingController extends Controller
             $forge->addField([
                 'id'           => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
                 'student_id'   => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-                'counselor_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'default' => 0],
+                'counselor_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true, 'default' => null],
                 'meet_link'    => ['type' => 'VARCHAR', 'constraint' => 255, 'default' => ''],
                 'status'       => ['type' => 'VARCHAR', 'constraint' => 50, 'default' => 'requested'],
                 'created_at'   => ['type' => 'DATETIME', 'null' => true],
