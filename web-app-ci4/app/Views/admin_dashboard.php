@@ -67,7 +67,6 @@
         .glass-header {
             background: #166534; /* Simple solid primary green */
             border-bottom: 3px solid #EAB308; /* Solid gold accent */
-            /* Removed dark, heavy box-shadow */
         }
 
         .dashboard-card {
