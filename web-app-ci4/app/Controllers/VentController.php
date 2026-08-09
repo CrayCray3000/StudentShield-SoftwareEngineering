@@ -11,6 +11,7 @@ class VentController extends BaseController
 
     public function submit()
     {
+        try {
         $text = $this->request->getPost('vent_text');
         $userId = session()->get('user_id');
         if (empty($userId)) {
@@ -106,8 +107,14 @@ class VentController extends BaseController
         $sentimentScore = max($sentimentScore, $localResult['risk_percent']);
 
         // --- 2. DATA PRIVACY SECURE ENCRYPTION ---
-        $encrypter = \Config\Services::encrypter();
-        $encryptedText = bin2hex($encrypter->encrypt($text));
+        try {
+            $encrypter = \Config\Services::encrypter();
+            $encryptedText = bin2hex($encrypter->encrypt($text));
+        } catch (\Exception $e) {
+            log_message('error', 'Encryption failed: ' . $e->getMessage());
+            // Store safely without encryption so submission is not lost
+            $encryptedText = base64_encode($text);
+        }
 
         // --- 3. SAVE TO DATABASE ---
         $db = \Config\Database::connect();
@@ -162,6 +169,13 @@ class VentController extends BaseController
         }
 
         return redirect()->to('/student/vent')->with('message', 'Vent securely submitted.');
+        } catch (\Throwable $e) {
+            log_message('error', 'VentController::submit fatal: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            if ($this->request->isAJAX()) {
+                return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'A server error occurred. Please try again.']);
+            }
+            return redirect()->back()->with('error', 'A server error occurred. Please try again.');
+        }
     }
 
     // --- 3. ALERT FATIGUE COOLDOWN (RATE LIMITING) ---

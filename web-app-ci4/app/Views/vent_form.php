@@ -645,9 +645,17 @@
                 console.error('Vent submission error:', err);
                 text.innerText = 'Submit Securely'; spinner.classList.add('hidden'); icon.classList.remove('hidden');
                 btn.classList.remove('opacity-90', 'cursor-wait');
+                // Distinguish: SyntaxError = response wasn't JSON (unexpected server crash)
+                // err.message starts with 'Server error' = we got an HTTP error back
+                // Everything else = true network failure
+                let userMsg = err instanceof SyntaxError
+                    ? 'Server error. Your vent was not sent. Please try again.'
+                    : (err.message && err.message.startsWith('Server error')
+                        ? err.message.replace(/^Server error \d+:\s*/, '').trim() || 'Server error. Please try again.'
+                        : 'Network error. Please check your connection and try again.');
                 const errToast = document.createElement('div');
                 errToast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-red-500 text-white px-6 py-3.5 rounded-xl shadow-xl text-sm font-semibold flex items-center gap-2.5 z-[110]';
-                errToast.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg> A network error occurred. Your vent was not sent. Please try again.';
+                errToast.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg> ' + userMsg;
                 document.body.appendChild(errToast);
                 setTimeout(() => { errToast.style.opacity = '0'; errToast.style.transition = 'opacity 0.4s'; setTimeout(() => errToast.remove(), 400); }, 5000);
             });
