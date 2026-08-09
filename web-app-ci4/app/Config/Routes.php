@@ -18,7 +18,8 @@ $routes->get('/admin/login', 'AuthController::adminLoginView');
 $routes->match(['GET', 'POST'], '/admin/login/authenticate', 'AuthController::authenticateAdmin');
 $routes->get('/admin/otp', 'AuthController::otpView');
 $routes->post('/admin/verify-otp', 'AuthController::verifyOtp');
-$routes->post('/logout', 'AuthController::logout');
+$routes->match(['GET', 'POST'], '/logout', 'AuthController::logout');
+$routes->match(['GET', 'POST'], '/admin/logout', 'AuthController::logout');
 
 // Counselor alias — /counselor/dashboard redirects to the unified admin dashboard
 $routes->get('/counselor/dashboard', static function () {
