@@ -37,13 +37,20 @@ class VirtualMeetingController extends Controller
             ]);
         }
 
-        $builder->insert([
-            'student_id'   => $studentId,
-            'counselor_id' => null, // Will be assigned when counselor starts the meeting
-            'meet_link'    => '',
-            'status'       => 'requested',
-            'created_at'   => date('Y-m-d H:i:s'),
-        ]);
+        try {
+            $builder->insert([
+                'student_id'   => $studentId,
+                'counselor_id' => null, // Will be assigned when counselor starts the meeting
+                'meet_link'    => '',
+                'status'       => 'requested',
+                'created_at'   => date('Y-m-d H:i:s'),
+            ]);
+        } catch (\Throwable $e) {
+            return $this->response->setJSON([
+                'status'  => 'error',
+                'message' => 'Unable to request session: ' . $e->getMessage()
+            ]);
+        }
 
         return $this->response->setJSON([
             'status'  => 'success',
@@ -268,6 +275,13 @@ class VirtualMeetingController extends Controller
             ]);
             $forge->addKey('id', true);
             $forge->createTable('virtual_meetings', true);
+        } else {
+            // Self-healing schema update for live environments where counselor_id might be NOT NULL
+            try {
+                $db->query("ALTER TABLE virtual_meetings MODIFY counselor_id INT(11) NULL DEFAULT NULL");
+            } catch (\Throwable $e) {
+                // Silently ignore if already modified or permission denied
+            }
         }
     }
 }
