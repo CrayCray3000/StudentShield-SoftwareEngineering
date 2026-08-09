@@ -164,7 +164,12 @@
         document.getElementById('spTrajectoryBadge').classList.add('hidden');
 
         var PROFILE_API_BASE = "<?= base_url('admin/api/student-profile') ?>";
-        fetch(PROFILE_API_BASE + '/' + userId)
+        fetch(PROFILE_API_BASE + '/' + userId, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '<?= csrf_hash() ?>'
+            }
+        })
             .then(function (res) {
                 if (!res.ok) {
                     return res.text().then(function (txt) { throw new Error('HTTP ' + res.status + ': ' + txt.substring(0, 200)); });
