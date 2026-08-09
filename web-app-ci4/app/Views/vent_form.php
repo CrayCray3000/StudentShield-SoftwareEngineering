@@ -570,7 +570,11 @@
 
             fetch(form.action, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
+                headers: { 
+                    'Content-Type': 'application/x-www-form-urlencoded', 
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                },
                 body: new URLSearchParams(new FormData(form)).toString()
             })
             .then(r => {
