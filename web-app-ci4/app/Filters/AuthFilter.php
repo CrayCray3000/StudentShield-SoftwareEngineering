@@ -5,6 +5,7 @@ namespace App\Filters;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
+use CodeIgniter\HTTP\IncomingRequest;
 
 class AuthFilter implements FilterInterface
 {
@@ -71,6 +72,15 @@ class AuthFilter implements FilterInterface
             }
 
             $uriStr = $request->getUri()->getPath();
+
+            // For AJAX/fetch requests, return JSON instead of an HTML redirect
+            // This prevents silent failures where fetch().then(r=>r.json()) throws a SyntaxError
+            if ($request instanceof IncomingRequest && $request->isAJAX()) {
+                return service('response')
+                    ->setStatusCode(401)
+                    ->setJSON(['status' => 'error', 'message' => 'Session expired. Please refresh the page and log in again.']);
+            }
+
             if (strpos($uriStr, 'admin') !== false || strpos($uriStr, 'counselor') !== false) {
                 return redirect()->to('/admin/login')->with('error', 'Please log in as Staff to access the dashboard.');
             }

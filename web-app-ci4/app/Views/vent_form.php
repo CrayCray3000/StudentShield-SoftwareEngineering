@@ -572,7 +572,25 @@
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
                 body: new URLSearchParams(new FormData(form)).toString()
             })
-            .then(r => r.json())
+            .then(r => {
+                // Session expired: server returned a non-JSON redirect or 401
+                if (r.status === 401) {
+                    btn.classList.remove('opacity-90', 'cursor-wait');
+                    text.innerText = 'Submit Securely';
+                    spinner.classList.add('hidden');
+                    icon.classList.remove('hidden');
+                    const errToast = document.createElement('div');
+                    errToast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-6 py-3.5 rounded-xl shadow-xl text-sm font-semibold flex items-center gap-2.5 z-[110]';
+                    errToast.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg> Your session expired. <a href="/login" class="underline font-bold ml-1">Click here to log in again</a>.';
+                    document.body.appendChild(errToast);
+                    setTimeout(() => { errToast.style.opacity = '0'; errToast.style.transition = 'opacity 0.4s'; setTimeout(() => errToast.remove(), 400); }, 7000);
+                    throw new Error('session_expired'); // stop the chain
+                }
+                if (!r.ok) {
+                    return r.text().then(t => { throw new Error('Server error ' + r.status + ': ' + t.substring(0, 100)); });
+                }
+                return r.json();
+            })
             .then(data => {
                 // QA BUG FIX: Do not clear textarea or show 'Success' if backend returns error/rate-limit!
                 if (data.status === 'error') {
@@ -618,10 +636,15 @@
                 setTimeout(() => { btn.style.background = ''; text.innerText = 'Submit Securely'; icon.classList.remove('hidden'); }, 3000);
             })
             .catch(err => {
-                console.error('Error:', err);
+                if (err.message === 'session_expired') return; // already handled above
+                console.error('Vent submission error:', err);
                 text.innerText = 'Submit Securely'; spinner.classList.add('hidden'); icon.classList.remove('hidden');
                 btn.classList.remove('opacity-90', 'cursor-wait');
-                alert("A network error occurred. Please try again.");
+                const errToast = document.createElement('div');
+                errToast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-red-500 text-white px-6 py-3.5 rounded-xl shadow-xl text-sm font-semibold flex items-center gap-2.5 z-[110]';
+                errToast.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg> A network error occurred. Your vent was not sent. Please try again.';
+                document.body.appendChild(errToast);
+                setTimeout(() => { errToast.style.opacity = '0'; errToast.style.transition = 'opacity 0.4s'; setTimeout(() => errToast.remove(), 400); }, 5000);
             });
         });
 
