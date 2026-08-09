@@ -280,11 +280,6 @@
                         <span class="text-xs font-semibold text-white/80 hidden sm:inline">Menu</span>
                     </button>
                     <div id="navMenuDropdown" class="hidden absolute right-0 top-full mt-2 w-52 bg-[#1a2d1e] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden py-1">
-                        <!-- Shared: Dashboard -->
-                        <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
-                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                            Dashboard
-                        </a>
                         <!-- Shared: Registrations -->
                         <a href="/admin/pending-registrations" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
                             <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
