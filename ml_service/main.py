@@ -15,7 +15,6 @@ import torch
 from datetime import datetime, timedelta
 import numpy as np
 from transformers import pipeline
-from sentence_transformers import SentenceTransformer, util
 import faiss
 from deep_translator import GoogleTranslator
 import nltk
@@ -116,8 +115,28 @@ except Exception as e:
     )
     logger.info(f"Loaded fallback model: {fallback_model}")
 
-logger.info("Loading Multilingual Sentence-Transformer model...")
-semantic_model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+def get_mdeberta_embedding(text: str) -> np.ndarray:
+    try:
+        inputs = distress_classifier.tokenizer(
+            text, return_tensors="pt", truncation=True, max_length=512
+        )
+        with torch.no_grad():
+            if hasattr(distress_classifier.model, "deberta"):
+                outputs = distress_classifier.model.deberta(**inputs)
+            elif hasattr(distress_classifier.model, "base_model"):
+                outputs = distress_classifier.model.base_model(**inputs)
+            else:
+                outputs = distress_classifier.model(**inputs)
+            
+            last_hidden = outputs.last_hidden_state if hasattr(outputs, "last_hidden_state") else outputs[0]
+            attention_mask = inputs["attention_mask"].unsqueeze(-1)
+            sum_embeddings = torch.sum(last_hidden * attention_mask, dim=1)
+            sum_mask = torch.clamp(attention_mask.sum(dim=1), min=1e-9)
+            mean_pooled = (sum_embeddings / sum_mask).squeeze(0)
+            return mean_pooled.cpu().numpy()
+    except Exception as e:
+        logger.error(f"Error extracting mDeBERTa embedding: {e}")
+        return np.zeros(768, dtype=np.float32)
 
 CRISIS_PHRASES = [
     "I want to kill myself", "I wish I could disappear", "I shouldn't exist",
@@ -166,7 +185,12 @@ CRISIS_PHRASES = [
     "she left me and I have nothing left",
     "he cheated on me, I feel so worthless and alone",
 ]
-CRISIS_EMBEDDINGS = semantic_model.encode(CRISIS_PHRASES, convert_to_tensor=True)
+
+logger.info(f"Pre-computing embeddings for {len(CRISIS_PHRASES)} crisis phrases using mDeBERTa...")
+CRISIS_EMBEDDINGS = np.vstack([get_mdeberta_embedding(p) for p in CRISIS_PHRASES])
+_norms = np.linalg.norm(CRISIS_EMBEDDINGS, axis=1, keepdims=True)
+_norms[_norms == 0] = 1e-9
+CRISIS_EMBEDDINGS_NORM = CRISIS_EMBEDDINGS / _norms
 
 ### Taglish / Gen-Z Slang Normalizer 
 TAGLISH_SLANG_MAP = {
@@ -253,9 +277,13 @@ def get_semantic_similarity(text: str) -> float:
         if not sentences:
             return 0.0
             
-        user_embeddings = semantic_model.encode(sentences, convert_to_tensor=True)
-        similarities = util.cos_sim(user_embeddings, CRISIS_EMBEDDINGS)
-        return float(similarities.max())
+        sent_embeds = np.vstack([get_mdeberta_embedding(s) for s in sentences])
+        s_norms = np.linalg.norm(sent_embeds, axis=1, keepdims=True)
+        s_norms[s_norms == 0] = 1e-9
+        sent_embeds_norm = sent_embeds / s_norms
+
+        similarities = np.dot(sent_embeds_norm, CRISIS_EMBEDDINGS_NORM.T)
+        return float(np.max(similarities))
     except Exception as e:
         logger.error(f"Semantic similarity error: {e}")
         return 0.0
@@ -1384,7 +1412,7 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     escalation_prob = 0.0
 
     if student_id:
-        user_embedding = semantic_model.encode(text)
+        user_embedding = get_mdeberta_embedding(text)
         b_escalate, trajectory, escalation_prob = manage_student_memory(
             student_id, text, risk, np.array([user_embedding])
         )
