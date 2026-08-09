@@ -276,12 +276,14 @@ class VirtualMeetingController extends Controller
             $forge->addKey('id', true);
             $forge->createTable('virtual_meetings', true);
         } else {
-            // Self-healing schema update for live environments where counselor_id might be NOT NULL
+            // Self-healing schema: fix counselor_id to allow NULL
             try {
                 $db->query("ALTER TABLE virtual_meetings MODIFY counselor_id INT(11) NULL DEFAULT NULL");
-            } catch (\Throwable $e) {
-                // Silently ignore if already modified or permission denied
-            }
+            } catch (\Throwable $e) { /* ignore */ }
+            // Self-healing schema: fix status from enum to varchar so 'requested' is a valid value
+            try {
+                $db->query("ALTER TABLE virtual_meetings MODIFY status VARCHAR(50) NOT NULL DEFAULT 'requested'");
+            } catch (\Throwable $e) { /* ignore */ }
         }
     }
 
