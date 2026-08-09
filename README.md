@@ -8,75 +8,35 @@ The system is split into two main components:
 
 ---
 
-## Prerequisites
+## 📚 Deployment & Operation Guides
 
-Ensure you have the following installed:
-- PHP 8.1+ (with intl, mbstring, and mysqli extensions enabled)
-- Composer (PHP dependency manager)
-- MySQL / MariaDB
-- Python 3.9+
-- Pip (Python package installer)
+All deployment, execution, and management guides are centralized in the `docs/Deployment_Manuals/` folder:
 
----
-
-## Step 1: Database Setup
-
-1. Open your MySQL client (e.g., phpMyAdmin, HeidiSQL, or Terminal).
-2. Create a new database named `student_shield`.
-3. Import the `schema.sql` file located in the root directory:
-   ```bash
-   mysql -u root -p student_shield < schema.sql
-   ```
+* **[How to Run Guide](docs/Deployment_Manuals/how_to_run.md)**: Local setup for PHP (CodeIgniter 4) and Python (FastAPI).
+* **[Azure VM Management & Contingency Guide](docs/Deployment_Manuals/azure_vm_management_and_contingency.md)**: Managing the live Azure VM microservice (`20.187.146.70`) and contingency plans if Azure credit runs out.
+* **[Hugging Face Deployment Guide](docs/Deployment_Manuals/huggingface_deployment.md)**: Instructions for deploying to Hugging Face Spaces (Free tier backup).
+* **[System Deployment Manual](docs/Deployment_Manuals/system_deployment_manual.md)**: End-to-end production deployment guide.
 
 ---
 
-## Step 2: Running the Web Application (PHP)
+## Quick Start (Local Development)
 
-1. Open a terminal and navigate to the `web-app-ci4` directory:
-   ```bash
-   cd web-app-ci4
-   ```
-2. Install dependencies:
-   ```bash
-   composer install
-   ```
-3. Configure Environment: Ensure the `.env` file exists and is configured properly with your database settings.
-4. Run the development server:
-   ```bash
-   php spark serve
-   ```
-5. Access the app: http://localhost:8080
+### Step 1: Database Setup
+Import `schema.sql` into MySQL (`student_shield`).
 
----
-
-## Step 3: Running the ML Service (Python)
-
-1. Open a new terminal and navigate to the `ml_service` directory:
-   ```bash
-   cd ml_service
-   ```
-2. Create and activate a virtual environment (Recommended):
-   ```bash
-   python -m venv .venv
-   .venv\Scripts\activate
-   ```
-3. Install dependencies:
-   ```bash
-   pip install fastapi uvicorn pydantic transformers torch
-   ```
-   Note: The first run may take time as it downloads the NLP models (approx. 550MB).
-4. Run the service:
-   ```bash
-   python main.py
-   ```
-5. Verify it is running by accessing the API documentation at: http://localhost:8000/docs
-
----
-
-## Testing the Integration
-
-Once both services are running, the PHP app will communicate with the Python service on `localhost:8000` to analyze student vents for sentiment and risk.
-You can use the `test_api.php` script in the root directory to test the connection:
+### Step 2: Web App (PHP)
 ```bash
-php test_api.php
+cd web-app-ci4
+composer install
+php spark serve
 ```
+Access at [http://localhost:8080](http://localhost:8080)
+
+### Step 3: ML Microservice (Python)
+```bash
+cd ml_service
+pip install -r requirements.txt
+python main.py
+```
+Access docs at [http://localhost:8000/docs](http://localhost:8000/docs)
+
