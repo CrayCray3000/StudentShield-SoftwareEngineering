@@ -241,12 +241,12 @@
 
                 <!-- Pending Meeting Requests (Live Polling Bell) -->
                 <div class="relative" id="meetingNotifWrapper">
-                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()" class="relative flex items-center gap-2 bg-red-500/20 hover:bg-red-500/30 px-3 py-1.5 rounded-full border border-red-400/30 transition-all duration-200 focus:outline-none">
-                        <svg class="w-4 h-4 text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()" class="relative flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full border border-white/15 transition-all duration-200 focus:outline-none">
+                        <svg class="w-4 h-4 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                         <span class="text-xs font-semibold text-white/90 hidden sm:inline">Sessions</span>
-                        <span id="meetingBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1.5 -right-1.5 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold shadow-lg animate-pulse">
+                        <span id="meetingBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1.5 -right-1.5 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#22c55e] text-white text-[10px] font-bold shadow-lg animate-pulse">
                             <?= esc($pending_meetings_count ?? 0) ?>
                         </span>
                     </button>
@@ -1526,9 +1526,9 @@
                     const sid = r.student_number ? ' (' + r.student_number + ')' : '';
                     const ago = timeAgo(r.requested_at);
                     const link = '/admin/case-summary/' + r.student_id;
-                    return `<a href="${link}" class="flex items-start gap-3 px-4 py-3 hover:bg-green-50 transition-colors group">
-                        <span class="mt-0.5 w-8 h-8 rounded-full bg-red-100 border border-red-200 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    return `<a href="${link}" class="flex items-start gap-3 px-4 py-3 hover:bg-[#166534]/10 transition-colors group">
+                        <span class="mt-0.5 w-8 h-8 rounded-full bg-[#dcfce7] border border-[#bbf7d0] flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-[#166534]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                         </span>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-semibold text-gray-800 truncate group-hover:text-[#166534] transition-colors">${name}${sid}</p>
@@ -1547,8 +1547,8 @@
                     // Brief shake animation on new requests
                     if (count > lastCount) {
                         const btn = document.getElementById('meetingBellBtn');
-                        btn.classList.add('ring-2', 'ring-red-400/60');
-                        setTimeout(() => btn.classList.remove('ring-2', 'ring-red-400/60'), 2000);
+                        btn.classList.add('ring-2', 'ring-green-400/60');
+                        setTimeout(() => btn.classList.remove('ring-2', 'ring-green-400/60'), 2000);
                     }
                 } else {
                     badge.classList.add('hidden');
