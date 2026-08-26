@@ -45,7 +45,7 @@ app = FastAPI(
         "Advanced NLP for Emotion, Depression, Bullying, Sarcasm, "
         "Sexual Harassment, Academic Pressure, Self-Worth, and Masked Depression Detection"
     ),
-    version="7.0.0",
+    version="7.3.0",
 )
 
 ### Rate Limiting 
@@ -225,7 +225,7 @@ TAGLISH_SLANG_MAP = {
     "deadz": "dead", "dedz": "dead", "deds": "dead", "ded": "dead",
     "hugot": "emotional statement", "sanaol": "sana all",
     "dasurv": "deserve", "laftrip": "laugh trip",
-    "naurrr": "no", "slayyy": "excellent", "periodt": "period",
+    "naurrr": "no", "slayyy": "excellent", "slaying": "doing great", "periodt": "period",
     "ate girl": "older sister", "kuya boy": "older brother",
     "na-trauma": "traumatized", "na-trigger": "triggered",
     "na-bully": "bullied", "binully": "bullied",
@@ -340,6 +340,7 @@ def get_risk_components(translated_text: str, normalized_text: str) -> tuple[flo
     try:
         max_distress_conf = 0.0
         max_neg_emo_conf  = 0.0
+        max_pos_emo_conf  = 0.0
 
         emotion_weights = {
             "sadness": 1.0, "fear": 0.9, "anger": 0.8, "grief": 1.0, "remorse": 0.8,
@@ -349,6 +350,11 @@ def get_risk_components(translated_text: str, normalized_text: str) -> tuple[flo
             "approval": 0.0, "caring": 0.0, "desire": 0.0, "excitement": 0.0,
             "fascination": 0.0, "gratitude": 0.0, "love": 0.0, "optimism": 0.0,
             "pride": 0.0, "realization": 0.0, "relief": 0.0
+        }
+        positive_emotion_weights = {
+            "gratitude": 0.85, "joy": 0.80, "optimism": 0.75, "love": 0.70,
+            "excitement": 0.65, "amusement": 0.55, "admiration": 0.50, "pride": 0.45,
+            "relief": 0.40, "caring": 0.35, "approval": 0.30,
         }
 
         trans_sentences = nltk.sent_tokenize(translated_text)
@@ -385,6 +391,11 @@ def get_risk_components(translated_text: str, normalized_text: str) -> tuple[flo
             if neg_emo_conf > max_neg_emo_conf:
                 max_neg_emo_conf = neg_emo_conf
 
+            pos_emo_weight = positive_emotion_weights.get(emo_label, 0.0)
+            pos_emo_conf   = pos_emo_weight * emo_confidence
+            if pos_emo_conf > max_pos_emo_conf:
+                max_pos_emo_conf = pos_emo_conf
+
         for chunk in norm_chunks:
             if not chunk.strip(): continue
             dist_result     = distress_classifier(chunk)[0]
@@ -396,6 +407,12 @@ def get_risk_components(translated_text: str, normalized_text: str) -> tuple[flo
             ]
             if is_distress and dist_confidence > max_distress_conf:
                 max_distress_conf = dist_confidence
+
+        # Positive emotions (gratitude, joy, optimism) dampen false-negative scores
+        if max_pos_emo_conf >= 0.45:
+            dampen = min(0.35, max_pos_emo_conf * 0.45)
+            max_neg_emo_conf = max(0.0, max_neg_emo_conf - dampen)
+            max_distress_conf = max(0.0, max_distress_conf - dampen * 0.5)
 
         return max_distress_conf, max_neg_emo_conf
     except Exception as e:
@@ -442,6 +459,31 @@ CAT1_DIRECT = [
     r"\bpara saan pa ako\b",
     r"\bbakit pa ako narito\b", r"\bbakit pa ako nandito\b",
     r"\bbakit pa ako nabuhay\b",
+    ### v7.3: Passive disappearance ideation — clinically equivalent to suicidal ideation.
+    ### Moved here from SOCIAL_ISOLATION so they get CRITICAL priority (Rule 2)
+    ### instead of only MEDIUM from Rule 5.
+    r"\bwonder if anyone would notice\b",
+    r"\banyone would notice if\b",
+    r"\bwould anyone notice\b",
+    r"\bnobody would notice\b",
+    r"\bno one would notice\b",
+    r"\bwould notice if\b.{0,40}\b(disappear|disappeared|gone|mawala|left)\b",
+    r"\bdisappeared from\b.{0,25}\b(life|lives|everyone|everybody)\b",
+    r"\bslowly disappeared\b",
+    r"\bnever really there\b",
+    r"\bwas never really there\b",
+    r"\bfeel like i was never\b",
+    r"\bstarted to feel like i was never\b",
+    r"\bmakakapansin ba kung\b.{0,35}\bmawala\b",
+    r"\bmawala sa lahat ng buhay\b",
+    r"\bbigla.{0,15}mawala\b.{0,30}\b(buhay|life|lives)\b",
+    r"\bnapapaisip ako kung\b.{0,30}\b(mawala|mapansin|notice)\b",
+    # English equivalents — "I wonder if I just disappeared"
+    r"if i (?:just )?disappeared\b",
+    r"if i slowly disappeared\b",
+    r"what if i disappeared\b",
+    r"feel like i was never really there\b",
+    r"hardest part.{0,40}never really there\b",
 ]
 
 CAT1_METHOD_SELF_PAIRS = [
@@ -537,6 +579,7 @@ EMOTIONAL_DISTRESS = [
     r"\beverything feels heavy\b", r"\bsmallest things take so much energy\b",
     r"\btake so much energy\b", r"\bdon'?t even recognize myself\b",
     r"\bmentally exhausting\b",
+    r"\bang sakit\b", r"\bang sakit no\b",
 ]
 
 ### SOCIAL ISOLATION / WITHDRAWAL 
@@ -570,6 +613,11 @@ SOCIAL_ISOLATION = [
     r"\bdi na gusto makipag.?socialize\b",
     r"\bhinahayaan ko na lang\b.{0,20}\b(messages|chats|texts)\b",
     r"\bnabawasan na ang\b.{0,20}\b(pakikipag.?usap|pakikisalamuha)\b",
+    ### Passive invisibility — social isolation (non-ideation, kept here)
+    r"\bwala.{0,20}talagang kasama\b",
+    r"\bwalang talagang kasama\b",
+    r"\bparang wala ka pa rin\b.{0,20}\bkasama\b",
+    r"\bsurrounded.{0,50}\b(wala|walang).{0,15}kasama\b",
 ]
 
 ### SARCASM / GEN-Z TAGLISH BIAS-CORRECTOR (v7) 
@@ -611,6 +659,8 @@ JOKE_PATTERNS = [
     r"\bsarcasm\b", r"\birony\b",
     # Gen-Z filler
     r"\bgg\b", r"\bawit\b", r"\bslay\b", r"\bfr fr\b",
+    r"\b(life|day|week|month|life is)\b.{0,20}\b(slaying|slay)\b",
+    r"\bslaying rn\b",
     r"\bnaol\b", r"\beme\b", r"\bsige\b",
     r"\bno cap\b.{0,20}\b(haha|lol|joke)\b",
     # Bisaya casual
@@ -649,9 +699,21 @@ JOKE_PATTERNS = [
     r"\bdaily character development\b",
 ]
 
+### POSITIVE SENTIMENT (grateful / thriving vents — used to suppress false MEDIUM)
+POSITIVE_SENTIMENT = [
+    r"\bthankful\b", r"\bgrateful\b", r"\bso good lately\b", r"\blife has been so good\b",
+    r"\bang saya\b", r"\bfeel like you belong\b", r"\bappreciated\b",
+    r"\bexcited ako\b", r"\bexcited about\b", r"\bexcited for\b",
+    r"\bmagandang mangyayari\b", r"\bslaying rn\b", r"\blife is kinda slay",
+    r"\bsobrang thankful\b", r"\bnapapangiti\b", r"\bang sarap pala\b",
+    r"\bgenuinely happy\b", r"\bnagpapagaan ng mood\b", r"\bexcited sa future\b",
+]
+
 ### COGNITIVE DISTORTIONS 
 DISTORTIONS = [
-    r"\balways\b", r"\bnever\b", r"\bpalaging\b", r"\blaging\b",
+    r"\balways\b", r"\bnever\b", r"\bpalaging\b",
+    # "laging" alone is too broad — e.g. "may laging something na nagpapagaan ng mood"
+    r"\blaging\b.{0,25}\b(malungkot|sakit|bigat|problem|fail|bagsak|lungkot|iyak|pagod|hirap|sama)\b",
     r"\bwala na talaga\b", r"\bhinding hindi\b", r"\beveryone hates me\b",
     r"\blahat sila\b", r"\bpalagi na lang\b",
     # Added for pattern #6: Overthinking / rumination
@@ -1026,7 +1088,7 @@ async def root_health_check():
     return {
         "status": "online",
         "service": "StudentShield AI Engine",
-        "version": "7.0.0",
+        "version": "7.3.0",
         "api_docs": "/docs",
         "message": "Send POST requests to /analyze-text to classify vents.",
     }
@@ -1079,10 +1141,13 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
         COMPILED_REGEXES['self_worth']  = compile_regexes(SELF_WORTH)       # NEW v7
         COMPILED_REGEXES['masked_dep']  = compile_regexes(MASKED_DEPRESSION) # NEW v7
         COMPILED_REGEXES['relationship']= compile_regexes(RELATIONSHIP_DISTRESS) # NEW v7.1
+        COMPILED_REGEXES['positive']    = compile_regexes(POSITIVE_SENTIMENT)
         COMPILED_REGEXES['method_pairs'] = [
             (re.compile(m, re.IGNORECASE), re.compile(s, re.IGNORECASE))
             for m, s in CAT1_METHOD_SELF_PAIRS
         ]
+    if 'positive' not in COMPILED_REGEXES:
+        COMPILED_REGEXES['positive'] = compile_regexes(POSITIVE_SENTIMENT)
 
     ## ┐
     ### STAGE 4: SARCASM / JOKE DETECTION (v7)                 
@@ -1116,6 +1181,9 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     has_self_worth    = any(pat.search(scan_text) for pat in COMPILED_REGEXES['self_worth'])  # NEW
     has_masked_dep   = any(pat.search(scan_text) for pat in COMPILED_REGEXES['masked_dep'])  # NEW
     has_relationship = any(pat.search(scan_text) for pat in COMPILED_REGEXES['relationship']) # NEW v7.1
+    # Require >=3 positive signals to suppress — prevents a single grateful phrase
+    # from masking genuine distress in a mixed-sentiment vent.
+    has_positive     = sum(1 for pat in COMPILED_REGEXES['positive'] if pat.search(scan_text)) >= 3
 
     ## ┐
     ### STAGE 6: PSYCHOLOGICAL HEURISTICS                      
@@ -1403,6 +1471,15 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
             risk       = "MEDIUM"
             risk_score = max(0.5, risk_score)
             reason     = "Atypical sentiment pattern flagged by heuristics."
+
+    ## ┐
+    ### STAGE 7.5: POSITIVE VENT GUARD (suppress false MEDIUM on grateful posts)
+    ## ┘
+    severe_flags = has_cat1 or has_cat2 or has_sexual or has_finality or semantic_score >= 0.78
+    if has_positive and not severe_flags and not (has_emotional or has_isolation or has_anhedonia or has_self_worth or has_masked_dep):
+        risk       = "LOW"
+        risk_score = min(risk_score, 0.28)
+        reason     = "NLP: Positive/grateful vent — no active distress indicators."
 
     ## ┐
     ### STAGE 8: CONTEXTUAL MEMORY (FAISS RAG)                 
