@@ -493,6 +493,23 @@ class VentController extends BaseController
             'di na ko lalaban pa', 'tapusin ko na',
             'gilaay na jud ko sa tanan', 'gusto na ko mahunong',
             'narigat unay ti riknak', 'mabannogakon ti panagbiag',
+            // v7.3 — Passive disappearance ideation (clinically = suicidal ideation)
+            // These were previously misclassified as $medium. Aligned with ML CAT1_DIRECT.
+            'mawala sa lahat ng buhay',          // "mawala sa lahat ng buhay nila"
+            'makakapansin ba kung',               // "kung may makakapansin ba kung bigla akong mawala"
+            'napapaisip ako kung',                // "napapaisip ako kung may maghahanap sakin"
+            'bigla nalang akong mawala',
+            'bigla lang akong mawala',
+            'wonder if anyone would notice',
+            'would anyone notice if',
+            'anyone would notice if',
+            'nobody would notice',
+            'no one would notice',
+            'wala naman maghahanap sakin',
+            'wala namang maghahanap sakin',
+            'di naman nila mapapansin',
+            'wala naman nakakapansin',
+            'parang extra lang ako sa lahat',     // passive invisibility escalated to ideation
         ];
 
         // HIGH — Emotional Distress 
@@ -541,7 +558,7 @@ class VentController extends BaseController
             'pinagsamantalahan', 'pinilit', 'hinipo',
         ];
 
-        // MEDIUM — Verbal Abuse, Cyberbullying, Masked Depression
+        // MEDIUM — Verbal Abuse, Cyberbullying, Masked Depression, Passive Invisibility
         $medium = [
             'ugly', 'loser', 'slut', 'whore', 'dumb', 'stupid', 'hate you',
             'bobo', 'tanga', 'pangit', 'mataba', 'pokpok', 'squatter', 'gago',
@@ -556,6 +573,11 @@ class VentController extends BaseController
             'di naman halata', 'normal naman ako kausap pero', 'pag mag-isa na iba na',
             'okay sa labas pero sa loob hindi', 'nakangiti pero malungkot',
             'tinatago ko', 'pinipigilan ko iyak', 'nagpapanggap na okay',
+            // Passive invisibility / social isolation (non-ideation only — kept at MEDIUM)
+            // NOTE: Disappearance ideation phrases have been moved to $critical_passive above.
+            'disappeared from everyone', 'slowly disappeared', 'never really there',
+            'feel like i was never', 'talagang kasama', 'wala ka pa rin',
+            'ang sakit no',
         ];
 
         // 1. Process STRICT CRITICAL (Ignores Sarcasm)
