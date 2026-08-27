@@ -54,3 +54,9 @@ SYSTEM_DOCUMENTATION.md
 capstone_text_dump.txt
 gantt_chart.txt
 studentshield.txt
+
+# Sensitive local credentials
+CREDENTIALS*.md
+*DO_NOT_UPLOAD*.md
+vent_logs.sql
+CREDENTIALS_DO_NOT_UPLOAD_TO_GITHUB.md
