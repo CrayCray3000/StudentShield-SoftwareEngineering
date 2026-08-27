@@ -6,7 +6,7 @@
 
 ## 🏗️ Project Overview
 
-**StudentShield** is a web-based mental health monitoring system for students at SVBSM (San Vicente Bohol School of Medicine — or similar institution). It allows students to anonymously "vent" feelings, which are analyzed for psychological risk (LOW / MEDIUM / HIGH / CRITICAL) using a Python ML service. Counselors and admins receive alerts for high-risk submissions.
+**StudentShield** is a web-based mental health monitoring system for students at SVBSM (Saint Vincent Blessed School of Manila). It allows students to anonymously "vent" feelings, which are analyzed for psychological risk (LOW / MEDIUM / HIGH / CRITICAL) using a Python ML service. Counselors and admins receive alerts for high-risk submissions.
 
 **Stack:**
 - **Backend:** CodeIgniter 4 (PHP) — served via InfinityFree hosting
@@ -66,24 +66,28 @@ student-shield/
 
 > ⚠️ **InfinityFree limitations**: No SSH, no CLI, no `php spark` commands. All DB changes must be done via phpMyAdmin. File changes via FTP or their file manager.
 
-### 2. ML Service — Hugging Face Spaces
+### 2. ML Service & Model Repositories — Hugging Face
 
 | Item | Value |
 |---|---|
-| **Platform** | Hugging Face Spaces (Docker SDK, Free CPU tier) |
-| **Space URL** | `https://ashlogg-student-shield-official-2285456.hf.space` |
+| **FastAPI Space (Runtime)** | `https://huggingface.co/spaces/ashlogg/student-shield-official` |
+| **Direct API Endpoint** | `https://ashlogg-student-shield-official-2285456.hf.space` |
+| **Fine-Tuned Model Repo** | `https://huggingface.co/ashlogg/student-shield-mdeberta` |
+| **Emotion Model (Public)** | `SamLowe/roberta-base-go_emotions` (28 emotions) |
+| **Trained Architecture** | `microsoft/mdeberta-v3-base` (Fine-tuned for Taglish/Filipino crisis detection) |
+| **Training Dataset** | 3,251 Train / 814 Val samples (Balanced with 65 real decrypted vents + synthetic Taglish/Bisaya/Ilocano data) |
 | **HF Username** | `ashlogg` |
-| **Space Name** | `student-shield-official` |
-| **Port** | Internal `7860` (standard HF port) |
+| **Internal Port** | `7860` (standard HF Docker port) |
 | **Auto-deploy** | ✅ Yes — GitHub Actions (`deploy_hf.yml`) triggers on push to `main` when `ml_service/**` changes |
-| **HF Token** | Stored as GitHub secret `HF_TOKEN` |
 
-**How auto-deploy works:**
+**How the ML Pipeline Works:**
 ```
-push to main (ml_service/ changed)
-  → GitHub Actions runs deploy_hf.yml
-  → git subtree push --prefix ml_service → huggingface.co/spaces/ashlogg/student-shield-official
-  → HF rebuilds Docker container automatically
+1. Student submits vent → PHP VentController sends HTTP POST to HF Space API
+2. Space loads fine-tuned mDeBERTa from ashlogg/student-shield-mdeberta (or local cache)
+3. Emotion classification via SamLowe/roberta-base-go_emotions
+4. 63 crisis anchor embeddings computed & compared via mDeBERTa
+5. Rule-based safety overrides & FAISS trajectory memory evaluated
+6. Returns risk_score (0-100%) and risk_level (LOW/MEDIUM/HIGH/CRITICAL)
 ```
 
 **To deploy ML changes manually:**
