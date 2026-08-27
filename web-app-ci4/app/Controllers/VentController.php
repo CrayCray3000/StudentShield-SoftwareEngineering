@@ -528,7 +528,7 @@ class VentController extends BaseController
             'di naman mapapansin kung mawala ako',
             'gilaay na', 'way kwenta', 'wala koy pulos', 'kapoy na mabuhi',
             'awan pag-asa', 'awan serserbi', 'narigat unay',
-            // v7.2: Subtle emotional distress — basic English sadness/pain
+            // v7.2: Subtle emotional distress
             'so sad', 'im sad', 'i am sad', 'i\'m sad', 'feeling sad', 'really sad',
             'it hurts', 'hurts so much', 'i\'m hurting', 'im hurting',
             'crying', 'been crying', 'can\'t stop crying',
@@ -542,6 +542,36 @@ class VentController extends BaseController
             'worse than just ending it', 'how much of myself i have left', 'fading',
             'sobrang sad', 'malungkot', 'lungkot', 'naiyak', 'umiyak',
             'nasasaktan', 'masakit', 'sakit ng dibdib',
+            // v7.4: Reddit/PH research — real Filipino student emotional distress
+            'ang bigat bigat',                    // overwhelming emotional weight
+            'parang gusto ko lang matulog',        // burnout / escape
+            'gusto ko lang matulog at hindi na magising',
+            'sana matapos na',                     // hopeless fatigue
+            'gaano katagal pa ba',                 // how much longer
+            'di ko na alam kung kailan matatapos',
+            'wala na kong lakas',                  // no more strength
+            'wala na akong lakas',
+            'nawalan na ko ng lakas',
+            'di na kaya ng katawan ko',
+            'pagod na pagod na ko sa lahat',
+            'sobrang pagod ko na',
+            'hindi ko na kaya',
+            'ndi ko na kaya',
+            'parang walang katapusan',             // feels endless
+            'kelan ba matatapos',
+            'bakit ganito lagi',
+            'di ko na gets ang buhay',
+            'inuubos na ko nito',
+            'kumakapit na lang',                   // just hanging on
+            'kapag mag-isa ako naiiyak na lang',
+            'pag mag-isa na ko iba na ang nararamdaman',
+            'iyak nalang lagi',
+            'di ko mapigilan umiyak',
+            'parang hindi na ko buo',              // don\'t feel whole anymore
+            'di na ko buo',
+            'pagod na akong magpanggap',
+            'tired of pretending to be okay',
+            'sinusubukan ko pang maging okay',
         ];
 
         // STRICT HIGH — Physical Violence (Never downgraded by sarcasm)
@@ -573,11 +603,31 @@ class VentController extends BaseController
             'di naman halata', 'normal naman ako kausap pero', 'pag mag-isa na iba na',
             'okay sa labas pero sa loob hindi', 'nakangiti pero malungkot',
             'tinatago ko', 'pinipigilan ko iyak', 'nagpapanggap na okay',
-            // Passive invisibility / social isolation (non-ideation only — kept at MEDIUM)
-            // NOTE: Disappearance ideation phrases have been moved to $critical_passive above.
+            // Passive invisibility / social isolation (non-ideation — kept at MEDIUM)
+            // NOTE: Disappearance ideation phrases are in $critical_passive above.
             'disappeared from everyone', 'slowly disappeared', 'never really there',
             'feel like i was never', 'talagang kasama', 'wala ka pa rin',
             'ang sakit no',
+            // v7.4: Reddit/PH research — real Filipino student isolation/bullying language
+            'ine-exclude',                         // excluded (Taglish)
+            'tinatalikuran',                       // ignored / turned away from
+            'ina-avoid', 'in-avoid',
+            'pinag-iiwasan',
+            'wala akong malapitan',                // nobody to turn to
+            'wala akong mapag-usapan',
+            'wala akong matakbuhan',
+            'parang invisible lang ako',
+            'parang ghost ako sa kanila',
+            'kahit nandito ako parang wala',
+            'nobody checks on me',
+            'no one checks on me',
+            'nobody reaches out',
+            'sana may makapansin',                 // I wish someone would notice (non-ideation level)
+            'sana may makapansin sa akin',
+            'pinahihiya',                          // being humiliated
+            'pinagtatawanan ng lahat',
+            'inaayawan',                           // being avoided / rejected
+            'wala silang ginagawa para tulungan ako',
         ];
 
         // 1. Process STRICT CRITICAL (Ignores Sarcasm)

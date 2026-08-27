@@ -184,6 +184,23 @@ CRISIS_PHRASES = [
     "nobody loves me, I just want to disappear",
     "she left me and I have nothing left",
     "he cheated on me, I feel so worthless and alone",
+    ### v7.4: Reddit/PH research — real student passive crisis language
+    "gaano katagal pa ba",                        # how much longer will this last
+    "sana may makapansin",                         # I wish someone would notice
+    "sana may makapansin sa akin",
+    "parang hindi na ko buo",                      # I don't feel whole anymore
+    "di na ko buo",
+    "di ko alam kung gaano ko pa ito kakayanin",
+    "di ko alam kung kailan matatapos",
+    "pagod na akong magpanggap",
+    "pagod na ako sa lahat",
+    "tired of pretending to be okay",
+    "I just want it to be over",
+    "sana matapos na lahat",
+    "gusto ko nang tumigil sa lahat",
+    "wala na kong lakas lumaban",
+    "kapag mag-isa ako naiiyak na lang ako",
+    "pag mag-isa na ko iba na ang nararamdaman ko",
 ]
 
 logger.info(f"Pre-computing embeddings for {len(CRISIS_PHRASES)} crisis phrases using mDeBERTa...")
@@ -595,6 +612,38 @@ EMOTIONAL_DISTRESS = [
     r"\btake so much energy\b", r"\bdon'?t even recognize myself\b",
     r"\bmentally exhausting\b",
     r"\bang sakit\b", r"\bang sakit no\b",
+    ### v7.4: Reddit/PH research — real Filipino student emotional distress language
+    r"\bang bigat bigat\b",                         # emotional exhaustion
+    r"\bdi ko gets kung bakit\b.{0,30}\b(malungkot|sad|ganito)\b",
+    r"\bparang gusto ko lang matulog\b",             # burnout / escape
+    r"\bgusto ko lang matulog\b.{0,30}\b(na|at|hindi|di)\b",
+    r"\bsana matapos na\b",                          # hopeless fatigue
+    r"\bgaano katagal pa ba\b",                      # how much longer
+    r"\bdi ko na alam kung kailan\b",
+    r"\bdi ko alam kung gaano ko pa\b",
+    r"\bwala na kong lakas\b",                       # no more strength
+    r"\bwala na akong lakas\b",
+    r"\bnawalan na ko ng lakas\b",
+    r"\bnawalan na ako ng lakas\b",
+    r"\bdi na kaya ng katawan ko\b",
+    r"\bpagod na pagod na ko sa lahat\b",
+    r"\bsobrang pagod ko na\b",
+    r"\bhindi ko na kaya\b",                         # variant of di ko na kaya
+    r"\bndi ko na kaya\b",
+    r"\byung feeling na parang\b.{0,30}\b(wala|numb|manhid|blangko)\b",
+    r"\bkapag mag.?isa lang\b.{0,30}\b(iba|lumalabas|naiiyak|malungkot)\b",
+    r"\bkapag nag.?iisa\b.{0,30}\b(iba|lumalabas|naiiyak|malungkot)\b",
+    r"\biyak nalang lagi\b", r"\bnaiiyak nalang\b",
+    r"\bdi ko mapigilan ang luha\b", r"\bdi ko mapigilan umiyak\b",
+    r"\bparang walang katapusan\b",                  # feels endless
+    r"\bkelan ba matatapos\b",
+    r"\bbakit ganito\b.{0,20}\b(lagi|palagi|parati)\b",
+    r"\bdi ko na gets ang buhay\b",
+    r"\bparang wala nang iba\b",
+    r"\binuubos na ko nito\b",
+    r"\bkumakapit na lang\b",                        # just hanging on
+    r"\bkahit paano\b.{0,20}\bkumakapit\b",
+    r"\bsinusubukan ko pang\b.{0,30}\b(maging okay|lumaban|magpatuloy)\b",
 ]
 
 ### SOCIAL ISOLATION / WITHDRAWAL 
@@ -633,6 +682,27 @@ SOCIAL_ISOLATION = [
     r"\bwalang talagang kasama\b",
     r"\bparang wala ka pa rin\b.{0,20}\bkasama\b",
     r"\bsurrounded.{0,50}\b(wala|walang).{0,15}kasama\b",
+    ### v7.4: Reddit/PH research — real Filipino student isolation language
+    r"\bwala akong malapitan\b",                    # nobody to turn to
+    r"\bwala akong mapuntahan\b",
+    r"\bwala akong mapag.?usapan\b",
+    r"\bwala akong matakbuhan\b",
+    r"\bparang walang nagmamahal\b",
+    r"\bparang wala akong katangkilik\b",
+    r"\bine.?exclude\b",                             # excluded (Taglish)
+    r"\btinatalikuran\b",                            # turned away from / ignored
+    r"\bina-avoid\b", r"\bin.?avoid\b",
+    r"\bpinag.?iiwasan\b",
+    r"\bwala silang ginagawa\b.{0,30}\b(help|tulong|report)\b", # nobody helping
+    r"\bparang invisible lang ako\b",
+    r"\bparang ghost ako\b",
+    r"\bkahit nandito ako\b.{0,30}\bparang wala\b",
+    r"\bnag.?eenjoy sila\b.{0,30}\bwala ako\b",    # they enjoy without me
+    r"\bsana may kasamahan\b",
+    r"\bgusto ko lang magkaroon ng\b.{0,20}\b(tao|kaibigan|kasama|kausap)\b",
+    r"\bnobody checks on me\b",
+    r"\bno one checks on me\b",
+    r"\bnobody reaches out\b",
 ]
 
 ### SARCASM / GEN-Z TAGLISH BIAS-CORRECTOR (v7) 
@@ -767,6 +837,25 @@ HOPELESSNESS = [
     r"\bwala nang dahilan\b.{0,20}\bsubukan\b",
     r"\btired of trying\b",
     r"\bsuko na talaga\b",
+    ### v7.4: Reddit/PH research — real Filipino student hopelessness language
+    r"\bdi na worth it\b",                           # not worth it anymore
+    r"\bdi na worth it ang lahat\b",
+    r"\bpara saan pa ba\b",                           # what's the point anyway
+    r"\bparang walang silbi\b.{0,20}\b(mag.?aral|gawin|subukan|ituloy)\b",
+    r"\bwala namang magiging mangyayari\b",
+    r"\bwala namang magiging pagbabago\b",
+    r"\bganito na lang ba palagi\b",
+    r"\bpagod na ko sa pag.?asa\b",                  # tired of hoping
+    r"\bpagod na ko umasa\b",
+    r"\bkasalanan ko pa rin\b.{0,20}\b(lagi|palagi|parati)\b",
+    r"\bsuka na ko sa sistema\b",
+    r"\bdi na ako naniniwala\b.{0,20}\b(magbabago|mas magiging okay)\b",
+    r"\bpag.?asa na lang talaga\b.{0,20}\bwala na ko\b",
+    r"\bwala na ko\b.{0,20}\bpag.?asa\b",
+    r"\bit never gets better\b",
+    r"\bit won'?t get better\b",
+    r"\bbakit pa ba magpapagal\b",
+    r"\bbakit pa ba magsisikap\b",
 ]
 
 ### EXTREME VENTING 
