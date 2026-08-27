@@ -83,34 +83,36 @@ def fine_tune_model(model_name, output_dir, dataset):
     # On a T4 GPU (16GB VRAM) we MUST reduce per-device batch size to 4.
     # We compensate with gradient_accumulation_steps=4 so the effective
     # batch size is still 16, keeping training stable without OOM crashes.
-    training_args = TrainingArguments(
-        output_dir=output_dir,
-        # ── CRITICAL: mDeBERTa-v3 is very sensitive to LR on small data.
-        # 1.5e-5 caused immediate collapse (always predicts one class).
-        # 3e-6 is conservative enough to learn without gradient explosion.
-        learning_rate=3e-6,
-        per_device_train_batch_size=4,
-        per_device_eval_batch_size=4,
-        gradient_accumulation_steps=4,
-        num_train_epochs=15,           # Give it plenty of time; early stopping will cut it short
-        weight_decay=0.01,
-        warmup_ratio=0.2,              # 20% warmup — more gradual ramp for small datasets
-        lr_scheduler_type="cosine",    # Cosine annealing > linear decay for transformers
-        # NOTE: label_smoothing_factor is intentionally REMOVED — it is a silent no-op
-        # when compute_loss is overridden and caused confusing behaviour.
-        adam_epsilon=1e-6,             # Required fix for DeBERTa-v3 NaN loss
-        max_grad_norm=1.0,             # Gradient clipping prevents nan
-        fp16=False,                    # mDeBERTa-v3 CRASHES with fp16; keep disabled
-        eval_strategy="epoch",
-        save_strategy="epoch",
-        load_best_model_at_end=True,
-        metric_for_best_model="f1",
-        greater_is_better=True,
-        logging_steps=10,
-        use_cpu=not torch.cuda.is_available(),
-        report_to="none",
-        dataloader_num_workers=0
-    )
+    # Determine correct evaluation strategy parameter name for installed transformers version
+    import transformers
+    from packaging import version
+    tf_version = version.parse(transformers.__version__)
+    eval_key = "eval_strategy" if tf_version >= version.parse("4.41.0") else "evaluation_strategy"
+
+    kwargs = {
+        "output_dir": output_dir,
+        "learning_rate": 3e-6,
+        "per_device_train_batch_size": 4,
+        "per_device_eval_batch_size": 4,
+        "gradient_accumulation_steps": 4,
+        "num_train_epochs": 15,
+        "weight_decay": 0.01,
+        "warmup_steps": 50,            # Universal parameter supported across all transformers versions
+        "lr_scheduler_type": "cosine",
+        "adam_epsilon": 1e-6,
+        "max_grad_norm": 1.0,
+        "fp16": False,
+        eval_key: "epoch",
+        "save_strategy": "epoch",
+        "load_best_model_at_end": True,
+        "metric_for_best_model": "f1",
+        "greater_is_better": True,
+        "logging_steps": 10,
+        "use_cpu": not torch.cuda.is_available(),
+        "report_to": "none",
+        "dataloader_num_workers": 0
+    }
+    training_args = TrainingArguments(**kwargs)
 
     # 4. Trainer Initialization (with class-weighted loss)
     trainer = WeightedTrainer(
