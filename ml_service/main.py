@@ -95,25 +95,42 @@ emotion_classifier = pipeline(
     device=-1, truncation=True, max_length=512
 )
 
-local_model_path = os.path.join(base_dir, "models", "mdeberta_finetuned")
+local_config_file = os.path.join(base_dir, "models", "mdeberta_finetuned", "config.json")
 model_hub_path = "ashlogg/student-shield-mdeberta"
 
-target_model = local_model_path if os.path.exists(local_model_path) else model_hub_path
+distress_classifier = None
 
-try:
-    distress_classifier = pipeline(
-        "text-classification", model=target_model,
-        device=-1, truncation=True, max_length=512
-    )
-    logger.info(f"Loaded custom model: {target_model}")
-except Exception as e:
-    logger.warning(f"Could not load custom mDeBERTa model: {e}")
+# 1. Try local fine-tuned model if valid config.json exists
+if os.path.exists(local_config_file):
+    try:
+        local_model_dir = os.path.join(base_dir, "models", "mdeberta_finetuned")
+        distress_classifier = pipeline(
+            "text-classification", model=local_model_dir,
+            device=-1, truncation=True, max_length=512
+        )
+        logger.info(f"Loaded local custom model from: {local_model_dir}")
+    except Exception as e:
+        logger.warning(f"Could not load local model: {e}")
+
+# 2. Try Hugging Face Hub fine-tuned model
+if distress_classifier is None:
+    try:
+        distress_classifier = pipeline(
+            "text-classification", model=model_hub_path,
+            device=-1, truncation=True, max_length=512
+        )
+        logger.info(f"Loaded fine-tuned model from Hugging Face Hub: {model_hub_path}")
+    except Exception as e:
+        logger.warning(f"Could not load model from Hugging Face Hub ({model_hub_path}): {e}")
+
+# 3. Final fallback if custom model is unavailable
+if distress_classifier is None:
     fallback_model = "SamLowe/roberta-base-go_emotions"
     distress_classifier = pipeline(
         "text-classification", model=fallback_model,
         device=-1, truncation=True, max_length=512
     )
-    logger.info(f"Loaded fallback model: {fallback_model}")
+    logger.info(f"Loaded baseline fallback model: {fallback_model}")
 
 def get_mdeberta_embedding(text: str) -> np.ndarray:
     try:
