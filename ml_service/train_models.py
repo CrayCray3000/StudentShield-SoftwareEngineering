@@ -61,7 +61,7 @@ def fine_tune_model(model_name, output_dir, dataset):
     # 2. Tokenize Dataset
     def tokenize_function(examples):
         # 128 tokens captures full Taglish context without wasting GPU memory
-        return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=128)
+        return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=256)
         
     tokenized_datasets = dataset.map(tokenize_function, batched=True)
     
@@ -104,7 +104,7 @@ def fine_tune_model(model_name, output_dir, dataset):
         eval_strategy="epoch",
         save_strategy="epoch",
         load_best_model_at_end=True,
-        metric_for_best_model="accuracy",
+        metric_for_best_model="f1",
         greater_is_better=True,
         logging_steps=10,
         use_cpu=not torch.cuda.is_available(),
@@ -145,13 +145,15 @@ def fine_tune_model(model_name, output_dir, dataset):
     return eval_results
 
 if __name__ == "__main__":
-    if not os.path.exists("data/train_vents.csv") or not os.path.exists("data/val_vents.csv"):
-        print("Error: train_vents.csv or val_vents.csv not found. Please run generate_dataset.py first.")
+    train_file = "data/merged_train.csv" if os.path.exists("data/merged_train.csv") else "data/train_vents.csv"
+    val_file = "data/merged_val.csv" if os.path.exists("data/merged_val.csv") else "data/val_vents.csv"
+
+    if not os.path.exists(train_file) or not os.path.exists(val_file):
+        print("Error: Training data CSVs not found in data/ folder.")
         exit(1)
         
-    print("Loading Leak-free Augmented Synthetic Dataset...")
-    # Load raw CSV datasets exported from the internal generation script safely split beforehand
-    raw_dataset = load_dataset('csv', data_files={'train': 'data/train_vents.csv', 'validation': 'data/val_vents.csv'})
+    print(f"Loading training data: {train_file} and validation data: {val_file}...")
+    raw_dataset = load_dataset('csv', data_files={'train': train_file, 'validation': val_file})
     
     # Run mDeBERTa Primary Model Fine-Tuning
     mdeberta_metrics = fine_tune_model("microsoft/mdeberta-v3-base", "./models/mdeberta_finetuned", raw_dataset)
