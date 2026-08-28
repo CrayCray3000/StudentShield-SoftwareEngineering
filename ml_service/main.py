@@ -442,8 +442,15 @@ def get_risk_components(translated_text: str, normalized_text: str) -> tuple[flo
             if is_distress and dist_confidence > max_distress_conf:
                 max_distress_conf = dist_confidence
 
-        # Positive emotions (gratitude, joy, optimism) dampen false-negative scores
-        if max_pos_emo_conf >= 0.45:
+        # Positive emotions (gratitude, joy, optimism) dampen false-negative scores,
+        # BUT NOT when masked depression / smiling through pain is evident in the text.
+        scan_lower = normalized_text.lower() + " " + translated_text.lower()
+        is_masked = any(p in scan_lower for p in [
+            "jokes", "tumatawa", "nakangiti", "sa labas", "outside", "pretend", "nagpapanggap",
+            "tahimik", "mag-isa", "pag-uwi", "alone", "dalhin mag-isa", "makaramdam"
+        ])
+
+        if max_pos_emo_conf >= 0.45 and not is_masked:
             dampen = min(0.35, max_pos_emo_conf * 0.45)
             max_neg_emo_conf = max(0.0, max_neg_emo_conf - dampen)
             max_distress_conf = max(0.0, max_distress_conf - dampen * 0.5)
@@ -629,24 +636,31 @@ EMOTIONAL_DISTRESS = [
     r"\btake so much energy\b", r"\bdon'?t even recognize myself\b",
     r"\bmentally exhausting\b",
     r"\bang sakit\b", r"\bang sakit no\b",
-    ### v7.4: Reddit/PH research — real Filipino student emotional distress language
+    ### v7.4 & v7.5: Masked Depression, Smiling Depression, Severe Burnout & Anhedonia
     r"\bang bigat bigat\b",                         # emotional exhaustion
     r"\bdi ko gets kung bakit\b.{0,30}\b(malungkot|sad|ganito)\b",
     r"\bparang gusto ko lang matulog\b",             # burnout / escape
     r"\bgusto ko lang matulog\b.{0,30}\b(na|at|hindi|di)\b",
     r"\bsana matapos na\b",                          # hopeless fatigue
+    r"\bgusto ko na lang matapos yung araw\b",      # emotional exhaustion
+    r"\bmatapos yung araw nang walang\b",
     r"\bgaano katagal pa ba\b",                      # how much longer
     r"\bdi ko na alam kung kailan\b",
     r"\bdi ko alam kung gaano ko pa\b",
+    r"\bhindi ko alam kung kailan ako naging ganito\b",
     r"\bwala na kong lakas\b",                       # no more strength
     r"\bwala na akong lakas\b",
     r"\bnawalan na ko ng lakas\b",
     r"\bnawalan na ako ng lakas\b",
     r"\bdi na kaya ng katawan ko\b",
+    r"\bnakakapagod din pala\b",                     # quiet realization of exhaustion
+    r"\bgaano pala ako kapagod\b",
     r"\bpagod na pagod na ko sa lahat\b",
     r"\bsobrang pagod ko na\b",
     r"\bhindi ko na kaya\b",                         # variant of di ko na kaya
     r"\bndi ko na kaya\b",
+    r"\bnahihirapan ako\b",
+    r"\bnahihirapan na ako\b",
     r"\byung feeling na parang\b.{0,30}\b(wala|numb|manhid|blangko)\b",
     r"\bkapag mag.?isa lang\b.{0,30}\b(iba|lumalabas|naiiyak|malungkot)\b",
     r"\bkapag nag.?iisa\b.{0,30}\b(iba|lumalabas|naiiyak|malungkot)\b",
@@ -1105,7 +1119,7 @@ MASKED_DEPRESSION = [
     r"\baround people\b.{0,20}\b(okay|fine|normal)\b.{0,20}\b(but|pero|alone)\b",
     r"\bmasking\b.{0,20}\b(depression|pain|sadness|feelings)\b",
     r"\bhigh.?functioning\b.{0,20}\b(depression|anxiety)\b",
-    # Tagalog — core patterns from pattern #7
+    # Tagalog — core patterns from pattern #7 & conversational Taglish
     r"\bdi naman halata\b",
     r"\bnormal naman ako\b.{0,20}\b(kausap|sa labas|sa harap)\b",
     r"\bpag mag.?isa na\b.{0,20}\biba na\b",
@@ -1124,6 +1138,23 @@ MASKED_DEPRESSION = [
     r"\bkahit nakangiti\b.{0,20}\bmalungkot\b",
     r"\btinatago\b.{0,20}\b(lungkot|sakit|nararamdaman|feelings)\b",
     r"\bpinipigilan\b.{0,20}\b(iyak|luha|lungkot)\b.{0,20}\b(harap|kasama)\b",
+    r"\blagi mong sinasabi na\b.{0,20}\bokay lang\b",
+    r"\bhindi mo na alam kung okay ka pa\b",
+    r"\bdi mo na alam kung okay ka pa\b",
+    r"\bnakikisabay sa jokes\b",
+    r"\btumatawa pa nga minsan\b",
+    r"\btumatawa pa\b.{0,30}\bpag.?uwi\b",
+    r"\bdoon ko mararamdaman\b.{0,20}\b(kapagod|pagod|lungkot|bigat)\b",
+    r"\bkahit gusto kong mapansin\b",
+    r"\bhindi ko kayang sabihin directly\b",
+    r"\bdi ko kayang sabihin directly\b",
+    r"\bsanay na lang akong dalhin mag.?isa\b",
+    r"\bdalhin mag.?isa\b",
+    r"\btahimik na lang\b",
+    r"\bmakaramdam ulit ng kahit ano\b",
+    r"\bmakaramdam ng kahit ano\b",
+    r"\bgusto ko lang talagang makaramdam\b",
+    r"\bmakaramdam ulit\b",
     # Bisaya
     r"\bwala mahibawo\b.{0,20}\b(sakit|gibati|naa ko)\b",
     r"\bnormal lang gawas\b", r"\bnaa koy gisagubat\b.{0,20}\bsolo\b",

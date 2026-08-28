@@ -542,21 +542,28 @@ class VentController extends BaseController
             'worse than just ending it', 'how much of myself i have left', 'fading',
             'sobrang sad', 'malungkot', 'lungkot', 'naiyak', 'umiyak',
             'nasasaktan', 'masakit', 'sakit ng dibdib',
-            // v7.4: Reddit/PH research — real Filipino student emotional distress
+            // v7.4 & v7.5: Masked Depression, Smiling Depression, Severe Burnout & Anhedonia
             'ang bigat bigat',                    // overwhelming emotional weight
             'parang gusto ko lang matulog',        // burnout / escape
             'gusto ko lang matulog at hindi na magising',
             'sana matapos na',                     // hopeless fatigue
+            'gusto ko na lang matapos yung araw',  // emotional exhaustion
+            'matapos yung araw nang walang',
             'gaano katagal pa ba',                 // how much longer
             'di ko na alam kung kailan matatapos',
+            'hindi ko alam kung kailan ako naging ganito',
             'wala na kong lakas',                  // no more strength
             'wala na akong lakas',
             'nawalan na ko ng lakas',
             'di na kaya ng katawan ko',
+            'nakakapagod din pala',                // quiet realization of exhaustion
+            'gaano pala ako kapagod',
             'pagod na pagod na ko sa lahat',
             'sobrang pagod ko na',
             'hindi ko na kaya',
             'ndi ko na kaya',
+            'nahihirapan ako',
+            'nahihirapan na ako',
             'parang walang katapusan',             // feels endless
             'kelan ba matatapos',
             'bakit ganito lagi',
@@ -567,11 +574,20 @@ class VentController extends BaseController
             'pag mag-isa na ko iba na ang nararamdaman',
             'iyak nalang lagi',
             'di ko mapigilan umiyak',
-            'parang hindi na ko buo',              // don\'t feel whole anymore
+            'parang hindi na ko buo',              // don't feel whole anymore
             'di na ko buo',
             'pagod na akong magpanggap',
             'tired of pretending to be okay',
             'sinusubukan ko pang maging okay',
+            'lagi mong sinasabi na okay lang',     // masked depression
+            'kung okay ka pa ba talaga',
+            'dalhin mag-isa',                      // internalized burden
+            'sanay na lang akong dalhin mag-isa',
+            'hindi ko kayang sabihin directly',
+            'tahimik na lang',
+            'makaramdam ulit ng kahit ano',        // anhedonia / emotional numbness
+            'makaramdam ulit',
+            'makaramdam ng kahit ano',
         ];
 
         // STRICT HIGH — Physical Violence (Never downgraded by sarcasm)
@@ -608,7 +624,7 @@ class VentController extends BaseController
             'disappeared from everyone', 'slowly disappeared', 'never really there',
             'feel like i was never', 'talagang kasama', 'wala ka pa rin',
             'ang sakit no',
-            // v7.4: Reddit/PH research — real Filipino student isolation/bullying language
+            // v7.4 & v7.5: Masked/Smiling depression & isolation language
             'ine-exclude',                         // excluded (Taglish)
             'tinatalikuran',                       // ignored / turned away from
             'ina-avoid', 'in-avoid',
@@ -622,8 +638,12 @@ class VentController extends BaseController
             'nobody checks on me',
             'no one checks on me',
             'nobody reaches out',
-            'sana may makapansin',                 // I wish someone would notice (non-ideation level)
+            'sana may makapansin',                 // I wish someone would notice
             'sana may makapansin sa akin',
+            'kahit gusto kong mapansin',
+            'nakikisabay sa jokes',                // smiling depression indicators
+            'tumatawa pa nga minsan',
+            'parang biglang tahimik',
             'pinahihiya',                          // being humiliated
             'pinagtatawanan ng lahat',
             'inaayawan',                           // being avoided / rejected
