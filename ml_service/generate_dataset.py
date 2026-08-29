@@ -88,6 +88,23 @@ seed_data = [
     ("sobrang sakit maging invisible, parang wala akong halaga sa kahit kanino", 1),
     ("I feel so disconnected from everyone, like I'm living behind glass", 1),
 
+    # ── Passive Invisibility / "Would anyone notice?" (MEDIUM-tier distress) ──
+    ("Sometimes I wonder if anyone would notice if I slowly disappeared from everyone's life", 1),
+    ("The hardest part isn't being alone; it's realizing that I've started to feel like I was never really there", 1),
+    ("lowkey ang sakit no? surrounded ka naman ng mga tao pero parang wala ka pa rin talagang kasama", 1),
+    ("minsan napapaisip ako kung may makakapansin ba kung bigla nalang akong mawala sa lahat ng buhay nila", 1),
+    ("I wonder if anyone would notice if I was gone tomorrow", 1),
+    ("nobody would care if I just stopped showing up one day", 1),
+    ("parang wala akong halaga, di naman mapapansin kung mawala ako", 1),
+    ("surrounded by people pero feeling ko invisible pa rin", 1),
+    ("would anyone even notice if I wasn't here anymore", 1),
+    ("I feel like I could vanish and nothing would change for anyone", 1),
+    ("napapaisip ako kung may maghahanap ba sakin kung mawala ako", 1),
+    ("parang extra lang ako sa lahat, wala namang magmimiss kung wala na ako", 1),
+    ("I started to feel like I was never really there even when I'm with people", 1),
+    ("bigla nalang akong mawala sa buhay nila, mapapansin kaya", 1),
+    ("wala akong tunay na kasama kahit maraming tao sa paligid ko", 1),
+
     # ── Bullying / Violence ─────────────────────────────────────
     ("sinasaktan nila ako araw araw sa school", 1),
     ("binugbog nila ako sa likod ng gym kanina", 1),
@@ -245,6 +262,23 @@ seed_data = [
     ("things are tough right now but I know it'll get better", 0),
     ("napasa ko yung exam na akala ko babagsak ako, sana lagi", 0),
     ("finally natapos ko na yung project, ang sarap sa feeling", 0),
+
+    # ── Gen-Z Positive / Grateful Vents (must stay Class 0) ─────
+    ("lowkey life has been so good lately like ang saya lang knowing na may mga taong genuinely happy na nandito ako", 0),
+    ("ang dami kong random moments na napapangiti nalang ako kasi grabe ang sarap pala sa feeling na appreciated ka", 0),
+    ("you actually feel like you belong kahit may bad days somehow may laging something na nagpapagaan ng mood ko", 0),
+    ("sobrang thankful ako sa mga tao memories and little things na meron ako honestly excited ako sa future", 0),
+    ("life is kinda slaying rn fr sobrang saya ko lately", 0),
+    ("genuinely happy ako ngayon, ang sarap sa feeling na appreciated", 0),
+    ("excited ako sa future and sa lahat ng magandang mangyayari", 0),
+    ("napapangiti nalang ako random moments kasi ang saya ng buhay ko lately", 0),
+    ("lowkey grateful ako sa tropa ko, they make life worth it", 0),
+    ("feeling ko belong ako sa grupo namin, ang saya lang", 0),
+    ("life has been so good lately, thankful for everyone around me", 0),
+    ("I feel appreciated and I actually feel like I belong here", 0),
+    ("excited for what's coming, sobrang thankful sa mga tao sa life ko", 0),
+    ("ang saya lang lately, life is kinda slaying rn no cap", 0),
+    ("may bad days pero overall grateful ako sa buhay ko ngayon", 0),
 ]
 
 def generate_dataset(total_samples=4000):
