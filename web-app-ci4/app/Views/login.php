@@ -305,14 +305,6 @@
                     Don't have an account?
                     <a href="<?= base_url('register') ?>" class="text-gold-light hover:text-gold font-bold underline underline-offset-2 transition-colors duration-200">Register here</a>
                 </p>
-
-                <!-- Subtle Staff / Admin Access Switch -->
-                <div class="mt-6 pt-4 border-t border-white/10 text-center">
-                    <a href="<?= base_url('admin/login') ?>" class="inline-flex items-center gap-1.5 text-[11px] sm:text-[12px] text-white/50 hover:text-gold transition-colors font-medium">
-                        <i class="fas fa-user-shield text-[11px] text-gold/60"></i>
-                        Staff & Counselor Portal
-                    </a>
-                </div>
             </form>
             
         </div>
