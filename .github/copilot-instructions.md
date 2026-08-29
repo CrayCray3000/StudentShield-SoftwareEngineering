@@ -1,9 +1,44 @@
 # 🤖 GitHub & Jules Assistant Instructions
 
-Please refer to [`AGENTS.md`](../AGENTS.md) and [`AI_CONTEXT.md`](../AI_CONTEXT.md) in the repository root for full architectural constraints, production guardrails, and coding guidelines.
+> **Repository:** StudentShield (SVBSM Mental Health & Anti-Bullying Platform)  
+> **Target Branch:** `main`
 
-### Quick Rules:
-1. **PHP/CI4 Web App**: Hosted on InfinityFree (no SSH/CLI). Keep changes compatible with standard shared hosting PHP 8.1+.
-2. **FastAPI ML Service**: Deployed on Hugging Face Spaces. Auto-synced via `.github/workflows/deploy_hf.yml`.
-3. **Encryption**: Maintain CI4 `AES-256-CTR` application-level encryption on student vent logs.
-4. **Safety Net**: Never delete or strip out local Taglish/Filipino crisis keyword lists in `VentController.php` or `ml_service/main.py`.
+---
+
+## 🏗️ 1. System Architecture & Constraints
+
+StudentShield is a **distributed 2-cloud application**:
+1. **Web Frontend & Backend (`web-app-ci4/`)**:
+   - **Framework:** PHP 8.1+ / CodeIgniter 4
+   - **Production Hosting:** InfinityFree (Shared PHP Hosting)
+   - **Database:** MySQL / MariaDB (Application-level AES-256-CTR encryption for vent logs)
+   - **Constraint:** Production has **NO CLI / SSH access**. Never introduce dependencies or workflows that require runtime CLI commands on the PHP production server.
+
+2. **Machine Learning Microservice (`ml_service/`)**:
+   - **Framework:** Python 3.10+ / FastAPI / PyTorch
+   - **Production Hosting:** Hugging Face Spaces (`ashlogg/student-shield-official`, Docker SDK)
+   - **Models:**
+     - `SamLowe/roberta-base-go_emotions` (28-class public emotion model)
+     - `ashlogg/student-shield-mdeberta` (Fine-tuned crisis detection on Hugging Face Hub)
+   - **Deployment:** GitHub Actions (`.github/workflows/deploy_hf.yml`) auto-syncs `ml_service/` to Hugging Face Spaces on push to `main`.
+
+---
+
+## 🛡️ 2. Critical Guardrails (DO NOT BREAK)
+
+When working on bug fixes, performance, or refactoring:
+
+### A. Authentication & Security
+- **API Key Security:** The ML endpoint `/analyze-text` requires `X-API-KEY: studentshield_secret_key_2026`. Never remove authentication headers or expose secrets.
+- **Data Privacy at Rest:** Student vent text (`raw_text`) in `web-app-ci4` is symmetrically encrypted using CodeIgniter 4's `Services::encrypter()` (`AES-256-CTR`). Do not bypass or alter the encryption format without backwards compatibility.
+
+### B. Fallback & Keyword Detection Safety
+- **Dual-Layer Risk Evaluation:** `VentController.php` runs a local keyword regex fallback before database persistence. If the ML service is down, the PHP fallback is the life safety net.
+- **Preserve Taglish / Slang Lexicon:** Do not remove or simplify Tagalog, Taglish, Bisaya, or Ilocano crisis phrases in `VentController.php` or `main.py`.
+
+### C. Performance & Queries
+- When fixing **N+1 queries** in `AdminController.php` or `VentController.php`, use batch `whereIn()` queries or single-pass joins. Ensure audit logging (`logAudit()`) does not trigger individual DB writes inside large loops.
+
+### D. Testing & Code Quality
+- Add PHPUnit tests in `web-app-ci4/tests/` and PyTest tests in `ml_service/tests/`.
+- Ensure all tests pass without requiring an active internet connection or live database connection (use mocks where appropriate).
