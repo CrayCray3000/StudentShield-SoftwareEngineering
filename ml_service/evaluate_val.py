@@ -7,8 +7,8 @@ import time
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
-# Set the required environment variable
-os.environ["ML_API_KEY"] = "svbsm-production-ml-key-v1"
+# Set a fallback evaluation key only if not already provided via environment
+os.environ.setdefault("ML_API_KEY", "eval-local-test-key")
 
 from main import analyze_text_sync
 
