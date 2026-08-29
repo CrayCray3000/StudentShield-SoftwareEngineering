@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Security, Depends, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
 from typing import Optional
@@ -1711,7 +1712,7 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     if len(text) > MAX_INPUT_CHARS:
         raise HTTPException(status_code=400, detail=f"Input too long ({len(text)} chars). Max is {MAX_INPUT_CHARS}.")
 
-    res = analyze_text_sync(text, student_id)
+    res = await run_in_threadpool(analyze_text_sync, text, student_id)
     return {
         "risk_score":             res["risk_score"],
         "risk_level":             res["risk_level"],
