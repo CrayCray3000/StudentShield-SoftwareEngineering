@@ -14,8 +14,8 @@ class AuthFilter implements FilterInterface
         if (!session()->get('isLoggedIn')) {
             // First check if they have a remember-me cookie for students
             if (isset($_COOKIE['student_remember'])) {
-                $cookieData = base64_decode($_COOKIE['student_remember']);
-                if (strpos($cookieData, ':') !== false) {
+                $cookieData = \App\Libraries\CookieSigner::verify($_COOKIE['student_remember']);
+                if ($cookieData !== null && strpos($cookieData, ':') !== false) {
                     list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
                     $db = \Config\Database::connect();
                     $user = $db->table('users')->where('id', $cookieUserId)->where('role', 0)->get()->getRowArray();
@@ -46,8 +46,8 @@ class AuthFilter implements FilterInterface
             $isAdminRoute = (strpos($uriPath, 'admin') !== false || strpos($uriPath, 'counselor') !== false);
 
             if ($isAdminRoute && isset($_COOKIE['admin_trusted_device'])) {
-                $cookieData = base64_decode($_COOKIE['admin_trusted_device']);
-                if (strpos($cookieData, ':') !== false) {
+                $cookieData = \App\Libraries\CookieSigner::verify($_COOKIE['admin_trusted_device']);
+                if ($cookieData !== null && strpos($cookieData, ':') !== false) {
                     list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
                     $db = \Config\Database::connect();
                     $user = $db->table('users')->where('id', $cookieUserId)->whereIn('role', [1, 2])->get()->getRowArray();

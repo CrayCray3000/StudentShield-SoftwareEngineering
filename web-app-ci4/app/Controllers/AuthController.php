@@ -31,8 +31,8 @@ class AuthController extends BaseController
 
         // ── AUTO-LOGIN VIA TRUSTED DEVICE COOKIE ──
         if (isset($_COOKIE['admin_trusted_device'])) {
-            $cookieData = base64_decode($_COOKIE['admin_trusted_device']);
-            if (strpos($cookieData, ':') !== false) {
+            $cookieData = \App\Libraries\CookieSigner::verify($_COOKIE['admin_trusted_device']);
+            if ($cookieData !== null && strpos($cookieData, ':') !== false) {
                 list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
                 $db = \Config\Database::connect();
                 $user = $db->table('users')->where('id', $cookieUserId)->whereIn('role', [1, 2])->get()->getRowArray();
@@ -89,7 +89,7 @@ class AuthController extends BaseController
                 $db->table('users')->where('id', $user['id'])->update([
                     'remember_token' => password_hash($token, PASSWORD_BCRYPT)
                 ]);
-                $cookieValue = base64_encode($user['id'] . ':' . $token);
+                $cookieValue = \App\Libraries\CookieSigner::sign($user['id'] . ':' . $token);
                 setcookie('student_remember', $cookieValue, [
                     'expires' => time() + (86400 * 30),
                     'path' => '/',
@@ -152,8 +152,8 @@ class AuthController extends BaseController
 
             // ── LAYER 5: TRUSTED DEVICE BYPASS ──
             if (isset($_COOKIE['admin_trusted_device'])) {
-                $cookieData = base64_decode($_COOKIE['admin_trusted_device']);
-                if (strpos($cookieData, ':') !== false) {
+                $cookieData = \App\Libraries\CookieSigner::verify($_COOKIE['admin_trusted_device']);
+                if ($cookieData !== null && strpos($cookieData, ':') !== false) {
                     list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
                     if ((int)$cookieUserId === (int)$user['id'] && password_verify($cookieToken, $user['remember_token'])) {
                         // Bypass OTP
@@ -273,7 +273,7 @@ class AuthController extends BaseController
                 $db->table('users')->where('id', session()->get('temp_user_id'))->update([
                     'remember_token' => password_hash($token, PASSWORD_BCRYPT)
                 ]);
-                $cookieValue = base64_encode(session()->get('temp_user_id') . ':' . $token);
+                $cookieValue = \App\Libraries\CookieSigner::sign(session()->get('temp_user_id') . ':' . $token);
                 setcookie('admin_trusted_device', $cookieValue, [
                     'expires' => time() + (86400 * 30),
                     'path' => '/',
