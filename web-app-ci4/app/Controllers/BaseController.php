@@ -64,4 +64,40 @@ abstract class BaseController extends Controller
             log_message('error', 'Audit log failed: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Write immutable audit log entries in batch for compliance tracking.
+     * Shared by AdminController and UserController.
+     */
+    protected function logAuditBatch(string $action, string $entityType, array $entityIds): void
+    {
+        if (empty($entityIds)) {
+            return;
+        }
+
+        try {
+            $db = \Config\Database::connect();
+            $userId = session()->get('user_id');
+            $ipAddress = $this->request->getIPAddress();
+            $userAgent = $this->request->getUserAgent()->getAgentString();
+            $now = date('Y-m-d H:i:s');
+
+            $batch = [];
+            foreach ($entityIds as $entityId) {
+                $batch[] = [
+                    'user_id'     => $userId,
+                    'action'      => $action,
+                    'entity_type' => $entityType,
+                    'entity_id'   => (int) $entityId,
+                    'ip_address'  => $ipAddress,
+                    'user_agent'  => $userAgent,
+                    'created_at'  => $now,
+                ];
+            }
+
+            $db->table('audit_logs')->insertBatch($batch);
+        } catch (\Exception $e) {
+            log_message('error', 'Audit log batch failed: ' . $e->getMessage());
+        }
+    }
 }
