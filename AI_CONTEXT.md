@@ -80,15 +80,20 @@ student-shield/
 | **Internal Port** | `7860` (standard HF Docker port) |
 | **Auto-deploy** | ✅ Yes — GitHub Actions (`deploy_hf.yml`) triggers on push to `main` when `ml_service/**` changes |
 
-**How the ML Pipeline Works:**
+**How the ML Pipeline Works (v7.5):**
 ```
 1. Student submits vent → PHP VentController sends HTTP POST to HF Space API
 2. Space loads fine-tuned mDeBERTa from ashlogg/student-shield-mdeberta (or local cache)
 3. Emotion classification via SamLowe/roberta-base-go_emotions
-4. 63 crisis anchor embeddings computed & compared via mDeBERTa
-5. Rule-based safety overrides & FAISS trajectory memory evaluated
-6. Returns risk_score (0-100%) and risk_level (LOW/MEDIUM/HIGH/CRITICAL)
+4. 79 multilingual crisis anchor embeddings computed & compared via mDeBERTa
+5. Smiling/Masked Depression detection overrides false positive laughter dampening
+6. Rule-based safety overrides (Cat 1/2/3, Self-Worth, Anhedonia) & FAISS trajectory memory evaluated
+7. Returns risk_score (0-100%) and risk_level (LOW/MEDIUM/HIGH/CRITICAL)
 ```
+
+**Autonomous Coding Agents (Google Jules & Copilot):**
+- System constraints & guardrails: [`AGENTS.md`](./AGENTS.md) and [`.github/copilot-instructions.md`](./.github/copilot-instructions.md)
+- Dataset extraction CLI: `php spark decrypt:vents` (decrypts real vents for ML fine-tuning)
 
 **To deploy ML changes manually:**
 ```bash
