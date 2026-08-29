@@ -182,9 +182,12 @@
 
         <!-- Header -->
         <div class="text-center mb-8">
-            <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mx-auto mb-4 sm:mb-5 drop-shadow-xl"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><path d=\'M50 15L15 30v30c0 20 35 30 35 30s35-10 35-30V30L50 15z\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linejoin=\'round\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
-            <h1 class="text-2xl sm:text-3xl font-heading font-bold tracking-tight text-white leading-tight">Staff <span class="text-gold">Portal</span></h1>
+            <div class="flex flex-col items-center justify-center mb-4">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-28 sm:h-28 object-contain mx-auto mb-2 drop-shadow-xl"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><path d=\'M50 15L15 30v30c0 20 35 30 35 30s35-10 35-30V30L50 15z\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linejoin=\'round\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
+                <p class="text-white/90 font-semibold text-[13px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-heading font-extrabold tracking-tight text-white leading-tight">Staff <span class="text-gold">Portal</span></h1>
             <div class="inline-flex items-center gap-2 mt-3 px-3 py-1 rounded-full bg-gold/10 border border-gold/20">
                 <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shadow-[0_0_6px_#F2C300]"></span>
                 <span class="text-[9px] sm:text-[10px] font-semibold text-gold/80 uppercase tracking-widest whitespace-nowrap">Secure Connection</span>

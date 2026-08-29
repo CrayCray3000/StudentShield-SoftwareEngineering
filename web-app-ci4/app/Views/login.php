@@ -226,16 +226,20 @@
         <div class="student-card p-6 sm:p-8 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] relative overflow-hidden group hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] transition-shadow duration-500">
             
             <div class="text-center mb-8 sm:mb-10">
-                <!-- Logo: smaller on mobile, larger on larger screens -->
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-32 sm:h-32 object-contain mx-auto mb-5 sm:mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
-                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
+                <!-- Crest & Clean School Identity -->
+                <div class="flex flex-col items-center justify-center mb-5 sm:mb-6">
+                    <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-28 sm:h-28 object-contain mx-auto mb-3 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+                         onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
+                    <p class="text-white/90 font-semibold text-[13px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
+                </div>
                 
-                <h1 class="text-[1.75em] sm:text-[2rem] font-heading font-black tracking-tight text-white mb-2 leading-tight">Student <span class="text-gold">Portal</span></h1>
-                <p class="text-white/60 font-medium text-[14px] sm:text-[15px]">Sign in to your private dashboard</p>
+                <h1 class="text-[1.75em] sm:text-[2rem] font-heading font-extrabold tracking-tight text-white mb-1.5 leading-tight">Student <span class="text-gold">Portal</span></h1>
+                <p class="text-white/70 font-medium text-[14px] sm:text-[15px]">Sign in to your private dashboard</p>
                 
-                <div class="inline-flex items-center gap-2 mt-4 sm:mt-5 px-3 sm:px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]"></span>
-                    <span class="text-[10px] sm:text-[11px] font-bold text-emerald-300 uppercase tracking-widest whitespace-nowrap">End-to-End Encrypted</span>
+                <!-- High-Contrast End-to-End Encrypted Badge -->
+                <div class="inline-flex items-center gap-2 mt-4 sm:mt-5 px-3.5 sm:px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-400/40 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_#34d399]"></span>
+                    <span class="text-[11px] sm:text-[12px] font-bold text-emerald-200 uppercase tracking-widest whitespace-nowrap">End-to-End Encrypted</span>
                 </div>
             </div>
 
@@ -281,11 +285,11 @@
                 </div>
 
                 <div class="flex flex-col gap-3 mt-4 mb-2">
-
+                    <!-- High-Contrast Accessible Remember Me Checkbox -->
                     <div class="flex items-center group pt-1">
                         <input id="remember" name="remember" type="checkbox"
-                               class="w-4 h-4 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
-                        <label for="remember" class="ml-2.5 text-[13px] sm:text-[14px] font-semibold text-white/70 group-hover:text-white transition-colors cursor-pointer select-none">
+                               class="w-4 h-4 text-gold bg-white/10 border-2 border-white/40 rounded focus:ring-gold/60 focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#06401E] focus-visible:outline-none cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
+                        <label for="remember" class="ml-2.5 text-[13px] sm:text-[14px] font-semibold text-white/90 group-hover:text-gold transition-colors cursor-pointer select-none">
                             Remember me on this device
                         </label>
                     </div>
@@ -297,9 +301,9 @@
                     <svg id="btnSpinner" class="animate-spin h-5 w-5 text-primary-light mix-blend-multiply hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
 
-                <p class="text-center text-white/50 text-[12px] sm:text-[13px] mt-5">
+                <p class="text-center text-white/70 text-[12px] sm:text-[13px] mt-5">
                     Don't have an account?
-                    <a href="<?= base_url('register') ?>" class="text-yellow-400 hover:text-yellow-300 font-semibold transition-colors duration-200">Register here</a>
+                    <a href="<?= base_url('register') ?>" class="text-gold-light hover:text-gold font-bold underline underline-offset-2 transition-colors duration-200">Register here</a>
                 </p>
             </form>
             

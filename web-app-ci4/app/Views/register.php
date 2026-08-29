@@ -173,10 +173,13 @@
         <div class="student-card p-6 sm:p-8 md:p-10 rounded-[2rem] sm:rounded-[2.5rem] relative overflow-hidden group hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] transition-shadow duration-500">
             
             <div class="text-center mb-6 sm:mb-8">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-20 h-20 sm:w-24 sm:h-24 object-contain mx-auto mb-4 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
+                <div class="flex flex-col items-center justify-center mb-4">
+                    <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-20 h-20 sm:w-24 sm:h-24 object-contain mx-auto mb-2 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
+                    <p class="text-white/90 font-semibold text-[13px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
+                </div>
                 
-                <h1 class="text-[1.75em] sm:text-[2rem] font-heading font-black tracking-tight text-white mb-2 leading-tight">Student <span class="text-gold">Registration</span></h1>
-                <p class="text-white/60 font-medium text-[14px] sm:text-[15px]">Create your secure account</p>
+                <h1 class="text-[1.75em] sm:text-[2rem] font-heading font-extrabold tracking-tight text-white mb-1.5 leading-tight">Student <span class="text-gold">Registration</span></h1>
+                <p class="text-white/70 font-medium text-[14px] sm:text-[15px]">Create your secure account</p>
             </div>
 
             <!-- Error/Success Flash -->
@@ -219,7 +222,6 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-layer-group text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
                             </div>
-                            <!-- Using standard text input for grade level to match DB schema (string) -->
                             <input type="text" name="grade_level" id="grade_level" required value="<?= set_value('grade_level') ?>"
                                    class="w-full pl-11 pr-4 py-3 input-dark rounded-xl text-[15px] font-bold outline-none"
                                    placeholder="Grade 7, Grade 11, etc.">
@@ -262,12 +264,13 @@
                                    class="w-full pl-11 pr-4 py-3 input-dark rounded-xl text-[15px] font-bold outline-none tracking-[0.1em]"
                                    placeholder="••••••••">
                         </div>
-                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 mt-2 text-[11px] text-white/50" id="password-criteria">
-                            <div id="req-length" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> At least 8 chars</div>
-                            <div id="req-upper" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> 1 Uppercase</div>
-                            <div id="req-lower" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> 1 Lowercase</div>
-                            <div id="req-number" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> 1 Number</div>
-                            <div id="req-special" class="flex items-center gap-1.5 transition-colors"><i class="fas fa-circle text-[6px]"></i> 1 Special char</div>
+                        <!-- High-Contrast Accessible Password Checklist -->
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 mt-2 text-[11px] text-gray-300" id="password-criteria">
+                            <div id="req-length" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> At least 8 chars</div>
+                            <div id="req-upper" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> 1 Uppercase</div>
+                            <div id="req-lower" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> 1 Lowercase</div>
+                            <div id="req-number" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> 1 Number</div>
+                            <div id="req-special" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> 1 Special char</div>
                         </div>
                     </div>
 
@@ -289,11 +292,11 @@
                     <label class="flex items-start gap-3 cursor-pointer group/checkbox">
                         <div class="relative flex items-center justify-center mt-0.5">
                             <input type="checkbox" name="terms" id="terms" required class="peer sr-only" <?= set_checkbox('terms', '1') ?>>
-                            <div class="w-5 h-5 border-2 border-white/20 rounded-md bg-white/5 peer-checked:bg-gold peer-checked:border-gold transition-all duration-300"></div>
+                            <div class="w-5 h-5 border-2 border-white/40 rounded-md bg-white/5 peer-checked:bg-gold peer-checked:border-gold transition-all duration-300"></div>
                             <i class="fas fa-check absolute text-[11px] text-[#0A1C11] opacity-0 peer-checked:opacity-100 transition-opacity duration-300 pointer-events-none"></i>
                         </div>
-                        <span class="text-[12px] sm:text-[13px] text-white/70 leading-snug">
-                            I agree to the <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-semibold underline underline-offset-2 transition-colors">Terms and Conditions</button> & <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-semibold underline underline-offset-2 transition-colors">Data Privacy Policy</button>.
+                        <span class="text-[12px] sm:text-[13px] text-white/80 leading-snug">
+                            I agree to the <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-bold underline underline-offset-2 transition-colors">Terms and Conditions</button> & <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-bold underline underline-offset-2 transition-colors">Data Privacy Policy</button>.
                         </span>
                     </label>
                 </div>
@@ -303,13 +306,14 @@
                     <i id="btnIcon" class="fas fa-paper-plane text-primary-light mix-blend-multiply text-sm group-hover/btn:translate-x-1.5 group-hover/btn:-translate-y-1.5 transition-all duration-300"></i>
                     <svg id="btnSpinner" class="animate-spin h-5 w-5 text-primary-light mix-blend-multiply hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
-                
-                <div class="text-center mt-6">
-                    <a href="<?= base_url('login') ?>" class="text-[13px] font-semibold text-white/70 hover:text-gold transition-colors">
-                        <i class="fas fa-arrow-left mr-1 text-[11px]"></i> Back to Login
-                    </a>
-                </div>
             </form>
+            
+            <!-- Instant Direct Navigation to Login (Isolated from Form Events) -->
+            <div class="text-center mt-6 relative z-20">
+                <a href="<?= base_url('login') ?>" class="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-semibold text-white/80 hover:text-gold transition-colors py-1 px-3 rounded-lg hover:bg-white/5">
+                    <i class="fas fa-arrow-left text-[11px]"></i> Back to Login
+                </a>
+            </div>
             
         </div>
     </div>
@@ -336,7 +340,7 @@
                 <p>Welcome to Student Shield! By registering an account, you agree to the following terms regarding your usage and how we handle your data.</p>
                 
                 <h3 class="text-gold font-semibold text-base sm:text-lg mt-4">1. Purpose of the Portal</h3>
-                <p>Student Shield is a secure platform designed for San Vicente Bañera National High School students to report incidents (such as bullying or conflicts) and to express concerns ("Vents") to the Guidance Counselor. This platform is strictly for school-related well-being and disciplinary matters.</p>
+                <p>Student Shield is a secure platform designed for St. Vincent Blessed School of Manila (SVBSM) students to report incidents (such as bullying or conflicts) and to express concerns ("Vents") to the Guidance Counselor. This platform is strictly for school-related well-being and disciplinary matters.</p>
 
                 <h3 class="text-gold font-semibold text-base sm:text-lg mt-4">2. Data Collection and Privacy</h3>
                 <p>In compliance with the <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>, we assure you that:</p>
@@ -446,15 +450,13 @@
             const icon = el.querySelector('i');
             
             if (isValid) {
-                el.classList.add('text-green-400');
-                el.classList.remove('text-white/50');
-                icon.classList.remove('fa-circle', 'text-[6px]');
-                icon.classList.add('fa-check-circle', 'text-[11px]');
+                el.classList.add('text-emerald-300', 'font-semibold');
+                el.classList.remove('text-gray-300');
+                icon.className = 'fas fa-check-circle text-[11px] text-emerald-400';
             } else {
-                el.classList.remove('text-green-400');
-                el.classList.add('text-white/50');
-                icon.classList.remove('fa-check-circle', 'text-[11px]');
-                icon.classList.add('fa-circle', 'text-[6px]');
+                el.classList.remove('text-emerald-300', 'font-semibold');
+                el.classList.add('text-gray-300');
+                icon.className = 'far fa-circle text-[9px] text-white/50';
             }
         }
         checkPasswordMatch();
