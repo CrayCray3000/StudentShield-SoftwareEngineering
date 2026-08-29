@@ -180,7 +180,7 @@
         }
     </style>
 </head>
-<body class="bg-student min-h-[100dvh] w-full flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden" onmousemove="updateSpotlight(event)">
+<body class="bg-student min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
 
             <!-- Premium Fast-Load Splash Screen -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-student backdrop-blur-xl transition-all duration-700 ease-in-out">
@@ -207,7 +207,7 @@
     </div>
 
 
-    <!-- Background Effects Container (Ensures no mobile scrolling) -->
+    <!-- Background Effects Container (Fixed background prevents mobile scroll interference) -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <!-- Interactive Spotlight Overlay -->
         <div id="spotlight-overlay" class="spotlight absolute inset-0 z-10"></div>
@@ -220,32 +220,32 @@
         <div class="glow-blob bg-primary-light w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bottom-[-10%] left-[-15%] mix-blend-screen" style="animation-delay: -5s; animation-direction: alternate-reverse;"></div>
     </div>
 
-    <div class="w-full max-w-[480px] z-20 relative animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)] mt-4 sm:mt-0">
+    <div class="w-full max-w-[480px] z-20 relative animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)] my-auto py-4 sm:py-6">
         
-        <!-- Adjusted p-6 for tight mobile grids, p-12 for tablets/desktop -->
-        <div class="student-card p-6 sm:p-8 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] relative overflow-hidden group hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] transition-shadow duration-500">
+        <!-- Responsive Card Density: p-5 on mobile, p-8 on tablet, p-12 on desktop -->
+        <div class="student-card p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[2.5rem] relative overflow-hidden group hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] transition-shadow duration-500">
             
-            <div class="text-center mb-8 sm:mb-10">
+            <div class="text-center mb-6 sm:mb-10">
                 <!-- Crest & Clean School Identity -->
-                <div class="flex flex-col items-center justify-center mb-5 sm:mb-6">
-                    <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-28 sm:h-28 object-contain mx-auto mb-3 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+                <div class="flex flex-col items-center justify-center mb-4 sm:mb-6">
+                    <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-20 h-20 sm:w-28 sm:h-28 object-contain mx-auto mb-2.5 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
                          onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
-                    <p class="text-white/90 font-semibold text-[13px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
+                    <p class="text-white/90 font-semibold text-[12px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
                 </div>
                 
-                <h1 class="text-[1.75em] sm:text-[2rem] font-heading font-extrabold tracking-tight text-white mb-1.5 leading-tight">Student <span class="text-gold">Portal</span></h1>
-                <p class="text-white/70 font-medium text-[14px] sm:text-[15px]">Sign in to your private dashboard</p>
+                <h1 class="text-[1.65em] sm:text-[2rem] font-heading font-extrabold tracking-tight text-white mb-1 leading-tight">Student <span class="text-gold">Portal</span></h1>
+                <p class="text-white/70 font-medium text-[13px] sm:text-[15px]">Sign in to your private dashboard</p>
                 
                 <!-- High-Contrast End-to-End Encrypted Badge -->
-                <div class="inline-flex items-center gap-2 mt-4 sm:mt-5 px-3.5 sm:px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-400/40 shadow-sm">
+                <div class="inline-flex items-center gap-2 mt-3.5 sm:mt-5 px-3.5 sm:px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-400/40 shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_#34d399]"></span>
-                    <span class="text-[11px] sm:text-[12px] font-bold text-emerald-200 uppercase tracking-widest whitespace-nowrap">End-to-End Encrypted</span>
+                    <span class="text-[10.5px] sm:text-[12px] font-bold text-emerald-200 uppercase tracking-widest whitespace-nowrap">End-to-End Encrypted</span>
                 </div>
             </div>
 
             <!-- Error Flash -->
             <?php if (session()->getFlashdata('error')): ?>
-                <div class="bg-red-500/10 backdrop-blur-md border border-red-500/30 p-4 mb-6 sm:mb-8 rounded-2xl animate-[shake_0.5s_ease-in-out] shadow-lg">
+                <div class="bg-red-500/10 backdrop-blur-md border border-red-500/30 p-3.5 sm:p-4 mb-5 sm:mb-8 rounded-2xl animate-[shake_0.5s_ease-in-out] shadow-lg">
                     <div class="flex items-start gap-3 sm:gap-4">
                         <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                             <i class="fas fa-exclamation text-red-400 text-sm"></i>
@@ -256,13 +256,12 @@
             <?php endif; ?>
 
             <!-- Login Form -->
-            <form action="<?= base_url('login/authenticate') ?>" method="post" class="space-y-5 sm:space-y-6 relative z-10 w-full">
+            <form action="<?= base_url('login/authenticate') ?>" method="post" class="space-y-4 sm:space-y-6 relative z-10 w-full">
                 <?= csrf_field() ?>
                 
                 <div class="space-y-1.5 sm:space-y-2">
                     <label for="name" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Student Name</label>
                     <div class="relative group/input">
-                        <!-- pl-4 on mobile to not eat space, text-base rather than text-lg for icons on small -->
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-gold">
                             <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
                         </div>
@@ -284,72 +283,84 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-3 mt-4 mb-2">
-                    <!-- High-Contrast Accessible Remember Me Checkbox -->
-                    <div class="flex items-center group pt-1">
+                <!-- Accessible Touch-Optimized (44px min-height) Remember Me -->
+                <div class="pt-1">
+                    <label for="remember" class="flex items-center gap-3 p-2 -ml-2 rounded-xl cursor-pointer min-h-[44px] select-none hover:bg-white/5 transition-colors group">
                         <input id="remember" name="remember" type="checkbox"
-                               class="w-4 h-4 text-gold bg-white/10 border-2 border-white/40 rounded focus:ring-gold/60 focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#06401E] focus-visible:outline-none cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
-                        <label for="remember" class="ml-2.5 text-[13px] sm:text-[14px] font-semibold text-white/90 group-hover:text-gold transition-colors cursor-pointer select-none">
+                               class="w-5 h-5 text-gold bg-white/10 border-2 border-white/40 rounded focus:ring-gold/60 focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#06401E] focus-visible:outline-none cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
+                        <span class="text-[13px] sm:text-[14px] font-semibold text-white/90 group-hover:text-gold transition-colors">
                             Remember me on this device
-                        </label>
-                    </div>
+                        </span>
+                    </label>
                 </div>
 
-                <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 sm:gap-3 h-[54px] sm:h-[60px] mt-8 sm:mt-10 group/btn">
+                <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 sm:gap-3 h-[52px] sm:h-[60px] mt-6 sm:mt-8 group/btn">
                     <span id="btnText" class="font-heading text-[16px] sm:text-[18px] tracking-wide pt-0.5 text-primary-light mix-blend-multiply">Access Portal</span>
                     <i id="btnIcon" class="fas fa-arrow-right text-primary-light mix-blend-multiply text-[13px] sm:text-sm group-hover/btn:translate-x-1.5 group-hover/btn:scale-110 transition-all duration-300"></i>
                     <svg id="btnSpinner" class="animate-spin h-5 w-5 text-primary-light mix-blend-multiply hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
 
-                <p class="text-center text-white/70 text-[12px] sm:text-[13px] mt-5">
-                    Don't have an account?
-                    <a href="<?= base_url('register') ?>" class="text-gold-light hover:text-gold font-bold underline underline-offset-2 transition-colors duration-200">Register here</a>
-                </p>
+                <div class="text-center mt-4 sm:mt-5">
+                    <p class="text-white/70 text-[13px]">
+                        Don't have an account?
+                        <a href="<?= base_url('register') ?>" class="inline-block py-2 px-1 text-gold-light hover:text-gold font-bold underline underline-offset-2 transition-colors duration-200 min-h-[44px]">Register here</a>
+                    </p>
+                </div>
             </form>
             
         </div>
         
     </div>
 
-    <!-- Modals -->
-    <div id="termsModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('termsModal')"></div>
-        <div class="relative bg-[#0d2114] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
-            <div class="p-5 sm:p-6 border-b border-white/10 flex justify-between items-center">
-                <h2 class="text-lg sm:text-xl font-heading font-bold text-white">Terms & Conditions</h2>
-                <button type="button" onclick="closeModal('termsModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times text-lg"></i></button>
+    <!-- Modals (With Sticky Headers & Footers and Independent Scrollable Content) -->
+    <div id="termsModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-3 sm:p-4">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('termsModal')"></div>
+        <div class="relative bg-[#0d2114] border border-white/10 rounded-2xl sm:rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out] overflow-hidden">
+            <!-- Sticky Header -->
+            <div class="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center sticky top-0 z-20 bg-[#0d2114]/95 backdrop-blur-md shrink-0">
+                <h2 class="text-lg sm:text-xl font-heading font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-shield-alt text-gold"></i> Terms & Conditions
+                </h2>
+                <button type="button" onclick="closeModal('termsModal')" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white flex items-center justify-center transition-colors focus:outline-none min-h-[36px] min-w-[36px]"><i class="fas fa-times text-base"></i></button>
             </div>
-            <div class="p-5 sm:p-6 overflow-y-auto text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed">
-                <p><strong class="text-gold">1. Acceptance of Terms:</strong> By accessing and using StudentShield, you agree to comply with these Terms & Conditions. This platform is designed to promote a safe and supportive school environment.</p>
+            <!-- Scrollable Body -->
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed custom-scrollbar">
+                <p><strong class="text-gold">1. Acceptance of Terms:</strong> By accessing and using StudentShield, you agree to comply with these Terms & Conditions. This platform is designed to promote a safe and supportive school environment at St. Vincent Blessed School of Manila (SVBSM).</p>
                 <p><strong class="text-gold">2. Eligibility & Guardian Consent:</strong> You must be an actively enrolled student. If you are under 18 years of age, you represent that you have obtained verifiable consent from your parent or legal guardian to use this service.</p>
                 <p><strong class="text-gold">3. Acceptable Use:</strong> The platform must be used responsibly. Submitting false reports, impersonating others, or using the platform to harass or bully others is strictly prohibited and may result in disciplinary action from the school.</p>
                 <p><strong class="text-gold">4. Confidentiality vs. Anonymity:</strong> While reports and venting logs are kept confidential, total anonymity is waived in cases where there is an imminent threat to life, self-harm, or severe danger. Authorized school administrators reserve the right to identify users to prevent harm.</p>
                 <p><strong class="text-gold">5. Interventions:</strong> School counselors or designated safety officers may intervene based on the severity of the submitted reports to ensure the physical and mental well-being of the students involved.</p>
                 <p><strong class="text-gold">6. Not an Emergency Service:</strong> StudentShield is not a real-time emergency response system. If you are in immediate danger, please contact local emergency authorities or proceed to the nearest hospital or police station.</p>
             </div>
-            <div class="p-4 border-t border-white/10 bg-black/20 text-right rounded-b-2xl">
-                <button type="button" onclick="closeModal('termsModal')" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
+            <!-- Sticky Footer -->
+            <div class="p-3.5 sm:p-4 border-t border-white/10 bg-[#08150d]/95 backdrop-blur-md text-right rounded-b-2xl sm:rounded-b-3xl sticky bottom-0 z-20 shrink-0">
+                <button type="button" onclick="closeModal('termsModal')" class="px-6 py-2.5 bg-gold hover:bg-gold-light text-black text-sm rounded-xl font-bold transition-colors focus:outline-none min-h-[44px]">Close</button>
             </div>
         </div>
     </div>
 
-    <div id="privacyModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal('privacyModal')"></div>
-        <div class="relative bg-[#0d2114] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out]">
-            <div class="p-5 sm:p-6 border-b border-white/10 flex justify-between items-center">
-                <h2 class="text-lg sm:text-xl font-heading font-bold text-white">Data Privacy Policy</h2>
-                <button type="button" onclick="closeModal('privacyModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times text-lg"></i></button>
+    <div id="privacyModal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-3 sm:p-4">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal('privacyModal')"></div>
+        <div class="relative bg-[#0d2114] border border-white/10 rounded-2xl sm:rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl animate-[scaleIn_0.3s_ease-out] overflow-hidden">
+            <!-- Sticky Header -->
+            <div class="p-4 sm:p-6 border-b border-white/10 flex justify-between items-center sticky top-0 z-20 bg-[#0d2114]/95 backdrop-blur-md shrink-0">
+                <h2 class="text-lg sm:text-xl font-heading font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-user-lock text-gold"></i> Data Privacy Policy
+                </h2>
+                <button type="button" onclick="closeModal('privacyModal')" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white flex items-center justify-center transition-colors focus:outline-none min-h-[36px] min-w-[36px]"><i class="fas fa-times text-base"></i></button>
             </div>
-            <div class="p-5 sm:p-6 overflow-y-auto text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed">
-                <p>This policy outlines how we handle your personal data in strict compliance with the Data Privacy Act of 2012 (Republic Act No. 10173) of the Philippines.</p>
+            <!-- Scrollable Body -->
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed custom-scrollbar">
+                <p>This policy outlines how we handle your personal data in strict compliance with the Data Privacy Act of 2012 (Republic Act No. 10173) of the Philippines for St. Vincent Blessed School of Manila (SVBSM).</p>
                 <p><strong class="text-gold">1. Data Collection & Legitimate Purpose:</strong> We collect personal information and sensitive personal information (such as your name, ID, and health/incident reports) solely for the legitimate purpose of processing incident reports, providing guidance counseling, and ensuring a safe educational environment.</p>
                 <p><strong class="text-gold">2. Data Processing & Protection:</strong> Your data is protected using end-to-end encryption and strict organizational, physical, and technical security measures. Only designated, authorized school personnel (such as counselors and the Data Protection Officer) have access to identifiable information.</p>
                 <p><strong class="text-gold">3. Data Retention & Disposal:</strong> We retain your personal data only for as long as necessary to fulfill the stated purposes or as required by school policy and the law. Once the retention period expires, data is securely disposed of or anonymized.</p>
                 <p><strong class="text-gold">4. Third-Party Sharing:</strong> We do not sell or share your data with third parties for marketing. Information may only be disclosed to law enforcement, medical professionals, or government authorities if mandated by law or necessary for emergency intervention to protect your vital interests.</p>
                 <p><strong class="text-gold">5. Data Subject Rights:</strong> As a data subject under RA 10173, you have the right to be informed, object to processing, access, rectify, erase, or block your personal data, as well as the right to data portability and the right to file a complaint with the National Privacy Commission (NPC) for any damages. To exercise these rights, you or your guardian may contact the school's Data Protection Officer (DPO).</p>
             </div>
-            <div class="p-4 border-t border-white/10 bg-black/20 text-right rounded-b-2xl">
-                <button type="button" onclick="closeModal('privacyModal')" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-xl font-semibold transition-colors focus:outline-none">Close</button>
+            <!-- Sticky Footer -->
+            <div class="p-3.5 sm:p-4 border-t border-white/10 bg-[#08150d]/95 backdrop-blur-md text-right rounded-b-2xl sm:rounded-b-3xl sticky bottom-0 z-20 shrink-0">
+                <button type="button" onclick="closeModal('privacyModal')" class="px-6 py-2.5 bg-gold hover:bg-gold-light text-black text-sm rounded-xl font-bold transition-colors focus:outline-none min-h-[44px]">Close</button>
             </div>
         </div>
     </div>

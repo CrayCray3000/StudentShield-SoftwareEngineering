@@ -145,7 +145,7 @@
         }
     </style>
 </head>
-<body class="bg-admin min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 py-4 lg:py-8 relative overflow-x-hidden overflow-y-auto">
+<body class="bg-admin min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto">
 
             <!-- Premium Fast-Load Splash Screen -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-admin backdrop-blur-xl transition-all duration-700 ease-in-out">
@@ -170,25 +170,26 @@
             </div>
         </div>
     </div>
-    </div>
 
-<div class="bg-grid"></div>
-<!-- Scaled absolute blobs so they don't break flex alignments on tiny phones -->
-<div class="glow-blob bg-gold w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] top-[-10%] right-[-10%]"></div>
-<div class="glow-blob bg-white w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] bottom-[-10%] left-[5%]" style="animation-delay: 3s;"></div>
+<div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="bg-grid"></div>
+    <!-- Scaled absolute blobs so they don't break flex alignments on tiny phones -->
+    <div class="glow-blob bg-gold w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] top-[-10%] right-[-10%]"></div>
+    <div class="glow-blob bg-white w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] bottom-[-10%] left-[5%]" style="animation-delay: 3s;"></div>
+</div>
 
-<div class="w-full max-w-md z-10 animate-[fadeInUp_0.7s_ease-out]">
-    <div class="admin-card rounded-[2rem] p-6 sm:p-10">
+<div class="w-full max-w-md z-10 animate-[fadeInUp_0.7s_ease-out] my-auto py-4 sm:py-6">
+    <div class="admin-card rounded-2xl sm:rounded-[2rem] p-5 sm:p-8 md:p-10">
 
         <!-- Header -->
-        <div class="text-center mb-8">
-            <div class="flex flex-col items-center justify-center mb-4">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-24 h-24 sm:w-28 sm:h-28 object-contain mx-auto mb-2 drop-shadow-xl"
+        <div class="text-center mb-6 sm:mb-8">
+            <div class="flex flex-col items-center justify-center mb-3 sm:mb-4">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-20 h-20 sm:w-24 sm:h-24 object-contain mx-auto mb-2 drop-shadow-xl"
                      onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><path d=\'M50 15L15 30v30c0 20 35 30 35 30s35-10 35-30V30L50 15z\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linejoin=\'round\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
-                <p class="text-white/90 font-semibold text-[13px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
+                <p class="text-white/90 font-semibold text-[12px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
             </div>
             <h1 class="text-2xl sm:text-3xl font-heading font-extrabold tracking-tight text-white leading-tight">Staff <span class="text-gold">Portal</span></h1>
-            <div class="inline-flex items-center gap-2 mt-3 px-3 py-1 rounded-full bg-gold/10 border border-gold/20">
+            <div class="inline-flex items-center gap-2 mt-2.5 px-3 py-1 rounded-full bg-gold/10 border border-gold/20">
                 <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shadow-[0_0_6px_#F2C300]"></span>
                 <span class="text-[9px] sm:text-[10px] font-semibold text-gold/80 uppercase tracking-widest whitespace-nowrap">Secure Connection</span>
             </div>
@@ -196,7 +197,7 @@
 
         <!-- Error Flash -->
         <?php if (session()->getFlashdata('error')): ?>
-            <div class="bg-red-500/10 border border-red-500/30 p-4 mb-6 rounded-xl animate-[shake_0.5s_ease-in-out]">
+            <div class="bg-red-500/10 border border-red-500/30 p-3.5 sm:p-4 mb-5 sm:mb-6 rounded-xl animate-[shake_0.5s_ease-in-out]">
                 <div class="flex items-center gap-3">
                     <svg class="h-5 w-5 sm:h-6 sm:w-6 text-red-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -218,7 +219,7 @@
                         </svg>
                     </div>
                     <input type="text" name="name" id="name" required
-                           class="w-full pl-10 sm:pl-11 pr-4 py-3 sm:py-3.5 input-admin rounded-xl text-[14px] sm:text-base font-medium outline-none"
+                           class="w-full pl-10 sm:pl-11 pr-4 py-3 sm:py-3.5 input-admin rounded-xl text-[16px] font-medium outline-none"
                            placeholder="Enter staff identifier">
                 </div>
             </div>
@@ -232,13 +233,13 @@
                         </svg>
                     </div>
                     <input type="password" name="password" id="password" required
-                           class="w-full pl-10 sm:pl-11 pr-4 py-3 sm:py-3.5 input-admin rounded-xl text-[14px] sm:text-base font-medium outline-none tracking-widest"
+                           class="w-full pl-10 sm:pl-11 pr-4 py-3 sm:py-3.5 input-admin rounded-xl text-[16px] font-medium outline-none tracking-widest"
                            placeholder="••••••••">
                 </div>
             </div>
 
             <button type="submit" id="submitBtn"
-                class="w-full mt-2 sm:mt-4 bg-gold hover:bg-gold-light text-primary font-bold py-3.5 sm:py-4 px-4 rounded-xl shadow-lg shadow-gold/20 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 group">
+                class="w-full mt-2 sm:mt-4 bg-gold hover:bg-gold-light text-primary font-bold py-3.5 sm:py-4 px-4 rounded-xl shadow-lg shadow-gold/20 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 group min-h-[50px]">
                 <span id="btnText" class="font-heading text-[16px] sm:text-lg tracking-wide">Sign In</span>
                 <svg id="btnIcon" class="h-[18px] w-[18px] sm:h-5 sm:w-5 text-primary group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 <svg id="btnSpinner" class="animate-spin h-[18px] w-[18px] sm:h-5 sm:w-5 text-primary hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -246,8 +247,8 @@
         </form>
 
         <!-- Footer -->
-        <div class="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-white/10 text-center">
-            <a href="<?= base_url('login') ?>" class="inline-flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-white/40 hover:text-gold transition-colors font-semibold">
+        <div class="mt-5 sm:mt-8 pt-4 sm:pt-5 border-t border-white/10 text-center">
+            <a href="<?= base_url('login') ?>" class="inline-flex items-center gap-1.5 sm:gap-2 text-[12px] sm:text-xs text-white/50 hover:text-gold transition-colors font-semibold py-2 px-3 rounded-lg hover:bg-white/5 min-h-[44px]">
                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                 Back to Student Portal
             </a>
