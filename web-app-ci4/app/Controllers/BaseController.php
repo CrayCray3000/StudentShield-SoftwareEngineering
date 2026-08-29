@@ -51,17 +51,62 @@ abstract class BaseController extends Controller
     {
         try {
             $db = \Config\Database::connect();
+            $request   = $this->request ?? \Config\Services::request();
+            $ipAddress = $request ? $request->getIPAddress() : '127.0.0.1';
+            $userAgent = ($request && $request->getUserAgent()) ? $request->getUserAgent()->getAgentString() : '';
+
             $db->table('audit_logs')->insert([
                 'user_id'     => session()->get('user_id'),
                 'action'      => $action,
                 'entity_type' => $entityType,
                 'entity_id'   => $entityId,
-                'ip_address'  => $this->request->getIPAddress(),
-                'user_agent'  => $this->request->getUserAgent()->getAgentString(),
+                'ip_address'  => $ipAddress,
+                'user_agent'  => $userAgent,
                 'created_at'  => date('Y-m-d H:i:s'),
             ]);
         } catch (\Exception $e) {
             log_message('error', 'Audit log failed: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Write multiple immutable audit log entries in a single batch insert operation.
+     * Shared by AdminController and UserController.
+     *
+     * @param string $action
+     * @param string $entityType
+     * @param array<int|string> $entityIds
+     */
+    protected function logAuditBulk(string $action, string $entityType, array $entityIds): void
+    {
+        if (empty($entityIds)) {
+            return;
+        }
+
+        try {
+            $db = \Config\Database::connect();
+            $request   = $this->request ?? \Config\Services::request();
+            $userId    = session()->get('user_id');
+            $ipAddress = $request ? $request->getIPAddress() : '127.0.0.1';
+            $userAgent = ($request && $request->getUserAgent()) ? $request->getUserAgent()->getAgentString() : '';
+            $createdAt = date('Y-m-d H:i:s');
+
+            $rows = [];
+            foreach ($entityIds as $entityId) {
+                $rows[] = [
+                    'user_id'     => $userId,
+                    'action'      => $action,
+                    'entity_type' => $entityType,
+                    'entity_id'   => (int) $entityId,
+                    'ip_address'  => $ipAddress,
+                    'user_agent'  => $userAgent,
+                    'created_at'  => $createdAt,
+                ];
+            }
+
+            $db->table('audit_logs')->insertBatch($rows);
+        } catch (\Exception $e) {
+            log_message('error', 'Bulk audit log failed: ' . $e->getMessage());
         }
     }
 }
