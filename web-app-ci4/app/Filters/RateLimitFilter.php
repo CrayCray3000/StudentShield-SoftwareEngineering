@@ -26,7 +26,7 @@ class RateLimitFilter implements FilterInterface
 
         try {
             $ip = $request->getIPAddress();
-            $key = md5($ip);
+            $key = hash('sha256', $ip);
             $file = self::STORAGE_DIR . $key . '.json';
 
             // Ensure directory exists
@@ -80,7 +80,7 @@ class RateLimitFilter implements FilterInterface
         // On successful login, clear the rate limit
         if (session()->get('isLoggedIn')) {
             $ip = $request->getIPAddress();
-            $file = self::STORAGE_DIR . md5($ip) . '.json';
+            $file = self::STORAGE_DIR . hash('sha256', $ip) . '.json';
             if (file_exists($file)) {
                 unlink($file);
             }
