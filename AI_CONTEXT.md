@@ -52,17 +52,20 @@ student-shield/
 
 ## ☁️ Deployment Map
 
-### 1. Web App — InfinityFree (Free PHP Hosting)
-
+### 1. Web App — InfinityFree (Free PHP Hosting) + Name.com Domain
+ 
 | Item | Value |
 |---|---|
-| **Host** | InfinityFree |
-| **Domain** | `https://studentshield.gt.tc/` |
+| **Host** | InfinityFree (Account: `if0_41428179`) |
+| **Custom Domain** | `https://studentshield.app` (Name.com registrar, expires Aug 29, 2027) |
+| **Nameservers** | `ns1.infinityfree.com`, `ns2.infinityfree.com` |
+| **SSL / HTTPS** | Let's Encrypt Free SSL (Enforced via `.app` HSTS) |
+| **Legacy Subdomain** | `https://studentshield.gt.tc/` (Alias) |
 | **Web root** | Points to `web-app-ci4/public/` |
-| **PHP version** | Must be 7.4+ (CI4 requirement) |
+| **PHP version** | 8.1+ (CI4 requirement) |
 | **Deployment method** | **Manual FTP/file upload** (no CI/CD) |
 | **Database** | InfinityFree MySQL (managed via phpMyAdmin in their control panel) |
-| **DB name** | `student_shield` |
+| **DB name** | `if0_41428179_studentshield` (or `student_shield` locally) |
 
 > ⚠️ **InfinityFree limitations**: No SSH, no CLI, no `php spark` commands. All DB changes must be done via phpMyAdmin. File changes via FTP or their file manager.
 
@@ -120,7 +123,7 @@ The `.env` file lives at `web-app-ci4/.env` and is **NOT committed to git** (git
 ```ini
 CI_ENVIRONMENT = development          # Change to "production" on server
 
-app.baseURL = 'https://studentshield.gt.tc/'
+app.baseURL = 'https://studentshield.app/'
 app.appTimezone = 'Asia/Manila'
 
 # DATABASE (local Laragon values — override on InfinityFree server)
