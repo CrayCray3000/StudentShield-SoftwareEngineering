@@ -212,8 +212,10 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <?php foreach ($pendingUsers as $i => $student): ?>
-                            <tr class="hover:bg-gray-50 transition-colors">
+                            <?php foreach ($pendingUsers as $i => $student): 
+                                $uid = (int)($student['user_id'] ?? $student['id']);
+                            ?>
+                            <tr id="row-user-<?= $uid ?>" class="hover:bg-gray-50 transition-all duration-300">
                                 <td class="px-6 py-4 text-sm text-gray-400 font-medium"><?= $i + 1 ?></td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
@@ -270,26 +272,18 @@
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <div class="flex items-center justify-center gap-2">
-                                        <form action="<?= base_url('admin/approve-student/' . ($student['user_id'] ?? $student['id'])) ?>" method="POST"
-                                              onsubmit="return confirm('Approve this student account? They will be able to log in immediately.')">
-                                            <?= csrf_field() ?>
-                                            <button type="submit" class="approve-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide shadow-sm cursor-pointer">
-                                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                                </svg>
-                                                Approve
-                                            </button>
-                                        </form>
-                                        <form action="<?= base_url('admin/reject-student/' . ($student['user_id'] ?? $student['id'])) ?>" method="POST"
-                                              onsubmit="return confirm('Reject and delete this pending registration?')">
-                                            <?= csrf_field() ?>
-                                            <button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-600 hover:text-red-800 hover:bg-red-50 border border-red-200 transition-colors cursor-pointer">
-                                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                                </svg>
-                                                Reject
-                                            </button>
-                                        </form>
+                                        <button type="button" onclick="handleAction('approve', <?= $uid ?>, '<?= esc(addslashes($student['name'])) ?>', this)" class="approve-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide shadow-sm cursor-pointer">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            <span>Approve</span>
+                                        </button>
+                                        <button type="button" onclick="handleAction('reject', <?= $uid ?>, '<?= esc(addslashes($student['name'])) ?>', this)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-600 hover:text-red-800 hover:bg-red-50 border border-red-200 transition-colors cursor-pointer">
+                                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                            <span>Reject</span>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -299,6 +293,9 @@
                 <?php endif; ?>
             </div>
         </div>
+
+        <!-- Toast Notification Container -->
+        <div id="toastContainer" class="fixed top-20 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
         <!-- Info Note -->
         <div class="mt-6 flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 animate-slide-up" style="animation-delay: 0.2s">
@@ -322,5 +319,78 @@
         </div>
     </footer>
 
+    <script>
+        function showToast(message, isSuccess = true) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `px-5 py-3 rounded-xl shadow-lg border text-sm font-semibold flex items-center gap-2 transform transition-all duration-300 pointer-events-auto ${
+                isSuccess 
+                    ? 'bg-green-50 text-green-800 border-green-200' 
+                    : 'bg-red-50 text-red-800 border-red-200'
+            }`;
+            toast.innerHTML = `
+                <svg class="w-5 h-5 flex-shrink-0 ${isSuccess ? 'text-green-600' : 'text-red-600'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isSuccess ? 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' : 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'}" />
+                </svg>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-10px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        async function handleAction(action, userId, studentName, btn) {
+            const isApprove = (action === 'approve');
+            const endpoint = isApprove ? `/admin/approve-student/${userId}` : `/admin/reject-student/${userId}`;
+            
+            // Visual loading state on button
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="inline-block animate-spin mr-1">⏳</span> ${isApprove ? 'Approving...' : 'Rejecting...'}`;
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.status === 'success') {
+                    showToast(isApprove ? `Account for "${studentName}" approved!` : `Registration for "${studentName}" rejected.`, true);
+
+                    // Animate row removal
+                    const row = document.getElementById(`row-user-${userId}`);
+                    if (row) {
+                        row.style.transition = 'all 0.4s ease';
+                        row.style.opacity = '0';
+                        row.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            row.remove();
+                            // Check if no more rows left
+                            const remainingRows = document.querySelectorAll('tbody tr');
+                            if (remainingRows.length === 0) {
+                                location.reload();
+                            }
+                        }, 400);
+                    }
+                } else {
+                    showToast(data.message || 'Action could not be completed. Please try again.', false);
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
+                // Fallback: direct browser navigation if fetch is blocked
+                window.location.href = endpoint;
+            }
+        }
+    </script>
 </body>
 </html>

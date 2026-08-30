@@ -706,6 +706,9 @@ class AdminController extends BaseController
     public function approveStudent($userId)
     {
         if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
+                return $this->response->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
+            }
             return redirect()->to('/admin/login');
         }
 
@@ -720,9 +723,16 @@ class AdminController extends BaseController
 
             $db->table('users')->where('id', (int)$userId)->update(['is_active' => 1]);
             $this->logAudit('STUDENT_APPROVED', 'system', (int)$userId);
+
+            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Student account approved successfully.']);
+            }
             return redirect()->to('/admin/pending-registrations')->with('success', 'Student account has been approved and activated successfully.');
         } catch (\Throwable $e) {
             log_message('error', 'AdminController::approveStudent failed: ' . $e->getMessage());
+            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
+                return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'Could not approve student: ' . $e->getMessage()]);
+            }
             return redirect()->to('/admin/pending-registrations')->with('error', 'Could not approve student: ' . $e->getMessage());
         }
     }
@@ -733,6 +743,9 @@ class AdminController extends BaseController
     public function rejectStudent($userId)
     {
         if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
+                return $this->response->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
+            }
             return redirect()->to('/admin/login');
         }
 
@@ -742,9 +755,16 @@ class AdminController extends BaseController
             $db->table('students')->where('user_id', (int)$userId)->delete();
             $db->table('users')->where('id', (int)$userId)->delete();
             $this->logAudit('STUDENT_REGISTRATION_REJECTED', 'system', (int)$userId);
+
+            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
+                return $this->response->setJSON(['status' => 'success', 'message' => 'Pending registration has been removed.']);
+            }
             return redirect()->to('/admin/pending-registrations')->with('success', 'Pending registration has been rejected and removed.');
         } catch (\Throwable $e) {
             log_message('error', 'AdminController::rejectStudent failed: ' . $e->getMessage());
+            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
+                return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'Could not remove registration.']);
+            }
             return redirect()->to('/admin/pending-registrations')->with('error', 'Could not remove registration.');
         }
     }
