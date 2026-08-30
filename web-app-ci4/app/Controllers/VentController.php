@@ -159,27 +159,55 @@ class VentController extends BaseController
 
         $hideFromParents = $this->request->getPost('hide_from_parents') === '1';
 
-        // --- 4. TRIGGER ALERTS IF CRITICAL ---
-        if ($riskLevel === 'CRITICAL') {
+        // --- 4. TRIGGER ALERTS IF CRITICAL OR HIGH ---
+        if ($riskLevel === 'CRITICAL' || $riskLevel === 'HIGH') {
             try {
-                $user = $db->table('users')->select('users.*, students.parent_phone, students.parent_email')->join('students', 'students.user_id = users.id', 'left')->where('users.id', $userId)->get()->getRow();
+                $user = $db->table('users')
+                    ->select('users.*, students.parent_phone, students.parent_email, students.section, students.grade_level')
+                    ->join('students', 'students.user_id = users.id', 'left')
+                    ->where('users.id', $userId)
+                    ->get()->getRow();
+
                 if ($user) {
                     $studentName = $user->name ?? 'A student';
                     $firstName = explode(' ', trim($studentName))[0];
+                    $hasParentContact = !empty($user->parent_email) || !empty($user->parent_phone);
+                    $parentNote = $hasParentContact ? "" : " (Note: No parent contact registered on file. Please summon student or contact class adviser.)";
 
-                    // ALWAYS alert the counselor for any CRITICAL vent
-                    $this->triggerCounselorEmergencyAlert("URGENT: $studentName filed a CRITICAL vent. Please review the dashboard immediately.", "Counselor Emergency Alert");
+                    if ($riskLevel === 'CRITICAL') {
+                        // ALWAYS alert the counselor immediately for any CRITICAL vent
+                        $this->triggerCounselorEmergencyAlert(
+                            "URGENT: {$studentName} ({$user->section}) submitted a CRITICAL risk vent. Please review the dashboard immediately.{$parentNote}",
+                            "CRITICAL Emergency Alert: {$studentName}"
+                        );
 
-                    if ($hideFromParents) {
-                        // DOMESTIC ABUSE PRECAUTION: Do not notify parents! Over-notify the counselor instead!
-                        $this->triggerCounselorEmergencyAlert("RESTRICTED PROTOCOL: $studentName filed a CRITICAL vent and explicitly requested their parents NOT be notified. Review dashboard immediately.", "Counselor Emergency (Safety Override)");
-                    }
-                    else {
-                        if (!empty($user->parent_phone) && !$this->isAlertOnCooldown($user->parent_phone)) {
-                            $this->triggerSmsAlert($user->parent_phone, $firstName);
+                        if ($hideFromParents) {
+                            // Domestic precaution: student requested parents NOT be notified
+                            $this->triggerCounselorEmergencyAlert(
+                                "RESTRICTED PROTOCOL: {$studentName} submitted a CRITICAL vent and explicitly requested parents NOT be contacted. Review dashboard immediately.",
+                                "RESTRICTED Counselor Safety Alert: {$studentName}"
+                            );
+                        } else {
+                            if (!empty($user->parent_phone) && !$this->isAlertOnCooldown($user->parent_phone)) {
+                                $this->triggerSmsAlert($user->parent_phone, $firstName);
+                            }
+                            if (!empty($user->parent_email) && !$this->isAlertOnCooldown($user->parent_email)) {
+                                $this->triggerEmailAlert($user->parent_email, $firstName);
+                            }
                         }
-                        if (!empty($user->parent_email) && !$this->isAlertOnCooldown($user->parent_email)) {
-                            $this->triggerEmailAlert($user->parent_email, $firstName);
+                    } elseif ($riskLevel === 'HIGH') {
+                        // HIGH RISK: Alert counselor to schedule timely same-day check-in
+                        $this->triggerCounselorEmergencyAlert(
+                            "HIGH PRIORITY: {$studentName} ({$user->section}) submitted a HIGH risk vent ({$riskPercent}%). Please schedule a wellness check-in.{$parentNote}",
+                            "High Risk Alert: {$studentName}"
+                        );
+
+                        if (!$hideFromParents) {
+                            if (!empty($user->parent_email) && !$this->isAlertOnCooldown($user->parent_email)) {
+                                $this->triggerEmailAlert($user->parent_email, $firstName);
+                            } elseif (!empty($user->parent_phone) && !$this->isAlertOnCooldown($user->parent_phone)) {
+                                $this->triggerSmsAlert($user->parent_phone, $firstName);
+                            }
                         }
                     }
                 }
