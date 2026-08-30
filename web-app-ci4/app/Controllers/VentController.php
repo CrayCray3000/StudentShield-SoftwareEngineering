@@ -575,11 +575,14 @@ class VentController extends BaseController
             'di na ko lalaban pa', 'tapusin ko na',
             'gilaay na jud ko sa tanan', 'gusto na ko mahunong',
             'narigat unay ti riknak', 'mabannogakon ti panagbiag',
-            // v7.3 — Passive disappearance ideation (clinically = suicidal ideation)
-            // These were previously misclassified as $medium. Aligned with ML CAT1_DIRECT.
-            'mawala sa lahat ng buhay',          // "mawala sa lahat ng buhay nila"
-            'makakapansin ba kung',               // "kung may makakapansin ba kung bigla akong mawala"
-            'napapaisip ako kung',                // "napapaisip ako kung may maghahanap sakin"
+        ];
+
+        // HIGH — Emotional Distress & Passive Disappearance Ideation
+        $high_emotional = [
+            // Passive disappearance ideation (C-SSRS Level 2)
+            'mawala sa lahat ng buhay',
+            'makakapansin ba kung',
+            'napapaisip ako kung',
             'bigla nalang akong mawala',
             'bigla lang akong mawala',
             'wonder if anyone would notice',
@@ -591,11 +594,9 @@ class VentController extends BaseController
             'wala namang maghahanap sakin',
             'di naman nila mapapansin',
             'wala naman nakakapansin',
-            'parang extra lang ako sa lahat',     // passive invisibility escalated to ideation
-        ];
-
-        // HIGH — Emotional Distress 
-        $high_emotional = [
+            'wla rn nmn makakapansin',
+            'parang extra lang ako sa lahat',
+            'disappeared', 'disappered',
             'pagod na ako', 'depressed', 'depression', 'di ko na kaya', 'ayoko na',
             'sobrang lungkot', 'sobrang bigat', 'hirap na hirap', 'sawang sawa na',
             'walang silbi', 'wala akong kwenta', 'pabigat ako', 'suko na ko',

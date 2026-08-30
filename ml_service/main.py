@@ -474,11 +474,13 @@ def get_risk_components(translated_text: str, normalized_text: str) -> tuple[flo
                 max_distress_conf = dist_confidence
 
         # Positive emotions (gratitude, joy, optimism) dampen false-negative scores,
-        # BUT NOT when masked depression / smiling through pain is evident in the text.
+        # BUT NOT when masked depression / smiling through pain OR sarcastic anger/frustration is present.
         scan_lower = normalized_text.lower() + " " + translated_text.lower()
         is_masked = any(p in scan_lower for p in [
             "jokes", "tumatawa", "nakangiti", "sa labas", "outside", "pretend", "nagpapanggap",
-            "tahimik", "mag-isa", "pag-uwi", "alone", "dalhin mag-isa", "makaramdam"
+            "tahimik", "mag-isa", "pag-uwi", "alone", "dalhin mag-isa", "makaramdam",
+            "anger", "throw", "galit", "bwisit", "failed", "bagsak", "mad", "never go to class",
+            "hate", "punch", "drop out"
         ])
 
         if max_pos_emo_conf >= 0.45 and not is_masked:
@@ -529,20 +531,19 @@ CAT1_DIRECT = [
     r"\bstop (?:the |this )?pain\b", r"\bmake the pain stop\b",
     r"\bfor good\b.{0,20}\b(stop|end|pain|buhay|tonight)\b",
     r"\btonight for good\b",
-    # Passive ideation — "if I were gone" / "easier for everyone" type
+]
+
+### CATEGORY 1.5: HIGH — Passive Disappearance & Invisibility Ideation (C-SSRS Level 2)
+PASSIVE_DISAPPEARANCE_IDEATION = [
     r"\bmay magbabago\b.{0,30}\bkung wala ako\b",
     r"\bmas maayos\b.{0,20}\bkung wala ako\b",
     r"\bmas maganda\b.{0,20}\bkung wala ako\b",
     r"\bmas okay\b.{0,20}\bkung wala ako\b",
     r"\bmas (?:magiging )?madali\b.{0,25}\bpara sa lahat\b",
     r"\bkung wala na ako\b",
-    r"\bkung tapusin ko na\b",
     r"\bpara saan pa ako\b",
     r"\bbakit pa ako narito\b", r"\bbakit pa ako nandito\b",
     r"\bbakit pa ako nabuhay\b",
-    ### v7.3: Passive disappearance ideation — clinically equivalent to suicidal ideation.
-    ### Moved here from SOCIAL_ISOLATION so they get CRITICAL priority (Rule 2)
-    ### instead of only MEDIUM from Rule 5.
     r"\bwonder if anyone would notice\b",
     r"\banyone would notice if\b",
     r"\bwould anyone notice\b",
@@ -559,12 +560,14 @@ CAT1_DIRECT = [
     r"\bmawala sa lahat ng buhay\b",
     r"\bbigla.{0,15}mawala\b.{0,30}\b(buhay|life|lives)\b",
     r"\bnapapaisip ako kung\b.{0,30}\b(mawala|mapansin|notice)\b",
-    # English equivalents — "I wonder if I just disappeared"
+    r"\bwla rn nmn makakapansin\b",
+    r"\bwala rin namang? makakapansin\b",
     r"if i (?:just )?disappeared\b",
     r"if i slowly disappeared\b",
     r"what if i disappeared\b",
     r"feel like i was never really there\b",
     r"hardest part.{0,40}never really there\b",
+    r"\bdisappered\b",
 ]
 
 CAT1_METHOD_SELF_PAIRS = [
@@ -1346,6 +1349,7 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     global COMPILED_REGEXES
     if not COMPILED_REGEXES:
         COMPILED_REGEXES['cat1']        = compile_regexes(CAT1_DIRECT)
+        COMPILED_REGEXES['passive_ideation'] = compile_regexes(PASSIVE_DISAPPEARANCE_IDEATION) # NEW
         COMPILED_REGEXES['cat2']        = compile_regexes(CAT2_WORDS)
         COMPILED_REGEXES['cat3']        = compile_regexes(CAT3_WORDS)
         COMPILED_REGEXES['emotional']   = compile_regexes(EMOTIONAL_DISTRESS)
@@ -1369,6 +1373,8 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
         ]
     if 'positive' not in COMPILED_REGEXES:
         COMPILED_REGEXES['positive'] = compile_regexes(POSITIVE_SENTIMENT)
+    if 'passive_ideation' not in COMPILED_REGEXES:
+        COMPILED_REGEXES['passive_ideation'] = compile_regexes(PASSIVE_DISAPPEARANCE_IDEATION)
 
     ## ┐
     ### STAGE 4: SARCASM / JOKE DETECTION (v7)                 
@@ -1388,6 +1394,7 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
             break
 
     has_cat1       = has_cat1_direct or has_cat1_method
+    has_passive_ideation = any(pat.search(scan_text) for pat in COMPILED_REGEXES['passive_ideation'])
     has_cat2       = any(pat.search(scan_text) for pat in COMPILED_REGEXES['cat2'])
     has_cat3       = any(pat.search(scan_text) for pat in COMPILED_REGEXES['cat3'])
     has_emotional  = any(pat.search(scan_text) for pat in COMPILED_REGEXES['emotional'])
@@ -1484,6 +1491,12 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
             reason = "CRITICAL: Masked Depression — sarcasm disguising explicit suicidal intent."
         else:
             reason = "CRITICAL: Explicit self-harm or suicidal intent detected."
+    ### RULE 1.5: Passive disappearance & Invisibility ideation (C-SSRS Level 2)
+    elif has_passive_ideation:
+        risk       = "HIGH"
+        risk_score = max(0.79, risk_score)
+        reason     = "HIGH: Passive disappearance ideation and social invisibility detected (C-SSRS Level 2)."
+        if expert_reasoning: reason += " " + " ".join(expert_reasoning)
     ### RULE 2: Finality / preparation signals 
     elif has_finality:
         if is_joke:
@@ -1645,13 +1658,21 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
 
     ### RULE 6.5: Academic pressure & School Avoidance
     elif has_academic or has_school_avoid:
-        if is_joke:
+        has_academic_destruct = any(w in scan_text.lower() for w in [
+            "throw", "anger", "bwisit", "galit", "punch", "failed the whole class",
+            "never go to class", "drop out", "bagsak", "stop going to class", "mad"
+        ])
+        if is_joke and not (has_school_avoid or has_academic_destruct):
             risk   = "LOW"
             reason = "Academic frustration contextualized as hyperbolic venting."
         elif has_school_avoid and (has_cat3 or has_isolation or has_emotional or has_hopeless):
             risk       = "HIGH"
             risk_score = max(0.78, risk_score)
             reason     = "HIGH: School avoidance/truancy risk compounded with psychological distress/isolation."
+        elif has_school_avoid or has_academic_destruct:
+            risk       = "MEDIUM"
+            risk_score = max(0.55, risk_score)
+            reason     = "MEDIUM: Academic distress, school avoidance ideation, or elevated frustration detected."
         elif signal_count >= 2:
             risk       = "HIGH"
             risk_score = max(0.75, risk_score)
@@ -1661,7 +1682,7 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
             )
         else:
             risk       = "MEDIUM"
-            risk_score = max(0.55, risk_score)
+            risk_score = max(0.50, risk_score)
             reason     = "MEDIUM: Academic pressure or school attendance distress detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
