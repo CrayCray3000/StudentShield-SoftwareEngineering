@@ -250,8 +250,9 @@ TAGLISH_SLANG_MAP = {
     "chariz": "charot", "chz": "charot", "dejk": "de joke",
     "de jk": "de joke", "eme": "joke", "eme lang": "joke lang",
     "skl": "share ko lang", "nmn": "naman", "dn": "din",
-    "lng": "lang", "kc": "kasi", "dko": "di ko", "dna": "di na",
-    "pko": "pa ko", "nko": "na ko", "nlng": "na lang",
+    "lng": "lang", "kc": "kasi", "kse": "kasi",
+    "dko": "di ko", "dna": "di na",
+    "pko": "pa ko", "nko": "na ko", "nlng": "na lang", "nlang": "na lang",
     "kms": "kill myself", "kys": "kill yourself",
     "deadz": "dead", "dedz": "dead", "deds": "dead", "ded": "dead",
     "hugot": "emotional statement", "sanaol": "sana all",
@@ -264,7 +265,25 @@ TAGLISH_SLANG_MAP = {
     "petsa de peligro": "broke", "walwal": "sobrang lasing",
     "gigil": "frustrated", "inis": "annoyed",
     "badtrip": "frustrated", "bwisit": "annoyed",
-    "pagod na pagod": "exhausted", "sobrang pagod": "exhausted",
+    "pagod na pagod": "pagod na pagod", "sobrang pagod": "sobrang pagod",
+    ### v7.7: Shorthand / Texting Typo Mapping
+    "tlga": "talaga", "tlg": "talaga",
+    "ung": "yung", "yng": "yung",
+    "bgt": "bigat", "bgat": "bigat",
+    "wla": "wala", "wl": "wala",
+    "nkkaintndi": "nakakaintindi", "nkakaintindi": "nakakaintindi", "naintndhan": "naintindihan",
+    "skin": "sa akin", "skn": "sa akin", "sakin": "sa akin",
+    "kht": "kahit", "khit": "kahit",
+    "q": "ko", "aq": "ako", "ak": "ako",
+    "mwla": "mawala", "mawla": "mawala", "mwala": "mawala",
+    "mgpanggap": "magpanggap", "magpangap": "magpanggap", "gpanggap": "nagpanggap",
+    "prang": "parang", "parng": "parang",
+    "my": "may",
+    "twa": "tawa", "twang": "tawang",
+    "pro": "pero", "pr": "pero",
+    "pg": "pag", "kya": "kaya", "ky": "kaya",
+    "plang": "pala", "pla": "pala",
+    "d": "di", "ndi": "di", "hndi": "hindi", "hnd": "hindi",
     # Existing contractions
     "yk": "you know", "ngl": "not gonna lie", "tbh": "to be honest",
     "fr": "for real", "rn": "right now", "nvm": "nevermind",
@@ -278,6 +297,8 @@ TAGLISH_SLANG_MAP = {
 
 def normalize_slang(text: str) -> str:
     normalized = text.lower()
+    # Collapse repeated/elongated characters (e.g. "pagoooooood" -> "pagod", "naaaaa" -> "na")
+    normalized = re.sub(r'([a-zA-Z])\1{2,}', r'\1', normalized)
     for slang, proper in sorted(TAGLISH_SLANG_MAP.items(), key=lambda x: len(x[0]), reverse=True):
         normalized = re.sub(r'\b' + re.escape(slang) + r'\b', proper, normalized, flags=re.IGNORECASE)
     return normalized
