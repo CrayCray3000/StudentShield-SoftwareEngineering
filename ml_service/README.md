@@ -1,3 +1,13 @@
+---
+title: Student Shield Official
+emoji: 🛡️
+colorFrom: green
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🧠 StudentShield ML Microservice Management Guide
 
 The **StudentShield ML Service** is a Python FastAPI microservice that processes multilingual student vents (Tagalog, Taglish, English) to detect emotions, calculate suicide/self-harm risk scores, and detect bullying incidents using deep learning models and FAISS vector memory.
