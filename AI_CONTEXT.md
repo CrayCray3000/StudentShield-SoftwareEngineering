@@ -72,8 +72,8 @@ student-shield/
 
 | Item | Value |
 |---|---|
-| **FastAPI Space (Runtime)** | `https://huggingface.co/spaces/ashlogg/student-shield-official` |
-| **Direct API Endpoint** | `https://ashlogg-student-shield-official-2285456.hf.space` |
+| **FastAPI Space (Runtime)** | `https://huggingface.co/spaces/ashlogg/student_shield_official` |
+| **Direct API Endpoint** | `https://ashlogg-student-shield-official.hf.space` |
 | **Fine-Tuned Model Repo** | `https://huggingface.co/ashlogg/student-shield-mdeberta` |
 | **Emotion Model (Public)** | `SamLowe/roberta-base-go_emotions` (28 emotions) |
 | **Trained Architecture** | `microsoft/mdeberta-v3-base` (Fine-tuned for Taglish/Filipino crisis detection) |
@@ -138,7 +138,7 @@ encryption.key = hex2bin('785a21faeb289ff35b887bd75168ceb78c950a7f1a3b8fc7d92a10
 
 # ML SERVICE (Hugging Face)
 ML_API_URL = https://ashlogg-student-shield-official.hf.space
-ML_API_KEY = studentshield_secret_key_2026
+ML_API_KEY = svbsm-production-ml-key-v1
 
 # EMAIL ALERTS (Gmail SMTP)
 email.protocol = smtp
