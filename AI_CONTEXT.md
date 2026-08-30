@@ -53,19 +53,19 @@ student-shield/
 ## ☁️ Deployment Map
 
 ### 1. Web App — InfinityFree (Free PHP Hosting) + Name.com Domain
- 
+### 1. Web App — Cloudflare (DNS + SSL) + InfinityFree (Free PHP Hosting)
+
 | Item | Value |
 |---|---|
-| **Host** | InfinityFree (Account: `if0_41428179`) |
-| **Custom Domain** | `https://studentshield.app` (Name.com registrar, expires Aug 29, 2027) |
-| **Nameservers** | `ns1.infinityfree.com`, `ns2.infinityfree.com` |
-| **SSL / HTTPS** | Let's Encrypt Free SSL (Enforced via `.app` HSTS) |
-| **Legacy Subdomain** | `https://studentshield.gt.tc/` (Alias) |
+| **Primary Domain** | `https://studentshield.app/` (Registered via Name.com) |
+| **DNS / SSL Shield** | **Cloudflare** (Universal Edge SSL, TLS v1.3, DDoS protection, Proxying) |
+| **Host** | InfinityFree (Account: `if0_41428179`, Origin IP: `185.27.134.230`) |
+| **Legacy Subdomain** | `https://studentshield.gt.tc/` (Aliased) |
 | **Web root** | Points to `web-app-ci4/public/` |
 | **PHP version** | 8.1+ (CI4 requirement) |
 | **Deployment method** | **Manual FTP/file upload** (no CI/CD) |
 | **Database** | InfinityFree MySQL (managed via phpMyAdmin in their control panel) |
-| **DB name** | `if0_41428179_studentshield` (or `student_shield` locally) |
+| **DB name** | `if0_41428179_studentshield` (Account: `if0_41428179`) |
 
 > ⚠️ **InfinityFree limitations**: No SSH, no CLI, no `php spark` commands. All DB changes must be done via phpMyAdmin. File changes via FTP or their file manager.
 
@@ -74,7 +74,7 @@ student-shield/
 | Item | Value |
 |---|---|
 | **FastAPI Space (Runtime)** | `https://huggingface.co/spaces/ashlogg/student-shield-official` |
-| **Direct API Endpoint** | `https://ashlogg-student-shield-official-2285456.hf.space` |
+| **Direct API Endpoint** | `https://ashlogg-student-shield-official.hf.space` |
 | **Fine-Tuned Model Repo** | `https://huggingface.co/ashlogg/student-shield-mdeberta` |
 | **Emotion Model (Public)** | `SamLowe/roberta-base-go_emotions` (28 emotions) |
 | **Trained Architecture** | `microsoft/mdeberta-v3-base` (Fine-tuned for Taglish/Filipino crisis detection) |
@@ -138,7 +138,7 @@ database.default.port = 3306
 encryption.key = hex2bin('785a21faeb289ff35b887bd75168ceb78c950a7f1a3b8fc7d92a106e23b7e4d8')
 
 # ML SERVICE (Hugging Face)
-ML_API_URL = https://ashlogg-student-shield-official-2285456.hf.space
+ML_API_URL = https://ashlogg-student-shield-official.hf.space
 ML_API_KEY = studentshield_secret_key_2026
 
 # EMAIL ALERTS (Gmail SMTP)
