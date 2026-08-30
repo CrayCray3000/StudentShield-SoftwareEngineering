@@ -196,19 +196,12 @@ class VentController extends BaseController
                             }
                         }
                     } elseif ($riskLevel === 'HIGH') {
-                        // HIGH RISK: Alert counselor to schedule timely same-day check-in
+                        // HIGH RISK: Alert counselor exclusively to handle professionally at school
+                        // (We do NOT alert parents on HIGH to prevent alarm fatigue and helicopter parenting)
                         $this->triggerCounselorEmergencyAlert(
-                            "HIGH PRIORITY: {$studentName} ({$user->section}) submitted a HIGH risk vent ({$riskPercent}%). Please schedule a wellness check-in.{$parentNote}",
-                            "High Risk Alert: {$studentName}"
+                            "HIGH PRIORITY: {$studentName} ({$user->section}) submitted a HIGH risk vent ({$riskPercent}%). Please schedule a counseling session or wellness check-in.{$parentNote}",
+                            "High Risk Counselor Notice: {$studentName}"
                         );
-
-                        if (!$hideFromParents) {
-                            if (!empty($user->parent_email) && !$this->isAlertOnCooldown($user->parent_email)) {
-                                $this->triggerEmailAlert($user->parent_email, $firstName);
-                            } elseif (!empty($user->parent_phone) && !$this->isAlertOnCooldown($user->parent_phone)) {
-                                $this->triggerSmsAlert($user->parent_phone, $firstName);
-                            }
-                        }
                     }
                 }
             } catch (\Throwable $alertEx) {
