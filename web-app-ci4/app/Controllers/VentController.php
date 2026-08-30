@@ -471,7 +471,7 @@ class VentController extends BaseController
             }
         }
 
-        // CRITICAL EXTREME — Explicit Suicide Intent (NEVER DOWNGRADED BY SARCASM)
+        // CRITICAL EXTREME — Explicit Suicide Intent & Farewell Cues (NEVER DOWNGRADED BY SARCASM)
         $critical_extreme = [
             'suicide', 'kill myself', 'cut myself', 'magpakamatay', 'laslas',
             'tatalon', 'bibigti', 'patayin sarili ko', 'magbibigti',
@@ -480,6 +480,13 @@ class VentController extends BaseController
             'tatapusin ko na', 'bibitay', 'magbigti', 'lulunukin ko na lang',
             'tumalon', 'lulundag', 'stab myself', 'overdose',
             'unalive', 'kms', 'kayat kon matayen',
+            // Farewell cues / Suicide notes (Extreme risk — ignores sarcasm)
+            'nag-iwan ng sulat', 'nag-iwan na rin ako ng sulat', 'nag-iwan ako ng sulat',
+            'sulat para kay mama', 'sulat para kay papa', 'huling sulat',
+            'matutulog na lang ako nang mahaba', 'matulog nang mahaba',
+            'salamat sa lahat', 'huling paalam', 'paalam sa inyong lahat',
+            'di na siya maghirap sa akin', 'di na kayo mahihirapan sa akin',
+            'wala na kong mararating', 'wala na akong mararating',
         ];
 
         // CRITICAL PASSIVE — Passive Ideation (Can be downgraded to MEDIUM if joking)
@@ -595,6 +602,13 @@ class VentController extends BaseController
             'makaramdam ulit ng kahit ano',        // anhedonia / emotional numbness
             'makaramdam ulit',
             'makaramdam ng kahit ano',
+            'wala na kong maramdaman',
+            'wala na akong maramdaman',
+            'blanko lang lahat',
+            'hindi ko na makita yung sarili ko',
+            'di ko na makita sarili ko',
+            'pagod na pagod na yung utak ko',
+            'pagod na utak ko',
         ];
 
         // STRICT HIGH — Physical Violence (Never downgraded by sarcasm)
