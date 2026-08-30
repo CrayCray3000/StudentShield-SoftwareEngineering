@@ -10,7 +10,9 @@
 StudentShield is a **distributed 2-cloud application**:
 1. **Web Frontend & Backend (`web-app-ci4/`)**:
    - **Framework:** PHP 8.1+ / CodeIgniter 4
+   - **Domain & SSL:** `https://studentshield.app` (Protected by Cloudflare Universal SSL)
    - **Production Hosting:** InfinityFree (Shared PHP Hosting)
+   - **Deployment:** GitHub Actions (`.github/workflows/ftp-deploy.yml`) auto-syncs `web-app-ci4/` to InfinityFree on push to `main`.
    - **Database:** MySQL / MariaDB (Application-level AES-256-CTR encryption for vent logs)
    - **Constraint:** Production has **NO CLI / SSH access**. Never introduce dependencies or workflows that require runtime CLI commands on the PHP production server.
 

@@ -52,7 +52,6 @@ student-shield/
 
 ## ☁️ Deployment Map
 
-### 1. Web App — InfinityFree (Free PHP Hosting) + Name.com Domain
 ### 1. Web App — Cloudflare (DNS + SSL) + InfinityFree (Free PHP Hosting)
 
 | Item | Value |
@@ -63,11 +62,11 @@ student-shield/
 | **Legacy Subdomain** | `https://studentshield.gt.tc/` (Aliased) |
 | **Web root** | Points to `web-app-ci4/public/` |
 | **PHP version** | 8.1+ (CI4 requirement) |
-| **Deployment method** | **Manual FTP/file upload** (no CI/CD) |
+| **Deployment method** | **✅ Automated CI/CD via GitHub Actions** ([`.github/workflows/ftp-deploy.yml`](./.github/workflows/ftp-deploy.yml)) — Auto-syncs `web-app-ci4/` to InfinityFree FTP (`/studentshield.gt.tc/htdocs/`) on push to `main` (Excludes `.env` for security) |
 | **Database** | InfinityFree MySQL (managed via phpMyAdmin in their control panel) |
 | **DB name** | `if0_41428179_studentshield` (Account: `if0_41428179`) |
 
-> ⚠️ **InfinityFree limitations**: No SSH, no CLI, no `php spark` commands. All DB changes must be done via phpMyAdmin. File changes via FTP or their file manager.
+> ⚠️ **InfinityFree limitations**: No SSH or runtime CLI commands. Database alterations must be run via phpMyAdmin. Production `.env` remains directly on server to prevent secret leaks.
 
 ### 2. ML Service & Model Repositories — Hugging Face
 
@@ -226,12 +225,12 @@ status (Pending/Reviewed/Flagged), created_at, deleted_at
 6. If CRITICAL/HIGH → sends SMS (local gateway or CloudSMS) + email alert
 7. Returns JSON → JS shows success toast or empathy modal
 
-### Deploying Web App Changes
-Since InfinityFree has no CI/CD:
+### Deploying Web App Changes (Automated)
+Web application deployment is **100% automated** via GitHub Actions:
 1. Edit files locally in `D:\laragon\www\student shield\web-app-ci4\`
 2. Commit + push to GitHub (`git push origin main`)
-3. Manually upload changed files via InfinityFree FTP or file manager
-4. **Never** push `.env` or `vendor/` to GitHub (gitignored)
+3. GitHub Actions workflow (`.github/workflows/ftp-deploy.yml`) triggers automatically and uses `SamKirkland/FTP-Deploy-Action` to sync changed files into InfinityFree's `/studentshield.gt.tc/htdocs/` within ~15 seconds.
+4. Production `.env` is intentionally excluded from the sync to protect live database passwords and API keys.
 
 ### Deploying ML Service Changes
 1. Edit files in `ml_service/`
