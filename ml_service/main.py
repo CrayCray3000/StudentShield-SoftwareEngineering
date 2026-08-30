@@ -1621,7 +1621,7 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     ## ┐
     ### STAGE 7.5: POSITIVE VENT GUARD (suppress false MEDIUM on grateful posts)
     ## ┘
-    severe_flags = has_cat1 or has_cat2 or has_sexual or has_finality or semantic_score >= 0.78
+    severe_flags = has_cat1 or has_cat2 or has_sexual or has_finality
     if has_positive and not severe_flags and not (has_emotional or has_isolation or has_anhedonia or has_self_worth or has_masked_dep):
         risk       = "LOW"
         risk_score = min(risk_score, 0.28)

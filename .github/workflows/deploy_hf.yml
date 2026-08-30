@@ -21,4 +21,4 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           # Use git subtree to push ONLY the contents of ml_service to Hugging Face
-          git subtree push --prefix ml_service https://ashlogg:$HF_TOKEN@huggingface.co/spaces/ashlogg/student-shield-official main
+          git subtree push --prefix ml_service https://ashlogg:$HF_TOKEN@huggingface.co/spaces/ashlogg/student_shield_official main
