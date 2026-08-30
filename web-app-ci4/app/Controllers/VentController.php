@@ -128,6 +128,7 @@ class VentController extends BaseController
 
         // --- 3. SAVE TO DATABASE ---
         $db = \Config\Database::connect();
+        $emotions = (string)($this->request->getPost('emotions') ?? '');
         $insertData = [
             'user_id'      => $userId,
             'raw_text'     => $encryptedText,
