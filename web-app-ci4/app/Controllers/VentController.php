@@ -156,26 +156,30 @@ class VentController extends BaseController
 
         // --- 4. TRIGGER ALERTS IF CRITICAL ---
         if ($riskLevel === 'CRITICAL') {
-            $user = $db->table('users')->select('users.*, students.parent_phone, students.parent_email')->join('students', 'students.user_id = users.id', 'left')->where('users.id', $userId)->get()->getRow();
-            if ($user) {
-                $studentName = $user->name ?? 'A student';
-                $firstName = explode(' ', trim($studentName))[0];
+            try {
+                $user = $db->table('users')->select('users.*, students.parent_phone, students.parent_email')->join('students', 'students.user_id = users.id', 'left')->where('users.id', $userId)->get()->getRow();
+                if ($user) {
+                    $studentName = $user->name ?? 'A student';
+                    $firstName = explode(' ', trim($studentName))[0];
 
-                // ALWAYS alert the counselor for any CRITICAL vent
-                $this->triggerCounselorEmergencyAlert("URGENT: $studentName filed a CRITICAL vent. Please review the dashboard immediately.", "Counselor Emergency Alert");
+                    // ALWAYS alert the counselor for any CRITICAL vent
+                    $this->triggerCounselorEmergencyAlert("URGENT: $studentName filed a CRITICAL vent. Please review the dashboard immediately.", "Counselor Emergency Alert");
 
-                if ($hideFromParents) {
-                    // DOMESTIC ABUSE PRECAUTION: Do not notify parents! Over-notify the counselor instead!
-                    $this->triggerCounselorEmergencyAlert("RESTRICTED PROTOCOL: $studentName filed a CRITICAL vent and explicitly requested their parents NOT be notified. Review dashboard immediately.", "Counselor Emergency (Safety Override)");
-                }
-                else {
-                    if (!empty($user->parent_phone) && !$this->isAlertOnCooldown($user->parent_phone)) {
-                        $this->triggerSmsAlert($user->parent_phone, $firstName);
+                    if ($hideFromParents) {
+                        // DOMESTIC ABUSE PRECAUTION: Do not notify parents! Over-notify the counselor instead!
+                        $this->triggerCounselorEmergencyAlert("RESTRICTED PROTOCOL: $studentName filed a CRITICAL vent and explicitly requested their parents NOT be notified. Review dashboard immediately.", "Counselor Emergency (Safety Override)");
                     }
-                    if (!empty($user->parent_email) && !$this->isAlertOnCooldown($user->parent_email)) {
-                        $this->triggerEmailAlert($user->parent_email, $firstName);
+                    else {
+                        if (!empty($user->parent_phone) && !$this->isAlertOnCooldown($user->parent_phone)) {
+                            $this->triggerSmsAlert($user->parent_phone, $firstName);
+                        }
+                        if (!empty($user->parent_email) && !$this->isAlertOnCooldown($user->parent_email)) {
+                            $this->triggerEmailAlert($user->parent_email, $firstName);
+                        }
                     }
                 }
+            } catch (\Throwable $alertEx) {
+                log_message('error', 'Alert triggering failed: ' . $alertEx->getMessage());
             }
         }
 
@@ -190,11 +194,15 @@ class VentController extends BaseController
 
         return redirect()->to('/student/vent')->with('message', 'Vent securely submitted.');
         } catch (\Throwable $e) {
-            log_message('error', 'VentController::submit fatal: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            $errDetail = $e->getMessage() . ' (' . basename($e->getFile()) . ':' . $e->getLine() . ')';
+            log_message('error', 'VentController::submit fatal: ' . $errDetail);
             if ($this->request->isAJAX()) {
-                return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'A server error occurred. Please try again.']);
+                return $this->response->setStatusCode(500)->setJSON([
+                    'status' => 'error',
+                    'message' => 'Server error: ' . $errDetail
+                ]);
             }
-            return redirect()->back()->with('error', 'A server error occurred. Please try again.');
+            return redirect()->back()->with('error', 'Server error: ' . $errDetail);
         }
     }
 
