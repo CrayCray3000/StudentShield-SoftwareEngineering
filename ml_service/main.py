@@ -531,6 +531,19 @@ CAT1_DIRECT = [
     r"\bstop (?:the |this )?pain\b", r"\bmake the pain stop\b",
     r"\bfor good\b.{0,20}\b(stop|end|pain|buhay|tonight)\b",
     r"\btonight for good\b",
+    # Bereavement-induced suicidal ideation (Following a deceased loved one / pet in death)
+    r"\bsasabay na (?:ako|ko|aq|ko na lang|ako na lang)\b",
+    r"\bsusunod na (?:ako|ko|aq|ko na lang|ako na lang)(?: sa kanya| sa kanila)?\b",
+    r"\bsasama na (?:ako|ko|aq|ko na lang|ako na lang)(?: sa kanya| sa kanila)?\b",
+    r"\bgusto ko nang? sumunod\b",
+    r"\bgusto ko nang? sumama sa (?:kanya|kanila|langit|hukay)\b",
+    r"\bsana sumabay na lang ako\b",
+    r"\bsana sumunod na lang ako\b",
+    r"\bmagkakasama na tayo\b.{0,20}\b(soon|malapit na|sa langit|sa kabilang buhay)\b",
+    r"\bmagkikita na tayo\b.{0,20}\b(soon|malapit na|sa langit|sa kabilang buhay)\b",
+    r"\bwait for me\b.{0,20}\b(soon|in heaven|sa kabilang buhay)\b",
+    r"\bhintayin mo (?:ako|ko|aq)\b",
+    r"\blost (?:my )?(?:whole )?motivation to live\b",
 ]
 
 ### CATEGORY 1.5: HIGH — Passive Disappearance & Invisibility Ideation (C-SSRS Level 2)

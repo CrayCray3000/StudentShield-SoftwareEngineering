@@ -99,7 +99,10 @@ class VentController extends BaseController
                 'pain to stop for good', 'want all this pain to stop',
                 'gusto ko nang mamatay', 'i want to die', 'i wanna die',
                 'end my life', 'gusto nako mamatay', 'kayat kon matayen',
-                'nag-iwan ng sulat para kay', 'huling paalam sa inyo'
+                'nag-iwan ng sulat para kay', 'huling paalam sa inyo',
+                'sasabay na ako', 'sasabay na ko', 'sasabay na aq', 'susunod na ako', 'susunod na ko',
+                'sasama na ako sa kanya', 'sasama na ko sa kanya', 'gusto ko nang sumunod',
+                'lost my whole motivation to live', 'lost my motivation to live'
             ];
             foreach ($explicitSuicideKeywords as $kw) {
                 if (mb_strpos($lower, $kw) !== false) {
@@ -554,6 +557,12 @@ class VentController extends BaseController
             'salamat sa lahat', 'huling paalam', 'paalam sa inyong lahat',
             'di na siya maghirap sa akin', 'di na kayo mahihirapan sa akin',
             'wala na kong mararating', 'wala na akong mararating',
+            // Bereavement-induced suicide pacts & following-in-death cues
+            'sasabay na ako', 'sasabay na ko', 'sasabay na aq',
+            'susunod na ako', 'susunod na ko', 'susunod na aq',
+            'sasama na ako sa kanya', 'sasama na ko sa kanya',
+            'gusto ko nang sumunod', 'gusto ko nang sumama sa kanya',
+            'lost my whole motivation to live', 'lost my motivation to live',
         ];
 
         // CRITICAL PASSIVE — Passive Ideation (Can be downgraded to MEDIUM if joking)
