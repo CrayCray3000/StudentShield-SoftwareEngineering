@@ -60,3 +60,8 @@ CREDENTIALS*.md
 *DO_NOT_UPLOAD*.md
 vent_logs.sql
 CREDENTIALS_DO_NOT_UPLOAD_TO_GITHUB.md
+
+# Scratch & IDE
+scratch/
+.vscode/
+backups/
