@@ -94,17 +94,18 @@ class AuthFilter implements FilterInterface
         $uriStr = $request->getUri()->getPath();
 
         // Prevent Students from accessing Admin/Counselor Dashboards
-        if ($role == 0 && (strpos($uriStr, 'admin') !== false || strpos($uriStr, 'counselor') !== false)) {
+        $trimmedUri = ltrim($uriStr, '/');
+        if ($role == 0 && (str_starts_with($trimmedUri, 'admin') || str_starts_with($trimmedUri, 'counselor'))) {
             return redirect()->to('/student/vent')->with('error', 'Unauthorized access. You are a student.');
         }
 
-        // Prevent Counselors from accessing Student Vents (Counselors should review via dashboard)
-        if ($role == 1 && strpos($uriStr, 'student') !== false) {
+        // Prevent Counselors from accessing Student Portal pages (student/vent, student/dashboard)
+        if ($role == 1 && str_starts_with($trimmedUri, 'student/')) {
             return redirect()->to('/admin/dashboard')->with('error', 'Staff must use the Dashboard portal.');
         }
 
         // Prevent Counselors from accessing Super Admin Management functions
-        if ($role == 1 && (strpos($uriStr, 'admin/users') !== false || strpos($uriStr, 'admin/audit-logs') !== false)) {
+        if ($role == 1 && (str_starts_with($trimmedUri, 'admin/users') || str_starts_with($trimmedUri, 'admin/audit-logs'))) {
             return redirect()->to('/admin/dashboard')->with('error', 'Unauthorized. Super Admin access required.');
         }
     }
