@@ -31,11 +31,16 @@ StudentShield is a **distributed 2-cloud application**:
 When working on bug fixes, performance, or refactoring:
 
 ### A. Authentication & Security
-- **API Key Security:** The ML endpoint `/analyze-text` requires `X-API-KEY: studentshield_secret_key_2026`. Never remove authentication headers or expose secrets.
+- **API Key Security:** The ML endpoint `/analyze-text` requires `X-API-KEY: svbsm-production-ml-key-v1`. Never remove authentication headers or expose secrets.
 - **Data Privacy at Rest:** Student vent text (`raw_text`) in `web-app-ci4` is symmetrically encrypted using CodeIgniter 4's `Services::encrypter()` (`AES-256-CTR`). Do not bypass or alter the encryption format without backwards compatibility.
+- **Admin & Counselor 2FA:** Restored 6-digit email OTP for counselor and admin logins with automatic fallback.
 
-### B. Fallback & Keyword Detection Safety
+### B. Fallback & Clinical Alert Triage
 - **Dual-Layer Risk Evaluation:** `VentController.php` runs a local keyword regex fallback before database persistence. If the ML service is down, the PHP fallback is the life safety net.
+- **Clinical Triage Guardrails:** 
+  - `CRITICAL` (86%–100%) triggers immediate Counselor and Parent notifications.
+  - `HIGH` (61%–85%) triggers Counselor triage only (to prevent parent alarm fatigue and preserve student trust).
+  - Passive disappearance ideation (C-SSRS Level 2) is mapped to `HIGH (79%)`.
 - **Preserve Taglish / Slang Lexicon:** Do not remove or simplify Tagalog, Taglish, Bisaya, or Ilocano crisis phrases in `VentController.php` or `main.py`.
 
 ### C. Performance & Queries

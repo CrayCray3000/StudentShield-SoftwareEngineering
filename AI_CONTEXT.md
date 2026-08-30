@@ -82,15 +82,19 @@ student-shield/
 | **Internal Port** | `7860` (standard HF Docker port) |
 | **Auto-deploy** | ✅ Yes — GitHub Actions (`deploy_hf.yml`) triggers on push to `main` when `ml_service/**` changes |
 
-**How the ML Pipeline Works (v7.5):**
+**How the ML Pipeline Works (v7.7):**
 ```
 1. Student submits vent → PHP VentController sends HTTP POST to HF Space API
-2. Space loads fine-tuned mDeBERTa from ashlogg/student-shield-mdeberta (or local cache)
-3. Emotion classification via SamLowe/roberta-base-go_emotions
-4. 79 multilingual crisis anchor embeddings computed & compared via mDeBERTa
-5. Smiling/Masked Depression detection overrides false positive laughter dampening
-6. Rule-based safety overrides (Cat 1/2/3, Self-Worth, Anhedonia) & FAISS trajectory memory evaluated
-7. Returns risk_score (0-100%) and risk_level (LOW/MEDIUM/HIGH/CRITICAL)
+2. Pre-processing: Elongation collapse (e.g., 'pagooooood' → 'pagod') + Taglish slang/typo normalization (dko, tlga, wla, nlng, etc.)
+3. Neural Layer: Fine-tuned mDeBERTa from ashlogg/student-shield-mdeberta (distress) + SamLowe/roberta-base-go_emotions (emotions)
+4. Sarcasm & Irony Inversion: Sarcastic failure/anger/truancy mapped to MEDIUM (55%) rather than false-positive LOW
+5. Idiom Disambiguation: Colloquial phrases (e.g. 'mamatay sa pagod') mapped to Severe Burnout (HIGH 79%) rather than suicide CRITICAL
+6. Clinical Triage:
+   - CRITICAL (86%–100%): Explicit intent/methods/notes → Alerts Counselor + Parents
+   - HIGH (61%–85%): Passive ideation / C-SSRS Level 2 / Severe Distress → Alerts Counselor ONLY (No parent alarm fatigue)
+   - MEDIUM (31%–60%): Academic pressure / bullying / moderate distress → Dashboard queue
+   - LOW (0%–30%): General venting / positive reflection
+7. Parent Fallback: Parent Email → Parent SMS → Counselor manual follow-up notice if no parent contact on file
 ```
 
 **Autonomous Coding Agents (Google Jules & Copilot):**
@@ -140,7 +144,7 @@ encryption.key = hex2bin('785a21faeb289ff35b887bd75168ceb78c950a7f1a3b8fc7d92a10
 ML_API_URL = https://ashlogg-student-shield-official.hf.space
 ML_API_KEY = svbsm-production-ml-key-v1
 
-# EMAIL ALERTS (Gmail SMTP)
+# EMAIL ALERTS & 2FA OTP (Gmail SMTP)
 email.protocol = smtp
 email.SMTPHost = smtp.gmail.com
 email.SMTPUser = vonnchristianmielmeneses@gmail.com
@@ -202,13 +206,13 @@ status (Pending/Reviewed/Flagged), created_at, deleted_at
 
 ## 🤖 ML Service Architecture
 
-**File:** `ml_service/main.py` (FastAPI, ~72KB — large file)
+**File:** `ml_service/main.py` (FastAPI)
 
 - Exposes `/analyze-text` (POST) — main endpoint used by `VentController.php`
 - Accepts: `{ "raw_text": "...", "student_id": "..." }`
 - Returns: `{ "risk_level": "LOW|MEDIUM|HIGH|CRITICAL", "risk_score": 0.0-1.0, "trajectory": "...", "escalation_probability": 0.0 }`
-- Uses: trained sklearn models + FAISS vector memory for per-student trajectory tracking
-- API key auth: `X-API-KEY` header = `studentshield_secret_key_2026`
+- Uses: trained mDeBERTa + RoBERTa models + FAISS vector memory for per-student trajectory tracking
+- API key auth: `X-API-KEY` header = `svbsm-production-ml-key-v1`
 
 **Fallback:** If the HF Space is cold-starting or unreachable, `VentController.php` automatically falls back to `localKeywordFallback()` — a PHP keyword heuristic that still catches high-risk Taglish phrases. No user-facing error is shown.
 
@@ -220,10 +224,11 @@ status (Pending/Reviewed/Flagged), created_at, deleted_at
 1. Student fills `vent_form.php` → AJAX POST to `/student/vent/submit`
 2. `VentController::submit()` validates (auth, rate-limit 30s, length <5000 chars)
 3. Calls HF ML service (`/analyze-text`) via cURL (10s connect timeout, 60s total)
-4. Runs local PHP keyword fallback, takes the **higher** risk level of the two
-5. Encrypts vent text with `hex2bin` key → stores to `vent_logs`
-6. If CRITICAL/HIGH → sends SMS (local gateway or CloudSMS) + email alert
-7. Returns JSON → JS shows success toast or empathy modal
+4. Encrypts vent text with `hex2bin` key (`AES-256-CTR`) → stores to `vent_logs`
+5. Dispatches alerts based on clinical triage:
+   - **CRITICAL:** Sends immediate alert email to Counselor + sends support email/SMS to Parent (unless hidden).
+   - **HIGH:** Sends high-priority email to Counselor only (to prevent parent alert fatigue).
+6. Returns JSON → JS shows empathetic feedback or calming resources
 
 ### Deploying Web App Changes (Automated)
 Web application deployment is **100% automated** via GitHub Actions:
