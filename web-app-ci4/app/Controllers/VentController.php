@@ -48,7 +48,11 @@ class VentController extends BaseController
         }
 
         // --- 1. CALL ML SERVICE FOR RISK ANALYSIS ---
-        $ch = curl_init(env('ML_API_URL', 'http://student-shield-.duckdns.org') . '/analyze-text');
+        $mlApiBase = env('ML_API_URL') ?: (getenv('ML_API_URL') ?: 'https://ashlogg-student-shield-official.hf.space');
+        $mlApiBase = rtrim($mlApiBase, '/');
+        $mlApiKey  = env('ML_API_KEY') ?: (getenv('ML_API_KEY') ?: 'studentshield_secret_key_2026');
+
+        $ch = curl_init($mlApiBase . '/analyze-text');
         
         // Handle potentially invalid UTF-8 (smart quotes) which makes json_encode return false
         $payload = json_encode(['raw_text' => $text, 'student_id' => (string)$userId], JSON_INVALID_UTF8_SUBSTITUTE);
@@ -60,12 +64,15 @@ class VentController extends BaseController
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'X-API-KEY: ' . env('ML_API_KEY', '')
+            'X-API-KEY: ' . $mlApiKey
         ]);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Increased from 15 to 60 for slower ML models
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10); // Increased from 5 to 10
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15); // Increased to 15s
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Prevent InfinityFree CA bundle failures
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
