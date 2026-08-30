@@ -812,14 +812,17 @@ JOKE_PATTERNS = [
     r"\bdaily character development\b",
 ]
 
-### POSITIVE SENTIMENT (grateful / thriving vents — used to suppress false MEDIUM)
+### POSITIVE SENTIMENT (grateful / thriving vents — used to suppress false MEDIUM/CRITICAL)
 POSITIVE_SENTIMENT = [
     r"\bthankful\b", r"\bgrateful\b", r"\bso good lately\b", r"\blife has been so good\b",
-    r"\bang saya\b", r"\bfeel like you belong\b", r"\bappreciated\b",
-    r"\bexcited ako\b", r"\bexcited about\b", r"\bexcited for\b",
-    r"\bmagandang mangyayari\b", r"\bslaying rn\b", r"\blife is kinda slay",
-    r"\bsobrang thankful\b", r"\bnapapangiti\b", r"\bang sarap pala\b",
+    r"\bang saya\b", r"\bfeel like you belong\b", r"\bappreciated\b", r"\bappreciating\b",
+    r"\bappreciation\b", r"\bexcited ako\b", r"\bexcited about\b", r"\bexcited for\b",
+    r"\bmagandang mangyayari\b", r"\bslaying rn\b", r"\blife is kinda slay\b",
+    r"\bsobrang thankful\b", r"\bnapapangiti\b", r"\bang sarap pala\b", r"\bsarap sa feeling\b",
     r"\bgenuinely happy\b", r"\bnagpapagaan ng mood\b", r"\bexcited sa future\b",
+    r"\bpahalagahan\b", r"\bmasaya ako\b", r"\bmasaya naman\b", r"\bblessed\b",
+    r"\bnagpapasalamat\b", r"\bmemorable\b", r"\btawanan\b", r"\brandom moments\b",
+    r"\bpeaceful\b", r"\bokay na muna\b", r"\blittle things\b", r"\bso much more lately\b",
 ]
 
 ### COGNITIVE DISTORTIONS 
@@ -1276,11 +1279,9 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     distress_conf, neg_emo_conf = get_risk_components(translated_text, normalized_text)
 
     ## ┐
-    ### STAGE 2: SEMANTIC SIMILARITY                           
+    ### STAGE 2: SCORE BALANCING                               
     ## ┘
-    semantic_score = get_semantic_similarity(normalized_text)
-
-    risk_score = (0.35 * distress_conf) + (0.35 * neg_emo_conf) + (0.30 * semantic_score)
+    risk_score = (0.50 * distress_conf) + (0.50 * neg_emo_conf)
 
     ## ┐
     ### STAGE 3: REGEX COMPILE (once, then cached globally)    
@@ -1343,9 +1344,7 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     has_self_worth    = any(pat.search(scan_text) for pat in COMPILED_REGEXES['self_worth'])  # NEW
     has_masked_dep   = any(pat.search(scan_text) for pat in COMPILED_REGEXES['masked_dep'])  # NEW
     has_relationship = any(pat.search(scan_text) for pat in COMPILED_REGEXES['relationship']) # NEW v7.1
-    # Require >=3 positive signals to suppress — prevents a single grateful phrase
-    # from masking genuine distress in a mixed-sentiment vent.
-    has_positive     = sum(1 for pat in COMPILED_REGEXES['positive'] if pat.search(scan_text)) >= 3
+    has_positive     = any(pat.search(scan_text) for pat in COMPILED_REGEXES['positive'])
 
     ## ┐
     ### STAGE 6: PSYCHOLOGICAL HEURISTICS                      
@@ -1395,8 +1394,8 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     ## ┐
     ### STAGE 7: FINAL RULE ENGINE (Sequential Priority)       
     ### 
-    ### Rule 1:   Semantic similarity override                 
-    ### Rule 2:   Explicit suicide (Cat1)                      
+    ### Rule 1:   Explicit suicide (Cat1)                      
+    ### Rule 2:   Positive sentiment override                  
     ### Rule 3:   Finality / preparation                       
     ### Rule 4:   Physical violence (Cat2)                     
     ### Rule 4.5: Sexual harassment                            
@@ -1415,36 +1414,21 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
         risk   = "MEDIUM"
         reason = "NLP: Negative sentiment detected."
 
-    ### RULE 1: Semantic similarity override 
-    if semantic_score >= 0.78 and not has_cat1:
-        if semantic_score >= 0.88:
-            if is_joke:
-                # v7.2: Ironic/sardonic tone detected — high semantic match but
-                # likely bitter venting, not genuine crisis. Cap at HIGH.
-                risk       = "HIGH"
-                risk_score = max(0.82, risk_score)
-                reason     = (
-                    f"HIGH: Strong semantic match ({semantic_score:.0%}) to crisis language, "
-                    f"but ironic/sarcastic tone detected — monitoring for escalation."
-                )
-            else:
-                risk       = "CRITICAL"
-                risk_score = max(0.95, risk_score)
-                reason     = f"CRITICAL: Semantic AI hard-override ({semantic_score:.0%}) to crisis language."
-        else:
-            risk       = "HIGH"
-            risk_score = max(0.80, risk_score)
-            reason     = f"HIGH: Semantic AI strong similarity ({semantic_score:.0%}) to crisis language."
-        if expert_reasoning: reason += " " + " ".join(expert_reasoning)
-
-    ### RULE 2: Explicit suicide keywords 
-    elif has_cat1:
+    ### RULE 1: Explicit suicide keywords (Always highest priority)
+    if has_cat1:
         risk       = "CRITICAL"
         risk_score = max(0.95, risk_score)
         if is_joke:
             reason = "CRITICAL: Masked Depression — sarcasm disguising explicit suicidal intent."
         else:
             reason = "CRITICAL: Explicit self-harm or suicidal intent detected."
+        if expert_reasoning: reason += " " + " ".join(expert_reasoning)
+
+    ### RULE 2: Positive sentiment guard (Guarantees LOW for hopeful/grateful/happy vents)
+    elif has_positive:
+        risk       = "LOW"
+        risk_score = min(risk_score, 0.15)
+        reason     = "NLP: Positive and grateful sentiment detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
     ### RULE 3: Finality / preparation signals 
