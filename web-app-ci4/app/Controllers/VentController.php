@@ -560,7 +560,8 @@ class VentController extends BaseController
         $critical_passive = [
             'end it all', 'no reason to live', 'ayoko na mabuhay',
             'gusto ko na mawala', 'gusto ko nang mamatay', 'gusto nako mamatay',
-            'mamatay', 'unalive myself', 'better off dead',
+            'gusto kong mamatay', 'sana mamatay na ako', 'mamatay na lang ako',
+            'unalive myself', 'better off dead',
             'sana di na lang ako pinanganak', 'wala nang pag-asa',
             'i wanna die', 'i want to die', 'end my life', 'hang myself',
             'wish i was never born', 'wish i could disappear',
