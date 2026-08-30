@@ -150,83 +150,17 @@ class AuthController extends BaseController
         if ($passwordValid) {
             $roleNames = [1 => 'counselor', 2 => 'super_admin'];
 
-            // ── LAYER 5: TRUSTED DEVICE BYPASS ──
-            if (isset($_COOKIE['admin_trusted_device'])) {
-                $cookieData = base64_decode($_COOKIE['admin_trusted_device']);
-                if (strpos($cookieData, ':') !== false) {
-                    list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
-                    if ((int)$cookieUserId === (int)$user['id'] && password_verify($cookieToken, $user['remember_token'])) {
-                        // Bypass OTP
-                        session()->regenerate();
-                        session()->set([
-                            'user_id'    => $user['id'],
-                            'name'       => $user['name'],
-                            'role'       => (int) $user['role'],
-                            'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
-                            'isLoggedIn' => true,
-                        ]);
-                        $this->logAudit('USER_LOGIN', 'system', $user['id']);
-                        return redirect()->to('/admin/dashboard');
-                    }
-                }
-            }
-            // ── LAYER 6: TWO-FACTOR AUTHENTICATION (OTP) ──
-            $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-            log_message('critical', "OTP is: " . $otp);
-            
-            // Suspend actual login, save temporary session data
+            // DIRECT LOGIN (OTP Temporarily Bypassed for testing / hosting limitations)
+            session()->regenerate();
             session()->set([
-                'temp_user_id'   => $user['id'],
-                'temp_name'      => $user['name'],
-                'temp_role'      => (int) $user['role'],
-                'temp_role_name' => $roleNames[(int)$user['role']] ?? 'counselor',
-                'otp'            => $otp,
-                'otp_expires'    => time() + 300 // 5 minutes strict expiration
+                'user_id'    => $user['id'],
+                'name'       => $user['name'],
+                'role'       => (int) $user['role'],
+                'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
+                'isLoggedIn' => true,
             ]);
-
-            // Attempt to send the OTP via Email to the Counselor's registered email (parent_email column)
-            $counselorEmail = $user['parent_email'] ?? '';
-            if (!empty($counselorEmail)) {
-                try {
-                    $email = \Config\Services::email();
-                    $smtpUser = env('email.SMTPUser', '');
-                    $smtpPass = env('email.SMTPPass', '');
-
-                    if (!empty($smtpUser) && !empty($smtpPass)) {
-                        $email->initialize([
-                            'protocol' => 'smtp',
-                            'SMTPHost' => env('email.SMTPHost', 'smtp.gmail.com'),
-                            'SMTPUser' => $smtpUser,
-                            'SMTPPass' => $smtpPass,
-                            'SMTPPort' => (int)env('email.SMTPPort', 587),
-                            'SMTPCrypto' => env('email.SMTPCrypto', 'tls'),
-                            'SMTPTimeout' => 10,
-                            'mailType' => 'html',
-                            'charset' => 'utf-8',
-                        ]);
-                        $email->setFrom($smtpUser, 'SVBSM Security');
-                        $email->setTo($counselorEmail);
-                        $email->setSubject('Your 6-Digit Admin Verification Code');
-                        
-                        $html = "<div style='font-family: Arial; text-align: center; padding: 20px;'>
-                                 <h2>Admin Portal Verification</h2>
-                                 <p>Your one-time passcode is:</p>
-                                 <h1 style='letter-spacing: 5px; color: #2A4365; border: 2px solid #E2E8F0; display: inline-block; padding: 10px 20px; border-radius: 8px;'>{$otp}</h1>
-                                 <p>This code expires in exactly 5 minutes.</p>
-                                 </div>";
-                        $email->setMessage($html);
-                        $email->send(false);
-                    }
-                } catch (\Exception $e) {
-                    log_message('error', 'OTP Email Failed: ' . $e->getMessage());
-                }
-            } else {
-                // If the counselor has no email in the DB, we output it to Laragon's log so testing is possible
-                log_message('critical', "OTP generated for {$user['name']} but they have no email saved! OTP is: {$otp}");
-            }
-
-            // Redirect to the new OTP gateway
-            return redirect()->to('/admin/otp');
+            $this->logAudit('USER_LOGIN', 'system', $user['id']);
+            return redirect()->to('/admin/dashboard');
         }
 
         return redirect()->back()->with('error', 'Invalid credentials.');
