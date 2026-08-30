@@ -569,6 +569,12 @@ CAT3_WORDS = [
     r"\bmanyak\b", r"\bwalang kwenta\b", r"\bidyota\b", r"\bgago\b",
     r"\btarantado\b", r"\binutil\b", r"\bpinagtatawanan\b",
     r"\bcyberbully\b", r"\bposer\b", r"\bfake account\b",
+    # Subtle GC / Group chat harassment / Screenshots
+    r"\bgroup chat\b", r"\bgc\b", r"\bscreenshots?\b",
+    r"\bsubtle jokes\b", r"\bjokes about me\b", r"\bmaking fun of me\b",
+    r"\btalking behind my back\b", r"\bsecret gc\b", r"\bpinag-uusapan sa gc\b",
+    r"\bpinagtitripan\b", r"\bpinagtripan\b", r"\bpinag-uusapan ako\b",
+    r"\bpinagtatawanan ako\b",
 ]
 
 ### EMOTIONAL DISTRESS 
@@ -1033,7 +1039,29 @@ ACADEMIC_PRESSURE = [
     r"\bdi ko maka\b.{0,20}\b(graduate|finish|tapos)\b",
     r"\bbassit\b.{0,20}\b(grade|grado)\b",
     r"\bnabayag\b.{0,20}\b(eskwela|pag-aaral)\b",
-    r"\bnarigat\b.{0,20}\b(klase|subject|eskwela)\b",
+]
+
+### SCHOOL AVOIDANCE & SOMATIC DISTRESS (v7.6)
+# Truancy, school phobia, somatic anxiety symptoms, dropout risk
+SCHOOL_AVOIDANCE_SOMATIC = [
+    r"\bnot want to go to class\b", r"\bdon'?t want to go to class\b",
+    r"\bnot want to go to school\b", r"\bdon'?t want to go to school\b",
+    r"\bnever want to go back\b", r"\bnever going back\b",
+    r"\bnot going back to class\b", r"\bnot going back to school\b",
+    r"\bnot going tomorrow\b", r"\bor ever again\b",
+    r"\bsick to my stomach\b", r"\bstomach hurts thinking about\b",
+    r"\bnauseous\b.{0,20}\b(class|school|face them|people)\b",
+    r"\bhave to face them\b", r"\bcan'?t face them\b", r"\bafraid to face them\b",
+    r"\btakot pumasok\b", r"\bayaw pumasok\b", r"\bayoko na pumasok\b",
+    r"\bdi na ako papasok\b", r"\bhindi na ako papasok\b",
+    r"\bayoko nang pumasok\b", r"\bayaw ko nang pumasok\b",
+    r"\btakot pumunta ng school\b", r"\bayoko na pumunta sa school\b",
+    r"\bnasasuka ako\b.{0,20}\b(kaba|takot|school|klase|kanila)\b",
+    r"\bnagsusuka sa kaba\b", r"\bpinagpapawisan sa kaba\b",
+    r"\bnanginginig kapag naiisip\b", r"\bnanginginig pumasok\b",
+    r"\bdi ko kayang pumasok\b", r"\bhindi ko kayang pumasok\b",
+    r"\bgusto ko na mag-drop\b", r"\bmag-drop out\b", r"\bmagdadrop out\b",
+    r"\bmag quit sa school\b", r"\btitigil na sa pag-aaral\b",
 ]
 
 ### NEW: SELF-WORTH ISSUES 
@@ -1286,6 +1314,7 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
         COMPILED_REGEXES['anhedonia']   = compile_regexes(ANHEDONIA)
         COMPILED_REGEXES['sexual']      = compile_regexes(SEXUAL_HARASSMENT)
         COMPILED_REGEXES['academic']    = compile_regexes(ACADEMIC_PRESSURE)
+        COMPILED_REGEXES['school_avoid']= compile_regexes(SCHOOL_AVOIDANCE_SOMATIC) # NEW v7.6
         COMPILED_REGEXES['self_worth']  = compile_regexes(SELF_WORTH)       # NEW v7
         COMPILED_REGEXES['masked_dep']  = compile_regexes(MASKED_DEPRESSION) # NEW v7
         COMPILED_REGEXES['relationship']= compile_regexes(RELATIONSHIP_DISTRESS) # NEW v7.1
@@ -1326,6 +1355,7 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     has_anhedonia  = any(pat.search(scan_text) for pat in COMPILED_REGEXES['anhedonia'])
     has_sexual     = any(pat.search(scan_text) for pat in COMPILED_REGEXES['sexual'])
     has_academic   = any(pat.search(scan_text) for pat in COMPILED_REGEXES['academic'])
+    has_school_avoid = any(pat.search(scan_text) for pat in COMPILED_REGEXES['school_avoid']) # NEW v7.6
     has_self_worth    = any(pat.search(scan_text) for pat in COMPILED_REGEXES['self_worth'])  # NEW
     has_masked_dep   = any(pat.search(scan_text) for pat in COMPILED_REGEXES['masked_dep'])  # NEW
     has_relationship = any(pat.search(scan_text) for pat in COMPILED_REGEXES['relationship']) # NEW v7.1
@@ -1351,6 +1381,9 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     if has_isolation:
         risk_score += 0.12
         expert_reasoning.append("Social isolation/withdrawal detected.")
+    if has_school_avoid:
+        risk_score += 0.18
+        expert_reasoning.append("School avoidance / somatic distress detected.")
     if has_self_worth:
         risk_score += 0.12
         expert_reasoning.append("Self-worth impairment detected.")
@@ -1361,11 +1394,11 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
         risk_score += 0.10
         expert_reasoning.append("Relationship distress (breakup/rejection/betrayal) detected.")
 
-    # Compound signal detection — expanded to include new v7/v7.1 signals
+    # Compound signal detection — expanded to include school avoidance
     signal_count = sum([
         has_emotional, has_isolation, has_anhedonia,
         has_hopeless, has_distortion, has_self_worth, has_masked_dep,
-        has_relationship,
+        has_relationship, has_school_avoid,
     ])
     if signal_count >= 2:
         compound_boost = 0.15 * (signal_count - 1)
@@ -1521,13 +1554,19 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
 
     ### RULE 6: Verbal abuse / cyberbullying 
     elif has_cat3:
-        if risk_score < 0.35 and not is_joke:
-            risk   = "LOW"
-            reason = "NLP Context Override: Verbal keyword matched but ML model indicates safe usage."
-            if expert_reasoning: reason += " " + " ".join(expert_reasoning)
-        elif is_joke:
+        if is_joke:
             risk   = "LOW"
             reason = "Verbal insults detected but contextualized as banter."
+        elif has_school_avoid or signal_count >= 2:
+            risk       = "HIGH"
+            risk_score = max(0.78, risk_score)
+            reason     = (
+                f"HIGH: Targeted bullying/cyberbullying compounded with "
+                f"{'school avoidance and somatic distress' if has_school_avoid else f'{signal_count} concurrent distress indicators'}."
+            )
+        elif risk_score < 0.35:
+            risk   = "LOW"
+            reason = "NLP Context Override: Verbal keyword matched but ML model indicates safe usage."
         else:
             risk       = "MEDIUM"
             risk_score = max(0.6, risk_score)
@@ -1560,22 +1599,26 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
             )
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
-    ### RULE 6.5: Academic pressure 
-    elif has_academic:
+    ### RULE 6.5: Academic pressure & School Avoidance
+    elif has_academic or has_school_avoid:
         if is_joke:
             risk   = "LOW"
             reason = "Academic frustration contextualized as hyperbolic venting."
+        elif has_school_avoid and (has_cat3 or has_isolation or has_emotional or has_hopeless):
+            risk       = "HIGH"
+            risk_score = max(0.78, risk_score)
+            reason     = "HIGH: School avoidance/truancy risk compounded with psychological distress/isolation."
         elif signal_count >= 2:
             risk       = "HIGH"
             risk_score = max(0.75, risk_score)
             reason     = (
-                f"HIGH: Academic pressure compounded with "
+                f"HIGH: Academic pressure/school distress compounded with "
                 f"{signal_count} concurrent emotional distress signals."
             )
         else:
             risk       = "MEDIUM"
             risk_score = max(0.55, risk_score)
-            reason     = "MEDIUM: Academic pressure or performance anxiety detected."
+            reason     = "MEDIUM: Academic pressure or school attendance distress detected."
         if expert_reasoning: reason += " " + " ".join(expert_reasoning)
 
     ### RULE 7: Pure risk score 
