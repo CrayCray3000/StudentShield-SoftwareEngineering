@@ -72,10 +72,16 @@ class VentController extends BaseController
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15); // Increased to 15s
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Prevent InfinityFree CA bundle failures
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $mlResult = json_decode($response, true);
+        $sentimentScore        = 0.0;
+        $riskLevel             = 'LOW';
+        $trajectory            = 'INSUFFICIENT_DATA';
+        $escalationProbability = 0.0;
 
         if ($mlResult && isset($mlResult['risk_level'])) {
             $sentimentScore        = isset($mlResult['risk_score']) ? (float)$mlResult['risk_score'] : (float)($mlResult['risk_percent'] ?? 0.0);
