@@ -269,16 +269,28 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <form action="<?= base_url('admin/approve-student/' . $student['user_id']) ?>" method="POST"
-                                          onsubmit="return confirm('Approve account for <?= esc(addslashes($student['name'])) ?>? They will be able to log in immediately.')">
-                                        <?= csrf_field() ?>
-                                        <button type="submit" class="approve-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wide shadow-sm">
-                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                            Approve
-                                        </button>
-                                    </form>
+                                    <div class="flex items-center justify-center gap-2">
+                                        <form action="<?= base_url('admin/approve-student/' . ($student['user_id'] ?? $student['id'])) ?>" method="POST"
+                                              onsubmit="return confirm('Approve this student account? They will be able to log in immediately.')">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="approve-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide shadow-sm cursor-pointer">
+                                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                                Approve
+                                            </button>
+                                        </form>
+                                        <form action="<?= base_url('admin/reject-student/' . ($student['user_id'] ?? $student['id'])) ?>" method="POST"
+                                              onsubmit="return confirm('Reject and delete this pending registration?')">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-600 hover:text-red-800 hover:bg-red-50 border border-red-200 transition-colors cursor-pointer">
+                                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                                </svg>
+                                                Reject
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

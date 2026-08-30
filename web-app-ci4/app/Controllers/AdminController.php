@@ -706,18 +706,46 @@ class AdminController extends BaseController
     public function approveStudent($userId)
     {
         if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
-            return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
+            return redirect()->to('/admin/login');
         }
 
         $db = \Config\Database::connect();
 
         try {
-            $db->table('users')->where('id', $userId)->update(['is_active' => 1]);
-            $this->logAudit('STUDENT_APPROVED', 'system', $userId);
-            return redirect()->to('/admin/pending-registrations')->with('success', 'Student account has been approved and activated.');
+            // Safety check: Ensure is_active column exists
+            $columns = $db->getFieldNames('users');
+            if (!in_array('is_active', $columns)) {
+                $db->query('ALTER TABLE users ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 0');
+            }
+
+            $db->table('users')->where('id', (int)$userId)->update(['is_active' => 1]);
+            $this->logAudit('STUDENT_APPROVED', 'system', (int)$userId);
+            return redirect()->to('/admin/pending-registrations')->with('success', 'Student account has been approved and activated successfully.');
         } catch (\Throwable $e) {
             log_message('error', 'AdminController::approveStudent failed: ' . $e->getMessage());
-            return redirect()->to('/admin/pending-registrations')->with('error', 'Could not approve student. Please try again.');
+            return redirect()->to('/admin/pending-registrations')->with('error', 'Could not approve student: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Reject / Delete a pending student account.
+     */
+    public function rejectStudent($userId)
+    {
+        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+            return redirect()->to('/admin/login');
+        }
+
+        $db = \Config\Database::connect();
+
+        try {
+            $db->table('students')->where('user_id', (int)$userId)->delete();
+            $db->table('users')->where('id', (int)$userId)->delete();
+            $this->logAudit('STUDENT_REGISTRATION_REJECTED', 'system', (int)$userId);
+            return redirect()->to('/admin/pending-registrations')->with('success', 'Pending registration has been rejected and removed.');
+        } catch (\Throwable $e) {
+            log_message('error', 'AdminController::rejectStudent failed: ' . $e->getMessage());
+            return redirect()->to('/admin/pending-registrations')->with('error', 'Could not remove registration.');
         }
     }
 }

@@ -77,7 +77,8 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
 
     // Registration Approval Routes
     $routes->get('/admin/pending-registrations', 'AdminController::pendingRegistrations');
-    $routes->post('/admin/approve-student/(:num)', 'AdminController::approveStudent/$1');
+    $routes->match(['get', 'post'], '/admin/approve-student/(:num)', 'AdminController::approveStudent/$1');
+    $routes->match(['get', 'post'], '/admin/reject-student/(:num)', 'AdminController::rejectStudent/$1');
 
     $routes->get('/report/bullying', 'BullyReportController::index');
     $routes->post('/report/bullying/submit', 'BullyReportController::submit');
