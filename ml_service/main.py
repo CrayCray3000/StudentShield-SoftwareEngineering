@@ -1250,10 +1250,23 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
     ### STAGE 0: SLANG NORMALIZATION & GLOBAL TRANSLATION      
     ## ┘
     normalized_text = normalize_slang(text)
+    translated_text = normalized_text
     try:
-        translated_text = GoogleTranslator(source='auto', target='en').translate(normalized_text)
-        if not translated_text or translated_text.strip() == '':
-            translated_text = normalized_text
+        raw_translation = GoogleTranslator(source='auto', target='en').translate(normalized_text)
+        if raw_translation and isinstance(raw_translation, str):
+            clean_tr = raw_translation.strip()
+            # Guard against Google Translate HTML 500 / scraper rate limit errors
+            if (
+                clean_tr
+                and not clean_tr.startswith("Error 500")
+                and "Server Error" not in clean_tr
+                and "That’s an error" not in clean_tr
+                and "That's an error" not in clean_tr
+                and "<html" not in clean_tr.lower()
+            ):
+                translated_text = clean_tr
+            else:
+                logger.warning(f"GoogleTranslator returned error/HTML response; using normalized text instead.")
     except Exception as e:
         logger.warning(f"Translation failed, falling back to normalized: {e}")
         translated_text = normalized_text
