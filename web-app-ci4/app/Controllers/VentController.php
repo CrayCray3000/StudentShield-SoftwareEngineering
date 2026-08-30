@@ -77,41 +77,38 @@ class VentController extends BaseController
         $curlError = curl_error($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        $mlResult = json_decode($response, true);
-        $sentimentScore        = 0.0;
-        $riskLevel             = 'LOW';
-        $trajectory            = 'INSUFFICIENT_DATA';
-        $escalationProbability = 0.0;
-
         if ($mlResult && isset($mlResult['risk_level'])) {
-            $sentimentScore        = isset($mlResult['risk_score']) ? $mlResult['risk_score'] : (isset($mlResult['risk_percent']) ? $mlResult['risk_percent'] : 0.0);
+            $sentimentScore        = isset($mlResult['risk_score']) ? (float)$mlResult['risk_score'] : (float)($mlResult['risk_percent'] ?? 0.0);
             $riskLevel             = $mlResult['risk_level'];
             $trajectory            = $mlResult['trajectory'] ?? 'INSUFFICIENT_DATA';
             $escalationProbability = (float)($mlResult['escalation_probability'] ?? 0.0);
+
+            // Safety net: Only hard-override ML if there is an explicit suicide phrase that ML missed
+            $lower = mb_strtolower($text, 'UTF-8');
+            $explicitSuicideKeywords = [
+                'magpakamatay', 'kill myself', 'cut myself', 'slit my wrist',
+                'bibigti', 'patayin sarili ko', 'magbibigti', 'self-harm',
+                'tapusin ko na buhay ko', 'sana matulog at di na magising',
+                'gusto ko nang mamatay', 'i want to die', 'i wanna die',
+                'end my life', 'gusto nako mamatay', 'kayat kon matayen',
+                'nag-iwan ng sulat para kay', 'huling paalam sa inyo'
+            ];
+            foreach ($explicitSuicideKeywords as $kw) {
+                if (mb_strpos($lower, $kw) !== false) {
+                    $riskLevel = 'CRITICAL';
+                    $sentimentScore = max($sentimentScore, 99.0);
+                    log_message('info', "Safety Net Hard-Override: Explicit crisis phrase '{$kw}' detected.");
+                    break;
+                }
+            }
         }
         else {
             log_message('error', 'ML Service Error (HTTP ' . $httpCode . '): ' . ($curlError ?: 'Invalid response: ' . $response));
-        }
-
-        // --- LOCAL KEYWORD FALLBACK (SAFETY NET OVERRIDE) ---
-        // Always run the local heuristic to catch severe threats (like Taglish slang) the ML might miss or under-score
-        $localResult = $this->localKeywordFallback($text);
-        
-        // Severity mapping for comparison
-        $severityLevels = ['LOW' => 1, 'MEDIUM' => 2, 'HIGH' => 3, 'CRITICAL' => 4];
-        
-        $currentSeverity = $severityLevels[$riskLevel] ?? 1;
-        $localSeverity = $severityLevels[$localResult['risk_level']] ?? 1;
-        
-        // Override if local heuristic detects a strictly higher risk level
-        if ($localSeverity > $currentSeverity) {
-            log_message('info', "Safety Net Override: Risk upgraded from {$riskLevel} to {$localResult['risk_level']} based on local keywords.");
+            // Run full local keyword fallback only when ML service is unreachable
+            $localResult = $this->localKeywordFallback($text);
             $riskLevel = $localResult['risk_level'];
+            $sentimentScore = (float)$localResult['risk_percent'];
         }
-
-        // Always ensure the sentiment score reflects the highest percentage evaluated.
-        // This fixes the issue where ML timeouts default to 0% and stay 0% if both are LOW.
-        $sentimentScore = max($sentimentScore, $localResult['risk_percent']);
 
         // --- 2. DATA PRIVACY SECURE ENCRYPTION ---
         try {
