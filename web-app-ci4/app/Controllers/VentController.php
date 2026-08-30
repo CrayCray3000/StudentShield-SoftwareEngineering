@@ -402,28 +402,48 @@ class VentController extends BaseController
         // 2. Email the Counselor Office
         try {
             $email = \Config\Services::email();
-            $smtpUser = env('email.SMTPUser', '');
-            $smtpPass = env('email.SMTPPass', '');
+            $smtpUser = env('email.SMTPUser', 'vonnchristianmielmeneses@gmail.com');
+            $smtpPass = env('email.SMTPPass', 'vsmanuqipbmfasht');
+            $counselorEmail = env('COUNSELOR_EMAIL', '');
+            if (empty($counselorEmail)) {
+                $counselorEmail = $smtpUser;
+            }
+
             if (!empty($smtpUser) && !empty($smtpPass)) {
                 $email->initialize([
-                    'protocol' => 'smtp', 'SMTPHost' => env('email.SMTPHost', 'smtp.gmail.com'),
-                    'SMTPUser' => $smtpUser, 'SMTPPass' => $smtpPass, 'SMTPPort' => (int)env('email.SMTPPort', 587),
-                    'SMTPCrypto' => env('email.SMTPCrypto', 'tls'), 'mailType' => 'html'
+                    'protocol'    => 'smtp',
+                    'SMTPHost'    => env('email.SMTPHost', 'smtp.gmail.com'),
+                    'SMTPUser'    => $smtpUser,
+                    'SMTPPass'    => $smtpPass,
+                    'SMTPPort'    => (int)env('email.SMTPPort', 587),
+                    'SMTPCrypto'  => env('email.SMTPCrypto', 'tls'),
+                    'SMTPTimeout' => 10,
+                    'mailType'    => 'html',
+                    'charset'     => 'utf-8',
+                    'newline'     => "\r\n",
+                    'CRLF'        => "\r\n",
+                    'wordWrap'    => true,
                 ]);
-                $email->setFrom($smtpUser, 'SVBSM Wellness Dashboard');
-                $email->setTo(env('COUNSELOR_EMAIL', ''));
+                $email->setFrom($smtpUser, 'StudentShield Emergency Alert');
+                $email->setTo($counselorEmail);
                 $email->setSubject($subject);
                 $email->setMessage(
-                    "<div style='border: 2px solid #ef4444; padding: 20px; font-family: sans-serif;'>" .
-                    "<h2>🚨 " . esc($subject, 'html') . "</h2>" .
-                    "<p style='color: #b91c1c; font-size: 16px;'><strong>" . esc($message, 'html') . "</strong></p>" .
-                    "<p>Log into your dashboard to read the full encrypted entry securely.</p>" .
+                    "<div style='border: 2px solid #ef4444; padding: 24px; font-family: sans-serif; background: #fff5f5; border-radius: 12px; max-width: 600px; margin: 0 auto;'>" .
+                    "<h2 style='color: #b91c1c; margin-top: 0;'>🚨 " . esc($subject, 'html') . "</h2>" .
+                    "<p style='color: #1e293b; font-size: 16px; line-height: 1.6;'><strong>" . esc($message, 'html') . "</strong></p>" .
+                    "<hr style='border: none; border-top: 1px solid #fecaca; margin: 20px 0;' />" .
+                    "<p style='color: #64748b; font-size: 14px;'>Please log into the <a href='" . base_url('admin/login') . "' style='color: #166534; font-weight: bold;'>StudentShield Counselor Dashboard</a> immediately to review the student's encrypted entry and initiate the safety protocol.</p>" .
                     "</div>"
                 );
-                $email->send(false);
+                if (!$email->send(false)) {
+                    log_message('error', 'Counselor Emergency Alert Email Failed: ' . $email->printDebugger(['headers', 'subject']));
+                } else {
+                    log_message('info', "Counselor Emergency Alert Email sent successfully to {$counselorEmail}");
+                }
             }
         }
-        catch (\Exception $e) {
+        catch (\Throwable $e) {
+            log_message('error', 'Counselor Emergency Alert Email Exception: ' . $e->getMessage());
         }
     }
 
