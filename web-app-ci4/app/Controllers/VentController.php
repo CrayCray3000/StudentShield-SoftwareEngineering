@@ -116,6 +116,27 @@ class VentController extends BaseController
             $sentimentScore = (float)$localResult['risk_percent'];
         }
 
+        // Positive sentiment guard: If the vent expresses clear gratitude, joy, appreciation, or hope
+        // and does not contain explicit crisis phrases, ensure it is classified as LOW.
+        $lower = mb_strtolower($text, 'UTF-8');
+        $positivePhrases = [
+            'appreciating', 'grateful', 'gratitude', 'happiness', 'happy', 'excited',
+            'sarap sa feeling', 'pahalagahan', 'nagpapasalamat', 'masaya ako',
+            'so much more lately', 'special moments', 'little things so much',
+            'proud of myself', 'feeling good', 'feeling great', 'blessed'
+        ];
+        $isClearlyPositive = false;
+        foreach ($positivePhrases as $pos) {
+            if (mb_strpos($lower, $pos) !== false) {
+                $isClearlyPositive = true;
+                break;
+            }
+        }
+        if ($isClearlyPositive && $riskLevel !== 'CRITICAL') {
+            $riskLevel = 'LOW';
+            $sentimentScore = min($sentimentScore, 15.0);
+        }
+
         // --- 2. DATA PRIVACY SECURE ENCRYPTION ---
         try {
             $encrypter = \Config\Services::encrypter();
