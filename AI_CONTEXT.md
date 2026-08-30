@@ -73,7 +73,7 @@ student-shield/
 | Item | Value |
 |---|---|
 | **FastAPI Space (Runtime)** | `https://huggingface.co/spaces/ashlogg/student-shield-official` |
-| **Direct API Endpoint** | `https://ashlogg-student-shield-official.hf.space` |
+| **Direct API Endpoint** | `https://ashlogg-student-shield-official-2285456.hf.space` |
 | **Fine-Tuned Model Repo** | `https://huggingface.co/ashlogg/student-shield-mdeberta` |
 | **Emotion Model (Public)** | `SamLowe/roberta-base-go_emotions` (28 emotions) |
 | **Trained Architecture** | `microsoft/mdeberta-v3-base` (Fine-tuned for Taglish/Filipino crisis detection) |

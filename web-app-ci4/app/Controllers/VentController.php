@@ -48,7 +48,7 @@ class VentController extends BaseController
         }
 
         // --- 1. CALL ML SERVICE FOR RISK ANALYSIS ---
-        $mlApiBase = env('ML_API_URL') ?: (getenv('ML_API_URL') ?: 'https://ashlogg-student-shield-official.hf.space');
+        $mlApiBase = env('ML_API_URL') ?: (getenv('ML_API_URL') ?: 'https://ashlogg-student-shield-official-2285456.hf.space');
         $mlApiBase = rtrim($mlApiBase, '/');
         $mlApiKey  = env('ML_API_KEY') ?: (getenv('ML_API_KEY') ?: 'studentshield_secret_key_2026');
 
