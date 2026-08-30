@@ -122,19 +122,29 @@ class VentController extends BaseController
 
         // --- 3. SAVE TO DATABASE ---
         $db = \Config\Database::connect();
-        $emotions = $this->request->getPost('emotions') ?? '';
+        $insertData = [
+            'user_id'      => $userId,
+            'raw_text'     => $encryptedText,
+            'emotions'     => $emotions,
+            'risk_percent' => $sentimentScore,
+            'risk_level'   => $riskLevel,
+            'status'       => 'Pending',
+            'created_at'   => date('Y-m-d H:i:s')
+        ];
 
-        $db->table('vent_logs')->insert([
-            'user_id'                => $userId,
-            'raw_text'               => $encryptedText,
-            'emotions'               => $emotions,
-            'risk_percent'           => $sentimentScore,
-            'risk_level'             => $riskLevel,
-            'trajectory'             => $trajectory,
-            'escalation_probability' => $escalationProbability,
-            'status'                 => 'Pending',
-            'created_at'             => date('Y-m-d H:i:s')
-        ]);
+        try {
+            $fields = $db->getFieldNames('vent_logs');
+            if (in_array('trajectory', $fields)) {
+                $insertData['trajectory'] = $trajectory;
+            }
+            if (in_array('escalation_probability', $fields)) {
+                $insertData['escalation_probability'] = $escalationProbability;
+            }
+        } catch (\Throwable $e) {
+            // Proceed safely with standard columns
+        }
+
+        $db->table('vent_logs')->insert($insertData);
 
         $hideFromParents = $this->request->getPost('hide_from_parents') === '1';
 
