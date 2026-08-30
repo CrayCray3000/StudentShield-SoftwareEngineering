@@ -94,7 +94,9 @@ class VentController extends BaseController
             $explicitSuicideKeywords = [
                 'magpakamatay', 'kill myself', 'cut myself', 'slit my wrist',
                 'bibigti', 'patayin sarili ko', 'magbibigti', 'self-harm',
-                'tapusin ko na buhay ko', 'sana matulog at di na magising',
+                'tapusin ko na buhay ko', 'tapusin ko na lang lahat', 'tapusin ko na lahat', 'tapusin ko na',
+                'sana matulog at di na magising', 'mas magiging madali para sa lahat', 'pain to stop tonight',
+                'pain to stop for good', 'want all this pain to stop',
                 'gusto ko nang mamatay', 'i want to die', 'i wanna die',
                 'end my life', 'gusto nako mamatay', 'kayat kon matayen',
                 'nag-iwan ng sulat para kay', 'huling paalam sa inyo'
