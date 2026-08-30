@@ -522,21 +522,6 @@ CAT1_DIRECT = [
     r"what if i disappeared\b",
     r"feel like i was never really there\b",
     r"hardest part.{0,40}never really there\b",
-    ### v7.3: Passive disappearance ideation
-    r"\bwonder if anyone would notice\b",
-    r"\banyone would notice if\b",
-    r"\bwould anyone notice\b",
-    r"\bnobody would notice\b",
-    r"\bno one would notice\b",
-    r"\bslowly disappeared\b",
-    r"\bnever really there\b",
-    r"\bwas never really there\b",
-    r"\bfeel like i was never\b",
-    r"\bstarted to feel like i was never\b",
-    r"\bmawala sa lahat ng buhay\b",
-    r"\\bnapapaisip ako kung\\b.{0,30}\\b(mawala|mapansin|notice)\\b",
-    r"if i slowly disappeared\b",
-    r"feel like i was never really there\b",
 ]
 
 CAT1_METHOD_SELF_PAIRS = [
@@ -1422,16 +1407,7 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
             reason = "CRITICAL: Masked Depression — sarcasm disguising explicit suicidal intent."
         else:
             reason = "CRITICAL: Explicit self-harm or suicidal intent detected."
-        if expert_reasoning: reason += " " + " ".join(expert_reasoning)
-
-    ### RULE 2: Positive sentiment guard (Guarantees LOW for hopeful/grateful/happy vents)
-    elif has_positive:
-        risk       = "LOW"
-        risk_score = min(risk_score, 0.15)
-        reason     = "NLP: Positive and grateful sentiment detected."
-        if expert_reasoning: reason += " " + " ".join(expert_reasoning)
-
-    ### RULE 3: Finality / preparation signals 
+    ### RULE 2: Finality / preparation signals 
     elif has_finality:
         if is_joke:
             risk       = "HIGH"
