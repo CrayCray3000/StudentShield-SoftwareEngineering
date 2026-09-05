@@ -1,77 +1,102 @@
-# StudentShield: Paper vs System Gap Analysis
+# StudentShield: Paper vs. Current System Gap Analysis
 
-> Based on `StudentShield Capstone.pdf` (86 pages, May 2026) vs actual codebase in `web-app-ci4/` and `ml_service/`.
+> Last verified against the repository and the public unauthenticated production pages on September 5, 2026. The implementation is the operational source of truth when older thesis prose conflicts with this document.
 
----
+## Current Production Architecture
 
-## ✅ FULLY IMPLEMENTED (Paper says it, system has it)
+StudentShield is a two-cloud application:
 
-| Feature | Evidence in Code |
+1. The CodeIgniter 4 web application runs on InfinityFree behind Cloudflare at `https://studentshield.app`.
+2. The FastAPI/PyTorch ML service runs in the Hugging Face Space `ashlogg/student-shield-official`.
+3. The web application stores accounts, encrypted submissions, cases, and audit data in MySQL.
+4. Jitsi Meet supplies one-to-one student/counselor video rooms.
+5. Environment-configured SMTP and SMS gateways deliver alerts.
+
+Production has no SSH or runtime CLI access. Web changes deploy by FTP through GitHub Actions, while ML changes deploy independently to Hugging Face.
+
+## Implemented
+
+| Capability | Current implementation |
 |---|---|
-| Student Vent / Safe Space portal | `VentController.php`, `vent_form.php`, `vent_logs` table |
-| Bullying Incident Report (with evidence upload) | `BullyReportController.php`, `report_bullying.php` |
-| ML-based emotional distress detection (mDeBERTa) | `ml_service/main.py` |
-| 14-day FAISS historical trajectory tracking | `ml_service/main.py` + `AddTrajectoryToVentLogs` migration |
-| Severity levels (Low, Medium, High, Critical) | `ml_service/main.py`, `VentController.php` |
-| Automated SMS alert to parents via local SMS Gateway | `VentController.php::triggerSmsAlert()`, `AdminController.php::sendLocalSms()` |
-| Automated Email alert to parents | `VentController.php`, `BullyReportController.php` |
-| Counselor SMS + Email alert on new bullying report | `BullyReportController.php` lines 166–170 |
-| Two-Factor Authentication (OTP via email) for counselors/admins | `AuthController.php` — full OTP flow, 5-attempt lockout |
-| Super Admin role (role=2) + Counselor role (role=1) | `AuthController.php`, `AdminController.php` |
-| Student role (role=0) — name-only login | `AuthController.php` |
-| Admin dashboard with vent log monitoring | `admin_dashboard.php`, `AdminController.php` |
-| Counselor: archive, restore, bulk-delete vent entries | `VentController.php` |
-| Counselor: mark as Resolved | `VentController.php` |
-| Audit logging (every admin action logged) | `AuditLogModel.php`, `admin_audit_logs.php`, `CreateAuditLogsTable` migration |
-| Fake report protection (no immediate parent SMS on submission) | `BullyReportController.php` lines 107, 152 |
-| Parent SMS triggered only AFTER counselor verifies report | `AdminController.php::verifyIncident()` |
-| Rate limiting on report submission | `RateLimitFilter.php` |
-| Anonymous-style venting (system knows identity, public display is pseudonymous) | `VentController.php` |
-| Student profile view for counselors | `CaseSummaryController.php` |
-| SMS logs + Email logs table | `SMSLogModel.php`, `CaseSummaryController.php` |
-| AES-256 encryption mentioned | Referenced in paper; environment-secured |
-| Section + Adviser fields on student profiles | `AddSectionAndAdviserToUsers` migration |
-| Behavioral pattern detection (14 patterns via regex) | `ml_service/main.py` |
-| Student dashboard | `student_dashboard.php`, `StudentDashboardController.php` |
-| Case summary / student profile aggregation | `CaseSummaryController.php` |
-| **PDF export / print report** | `case_summary.php` — browser `window.print()` with full print stylesheet, official header, confidential footer, and "Print / Export PDF" button |
+| Student portal | Public login at `/` and `/login`; approved students reach `/student/dashboard`. |
+| Registration approval | `/register` creates an inactive role-0 account; counselor/admin approval is required before login. |
+| Terms and privacy acceptance | Registration requires the displayed Terms and Data Privacy checkbox. |
+| Safe Space venting | Authenticated students submit encrypted vents through `/student/vent`. |
+| ML risk analysis | FastAPI combines emotion classification, fine-tuned distress detection, multilingual rules, and contextual trajectory logic. |
+| Local safety fallback | PHP evaluates the Tagalog, Taglish, Bisaya, Ilocano, and English keyword fallback when the ML response is unavailable or invalid. |
+| Four risk tiers | LOW 1–30%, MEDIUM 31–60%, HIGH 61–85%, and CRITICAL 86–100%. |
+| Clinical alert separation | CRITICAL alerts counselors and normally parents; HIGH alerts counselors only. The parent-hiding safety option is honored for CRITICAL vents. |
+| Encryption at rest | CodeIgniter's OpenSSL encrypter uses AES-256-CTR for vent text and bullying-report details. |
+| Bullying reports | Students can file self/bystander reports with encrypted details and optional image/video evidence. |
+| Counselor-gated parent alerts | Report intake alerts counselors first. Parent notifications occur only after staff selects Verify & Alert Parents. |
+| False-report controls | Rejected reports create progressive strikes; three strikes suspend reporting privileges until staff unlocks the account. |
+| Staff OTP | Counselors and super admins share `/admin/login` and use six-digit email OTP verification with expiry and attempt limits. |
+| Unified staff dashboard | Counselors and super admins monitor vents, incidents, risk charts, alert logs, and pending meeting requests. |
+| Case summary | Staff can inspect risk history, vents, incidents, notification logs, notes, status history, and a unified case timeline. |
+| Case notes and statuses | Counselors can add notes and move cases through the defined case-management states. |
+| One-to-one video meetings | Students request sessions; staff start a unique Jitsi room; both roles join through embedded or linked Jitsi clients. |
+| User management | Super admins create, edit, delete, and unlock accounts. |
+| Audit logs | Login and administrative/case actions are recorded in the audit log. |
+| Archive and restore | Vent and incident records support soft deletion, restoration, and bulk operations. |
+| Printable case report | The case-summary view includes print/PDF styling and an official confidential report layout. |
 
----
+## Partially Implemented
 
-## ⚠️ PARTIALLY IMPLEMENTED (mentioned in paper but incomplete in system)
+| Capability | Current limitation |
+|---|---|
+| Guardian consent | The registration checkbox captures acceptance as a submission requirement, but there is no separate guardian identity, signature, consent record, version, or timestamp. |
+| Parent participation | Parents receive SMS/email notifications but have no account, portal, or acknowledgement workflow. |
+| Student report tracking | Report status exists in the database, but students do not have a report-history/status page. |
+| Counselor assignment | Case summaries and case statuses exist, but a case cannot be assigned to a named counselor with ownership and workload tracking. |
+| Trajectory durability | The ML service writes FAISS/index metadata to its local filesystem. Durable 14-day history depends on the Hugging Face Space having persistent storage and is not guaranteed by the code alone. |
+| Counselor recommendations | Risk reasons and trends are available, but there is no structured, counselor-facing intervention recommendation engine. |
+| Grade/year analytics | Grade data is collected, but the main dashboard does not provide a complete grade/year analytics filter. |
+| Alert observability | Several alert logs exist, but delivery behavior and logging are split between database tables and `writable/logs/alerts.json`. |
+| ML availability | Hugging Face cold starts can delay or prevent inference; PHP fallback preserves basic triage but not full neural/trajectory analysis. |
 
-| Feature | What Paper Says | What's Actually There | Gap |
-|---|---|---|---|
-| **Parent/Guardian alerting** | Parents receive SMS + Email for both vent AND bullying alerts | SMS/Email sends to `parent_phone` field | **No parent portal or login** — parents only get SMS/email pushes, they can't log in or view anything |
-| **Data Privacy / RA 10173** | Paper cites Republic Act 10173 (Data Privacy Act), mentions guardian consent model must be applied before registration | System has no guardian consent screen, terms and conditions, or checkbox | **Consent gate UI missing (no guardian consent screen, terms and conditions too)** |
-| **Report status tracking** | Paper implies students can see the status of their reports | `bully_reports` table has a status column | **No UI for students to check report status** — student dashboard doesn't show report history or status |
-| **Behavioral trajectory** | FAISS tracks 14-day window and can escalate severity | Migration exists, ML service has code | Trajectory data written to DB but **counselor dashboard doesn't visualize the 14-day graph/trend** |
-| **Escalation workflow** | Paper says risk escalation triggers counselor alert automatically | VentController triggers SMS at CRITICAL | Only CRITICAL triggers auto-alert; **no automated escalation path documented per role** (e.g. Medium → counselor queue) |
-| **Counselor assignment** | Paper mentions counselors can assign/manage cases | Case summary exists | **No case assignment UI** — can't assign a report to a specific counselor |
+## Not Implemented
 
----
+| Capability described or implied by older papers | Current status |
+|---|---|
+| Teacher role and teacher dashboard | No teacher role exists. Roles are student (`0`), counselor (`1`), and super admin (`2`). |
+| Parent/guardian login | No parent role, authentication flow, or dashboard exists. |
+| Student/staff live chat | No persistent two-way chat or messaging module exists. Jitsi meetings are the only real-time communication feature. |
+| Automated 24-hour resolution acknowledgement | No scheduler or parent acknowledgement link closes the alert loop automatically. |
+| Bullying hotspot heatmap | The current report flow does not extract normalized locations or render a location heatmap. |
+| Case workload assignment | There is no queue ownership, assignment history, or counselor workload view. |
+| ML accuracy feedback dashboard | Counselors cannot label ML predictions as correct/incorrect through a dedicated feedback and evaluation interface. |
 
-## ❌ NOT IMPLEMENTED (paper says it, system does NOT have it)
+## Documentation Corrections
 
-| Feature | What Paper Says | Status |
-|---|---|---|
-| **Teacher role / Teacher accounts** | Paper lists "Teachers" as a user actor in the Use Case Diagram. Teachers have their own flowchart (Figure 7 mentions Counselors Flowchart; teacher interactions are described) | **No teacher role exists** in code. Only role=0 (student), role=1 (counselor), role=2 (super_admin). No teacher login, no teacher-specific views. |
-| **Parent/Guardian portal or login** | Paper explicitly describes: "Parents/Guardians" as actors. Parents are supposed to be able to log in and view notifications/reports about their child | **No parent login exists.** Parents only receive SMS/email. No `parent` role, no parent dashboard, no parent authentication. |
-| **Video conferencing (1-on-1)** | Paper states: *"The system includes an online video conferencing feature limited to one-on-one sessions between a student [and counselor]"* | **Completely absent.** No Zoom/Jitsi/WebRTC integration exists anywhere in codebase. |
-| **Live chat / in-app messaging** | Paper references a "Safe Space" portal with a conversational/chat-like UI that encourages usage | **No chat feature.** Paper's own limitations section notes *"Live chat and interactive dialogue are not supported"* — but the portal concept implies a messaging UI that was planned |
-| **Recommendations engine** | Paper mentions the system should provide counselor-facing recommendations based on student risk | **No recommendation output UI.** ML service returns a risk level but does not generate intervention recommendations shown to counselors |
-| **Grade level / Year level as filter** | Paper describes filtering students by grade/year level in dashboards | **Section field exists** but **no grade level field**, and **no dashboard filter by grade/year level** |
-| ~~**PDF export / report generation**~~ | ✅ CONFIRMED PRESENT — `case_summary.php` has a "Print / Export PDF" button with full `@media print` styling, official header, and confidential footer. Removed from this list. |
-| **Guardian consent & Terms** | Paper: *"user registration, mood tracking, and notification for parents must be suspended until guardian consent is secured"* | **No consent mechanism.** Students can register and use the system without any guardian consent or terms and conditions being logged/agreed to. |
-| **Escalation notification to school admin** | Paper: *"SMS alerts via local SMS Gateway…for notifying parents and school administrators at once"* | Admin is notified via dashboard but **no SMS is sent to school administrators** — only counselor and parents receive SMS |
-| **Pilot test / accuracy tracking** | Paper mentions verifying AI flag accuracy through a pilot test with SVBSM admin | **No accuracy tracking dashboard or pilot test module** exists |
+- Older documents that reference the Azure VM describe a decommissioned deployment. Hugging Face Spaces is the current ML runtime.
+- The active encryption configuration is OpenSSL AES-256-CTR, not Sodium AES-256-GCM.
+- The PHP fallback does not always compete with the ML score. It runs fully when the ML service response is unavailable or invalid; explicit suicide phrases also hard-override a valid ML response.
+- Student authentication uses name and password, not the generated `students.student_id`.
+- Counselors do not have a separate dashboard implementation. `/counselor/*` redirects to the unified `/admin/*` routes.
+- Parent alerts for bullying are not sent at report intake. They are counselor-gated through report verification.
+- Video conferencing is implemented through Jitsi Meet and is no longer a paper-only feature.
 
----
+## Open Security and Reliability Work
 
-## 📁 File Cleanup Done
+These items describe current code and should not be presented as completed safeguards:
 
-- Deleted: `Capstone Project 1 - Updated.docx` (duplicate)
-- Kept: `StudentShield Capstone.pdf` ← **this is the original paper**
-- Kept: `StudentShield Capstone.docx` ← editable version
+1. Remove the public `/debug-meeting` route. It discloses database structure and record details and performs a temporary write.
+2. Rotate credentials previously stored in tracked documentation or hard-coded defaults, purge them from Git history, and rely exclusively on deployment secrets.
+3. Enable and test the global CodeIgniter CSRF filter. Rendering CSRF fields does not enforce validation while the filter is disabled.
+4. Re-enable TLS peer and hostname verification for calls to the ML service.
+5. Stop logging plaintext OTP values.
+6. Fix the undefined `$riskPercent` variable in the HIGH-risk counselor message.
+7. Consolidate the duplicate Hugging Face deployment workflows.
+8. Replace request-time schema alterations with reviewed migrations or documented phpMyAdmin deployment steps.
 
-> Temp files `_capstone_extracted.txt`, `_capstone_clean.txt`, `_capstone_readable.txt` and `analyze_paper.py` in `ml_service/` — safe to delete after this review.
+## Authoritative Code References
+
+- Routes and role entry points: `web-app-ci4/app/Config/Routes.php`
+- Authentication and registration: `web-app-ci4/app/Controllers/AuthController.php`
+- Vent analysis and alerts: `web-app-ci4/app/Controllers/VentController.php`
+- Bullying intake: `web-app-ci4/app/Controllers/BullyReportController.php`
+- Staff triage: `web-app-ci4/app/Controllers/AdminController.php`
+- Case aggregation: `web-app-ci4/app/Controllers/CaseSummaryController.php`
+- Meetings: `web-app-ci4/app/Controllers/VirtualMeetingController.php`
+- ML pipeline: `ml_service/main.py`
+- Database baseline: `schema.sql`

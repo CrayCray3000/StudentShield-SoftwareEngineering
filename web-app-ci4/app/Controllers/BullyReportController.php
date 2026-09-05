@@ -8,8 +8,6 @@ class BullyReportController extends BaseController
 {
     public function index()
     {
-        $this->ensureIsLockedColumn();
-
         // Block locked students from accessing the bullying report form
         $userId = session()->get('user_id');
         if ($userId) {
@@ -235,20 +233,4 @@ class BullyReportController extends BaseController
         } catch (\Exception $e) {}
     }
 
-    /**
-     * Safely ensure the is_locked column exists in the users table.
-     * This runs once per session and is InfinityFree-safe.
-     */
-    private function ensureIsLockedColumn(): void
-    {
-        try {
-            $db = \Config\Database::connect();
-            $fields = $db->getFieldNames('users');
-            if (!in_array('is_locked', $fields)) {
-                $db->query("ALTER TABLE users ADD COLUMN is_locked TINYINT(1) NOT NULL DEFAULT 0");
-            }
-        } catch (\Exception $e) {
-            // Silently skip if column already exists or ALTER fails
-        }
-    }
 }

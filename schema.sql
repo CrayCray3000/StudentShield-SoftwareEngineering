@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     role TINYINT(1) DEFAULT 0 COMMENT '0=Student, 1=Counselor, 2=Super Admin',
     remember_token VARCHAR(255) NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 0,
+    is_locked TINYINT(1) NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 );
@@ -48,6 +50,8 @@ CREATE TABLE IF NOT EXISTS vent_logs (
     emotions VARCHAR(255),
     risk_percent DECIMAL(5,2),
     risk_level VARCHAR(50),
+    trajectory VARCHAR(50) DEFAULT 'INSUFFICIENT_DATA',
+    escalation_probability DECIMAL(5,4) DEFAULT 0.0000,
     status ENUM('Pending', 'Reviewed', 'Flagged') DEFAULT 'Pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL DEFAULT NULL,
@@ -63,7 +67,7 @@ CREATE TABLE IF NOT EXISTS bully_reports (
     bully_student_id INT NULL,
     incident_details TEXT,
     evidence_file VARCHAR(255),
-    status ENUM('pending_review', 'verified', 'rejected_fake') DEFAULT 'pending_review',
+    status VARCHAR(50) NOT NULL DEFAULT 'pending_review',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL DEFAULT NULL,
     deleted_at DATETIME NULL DEFAULT NULL,
@@ -134,9 +138,9 @@ CREATE TABLE IF NOT EXISTS case_status_history (
 CREATE TABLE IF NOT EXISTS virtual_meetings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
-    counselor_id INT NOT NULL,
-    meet_link VARCHAR(255) NOT NULL,
-    status ENUM('active', 'completed', 'cancelled') DEFAULT 'active',
+    counselor_id INT NULL,
+    meet_link VARCHAR(255) NOT NULL DEFAULT '',
+    status VARCHAR(50) NOT NULL DEFAULT 'requested',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (counselor_id) REFERENCES users(id) ON DELETE CASCADE

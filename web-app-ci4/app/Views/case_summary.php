@@ -1023,6 +1023,7 @@
 
             fetch(`${formBaseUrl}/${studentId}/note`, {
                 method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' },
                 body: formData
             })
             .then(res => {
@@ -1044,7 +1045,8 @@
             if (!confirm("Are you sure you want to delete this counseling note? This action will archive it from active view.")) return;
 
             fetch("/admin/case-summary/note/delete/" + id, {
-                method: 'POST'
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' }
             })
             .then(res => {
                 if (!res.ok) throw new Error("HTTP error " + res.status);
@@ -1082,6 +1084,7 @@
 
             fetch(`${formBaseUrl}/${studentId}/status`, {
                 method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' },
                 body: formData
             })
             .then(res => {

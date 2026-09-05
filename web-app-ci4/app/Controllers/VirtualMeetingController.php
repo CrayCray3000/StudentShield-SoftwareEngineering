@@ -20,8 +20,6 @@ class VirtualMeetingController extends Controller
         $studentId = $session->get('user_id');
 
         $db = Database::connect();
-        $this->ensureVirtualMeetingsTable($db);
-
         $builder = $db->table('virtual_meetings');
 
         // Check if there is already an active meeting or pending request
@@ -94,8 +92,6 @@ class VirtualMeetingController extends Controller
         }
 
         $db = Database::connect();
-        $this->ensureVirtualMeetingsTable($db);
-
         $pending = $db->table('virtual_meetings')
             ->where('student_id', $studentId)
             ->where('status', 'requested')
@@ -127,9 +123,6 @@ class VirtualMeetingController extends Controller
 
         $db = Database::connect();
         
-        // Ensure table exists (though handled in CaseSummaryController, good to be safe)
-        $this->ensureVirtualMeetingsTable($db);
-
         // Check if there is already an active meeting for this student
         $builder = $db->table('virtual_meetings');
         $activeMeeting = $builder->where('student_id', $studentId)
@@ -228,7 +221,6 @@ class VirtualMeetingController extends Controller
         $studentId = $session->get('user_id');
 
         $db = Database::connect();
-        $this->ensureVirtualMeetingsTable($db);
         $builder = $db->table('virtual_meetings');
 
         // Check for active meeting first
@@ -261,75 +253,4 @@ class VirtualMeetingController extends Controller
         ]);
     }
 
-    private function ensureVirtualMeetingsTable($db)
-    {
-        if (!$db->tableExists('virtual_meetings')) {
-            $forge = \Config\Database::forge();
-            $forge->addField([
-                'id'           => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-                'student_id'   => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-                'counselor_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true, 'default' => null],
-                'meet_link'    => ['type' => 'VARCHAR', 'constraint' => 255, 'default' => ''],
-                'status'       => ['type' => 'VARCHAR', 'constraint' => 50, 'default' => 'requested'],
-                'created_at'   => ['type' => 'DATETIME', 'null' => true],
-            ]);
-            $forge->addKey('id', true);
-            $forge->createTable('virtual_meetings', true);
-        } else {
-            // Self-healing schema: fix counselor_id to allow NULL
-            try {
-                $db->query("ALTER TABLE virtual_meetings MODIFY counselor_id INT(11) NULL DEFAULT NULL");
-            } catch (\Throwable $e) { /* ignore */ }
-            // Self-healing schema: fix status from enum to varchar so 'requested' is a valid value
-            try {
-                $db->query("ALTER TABLE virtual_meetings MODIFY status VARCHAR(50) NOT NULL DEFAULT 'requested'");
-            } catch (\Throwable $e) { /* ignore */ }
-        }
-    }
-
-    /**
-     * Diagnostic endpoint — REMOVE AFTER DEBUGGING
-     */
-    public function debugMeeting()
-    {
-        $db = Database::connect();
-        $out = [];
-
-        $out['table_exists'] = $db->tableExists('virtual_meetings');
-
-        if ($out['table_exists']) {
-            // Show full table definition on live server
-            $ddl = $db->query("SHOW CREATE TABLE virtual_meetings")->getRowArray();
-            $out['live_table_ddl'] = $ddl['Create Table'];
-
-            // Find a real student
-            $student = $db->table('users')->where('role', 0)->limit(1)->get()->getRowArray();
-            $out['test_student_id'] = $student['id'] ?? null;
-
-            if ($student) {
-                try {
-                    $db->table('virtual_meetings')->insert([
-                        'student_id'   => $student['id'],
-                        'counselor_id' => null,
-                        'meet_link'    => '',
-                        'status'       => 'requested',
-                        'created_at'   => date('Y-m-d H:i:s'),
-                    ]);
-                    $insertedId = $db->insertID();
-                    // Read it back BEFORE deleting to confirm status
-                    $readBack = $db->table('virtual_meetings')->where('id', $insertedId)->get()->getRowArray();
-                    $out['inserted_row_status'] = $readBack['status'] ?? 'ROW NOT FOUND';
-                    $out['inserted_row'] = $readBack;
-                    $db->table('virtual_meetings')->where('id', $insertedId)->delete();
-                    $out['insert_success'] = true;
-                } catch (\Throwable $e) {
-                    $out['insert_success'] = false;
-                    $out['insert_error'] = $e->getMessage();
-                }
-            }
-        }
-
-        return $this->response->setHeader('Content-Type', 'application/json')
-                               ->setBody(json_encode($out, JSON_PRETTY_PRINT));
-    }
 }

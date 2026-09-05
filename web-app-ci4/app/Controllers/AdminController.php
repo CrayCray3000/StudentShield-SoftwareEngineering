@@ -649,8 +649,6 @@ class AdminController extends BaseController
 
     /**
      * View pending student registrations (Approval-Based Registration).
-     * Automatically provisions the is_active column on the production DB
-     * if it has not been migrated yet, so the page never shows Whoops.
      */
     public function pendingRegistrations()
     {
@@ -659,27 +657,6 @@ class AdminController extends BaseController
         }
 
         $db = \Config\Database::connect();
-
-        // --- Safety net: provision missing columns on production DB ---
-        try {
-            $columns = $db->getFieldNames('users');
-
-            if (!in_array('is_active', $columns)) {
-                $db->query('ALTER TABLE users ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 0');
-                log_message('info', 'AdminController: auto-added is_active column (DEFAULT 0) to users table.');
-            } else {
-                // Fix column default if it was incorrectly set to 1
-                $db->query('ALTER TABLE users MODIFY COLUMN is_active TINYINT(1) NOT NULL DEFAULT 0');
-            }
-
-            if (!in_array('created_at', $columns)) {
-                $db->query('ALTER TABLE users ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
-                log_message('info', 'AdminController: auto-added created_at column to users table.');
-            }
-        } catch (\Throwable $e) {
-            log_message('error', 'AdminController::pendingRegistrations column-check failed: ' . $e->getMessage());
-        }
-        // ---------------------------------------------------------------
 
         $pendingUsers = [];
         try {
@@ -715,12 +692,6 @@ class AdminController extends BaseController
         $db = \Config\Database::connect();
 
         try {
-            // Safety check: Ensure is_active column exists
-            $columns = $db->getFieldNames('users');
-            if (!in_array('is_active', $columns)) {
-                $db->query('ALTER TABLE users ADD COLUMN is_active TINYINT(1) NOT NULL DEFAULT 0');
-            }
-
             $db->table('users')->where('id', (int)$userId)->update(['is_active' => 1]);
             $this->logAudit('STUDENT_APPROVED', 'system', (int)$userId);
 

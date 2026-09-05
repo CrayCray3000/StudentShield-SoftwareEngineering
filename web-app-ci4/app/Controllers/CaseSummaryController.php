@@ -36,9 +36,6 @@ class CaseSummaryController extends BaseController
 
         $db = \Config\Database::connect();
 
-        // Ensure tables exist (safe for fresh installs)
-        $this->ensureTables($db);
-
         $student = $this->getStudentInfo($db, $studentId);
         if (!$student) {
             return redirect()->to('/admin/dashboard')->with('error', 'Student not found.');
@@ -65,8 +62,6 @@ class CaseSummaryController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        $this->ensureTables($db);
-
         $student = $this->getStudentInfo($db, $studentId);
         if (!$student) {
             return $this->response->setStatusCode(404)->setJSON(['error' => 'Student not found']);
@@ -377,8 +372,6 @@ class CaseSummaryController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        $this->ensureTables($db);
-
         $db->table('counselor_notes')->insert([
             'student_id'   => (int) $studentId,
             'counselor_id' => (int) session()->get('user_id'),
@@ -414,8 +407,6 @@ class CaseSummaryController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        $this->ensureTables($db);
-
         $db->table('case_status_history')->insert([
             'student_id' => (int) $studentId,
             'status'     => $status,
@@ -444,8 +435,6 @@ class CaseSummaryController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        $this->ensureTables($db);
-
         // Cancel existing active meetings
         $db->table('virtual_meetings')
            ->where('student_id', $studentId)
@@ -523,95 +512,4 @@ class CaseSummaryController extends BaseController
         return $user;
     }
 
-    /**
-     * Create tables if they don't exist yet (handles fresh installs without migration).
-     */
-    private function ensureTables($db): void
-    {
-        // NOTE: No FOREIGN KEY constraints — InfinityFree shared hosting rejects them.
-        try {
-            if (!$db->tableExists('counselor_notes')) {
-                $db->query("CREATE TABLE IF NOT EXISTS counselor_notes (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    student_id INT NOT NULL,
-                    counselor_id INT NOT NULL,
-                    note_type ENUM('observation','recommendation','intervention','follow_up','general') DEFAULT 'general',
-                    content TEXT NOT NULL,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-                    deleted_at DATETIME NULL DEFAULT NULL,
-                    INDEX idx_student (student_id),
-                    INDEX idx_counselor (counselor_id)
-                )");
-            }
-
-            if (!$db->tableExists('case_status_history')) {
-                $db->query("CREATE TABLE IF NOT EXISTS case_status_history (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    student_id INT NOT NULL,
-                    status ENUM('active_monitoring','intervention_ongoing','parent_consultation_required','escalated','under_investigation','resolved','closed') NOT NULL,
-                    remarks TEXT NULL,
-                    changed_by INT NOT NULL,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    INDEX idx_student (student_id),
-                    INDEX idx_changed_by (changed_by)
-                )");
-            }
-
-            if (!$db->tableExists('sms_logs')) {
-                $db->query("CREATE TABLE IF NOT EXISTS sms_logs (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    student_id INT NOT NULL,
-                    parent_number VARCHAR(20) NULL,
-                    alert_type VARCHAR(50) DEFAULT 'risk_alert',
-                    message TEXT NULL,
-                    sent_status VARCHAR(20) DEFAULT 'pending',
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    INDEX idx_student (student_id)
-                )");
-            }
-
-            if (!$db->tableExists('email_logs')) {
-                $db->query("CREATE TABLE IF NOT EXISTS email_logs (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    student_id INT NOT NULL,
-                    recipient_email VARCHAR(255) NULL,
-                    subject VARCHAR(255) NULL,
-                    body TEXT NULL,
-                    sent_status VARCHAR(20) DEFAULT 'pending',
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    INDEX idx_student (student_id)
-                )");
-            }
-
-            if (!$db->tableExists('audit_logs')) {
-                $db->query("CREATE TABLE IF NOT EXISTS audit_logs (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    user_id INT NULL,
-                    action VARCHAR(100) NOT NULL,
-                    entity_type VARCHAR(50) NOT NULL,
-                    entity_id INT NOT NULL,
-                    ip_address VARCHAR(45) NULL,
-                    user_agent TEXT NULL,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    INDEX idx_entity (entity_type, entity_id)
-                )");
-            }
-
-            if (!$db->tableExists('virtual_meetings')) {
-                $db->query("CREATE TABLE IF NOT EXISTS virtual_meetings (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    student_id INT NOT NULL,
-                    counselor_id INT NOT NULL,
-                    meet_link VARCHAR(255) NOT NULL,
-                    status ENUM('active', 'completed', 'cancelled') DEFAULT 'active',
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    INDEX idx_student (student_id),
-                    INDEX idx_counselor (counselor_id)
-                )");
-            }
-        } catch (\Exception $e) {
-            log_message('error', 'ensureTables failed: ' . $e->getMessage());
-        }
-    }
 }

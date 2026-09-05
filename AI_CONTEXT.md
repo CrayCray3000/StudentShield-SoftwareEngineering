@@ -14,7 +14,7 @@
 - **Local Dev:** Laragon on Windows (`D:\laragon\www\student shield\`)
 - **Database:** MySQL (local: Laragon root/no-password; production: InfinityFree MySQL)
 - **SMS Alerts:** Local Android SMS Gateway app (LAN IP: `192.168.1.3:8080`)
-- **Email Alerts:** Gmail SMTP (`vonnchristianmielmeneses@gmail.com`)
+- **Email Alerts:** Gmail SMTP (configured via environment in .env)
 - **Repo:** `https://github.com/mieell/student-shield-official` (branch: `main`)
 
 ---
@@ -82,7 +82,7 @@ student-shield/
 | **Internal Port** | `7860` (standard HF Docker port) |
 | **Auto-deploy** | ✅ Yes — GitHub Actions (`deploy_hf.yml`) triggers on push to `main` when `ml_service/**` changes |
 
-**How the ML Pipeline Works (v7.7):**
+**How the Current ML Pipeline Works:**
 ```
 1. Student submits vent → PHP VentController sends HTTP POST to HF Space API
 2. Pre-processing: Elongation collapse (e.g., 'pagooooood' → 'pagod') + Taglish slang/typo normalization (dko, tlga, wla, nlng, etc.)
@@ -121,7 +121,7 @@ git subtree push --prefix ml_service https://ashlogg:<HF_TOKEN>@huggingface.co/s
 
 ## 🔑 Environment Variables (`.env`)
 
-The `.env` file lives at `web-app-ci4/.env` and is **NOT committed to git** (gitignored). This is the current config:
+The `.env` file lives at `web-app-ci4/.env` and is **NOT committed to git**. Never copy live values into tracked Markdown, PHP defaults, tests, screenshots, or issue reports. The following is a safe template:
 
 ```ini
 CI_ENVIRONMENT = development          # Change to "production" on server
@@ -138,30 +138,30 @@ database.default.DBDriver = MySQLi
 database.default.port = 3306
 
 # ENCRYPTION KEY (required for vent text encryption)
-encryption.key = hex2bin('785a21faeb289ff35b887bd75168ceb78c950a7f1a3b8fc7d92a106e23b7e4d8')
+encryption.key = hex2bin('<64-hex-character-secret>')
 
 # ML SERVICE (Hugging Face)
 ML_API_URL = https://ashlogg-student-shield-official.hf.space
-ML_API_KEY = svbsm-production-ml-key-v1
+ML_API_KEY = <random-secret-shared-with-the-ML-service>
 
 # EMAIL ALERTS & 2FA OTP (Gmail SMTP)
 email.protocol = smtp
 email.SMTPHost = smtp.gmail.com
-email.SMTPUser = vonnchristianmielmeneses@gmail.com
-email.SMTPPass = "vsmanuqipbmfasht"
+email.SMTPUser = <school-alert-email>
+email.SMTPPass = <smtp-app-password>
 email.SMTPPort = 587
 email.SMTPCrypto = tls
 
 # COUNSELOR CONTACTS
-COUNSELOR_PHONE = "09221234567"
-COUNSELOR_EMAIL = "svbsmcounseling@gmail.com"
+COUNSELOR_PHONE = <counselor-phone>
+COUNSELOR_EMAIL = <counselor-email>
 
 # LOCAL SMS GATEWAY (Android phone on LAN — only works locally)
-sms.GatewayUrl = "http://192.168.1.3:8080/send-sms"
+sms.GatewayUrl = <sms-gateway-url>
 
 # CLOUD SMS (CloudSMS API)
-CLOUDSMS_APP_KEY="F5AD8A6AC7614144828FD80D6B5A454B"
-CLOUDSMS_APP_SECRET="WAiTLHJ2GvVgRGEnehcpmaIMMAkTQb7uZtb143js"
+CLOUDSMS_APP_KEY=<cloud-sms-key>
+CLOUDSMS_APP_SECRET=<cloud-sms-secret>
 ```
 
 > ⚠️ **On production (InfinityFree)**, the server has its own `.env` with the InfinityFree DB hostname, username, and password. You cannot SSH in to see it — it was set manually via their file manager.
@@ -195,7 +195,7 @@ risk_level, trajectory, escalation_probability,
 status (Pending/Reviewed/Flagged), created_at, deleted_at
 ```
 
-> ⚠️ **Known issue**: The `schema.sql` file is outdated and missing `trajectory` and `escalation_probability`. If setting up a fresh DB, add them:
+> ⚠️ **Schema compatibility note**: Confirm that production contains `trajectory` and `escalation_probability`. Older database exports may be missing them. If needed, add them through phpMyAdmin because production has no CLI access:
 > ```sql
 > ALTER TABLE vent_logs
 >   ADD COLUMN trajectory VARCHAR(50) DEFAULT 'INSUFFICIENT_DATA' AFTER risk_level,
@@ -210,15 +210,24 @@ status (Pending/Reviewed/Flagged), created_at, deleted_at
 
 - Exposes `/analyze-text` (POST) — main endpoint used by `VentController.php`
 - Accepts: `{ "raw_text": "...", "student_id": "..." }`
-- Returns: `{ "risk_level": "LOW|MEDIUM|HIGH|CRITICAL", "risk_score": 0.0-1.0, "trajectory": "...", "escalation_probability": 0.0 }`
+- Returns: `{ "risk_level": "LOW|MEDIUM|HIGH|CRITICAL", "risk_score": 1-100, "trajectory": "...", "escalation_probability": 0.0-0.99 }`. Despite its name, `risk_score` is a banded percentage, not a 0-1 probability.
 - Uses: trained mDeBERTa + RoBERTa models + FAISS vector memory for per-student trajectory tracking
-- API key auth: `X-API-KEY` header = `svbsm-production-ml-key-v1`
+- API key auth: the `X-API-KEY` header must match `ML_API_KEY` in both deployment environments. Do not document the value.
 
 **Fallback:** If the HF Space is cold-starting or unreachable, `VentController.php` automatically falls back to `localKeywordFallback()` — a PHP keyword heuristic that still catches high-risk Taglish phrases. No user-facing error is shown.
 
 ---
 
 ## 🔄 Key Workflows
+
+### Student Registration and Approval
+1. A student registers at `/register` with name, grade, section, parent/guardian contact, and a strong password.
+2. The student must accept the displayed Terms and Data Privacy Policy.
+3. Registration creates a role-0 account with `is_active = 0`.
+4. A counselor or super admin approves or rejects the registration from `/admin/pending-registrations`.
+5. Only an approved student can log in and reach `/student/dashboard`.
+
+> The current checkbox records acceptance only as a submission requirement; it does not persist a separate guardian-consent record, signer identity, or consent timestamp.
 
 ### Submitting a Vent (Student Flow)
 1. Student fills `vent_form.php` → AJAX POST to `/student/vent/submit`
@@ -229,6 +238,27 @@ status (Pending/Reviewed/Flagged), created_at, deleted_at
    - **CRITICAL:** Sends immediate alert email to Counselor + sends support email/SMS to Parent (unless hidden).
    - **HIGH:** Sends high-priority email to Counselor only (to prevent parent alert fatigue).
 6. Returns JSON → JS shows empathetic feedback or calming resources
+
+### Bullying Incident Report
+1. An authenticated student submits a self or bystander report, optionally with image/video evidence.
+2. The controller rate-limits submissions, encrypts the report details, and stores the report as `pending_review`.
+3. The reporter receives a confirmation and the counseling team receives the intake alert. Parents are not contacted at intake.
+4. Staff manually chooses one of the guarded outcomes:
+   - **Verify & alert:** marks the report verified and sends parent/guardian notifications for uniquely resolved student records.
+   - **Reject as fake:** sends no incident alert to parents and applies the progressive false-report strike policy.
+   - **Resolve/archive:** closes or soft-deletes the operational record while retaining audit history.
+
+### Counselor and Super Admin Flow
+- Counselors and super admins share `/admin/login`, email OTP verification, and `/admin/dashboard`.
+- Counselors can triage vents and incidents, approve registrations, open student case summaries, add notes, update case status, and conduct one-to-one Jitsi meetings.
+- Super admins additionally manage users and view system audit logs.
+- `/counselor/*` URLs redirect to the corresponding unified `/admin/*` route.
+
+### Virtual Meeting Flow
+1. A student requests a session from the student dashboard or Safe Space page.
+2. The dashboard polls for pending requests and alerts staff.
+3. Staff starts a meeting from the student's case summary; the server generates a unique room name.
+4. Student and counselor join the same `meet.jit.si` room. Ending the session updates the meeting record.
 
 ### Deploying Web App Changes (Automated)
 Web application deployment is **100% automated** via GitHub Actions:
@@ -270,9 +300,18 @@ Web application deployment is **100% automated** via GitHub Actions:
 
 - Vent text is **AES-256 encrypted** before storing (`encryption.key` in `.env`)
 - If `encryption.key` is missing/wrong, the inner try-catch in `VentController` falls back to `base64_encode` and logs an error — submissions are never silently lost
-- CSRF protection is active (CI4 built-in) — AJAX requests include `X-CSRF-TOKEN` header + hidden form field
+- Forms render CSRF fields, but the global CSRF filter is currently disabled in `app/Config/Filters.php`. Treat CSRF protection as **not enforced** until the filter is enabled and all AJAX flows are verified.
 - Sessions use CI4 file-based session handler
 - Rate limiting: 1 vent per 30 seconds per session (enforced in `VentController::submit`)
+
+### Current Security/Operations Follow-ups
+- Remove the public `/debug-meeting` diagnostic route before production use; it exposes schema and record details and performs a temporary database write.
+- Rotate any credentials that were previously committed or hard-coded, then remove them from Git history and application defaults.
+- Stop logging OTP plaintext values.
+- Restore TLS peer and host verification for calls to the ML service.
+- Fix the undefined `$riskPercent` reference in the HIGH-risk counselor alert.
+- Enable and test the global CSRF filter.
+- Consolidate the two Hugging Face deployment workflows to prevent duplicate deployments.
 
 ---
 
@@ -285,5 +324,5 @@ Web application deployment is **100% automated** via GitHub Actions:
 | Check CI4 error logs (local) | `web-app-ci4/writable/logs/log-YYYY-MM-DD.log` |
 | Run CI4 CLI (local only) | `cd web-app-ci4; php spark <command>` |
 | Trigger HF deploy manually | Push any change to `ml_service/` on `main` branch |
-| Test ML endpoint | `curl -X POST https://ashlogg-student-shield-official-2285456.hf.space/analyze-text -H "X-API-KEY: studentshield_secret_key_2026" -H "Content-Type: application/json" -d '{"raw_text":"test","student_id":"1"}'` |
+| Test ML endpoint | `curl -X POST https://ashlogg-student-shield-official.hf.space/analyze-text -H "X-API-KEY: <YOUR_ML_API_KEY>" -H "Content-Type: application/json" -d '{"raw_text":"test","student_id":"1"}'` |
 | Run PowerShell git commands | Use `;` not `&&` as separator (PowerShell limitation) |

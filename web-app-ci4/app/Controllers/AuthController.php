@@ -191,7 +191,7 @@ class AuthController extends BaseController
             // 3. Fallback to SMTP User
             $recipientEmail = !empty($user['parent_email']) ? trim($user['parent_email']) : '';
             if (empty($recipientEmail)) {
-                $recipientEmail = env('COUNSELOR_EMAIL', env('email.SMTPUser', 'vonnchristianmielmeneses@gmail.com'));
+                $recipientEmail = env('COUNSELOR_EMAIL', env('email.SMTPUser', ''));
             }
 
             // Mask email for display on OTP page (e.g. vo***s@gmail.com)
@@ -211,8 +211,8 @@ class AuthController extends BaseController
             $emailSent = false;
             try {
                 $email = \Config\Services::email();
-                $smtpUser = env('email.SMTPUser', 'vonnchristianmielmeneses@gmail.com');
-                $smtpPass = env('email.SMTPPass', 'vsmanuqipbmfasht');
+                $smtpUser = trim((string) env('email.SMTPUser', ''));
+                $smtpPass = (string) env('email.SMTPPass', '');
                 $smtpHost = env('email.SMTPHost', 'smtp.gmail.com');
                 $smtpPort = (int) env('email.SMTPPort', 587);
                 $smtpCrypto = env('email.SMTPCrypto', 'tls');
@@ -268,7 +268,7 @@ class AuthController extends BaseController
                     $emailSent = true;
                     log_message('info', "OTP verification email successfully sent to {$recipientEmail} for user {$user['name']}");
                 } else {
-                    $debug = $email->printDebugger(['headers', 'subject', 'body']);
+                    $debug = $email->printDebugger(['headers', 'subject']);
                     log_message('error', "OTP Email sending failed: " . $debug);
                 }
             } catch (\Throwable $e) {
@@ -282,14 +282,14 @@ class AuthController extends BaseController
                     'recipient_email' => $recipientEmail,
                     'alert_type'      => 'ADMIN_LOGIN_OTP',
                     'subject'         => 'Admin Verification Code',
-                    'message_content' => "OTP: {$otp} generated for user {$user['name']}",
+                    'message_content' => "Admin login OTP delivery attempted for user {$user['name']}",
                     'sent_status'     => $emailSent ? 'sent' : 'failed'
                 ]);
             } catch (\Throwable $e) {
                 // Ignore if table schema differences exist
             }
 
-            log_message('critical', "OTP generated for {$user['name']} ({$recipientEmail}): {$otp}");
+            log_message('info', "OTP delivery attempt completed for user {$user['id']} with status " . ($emailSent ? 'sent' : 'failed'));
 
             // Redirect to OTP verification page
             return redirect()->to('/admin/otp');

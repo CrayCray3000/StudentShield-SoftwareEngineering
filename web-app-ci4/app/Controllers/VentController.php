@@ -50,32 +50,73 @@ class VentController extends BaseController
         // --- 1. CALL ML SERVICE FOR RISK ANALYSIS ---
         $mlApiBase = env('ML_API_URL') ?: (getenv('ML_API_URL') ?: 'https://ashlogg-student-shield-official.hf.space');
         $mlApiBase = rtrim($mlApiBase, '/');
-        $mlApiKey  = env('ML_API_KEY') ?: (getenv('ML_API_KEY') ?: 'svbsm-production-ml-key-v1');
+        $mlApiKey  = trim((string) (env('ML_API_KEY') ?: getenv('ML_API_KEY') ?: ''));
 
-        $ch = curl_init($mlApiBase . '/analyze-text');
+        // The web database is the durable source for the student's 14-day risk
+        // history. Sending only risk labels and timestamps avoids transmitting
+        // previous vent text and survives Hugging Face container rebuilds.
+        $db = \Config\Database::connect();
+        $riskHistory = [];
+        try {
+            $historyRows = $db->table('vent_logs')
+                ->select('risk_level, created_at')
+                ->where('user_id', $userId)
+                ->where('created_at >=', date('Y-m-d H:i:s', strtotime('-14 days')))
+                ->where('deleted_at IS NULL')
+                ->orderBy('created_at', 'ASC')
+                ->limit(100)
+                ->get()->getResultArray();
+
+            foreach ($historyRows as $historyRow) {
+                $historyRisk = strtoupper((string) ($historyRow['risk_level'] ?? ''));
+                $historyTimestamp = strtotime((string) ($historyRow['created_at'] ?? ''));
+                if (in_array($historyRisk, ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], true) && $historyTimestamp !== false) {
+                    $riskHistory[] = [
+                        'risk_level' => $historyRisk,
+                        'created_at' => gmdate('c', $historyTimestamp),
+                    ];
+                }
+            }
+        } catch (\Throwable $historyError) {
+            log_message('warning', 'Risk history query failed; continuing without trajectory history: ' . $historyError->getMessage());
+        }
         
         // Handle potentially invalid UTF-8 (smart quotes) which makes json_encode return false
-        $payload = json_encode(['raw_text' => $text, 'student_id' => (string)$userId], JSON_INVALID_UTF8_SUBSTITUTE);
+        $payloadData = [
+            'raw_text' => $text,
+            'student_id' => (string) $userId,
+            'risk_history' => $riskHistory,
+        ];
+        $payload = json_encode($payloadData, JSON_INVALID_UTF8_SUBSTITUTE);
         if ($payload === false) {
             log_message('error', 'JSON encode failed: ' . json_last_error_msg());
-            $payload = json_encode(['raw_text' => mb_convert_encoding($text, 'UTF-8', 'UTF-8'), 'student_id' => (string)$userId]);
+            $payloadData['raw_text'] = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+            $payload = json_encode($payloadData);
         }
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'X-API-KEY: ' . $mlApiKey
-        ]);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60); // Increased from 15 to 60 for slower ML models
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15); // Increased to 15s
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Prevent InfinityFree CA bundle failures
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        $response = curl_exec($ch);
-        $curlError = curl_error($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        $response = false;
+        $curlError = 'ML_API_KEY is not configured';
+        $httpCode = 0;
+        if ($mlApiKey !== '') {
+            $ch = curl_init($mlApiBase . '/analyze-text');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+                'X-API-KEY: ' . $mlApiKey
+            ]);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Existing hosting compatibility setting; tracked separately.
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            $response = curl_exec($ch);
+            $curlError = curl_error($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+        } else {
+            log_message('error', 'ML_API_KEY is not configured; using the local safety fallback');
+        }
 
         $mlResult = json_decode($response, true);
         $sentimentScore        = 0.0;
@@ -134,7 +175,6 @@ class VentController extends BaseController
         }
 
         // --- 3. SAVE TO DATABASE ---
-        $db = \Config\Database::connect();
         $emotions = (string)($this->request->getPost('emotions') ?? '');
         $insertData = [
             'user_id'      => $userId,
@@ -202,7 +242,7 @@ class VentController extends BaseController
                         // HIGH RISK: Alert counselor exclusively to handle professionally at school
                         // (We do NOT alert parents on HIGH to prevent alarm fatigue and helicopter parenting)
                         $this->triggerCounselorEmergencyAlert(
-                            "HIGH PRIORITY: {$studentName} ({$user->section}) submitted a HIGH risk vent ({$riskPercent}%). Please schedule a counseling session or wellness check-in.{$parentNote}",
+                            "HIGH PRIORITY: {$studentName} ({$user->section}) submitted a HIGH risk vent ({$sentimentScore}%). Please schedule a counseling session or wellness check-in.{$parentNote}",
                             "High Risk Counselor Notice: {$studentName}"
                         );
                     }
@@ -426,8 +466,8 @@ class VentController extends BaseController
         // 2. Email the Counselor Office
         try {
             $email = \Config\Services::email();
-            $smtpUser = env('email.SMTPUser', 'vonnchristianmielmeneses@gmail.com');
-            $smtpPass = env('email.SMTPPass', 'vsmanuqipbmfasht');
+            $smtpUser = env('email.SMTPUser', '');
+            $smtpPass = env('email.SMTPPass', '');
             $counselorEmail = env('COUNSELOR_EMAIL', '');
             if (empty($counselorEmail)) {
                 $counselorEmail = $smtpUser;

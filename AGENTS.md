@@ -31,7 +31,7 @@ StudentShield is a **distributed 2-cloud application**:
 When working on bug fixes, performance, or refactoring:
 
 ### A. Authentication & Security
-- **API Key Security:** The ML endpoint `/analyze-text` requires `X-API-KEY: svbsm-production-ml-key-v1`. Never remove authentication headers or expose secrets.
+- **API Key Security:** The ML endpoint `/analyze-text` requires the `X-API-KEY` header matching the environment `ML_API_KEY`. Never remove authentication headers or expose secrets.
 - **Data Privacy at Rest:** Student vent text (`raw_text`) in `web-app-ci4` is symmetrically encrypted using CodeIgniter 4's `Services::encrypter()` (`AES-256-CTR`). Do not bypass or alter the encryption format without backwards compatibility.
 - **Admin & Counselor 2FA:** Restored 6-digit email OTP for counselor and admin logins with automatic fallback.
 

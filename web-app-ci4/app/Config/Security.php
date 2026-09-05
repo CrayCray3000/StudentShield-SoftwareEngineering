@@ -71,7 +71,9 @@ class Security extends BaseConfig
      *
      * Regenerate CSRF Token on every submission.
      */
-    public bool $regenerate = true;
+    // Keep one token for the session so pages with multiple AJAX actions do not
+    // invalidate their own meta-token after the first successful POST.
+    public bool $regenerate = false;
 
     /**
      * --------------------------------------------------------------------------

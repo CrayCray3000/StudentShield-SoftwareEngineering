@@ -9,15 +9,15 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 import re
 import os
-import json
+import hmac
 import logging
 import torch
 from datetime import datetime, timedelta
 import numpy as np
 from transformers import pipeline
-import faiss
 from deep_translator import GoogleTranslator
 import nltk
+from risk_history import evaluate_risk_history
 
 try:
     nltk.data.find('tokenizers/punkt')
@@ -73,12 +73,15 @@ class IPWhitelistMiddleware(BaseHTTPMiddleware):
 app.add_middleware(IPWhitelistMiddleware)
 
 ### Security 
-API_KEY = os.getenv("ML_API_KEY", "svbsm-production-ml-key-v1")
+API_KEY = os.getenv("ML_API_KEY", "").strip()
 API_KEY_NAME = "X-API-KEY"
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=True)
 
 async def verify_api_key(api_key: str = Security(api_key_header)):
-    if api_key != API_KEY and api_key != "studentshield_secret_key_2026" and api_key != "svbsm-production-ml-key-v1":
+    if not API_KEY:
+        logger.error("ML_API_KEY is not configured; rejecting analysis requests")
+        raise HTTPException(status_code=503, detail="Service authentication is not configured")
+    if not hmac.compare_digest(api_key, API_KEY):
         raise HTTPException(status_code=401, detail="Invalid API Key")
     return api_key
 
@@ -318,13 +321,14 @@ def normalize_slang(text: str) -> str:
 
 logger.info(f"Encoded {len(CRISIS_PHRASES)} multilingual crisis anchor phrases.")
 
-### Contextual Memory (FAISS) 
-MEMORY_DIR = os.path.join(base_dir, "faiss_memory")
-os.makedirs(MEMORY_DIR, exist_ok=True)
+class RiskHistoryEntry(BaseModel):
+    risk_level: str
+    created_at: str
 
 class TextPayload(BaseModel):
     raw_text: str
     student_id: Optional[str] = None
+    risk_history: list[RiskHistoryEntry] = []
 
 class MLResponse(BaseModel):
     risk_score: float
@@ -352,54 +356,6 @@ def get_semantic_similarity(text: str) -> float:
     except Exception as e:
         logger.error(f"Semantic similarity error: {e}")
         return 0.0
-
-def manage_student_memory(
-    student_id: str, text: str, risk_level: str, embedding: np.ndarray
-) -> tuple[bool, str, float]:
-    if not student_id: return False, "INSUFFICIENT_DATA", 0.0
-    index_path = os.path.join(MEMORY_DIR, f"{student_id}.index")
-    meta_path  = os.path.join(MEMORY_DIR, f"{student_id}_meta.json")
-    try:
-        if os.path.exists(index_path) and os.path.exists(meta_path):
-            index = faiss.read_index(index_path)
-            with open(meta_path, 'r') as f: meta = json.load(f)
-        else:
-            dim = embedding.shape[1]
-            index = faiss.IndexFlatL2(dim)
-            meta = []
-        index.add(embedding.astype('float32'))
-        meta.append({"timestamp": datetime.now().isoformat(), "risk_level": risk_level})
-        faiss.write_index(index, index_path)
-        with open(meta_path, 'w') as f: json.dump(meta, f)
-
-        cutoff = (datetime.now() - timedelta(days=14)).isoformat()
-        recent_severe = sum(
-            1 for m in meta
-            if m['timestamp'] > cutoff and m['risk_level'] in ['HIGH', 'CRITICAL']
-        )
-
-        trajectory = "INSUFFICIENT_DATA"
-        escalation_probability = 0.0
-        recent_meta = [m for m in meta if m['timestamp'] > cutoff]
-        if len(recent_meta) >= 3:
-            risk_map = {"LOW": 1.0, "MEDIUM": 2.0, "HIGH": 3.0, "CRITICAL": 4.0}
-            scores = [risk_map.get(m['risk_level'], 1.0) for m in recent_meta]
-            slope = np.polyfit(range(len(scores)), scores, 1)[0]
-            if slope > 0.05:   trajectory = "ESCALATING"
-            elif slope < -0.05: trajectory = "IMPROVING"
-            else:               trajectory = "STABLE"
-
-            # Predictive Recurrence Probability Model (Proxy for Random Forest)
-            base_prob = 0.2
-            slope_factor = max(0, min(1, slope * 2)) 
-            severity_factor = min(1.0, recent_severe / 3.0) * 0.3
-            freq_factor = min(1.0, len(recent_meta) / 10.0) * 0.2
-            escalation_probability = round(min(0.99, base_prob + slope_factor + severity_factor + freq_factor), 2)
-
-        return (recent_severe >= 3), trajectory, escalation_probability
-    except Exception as e:
-        logger.error(f"FAISS Memory Engine error: {e}")
-        return False, "INSUFFICIENT_DATA", 0.0
 
 def get_risk_components(translated_text: str, normalized_text: str) -> tuple[float, float]:
     try:
@@ -1318,7 +1274,7 @@ async def root_health_check():
         "message": "Send POST requests to /analyze-text to classify vents.",
     }
 
-def analyze_text_sync(text: str, student_id: str = None) -> dict:
+def analyze_text_sync(text: str, student_id: str = None, risk_history: list[dict] | None = None) -> dict:
     ## ┐
     ### STAGE 0: SLANG NORMALIZATION & GLOBAL TRANSLATION      
     ## ┘
@@ -1725,16 +1681,15 @@ def analyze_text_sync(text: str, student_id: str = None) -> dict:
         reason     = "NLP: Positive/grateful vent — no active distress indicators."
 
     ## ┐
-    ### STAGE 8: CONTEXTUAL MEMORY (FAISS RAG)                 
+    ### STAGE 8: DURABLE CONTEXTUAL RISK HISTORY              
     ## ┘
     # Defaults — overwritten below if student_id is present
     trajectory     = "INSUFFICIENT_DATA"
     escalation_prob = 0.0
 
     if student_id:
-        user_embedding = get_mdeberta_embedding(text)
-        b_escalate, trajectory, escalation_prob = manage_student_memory(
-            student_id, text, risk, np.array([user_embedding])
+        b_escalate, trajectory, escalation_prob = evaluate_risk_history(
+            risk_history or [], risk
         )
         if escalation_prob > 0:
             reason = f"[Predictive Recurrence Risk: {int(escalation_prob*100)}%] " + reason
@@ -1802,7 +1757,11 @@ async def analyze_text(request: Request, payload: TextPayload, api_key: str = De
     if len(text) > MAX_INPUT_CHARS:
         raise HTTPException(status_code=400, detail=f"Input too long ({len(text)} chars). Max is {MAX_INPUT_CHARS}.")
 
-    res = analyze_text_sync(text, student_id)
+    history = [
+        item.model_dump() if hasattr(item, "model_dump") else item.dict()
+        for item in payload.risk_history
+    ]
+    res = analyze_text_sync(text, student_id, history)
     return {
         "risk_score":             res["risk_score"],
         "risk_level":             res["risk_level"],
