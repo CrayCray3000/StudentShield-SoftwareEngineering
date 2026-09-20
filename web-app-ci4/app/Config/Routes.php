@@ -56,6 +56,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/student/api/meeting/status', 'VirtualMeetingController::getActiveMeeting');
     $routes->post('/student/meeting/request', 'VirtualMeetingController::requestMeeting');
     $routes->post('/student/meeting/cancel-request', 'VirtualMeetingController::cancelRequest');
+    $routes->get('/meeting/join/(:num)', 'VirtualMeetingController::join/$1');
 
     $routes->post('/admin/incident/resolve/(:num)', 'AdminController::resolveIncident/$1');
     $routes->post('/admin/incident/verify/(:num)', 'AdminController::verifyIncident/$1');

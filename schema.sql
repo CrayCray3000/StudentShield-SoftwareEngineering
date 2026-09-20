@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS virtual_meetings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     counselor_id INT NULL,
-    meet_link VARCHAR(255) NOT NULL DEFAULT '',
+    meet_link VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'One Google Meet URL reserved for this counseling session',
     status VARCHAR(50) NOT NULL DEFAULT 'requested',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,

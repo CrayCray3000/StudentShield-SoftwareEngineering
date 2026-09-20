@@ -264,13 +264,16 @@
                             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
-                            Video Meeting
+                            Set up Google Meet
+                        </button>
+                        <button id="btnJoinGoogleMeeting" onclick="joinGoogleMeeting()" class="hidden no-print bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition shadow-sm flex items-center justify-center gap-1">
+                            Join Google Meet
                         </button>
                         <button id="btnEndVideoMeeting" onclick="endVideoMeeting()" class="hidden no-print bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition shadow-sm flex items-center justify-center gap-1">
                             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
-                            End Meeting
+                            Close session access
                         </button>
                     </div>
                 </div>
@@ -536,26 +539,37 @@
         </div>
     </div>
 
-    <!-- Video Meeting Modal (Jitsi) -->
-    <div id="videoMeetingModal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+    <!-- Google Meet publication dialog -->
+    <div id="googleMeetModal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl w-full max-w-xl shadow-2xl max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-label="Publish Google Meet">
             <div class="bg-gray-900 text-white p-4 flex justify-between items-center">
                 <h3 class="text-lg font-bold flex items-center gap-2">
                     <svg class="w-5 h-5 text-[#EAB308]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
-                    StudentShield Secure Video Meeting
+                    Open a Google Meet session
                 </h3>
-                <button onclick="hideVideoMeetingModal()" class="text-gray-400 hover:text-white transition">
+                <button type="button" onclick="hideGoogleMeetDialog()" class="text-gray-400 hover:text-white transition" aria-label="Close">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </div>
-            <div id="jitsiContainer" class="flex-1 bg-black"></div>
+            <form id="googleMeetForm" class="p-5 space-y-4" onsubmit="publishGoogleMeet(event)">
+                <p class="text-sm text-gray-600">Create a <a href="https://meet.google.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-emerald-700 underline">new Google Meet</a> using your school Workspace account. Invite only the intended student, select Restricted access, disable requests to join from uninvited people, and enable Host must join. If these controls are unavailable, do not publish the meeting.</p>
+                <label class="block text-sm font-semibold text-gray-800" for="googleMeetLink">Google Meet link</label>
+                <input id="googleMeetLink" name="meet_link" required pattern="https://meet\.google\.com/[a-z]{3}-[a-z]{4}-[a-z]{3}" placeholder="https://meet.google.com/abc-defg-hij" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100">
+                <label class="flex items-start gap-2 text-sm text-gray-700">
+                    <input id="googleMeetConfirmed" name="host_confirmed" type="checkbox" value="1" required class="mt-1">
+                    <span>I am the meeting host and have verified these settings in Google Meet. This is a new link for this student's session.</span>
+                </label>
+                <p class="text-xs text-gray-600">StudentShield access lasts two hours from publication. Closing access here does not end the Google call; use End meeting for all in Google Meet too.</p>
+                <p id="googleMeetError" class="hidden text-sm text-red-700" role="alert"></p>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="hideGoogleMeetDialog()" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700">Cancel</button>
+                    <button id="publishGoogleMeetButton" type="submit" class="rounded-lg bg-[#166534] px-4 py-2 text-sm font-bold text-white hover:bg-[#12532B]">Publish for this student</button>
+                </div>
+            </form>
         </div>
     </div>
-
-    <!-- Jitsi Meet API -->
-    <script src="https://meet.jit.si/external_api.js"></script>
 
     <!-- Scripting & AJAX Orchestration -->
     <script>
@@ -571,19 +585,40 @@
         });
 
         // Check if student has a pending session request
+        let currentHostJoinUrl = null;
         function checkPendingRequest() {
             fetch(`/admin/api/case-summary/${studentId}/meeting/pending`, {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
             .then(r => r.json())
             .then(data => {
+                if (data.status !== 'success') throw new Error(data.message || 'Meeting status unavailable');
+                currentHostJoinUrl = data.owned ? data.join_url : null;
                 const badge = document.getElementById('pendingRequestBadge');
+                const joinButton = document.getElementById('btnJoinGoogleMeeting');
+                const startButton = document.getElementById('btnStartVideoMeeting');
+                const endButton = document.getElementById('btnEndVideoMeeting');
                 if (data.pending && badge) {
                     badge.classList.remove('hidden');
                     badge.classList.add('flex');
                 } else if (badge) {
                     badge.classList.add('hidden');
                     badge.classList.remove('flex');
+                }
+                if (data.has_meeting && data.owned) {
+                    startButton?.classList.add('hidden');
+                    joinButton?.classList.remove('hidden');
+                    joinButton?.classList.add('flex');
+                    endButton?.classList.remove('hidden');
+                    endButton?.classList.add('flex');
+                } else {
+                    startButton.disabled = !!data.has_meeting;
+                    startButton.title = data.has_meeting ? 'Another host has an active session for this student.' : '';
+                    startButton?.classList.remove('hidden');
+                    joinButton?.classList.add('hidden');
+                    joinButton?.classList.remove('flex');
+                    endButton?.classList.add('hidden');
+                    endButton?.classList.remove('flex');
                 }
             })
             .catch(() => {});
@@ -1101,108 +1136,72 @@
             });
         }
 
-        let jitsiApi = null;
-        let activeMeetingId = null;
-
         function startVideoMeeting() {
-            const btn = document.getElementById('btnStartVideoMeeting');
-            btn.disabled = true;
-            btn.innerHTML = '<svg class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> Starting...';
+            document.getElementById('googleMeetError').classList.add('hidden');
+            document.getElementById('googleMeetModal').classList.remove('hidden');
+            document.getElementById('googleMeetModal').classList.add('flex');
+            document.getElementById('googleMeetLink').focus();
+        }
 
-            // Dismiss the pending badge
-            document.getElementById('pendingRequestBadge').classList.add('hidden');
+        function hideGoogleMeetDialog() {
+            document.getElementById('googleMeetModal').classList.add('hidden');
+            document.getElementById('googleMeetModal').classList.remove('flex');
+        }
 
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+        function joinGoogleMeeting() {
+            if (currentHostJoinUrl) window.open(currentHostJoinUrl, '_blank', 'noopener,noreferrer');
+            else alert('This session is unavailable. Refresh the page and try again.');
+        }
 
+        async function endVideoMeeting() {
+            if (!confirm('Close StudentShield access? You must also end the call for everyone in Google Meet.')) return;
+            const button = document.getElementById('btnEndVideoMeeting');
+            button.disabled = true;
+            try {
+                const response = await fetch(`/admin/case-summary/${studentId}/meeting/cancel`, {
+                    method: 'POST',
+                    headers: {'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''}
+                });
+                const data = await response.json();
+                if (!response.ok || data.status !== 'success') throw new Error(data.message || 'Unable to close the session.');
+                currentHostJoinUrl = null;
+                document.getElementById('btnJoinGoogleMeeting').classList.add('hidden');
+                checkPendingRequest();
+                alert(data.message);
+            } catch (e) { alert(e.message); }
+            finally { button.disabled = false; }
+        }
+
+        function publishGoogleMeet(event) {
+            event.preventDefault();
+            const button = document.getElementById('publishGoogleMeetButton');
+            const error = document.getElementById('googleMeetError');
+            button.disabled = true;
+            button.textContent = 'Publishing...';
+            error.classList.add('hidden');
+            const body = new URLSearchParams(new FormData(document.getElementById('googleMeetForm')));
             fetch(`/admin/case-summary/${studentId}/meeting/start`, {
                 method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrfToken }
-            })
-            .then(res => res.json())
-            .then(data => {
-                btn.disabled = false;
-                btn.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> Video Meeting';
-                if (data.status === 'success') {
-                    activeMeetingId = data.meeting_id;
-                    const roomName = data.room_name;
-                    showVideoMeetingModal(roomName);
-                    document.getElementById('btnStartVideoMeeting').classList.add('hidden');
-                    document.getElementById('btnEndVideoMeeting').classList.remove('hidden');
-                    document.getElementById('btnEndVideoMeeting').classList.add('flex');
-                } else {
-                    alert('Failed to start meeting: ' + (data.message || 'Unknown error'));
-                }
-            })
-            .catch(err => {
-                btn.disabled = false;
-                btn.innerHTML = '<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg> Video Meeting';
-                console.error('Start meeting error:', err);
-                alert('Error starting video meeting.');
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' },
+                body
+            }).then(res => res.json()).then(data => {
+                if (data.status !== 'success') throw new Error(data.message || 'Could not publish this meeting.');
+                currentHostJoinUrl = data.join_url;
+                hideGoogleMeetDialog();
+                document.getElementById('pendingRequestBadge').classList.add('hidden');
+                document.getElementById('btnStartVideoMeeting').classList.add('hidden');
+                document.getElementById('btnJoinGoogleMeeting').classList.remove('hidden');
+                document.getElementById('btnJoinGoogleMeeting').classList.add('flex');
+                document.getElementById('btnEndVideoMeeting').classList.remove('hidden');
+                document.getElementById('btnEndVideoMeeting').classList.add('flex');
+                document.getElementById('googleMeetForm').reset();
+            }).catch(err => {
+                error.textContent = err.message;
+                error.classList.remove('hidden');
+            }).finally(() => {
+                button.disabled = false;
+                button.textContent = 'Publish for this student';
             });
-        }
-
-        function endVideoMeeting() {
-            if (!confirm('End the video session for this student?')) return;
-            // Close modal immediately for a snappy UX, then fire the request
-            hideVideoMeetingModal();
-            document.getElementById('btnStartVideoMeeting').classList.remove('hidden');
-            document.getElementById('btnEndVideoMeeting').classList.add('hidden');
-            document.getElementById('btnEndVideoMeeting').classList.remove('flex');
-            activeMeetingId = null;
-
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
-            fetch(`/admin/case-summary/${studentId}/meeting/cancel`, {
-                method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': csrfToken }
-            })
-            .catch(err => console.error('End meeting error:', err));
-        }
-
-        function showVideoMeetingModal(roomName) {
-            document.getElementById('videoMeetingModal').classList.remove('hidden');
-            document.getElementById('videoMeetingModal').classList.add('flex');
-
-            const domain = 'meet.jit.si';
-            const options = {
-                roomName: roomName,
-                width: '100%',
-                height: '100%',
-                parentNode: document.querySelector('#jitsiContainer'),
-                userInfo: {
-                    displayName: 'Counselor (StudentShield)'
-                },
-                configOverwrite: {
-                    startWithAudioMuted: false,
-                    startWithVideoMuted: false,
-                    prejoinPageEnabled: false
-                },
-                interfaceConfigOverwrite: {
-                    SHOW_JITSI_WATERMARK: false,
-                    SHOW_BRAND_WATERMARK: false,
-                    SHOW_POWERED_BY: false,
-                    TOOLBAR_BUTTONS: [
-                        'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
-                        'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
-                        'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
-                        'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-                        'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security'
-                    ]
-                }
-            };
-            jitsiApi = new JitsiMeetExternalAPI(domain, options);
-            
-            jitsiApi.addListener('videoConferenceLeft', () => {
-                hideVideoMeetingModal();
-            });
-        }
-
-        function hideVideoMeetingModal() {
-            document.getElementById('videoMeetingModal').classList.add('hidden');
-            document.getElementById('videoMeetingModal').classList.remove('flex');
-            if (jitsiApi) {
-                jitsiApi.dispose();
-                jitsiApi = null;
-            }
         }
 
         // Bootstrap load
