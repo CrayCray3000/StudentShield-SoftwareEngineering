@@ -14,8 +14,8 @@
         if (active) join.href = data.join_url;
         request.hidden = active || !!data.has_request;
         cancel.hidden = active || !data.has_request;
-        status.textContent = active ? 'Your counseling session is ready. Opens Google Meet in a new tab.'
-            : data.has_request ? 'Request sent. Waiting for your counselor.' : 'Request a video session with your counselor.';
+        status.hidden = active || !data.has_request;
+        status.textContent = data.has_request ? 'Waiting for counselor' : '';
     }
     async function call(url, method = 'GET') {
         const response = await fetch(url, {method, cache: 'no-store', headers: {
