@@ -154,7 +154,8 @@
         }
         
         @media (prefers-reduced-motion: reduce) {
-            *, ::before, ::after { animation-play-state: paused !important; transition: none !important; }
+            /* Remove entrance animations; pausing their first frame hides the form at opacity: 0. */
+            *, ::before, ::after { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
