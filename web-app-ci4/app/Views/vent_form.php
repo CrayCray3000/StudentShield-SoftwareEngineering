@@ -160,7 +160,18 @@
 
         .char-count { transition: color 0.2s ease; }
 
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
 
+            .anim-1, .anim-2, .anim-3, .anim-4, .anim-form {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
     </style>
 </head>
 <body class="text-gray-800 antialiased min-h-screen flex items-center justify-center p-0 relative overflow-x-hidden bg-white">
@@ -185,16 +196,18 @@
 
             <!-- Top — Logo & Brand -->
             <div class="relative z-10 anim-1">
-                <div class="flex items-center gap-3.5 mb-14">
+                <a href="<?= base_url('student/dashboard') ?>"
+                   aria-label="Go to StudentShield home"
+                   class="inline-flex items-center gap-3.5 mb-14 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-primary-dark">
                     <div class="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/10">
-                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-20 w-20 object-contain"
+                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-20 w-20 object-contain"
                              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
                     </div>
                     <div>
                         <h1 class="text-white font-heading font-bold text-lg tracking-tight">StudentShield</h1>
                         <p class="text-white/70 text-[10px] font-semibold tracking-[0.2em] uppercase">Mental Wellness Portal</p>
                     </div>
-                </div>
+                </a>
 
                 <div class="space-y-4">
                     <p class="text-gold/80 text-xs font-semibold tracking-widest uppercase">Safe & Confidential</p>
@@ -214,8 +227,8 @@
                         <svg class="w-4 h-4 text-gold/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                     </div>
                     <div>
-                        <h3 class="text-white/90 font-medium text-[13px]">End-to-End Encrypted</h3>
-                        <p class="text-white/60 text-[11px] mt-0.5">Your entries are encrypted and secure.</p>
+                        <h3 class="text-white/90 font-medium text-[13px]">Encrypted Storage</h3>
+                        <p class="text-white/60 text-[11px] mt-0.5">Your entries are protected while stored.</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3.5 group">
@@ -232,8 +245,8 @@
                         <svg class="w-4 h-4 text-gold/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                     </div>
                     <div>
-                        <h3 class="text-white/90 font-medium text-[13px]">Professional Counselor Support</h3>
-                        <p class="text-white/60 text-[11px] mt-0.5">Our trained counselors are ready to help.</p>
+                        <h3 class="text-white/90 font-medium text-[13px]">Guidance Counselor Support</h3>
+                        <p class="text-white/60 text-[11px] mt-0.5">School guidance personnel can review and respond.</p>
                     </div>
                 </div>
             </div>
@@ -255,11 +268,13 @@
         <div class="flex flex-col lg:min-h-screen flex-1 bg-[#FAFDF5] relative items-center justify-start lg:justify-stretch">
 
             <!-- Mobile Top Bar — Visible only on mobile since branding is hidden -->
-            <nav class="lg:hidden sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm support-backdrop-blur:bg-white/60">
+            <nav aria-label="Safe Space navigation" class="lg:hidden sticky top-0 z-50 w-full bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm support-backdrop-blur:bg-white/70">
                 <div class="px-5 py-3.5 flex items-center justify-between">
                     <!-- Left: Branding -->
-                    <div class="flex items-center gap-3">
-                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="Logo" class="h-10 w-10 object-contain">
+                    <a href="<?= base_url('student/dashboard') ?>"
+                       aria-label="Go to StudentShield home"
+                       class="flex min-h-11 items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-10 w-10 object-contain">
                         <div class="flex flex-col">
                             <span class="font-heading font-extrabold text-gray-900 text-[14px] leading-none">StudentShield</span>
                             <span class="text-[9px] text-emerald-500 font-bold uppercase tracking-wider flex items-center gap-1.5 mt-1">
@@ -270,8 +285,14 @@
                                 Safe Space
                             </span>
                         </div>
-                    </div>
-
+                    </a>
+                    <a href="<?= base_url('student/dashboard') ?>"
+                       class="inline-flex min-h-11 items-center gap-2 rounded-xl border border-gray-200 bg-white px-3.5 text-sm font-semibold text-gray-700 shadow-sm transition-colors hover:border-primary/30 hover:bg-calm-50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                        <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10M9 19.5v-6h6v6" />
+                        </svg>
+                        Home
+                    </a>
                 </div>
             </nav>
 
@@ -280,12 +301,12 @@
                 <div class="w-full relative z-20 flex flex-col flex-1 justify-center">
                 <!-- Mobile Action Links (Compact for max visibility of form) -->
                 <div class="lg:hidden flex items-center justify-between gap-3 mb-4">
-                    <a href="<?= base_url('report-bullying') ?>" class="flex-1 bg-red-50 text-red-700 border border-red-200 shadow-sm rounded-xl py-2 px-3 flex items-center justify-center gap-2 font-bold text-[12px] hover:bg-red-100 transition-colors">
-                        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                    <a href="<?= base_url('report-bullying') ?>" class="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3 text-[12px] font-bold text-red-700 shadow-sm transition-colors hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2">
+                        <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
                         Report Bullying
                     </a>
-                    <form action="/logout" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="bg-white text-gray-600 border border-gray-200 shadow-sm rounded-xl py-2.5 px-4 flex items-center justify-center gap-2 font-bold text-[13px] hover:bg-gray-50 transition-colors whitespace-nowrap">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    <form action="<?= base_url('logout') ?>" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-gray-200 bg-white px-4 text-[13px] font-bold text-gray-600 shadow-sm transition-colors hover:bg-gray-50 hover:text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                        <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                         Sign Out
                     </button></form>
                 </div>
@@ -294,7 +315,7 @@
                 <div class="absolute top-[10%] right-[-15%] w-80 h-80 bg-primary/5 rounded-full blur-[60px] lg:hidden pointer-events-none"></div>
 
                 <!-- Desktop Header -->
-                <div class="hidden lg:flex items-center justify-between mb-4 anim-form">
+                <div class="hidden lg:flex flex-wrap items-end justify-between gap-4 mb-5 anim-form">
                     <div>
                         <div class="flex items-center gap-2 mb-2">
                             <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
@@ -302,16 +323,20 @@
                         </div>
                         <h2 class="text-3xl lg:text-4xl xl:text-[2.6rem] font-heading font-extrabold text-gray-900 tracking-tight">How are you feeling today?</h2>
                     </div>
-                    <div class="flex items-center gap-2 flex-shrink-0">
-                        <a href="<?= base_url('report-bullying') ?>" class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-500 hover:text-white px-4 py-2.5 rounded-xl hover:bg-red-500 transition-all duration-300 border border-red-100 hover:border-red-500 hover:shadow-lg hover:shadow-red-500/15">
-                            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                    <nav aria-label="Safe Space actions" class="flex flex-wrap items-center gap-2 flex-shrink-0">
+                        <a href="<?= base_url('student/dashboard') ?>" class="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-primary/15 bg-white px-4 text-xs font-semibold text-primary shadow-sm transition-colors hover:border-primary/30 hover:bg-calm-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                            <svg aria-hidden="true" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10M9 19.5v-6h6v6" /></svg>
+                            Home
+                        </a>
+                        <a href="<?= base_url('report-bullying') ?>" class="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-red-100 px-4 text-xs font-semibold text-red-500 transition-colors hover:border-red-500 hover:bg-red-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2">
+                            <svg aria-hidden="true" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
                             Report Incident
                         </a>
-                        <form action="/logout" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="text-xs font-medium text-gray-500 hover:text-primary px-3 py-2.5 rounded-xl hover:bg-primary/5 transition-colors flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        <form action="<?= base_url('logout') ?>" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-xs font-medium text-gray-500 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                            <svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013 3v1"/></svg>
                             Sign Out
                         </button></form>
-                    </div>
+                    </nav>
                 </div>
 
                 <!-- Daily Affirmation Banner -->
