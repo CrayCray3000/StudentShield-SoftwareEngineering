@@ -17,7 +17,7 @@
     }
 </style>
 <nav class="student-form-nav" aria-label="Student page navigation">
-    <a href="<?= base_url('student/dashboard') ?>" class="nav-control back-link" aria-label="Back to action selection">
+    <a href="<?= base_url('student/dashboard') ?>" class="nav-control back-link" aria-label="Back to previous StudentShield page" data-student-back>
         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m12 19-7-7 7-7M5 12h14" /></svg>
         Back
     </a>
@@ -32,3 +32,24 @@
         </button>
     </form>
 </nav>
+<script>
+    document.querySelector('[data-student-back]').addEventListener('click', function (event) {
+        if (!document.referrer || window.history.length < 2) return;
+
+        const previousPage = new URL(document.referrer);
+        const currentPage = window.location.href.split('#')[0];
+        const studentPages = [
+            '<?= base_url('student/dashboard') ?>',
+            '<?= base_url('student/vent') ?>',
+            '<?= base_url('report-bullying') ?>',
+            '<?= base_url('report/bullying') ?>'
+        ].map(path => new URL(path, window.location.origin).href);
+
+        if (previousPage.origin === window.location.origin &&
+            previousPage.href.split('#')[0] !== currentPage &&
+            studentPages.includes(previousPage.href.split('#')[0])) {
+            event.preventDefault();
+            window.history.back();
+        }
+    });
+</script>
