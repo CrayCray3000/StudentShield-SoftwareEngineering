@@ -77,15 +77,17 @@
 
     <!-- Top Navigation -->
     <nav class="absolute top-0 w-full z-50 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
+        <a href="<?= base_url('student/dashboard') ?>"
+           aria-label="Go to StudentShield action selection"
+           class="flex min-h-11 items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-primary-dark">
             <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/10">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="Logo" class="h-10 w-10 object-contain">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-10 w-10 object-contain">
             </div>
             <div class="flex flex-col">
                 <span class="font-heading font-extrabold text-white text-[16px] leading-none tracking-wide">StudentShield</span>
                 <span class="text-[10px] text-white/80 font-bold uppercase tracking-widest mt-1">Mental Wellness Portal</span>
             </div>
-        </div>
+        </a>
         <form action="<?= base_url('logout') ?>" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="text-[13px] font-bold text-white/60 hover:text-white transition-colors flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
             Sign Out

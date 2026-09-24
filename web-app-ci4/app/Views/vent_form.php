@@ -197,7 +197,7 @@
             <!-- Top — Logo & Brand -->
             <div class="relative z-10 anim-1">
                 <a href="<?= base_url('student/dashboard') ?>"
-                   aria-label="Go to StudentShield home"
+                   aria-label="Go to StudentShield action selection"
                    class="inline-flex items-center gap-3.5 mb-14 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-primary-dark">
                     <div class="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/10">
                         <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-20 w-20 object-contain"
@@ -269,10 +269,10 @@
 
             <!-- Mobile Top Bar — Visible only on mobile since branding is hidden -->
             <nav aria-label="Safe Space navigation" class="lg:hidden sticky top-0 z-50 w-full bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm support-backdrop-blur:bg-white/70">
-                <div class="px-5 py-3.5 flex items-center justify-between">
+                <div class="px-5 py-3.5 flex items-center">
                     <!-- Left: Branding -->
                     <a href="<?= base_url('student/dashboard') ?>"
-                       aria-label="Go to StudentShield home"
+                       aria-label="Go to StudentShield action selection"
                        class="flex min-h-11 items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                         <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-10 w-10 object-contain">
                         <div class="flex flex-col">
@@ -285,13 +285,6 @@
                                 Safe Space
                             </span>
                         </div>
-                    </a>
-                    <a href="<?= base_url('student/dashboard') ?>"
-                       class="inline-flex min-h-11 items-center gap-2 rounded-xl border border-gray-200 bg-white px-3.5 text-sm font-semibold text-gray-700 shadow-sm transition-colors hover:border-primary/30 hover:bg-calm-50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-                        <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10M9 19.5v-6h6v6" />
-                        </svg>
-                        Home
                     </a>
                 </div>
             </nav>
@@ -324,10 +317,6 @@
                         <h2 class="text-3xl lg:text-4xl xl:text-[2.6rem] font-heading font-extrabold text-gray-900 tracking-tight">How are you feeling today?</h2>
                     </div>
                     <nav aria-label="Safe Space actions" class="flex flex-wrap items-center gap-2 flex-shrink-0">
-                        <a href="<?= base_url('student/dashboard') ?>" class="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-primary/15 bg-white px-4 text-xs font-semibold text-primary shadow-sm transition-colors hover:border-primary/30 hover:bg-calm-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-                            <svg aria-hidden="true" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10M9 19.5v-6h6v6" /></svg>
-                            Home
-                        </a>
                         <a href="<?= base_url('report-bullying') ?>" class="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-red-100 px-4 text-xs font-semibold text-red-500 transition-colors hover:border-red-500 hover:bg-red-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2">
                             <svg aria-hidden="true" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
                             Report Incident

@@ -180,16 +180,18 @@
 
             <!-- Top — Logo & Brand -->
             <div class="relative z-10 anim-1">
-                <div class="flex items-center gap-3.5 mb-14">
+                <a href="<?= base_url('student/dashboard') ?>"
+                   aria-label="Go to StudentShield action selection"
+                   class="inline-flex items-center gap-3.5 mb-14 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-primary-dark">
                     <div class="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/10">
-                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-20 w-20 object-contain"
+                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-20 w-20 object-contain"
                              onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
                     </div>
                     <div>
                         <h1 class="text-white font-heading font-bold text-lg tracking-tight">StudentShield</h1>
                         <p class="text-white/70 text-[10px] font-semibold tracking-[0.2em] uppercase">Incident Report Portal</p>
                     </div>
-                </div>
+                </a>
 
                 <div class="space-y-4">
                     <p class="text-gold/80 text-xs font-semibold tracking-widest uppercase">Secure & Confidential</p>
@@ -250,11 +252,13 @@
         <div class="flex flex-col lg:min-h-screen flex-1 bg-[#FAFDF5] relative items-center justify-start lg:justify-stretch">
 
             <!-- Mobile Top Bar — Visible only on mobile since branding is hidden -->
-            <nav class="lg:hidden sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm support-backdrop-blur:bg-white/60">
-                <div class="px-5 py-3.5 flex items-center justify-between">
+            <nav aria-label="Incident report navigation" class="lg:hidden sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm support-backdrop-blur:bg-white/60">
+                <div class="px-5 py-3.5 flex items-center">
                     <!-- Left: Branding -->
-                    <div class="flex items-center gap-3">
-                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="Logo" class="h-10 w-10 object-contain">
+                    <a href="<?= base_url('student/dashboard') ?>"
+                       aria-label="Go to StudentShield action selection"
+                       class="flex min-h-11 items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-10 w-10 object-contain">
                         <div class="flex flex-col">
                             <span class="font-heading font-extrabold text-gray-900 text-[14px] leading-none">StudentShield</span>
                             <span class="text-[9px] text-emerald-500 font-bold uppercase tracking-wider flex items-center gap-1.5 mt-1">
@@ -265,7 +269,7 @@
                                 Safe Space
                             </span>
                         </div>
-                    </div>
+                    </a>
 
                 </div>
             </nav>
