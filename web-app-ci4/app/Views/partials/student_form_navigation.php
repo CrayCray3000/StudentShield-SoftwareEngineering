@@ -1,0 +1,34 @@
+<?php $isIncidentPage = ($page ?? 'vent') === 'report'; ?>
+<style>
+    .student-form-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .student-form-nav .back-link { margin-right: auto; }
+    .student-form-nav form { margin: 0; }
+    .student-form-nav .nav-control { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid #CFD9D4; border-radius: 12px; background: #FBFDFB; color: #3D4943; font: 600 13px/1.4 'Inter', sans-serif; white-space: nowrap; cursor: pointer; text-decoration: none; box-sizing: border-box; transition: background-color .15s, border-color .15s; }
+    .student-form-nav .nav-control:hover { background: #E6EBE8; border-color: #82958B; }
+    .student-form-nav .nav-control:focus-visible { outline: 2px solid #235D3A; outline-offset: 3px; }
+    .student-form-nav svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .student-form-nav .report-link { color: #A33535; background: #FDF7F7; border-color: #F4D6D6; }
+    .student-form-nav .vent-link { color: #235D3A; background: #f0fdf4; }
+    @media (max-width: 479px) {
+        .student-form-nav { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+        .student-form-nav .back-link { grid-column: 1 / -1; justify-self: start; }
+        .student-form-nav form, .student-form-nav form button { width: 100%; }
+        .student-form-nav .nav-control { padding-inline: 10px; }
+    }
+</style>
+<nav class="student-form-nav" aria-label="Student page navigation">
+    <a href="<?= base_url('student/dashboard') ?>" class="nav-control back-link" aria-label="Back to action selection">
+        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m12 19-7-7 7-7M5 12h14" /></svg>
+        Back
+    </a>
+    <a href="<?= base_url($isIncidentPage ? 'student/vent' : 'report-bullying') ?>" class="nav-control <?= $isIncidentPage ? 'vent-link' : 'report-link' ?>">
+        <?= $isIncidentPage ? 'Safe Space' : 'Report Bullying' ?>
+    </a>
+    <form action="<?= base_url('logout') ?>" method="POST">
+        <?= csrf_field() ?>
+        <button type="submit" class="nav-control">
+            <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0-4-4m4 4H7m6 4v1a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1" /></svg>
+            Sign Out
+        </button>
+    </form>
+</nav>
