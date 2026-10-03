@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Two-Factor Authentication | StudentShield</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
         <script>
         tailwind.config = {
             theme: {
@@ -39,7 +40,7 @@
                             600: '#C24545',
                             700: '#A33535',
                         },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
                         calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
@@ -59,13 +60,7 @@
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-admin {
-            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 12s ease infinite;
-        }
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
         }
 
         .bg-grid {
@@ -131,7 +126,7 @@
         }
     </style>
 </head>
-<body class="bg-admin min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+<body class="school-auth-page bg-admin min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
 
 <div class="bg-grid"></div>
 <div class="glow-blob bg-gold w-[500px] h-[500px] top-[-20%] right-[-10%]"></div>
@@ -148,12 +143,20 @@
             <p class="text-white/70 text-sm font-medium">To protect student data, we've sent a 6-digit verification code to <span class="text-gold font-semibold"><?= esc(session()->get('otp_masked_email') ?? 'your registered counselor email') ?></span>.</p>
         </div>
 
-        <!-- Error Flash -->
+        <!-- Flash Alerts -->
+        <?php if (session()->getFlashdata('message') || session()->getFlashdata('success')): ?>
+            <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 mb-6 rounded-xl">
+                <div class="flex flex-col sm:flex-row items-center gap-2 justify-center">
+                    <i class="fas fa-check-circle text-emerald-400"></i>
+                    <p class="text-sm font-medium text-emerald-200 text-center"><?= esc(session()->getFlashdata('message') ?? session()->getFlashdata('success')) ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
         <?php if (session()->getFlashdata('error')): ?>
             <div class="bg-red-500/10 border border-red-500/30 p-4 mb-6 rounded-xl animate-[shake_0.5s_ease-in-out]">
                 <div class="flex flex-col sm:flex-row items-center gap-2 justify-center">
                     <i class="fas fa-exclamation-circle text-red-400"></i>
-                    <p class="text-sm font-medium text-red-200 text-center"><?= session()->getFlashdata('error') ?></p>
+                    <p class="text-sm font-medium text-red-200 text-center"><?= esc(session()->getFlashdata('error')) ?></p>
                 </div>
             </div>
         <?php endif; ?>
@@ -172,11 +175,14 @@
                 <input type="text" class="otp-input" maxlength="1" pattern="\d*" autocomplete="off" required>
             </div>
 
-            <div class="flex items-center justify-center mt-4 group">
-                <input type="checkbox" id="trust_device" name="trust_device" value="1"
-                       class="w-4 h-4 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity">
-                <label for="trust_device" class="ml-2 text-sm text-white/70 group-hover:text-white transition-colors cursor-pointer select-none">
-                    Trust this device for 30 days
+            <div class="mt-4 p-3 rounded-xl bg-white/5 border border-white/10 text-left">
+                <label for="trust_device" class="flex items-start gap-2.5 cursor-pointer select-none">
+                    <input type="checkbox" id="trust_device" name="trust_device" value="1"
+                           class="mt-0.5 w-4 h-4 text-gold bg-white/10 border-white/20 rounded focus:ring-gold/50 focus:ring-2 cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
+                    <div class="text-xs">
+                        <span class="font-semibold text-white/90">Trust this device for 30 days</span>
+                        <span class="block text-white/60 text-[11px] mt-0.5 font-normal leading-relaxed">⚠️ For personal computers only. Never check this on shared school lab or library computers.</span>
+                    </div>
                 </label>
             </div>
 
@@ -189,12 +195,22 @@
         </form>
         
         <!-- Footer -->
-        <div class="mt-8 pt-5 border-t border-white/10 text-center space-y-2">
-            <span class="text-white/40 block text-xs">Didn't receive the email?</span>
-            <a href="<?= base_url('admin/login') ?>" class="inline-flex items-center gap-2 text-sm text-gold/80 hover:text-gold transition-colors font-semibold">
-                <i class="fas fa-arrow-left text-xs"></i>
-                Return to Login & Resend
-            </a>
+        <div class="mt-8 pt-5 border-t border-white/10 text-center space-y-3">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <form action="<?= base_url('admin/resend-otp') ?>" method="POST" id="resendForm" class="inline">
+                    <?= csrf_field() ?>
+                    <button type="submit" id="resendBtn" class="inline-flex items-center gap-1.5 text-xs font-semibold text-gold hover:text-gold-light transition-colors px-3 py-1.5 rounded-lg bg-gold/10 hover:bg-gold/20 border border-gold/30 cursor-pointer">
+                        <i class="fas fa-redo-alt text-xs"></i>
+                        <span>Resend Verification Code</span>
+                    </button>
+                </form>
+                <span class="text-white/30 hidden sm:inline">•</span>
+                <a href="<?= base_url('admin/login') ?>" class="inline-flex items-center gap-1.5 text-xs text-white/70 hover:text-white transition-colors">
+                    <i class="fas fa-arrow-left text-xs"></i>
+                    <span>Back to Login</span>
+                </a>
+            </div>
+            <p class="text-[11px] text-white/50">Resends are limited and codes expire in 5 minutes for security.</p>
         </div>
     </div>
 </div>

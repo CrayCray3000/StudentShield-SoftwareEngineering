@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scroll-behavior:smooth">
 <head>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudentShield - <?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -43,7 +44,7 @@
                             600: '#C24545',
                             700: '#A33535',
                         },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
                         calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
@@ -65,8 +66,9 @@
         }
 
         .glass-header {
-            background: #166534; /* Simple solid primary green */
-            border-bottom: 3px solid #EAB308; /* Solid gold accent */
+            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
+            border-bottom: 3px solid #EAB308;
+            box-shadow: 0 4px 20px -2px rgba(7, 88, 38, 0.35);
         }
 
         .dashboard-card {
@@ -83,10 +85,10 @@
 
         .section-header {
             background: #ffffff;
-            color: #166534;
+            color: #096328;
             padding: 16px 24px;
             border-bottom: 1px solid #e5ebe5;
-            border-left: 4px solid #166534;
+            border-left: 4px solid #096328;
         }
 
         .stat-card {
@@ -120,7 +122,7 @@
             border-left: 4px solid #EAB308;
         }
         .stat-card.green-accent {
-            border-left: 4px solid #166534;
+            border-left: 4px solid #096328;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -171,7 +173,7 @@
         }
 
         .thead-green {
-            background: #166534;
+            background: #096328;
             color: white;
         }
         .thead-green th {
@@ -188,13 +190,43 @@
         }
 
         .footer-bar {
-            background: #166534;
+            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
             color: rgba(255,255,255,0.7);
             font-size: 0.75rem;
             padding: 12px 0;
             text-align: center;
             letter-spacing: 0.03em;
         }
+
+        /* Section navigation pills */
+        .section-nav-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            background: #ffffff;
+            border: 1px solid #d4ddd4;
+            color: #3D4943;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.18s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            scroll-behavior: smooth;
+        }
+        .section-nav-pill:hover {
+            background: #0B5E2E;
+            color: #ffffff;
+            border-color: #0B5E2E;
+            box-shadow: 0 4px 12px rgba(11,94,46,0.2);
+            transform: translateY(-1px);
+        }
+        .section-nav-pill svg { transition: color 0.18s ease; }
+
+        /* Collapsed table rows — show first 5, hide the rest until expanded */
+        .tbl-row-hidden { display: none; }
+        .show-all-row { cursor: pointer; }
 
         /* Mobile Card Tables */
         @media (max-width: 768px) {
@@ -207,22 +239,22 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased text-gray-800 min-h-screen flex flex-col relative">
+<body class="school-staff-page font-sans antialiased text-gray-800 min-h-screen flex flex-col relative">
 
     <!-- Navbar -->
     <nav class="glass-header text-white sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-24 w-24 object-contain"
+        <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
+            <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0"
                      onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
 
-                <div>
-                    <h1 class="text-2xl font-bold tracking-tight">StudentShield</h1>
-                    <span class="text-[#F2C300] text-xs font-semibold tracking-widest uppercase"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</span>
+                <div class="truncate">
+                    <h1 class="text-base sm:text-2xl font-bold tracking-tight leading-tight truncate">StudentShield</h1>
+                    <span class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</span>
                 </div>
             </div>
             
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                 <!-- Live Philippine Clock -->
                 <div class="hidden md:flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/15">
                     <svg class="w-4 h-4 text-[#F2C300] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -240,27 +272,30 @@
 
                 <!-- Pending Meeting Requests (Live Polling Bell) -->
                 <div class="relative" id="meetingNotifWrapper">
-                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()" class="relative flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full border border-white/15 transition-all duration-200 focus:outline-none">
-                        <svg class="w-4 h-4 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()" class="relative flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-full border border-white/15 transition-all duration-200 focus:outline-none" aria-label="Session Requests">
+                        <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
-                        <span class="text-xs font-semibold text-white/90 hidden sm:inline">Sessions</span>
-                        <span id="meetingBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1.5 -right-1.5 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#22c55e] text-white text-[10px] font-bold shadow-lg animate-pulse">
+                        <span class="text-xs font-semibold text-white/90 hidden sm:inline ml-1.5">Sessions</span>
+                        <span id="meetingBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#22c55e] text-white text-[10px] font-bold shadow-lg animate-pulse">
                             <?= esc($pending_meetings_count ?? 0) ?>
                         </span>
                     </button>
 
-                    <!-- Dropdown panel -->
-                    <div id="meetingDropdown" class="hidden absolute right-0 top-full mt-2 w-80 bg-[#1a2d1e] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between">
-                            <span class="text-sm font-bold text-white">📹 Pending Session Requests</span>
-                            <span id="dropdownCount" class="text-xs text-white/50"></span>
+                    <!-- Dropdown panel: Responsive positioning avoiding overflow on mobile -->
+                    <div id="meetingDropdown" class="hidden fixed inset-x-3 top-16 sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-2 sm:w-84 max-w-[calc(100vw-1.5rem)] bg-[#0f2416] border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                        <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-black/25">
+                            <span class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                                📹 Pending Session Requests
+                            </span>
+                            <span id="dropdownCount" class="text-xs text-emerald-400 font-semibold"></span>
                         </div>
                         <div id="meetingRequestsList" class="max-h-72 overflow-y-auto divide-y divide-white/5">
-                            <div class="px-4 py-4 text-center text-white/40 text-sm" id="noRequestsMsg">No pending requests</div>
+                            <div class="px-4 py-6 text-center text-white/50 text-sm" id="noRequestsMsg">No pending requests</div>
                         </div>
-                        <div class="px-4 py-2.5 border-t border-white/10 text-center">
-                            <span class="text-[10px] text-white/30" id="lastCheckedLabel">Checking...</span>
+                        <div class="px-4 py-2.5 border-t border-white/10 flex items-center justify-between text-[11px] bg-black/25">
+                            <span class="text-white/40" id="lastCheckedLabel">Checking...</span>
+                            <a href="#section-sessions" onclick="toggleMeetingDropdown()" class="text-emerald-400 hover:text-emerald-300 font-semibold">View Section ↓</a>
                         </div>
                     </div>
                 </div>
@@ -272,13 +307,24 @@
                     <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
                 <?php endif; ?>
 
+                <!-- Direct Sign Out Button (Prominent for Shared Computers) -->
+                <form action="<?= base_url('logout') ?>" method="POST" class="inline">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-200 hover:text-white rounded-lg border border-red-500/30 text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm" title="Sign Out of Portal">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        <span class="hidden sm:inline">Sign Out</span>
+                    </button>
+                </form>
+
                 <!-- Navigation Menu Dropdown (role-aware) -->
                 <div class="relative" id="navMenuWrapper">
-                    <button onclick="toggleNavMenu()" id="navMenuBtn" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg border border-white/15 transition-all duration-200 focus:outline-none">
-                        <svg class="w-4 h-4 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                        <span class="text-xs font-semibold text-white/80 hidden sm:inline">Menu</span>
+                    <button onclick="toggleNavMenu()" id="navMenuBtn" class="flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-lg border border-white/15 transition-all duration-200 focus:outline-none" aria-label="Open navigation menu">
+                        <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        <span class="text-xs font-semibold text-white/90 hidden sm:inline ml-1.5">Menu</span>
                     </button>
-                    <div id="navMenuDropdown" class="hidden absolute right-0 top-full mt-2 w-52 bg-[#1a2d1e] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden py-1">
+                    <div id="navMenuDropdown" class="hidden fixed right-3 top-16 w-56 sm:absolute sm:right-0 sm:top-full sm:mt-2 sm:w-52 bg-[#0f2416] border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden py-1">
                         <!-- Shared: Registrations -->
                         <a href="/admin/pending-registrations" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
                             <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
@@ -311,16 +357,40 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 py-8 flex-1 animate-fade-in">
-        
+
+        <!-- Section Navigation -->
+        <nav class="mb-6 flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar sm:flex-wrap animate-slide-up" style="animation-delay: 0.05s" aria-label="Dashboard sections">
+            <a href="#section-vents" class="section-nav-pill whitespace-nowrap">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/></svg>
+                Vents
+            </a>
+            <a href="#section-incidents" class="section-nav-pill whitespace-nowrap">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                Incidents
+            </a>
+            <a href="#section-sessions" class="section-nav-pill whitespace-nowrap">
+                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Sessions <span id="navSessionsBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> ml-1 px-1.5 py-0.2 rounded-full bg-emerald-600 text-white text-[10px] font-bold"><?= esc($pending_meetings_count ?? 0) ?></span>
+            </a>
+            <a href="#section-alerts" class="section-nav-pill whitespace-nowrap">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                Alert Log
+            </a>
+            <a href="#section-charts" class="section-nav-pill whitespace-nowrap">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                Analytics
+            </a>
+        </nav>
+
         <!-- Welcome Metric Row -->
-        <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-5 animate-slide-up" style="animation-delay: 0.1s">
+        <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up" style="animation-delay: 0.1s">
             <div>
-                <h2 class="text-2xl font-bold text-[#0B5E2E] flex items-center gap-2">
+                <h2 class="text-xl sm:text-2xl font-bold text-[#0B5E2E] flex items-center gap-2">
                     <svg class="w-6 h-6 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                     Overview
                 </h2>
-                <div class="flex items-center gap-4 mt-1">
-                    <p class="text-gray-600 text-sm">Real-time monitoring and analytics from the student portal.</p>
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
+                    <p class="text-gray-600 text-xs sm:text-sm">Real-time monitoring and analytics from the student portal.</p>
                     <label class="flex items-center cursor-pointer group" title="Pause auto-refresh while you're reading">
                         <div class="relative">
                             <input type="checkbox" id="pauseUpdatesToggle" class="sr-only">
@@ -331,62 +401,39 @@
                     </label>
                 </div>
             </div>
-            <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                <div class="stat-card green-accent flex items-center gap-4">
-                    <div class="h-10 w-10 rounded-lg bg-[#0B5E2E]/10 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-5 h-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full md:w-auto">
+                <div class="stat-card green-accent flex items-center gap-3 p-3.5 sm:p-5">
+                    <div class="h-9 w-9 rounded-lg bg-[#0B5E2E]/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Total Active</span>
-                        <span class="text-2xl font-bold text-[#0B5E2E] leading-tight" id="stat-total">--</span>
-                    </div>
-                </div>
-                <div class="stat-card gold-accent flex items-center gap-4">
-                    <div class="h-10 w-10 rounded-lg bg-[#F2C300]/15 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-5 h-5 text-[#B89100]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] text-gray-600 font-semibold uppercase tracking-wider">Critical Pending</span>
-                        <span class="text-2xl font-bold text-[#E04B3F] leading-tight" id="stat-critical">--</span>
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Total Active</span>
+                        <span class="text-xl sm:text-2xl font-bold text-[#0B5E2E] leading-tight" id="stat-total">--</span>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Charts Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <div class="dashboard-card p-6 animate-slide-up" style="animation-delay: 0.2s">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-base font-semibold text-[#0B5E2E] flex items-center gap-2">
-                        <svg class="h-5 w-5 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                        </svg>
-                        Risk Distribution
-                    </h2>
+                <div class="stat-card gold-accent flex items-center gap-3 p-3.5 sm:p-5">
+                    <div class="h-9 w-9 rounded-lg bg-[#F2C300]/15 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#B89100]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Critical</span>
+                        <span class="text-xl sm:text-2xl font-bold text-[#E04B3F] leading-tight" id="stat-critical">--</span>
+                    </div>
                 </div>
-                <div class="relative h-64 w-full">
-                    <canvas id="riskPieChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="dashboard-card p-6 animate-slide-up" style="animation-delay: 0.3s">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-base font-semibold text-[#0B5E2E] flex items-center gap-2">
-                        <svg class="h-5 w-5 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                        </svg>
-                        Last 7 Days Volume
-                    </h2>
-                </div>
-                <div class="relative h-64 w-full">
-                    <div id="ventsBarChart"></div>
-                </div>
+                <a href="#section-sessions" class="stat-card flex items-center gap-3 p-3.5 sm:p-5 border-l-4 border-l-emerald-600 hover:border-emerald-700 col-span-2 sm:col-span-1 transition-all">
+                    <div class="h-9 w-9 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                        <span class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Sessions</span>
+                        <span class="text-xl sm:text-2xl font-bold text-emerald-700 leading-tight" id="stat-sessions"><?= esc($pending_meetings_count ?? 0) ?></span>
+                    </div>
+                </a>
             </div>
         </div>
 
         <!-- Live Feed Table -->
-        <div class="dashboard-card overflow-hidden animate-slide-up flex flex-col" style="animation-delay: 0.4s">
+        <div id="section-vents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col" style="animation-delay: 0.2s">
             <!-- Table Header Bar -->
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
@@ -452,7 +499,7 @@
         </div>
         
         <!-- Bullying Incidents Table -->
-        <div class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8" style="animation-delay: 0.5s">
+        <div id="section-incidents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8" style="animation-delay: 0.3s">
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
                     <svg class="h-5 w-5 text-[#E04B3F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -504,11 +551,45 @@
                         </tr>
                     </tbody>
                 </table>
+        </div>
+        </div>
+
+        <!-- Session Requests (Counseling / Meeting) Section -->
+        <div id="section-sessions" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8" style="animation-delay: 0.35s">
+            <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-3">
+                <div>
+                    <h2 class="text-lg font-bold flex items-center gap-3">
+                        <svg class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        Pending Counseling Session Requests
+                    </h2>
+                    <p class="text-xs text-gray-500 mt-0.5">Students requesting 1-on-1 counselor meetings or virtual sessions</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="sessionSectionCountBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-[#dcfce7] text-[#096328] border border-[#bbf7d0]">
+                        <?= esc($pending_meetings_count ?? 0) ?> Pending
+                    </span>
+                </div>
+            </div>
+
+            <!-- Content Area: Responsive Card Grid / List -->
+            <div class="p-4 sm:p-6" id="dashboardSessionContainer">
+                <div id="dashboardSessionEmpty" class="<?= ($pending_meetings_count ?? 0) > 0 ? 'hidden' : '' ?> py-8 text-center text-gray-500">
+                    <svg class="w-10 h-10 mx-auto text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="text-sm font-medium text-gray-600">No pending session requests at this time.</p>
+                    <p class="text-xs text-gray-400 mt-1">When students request a session from their portal, it will appear here in real-time.</p>
+                </div>
+                <div id="dashboardSessionList" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Populated dynamically via JS fetchMeetings() -->
+                </div>
             </div>
         </div>
 
         <!-- Alert Logs Monitor -->
-        <div class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8" style="animation-delay: 0.6s">
+        <div id="section-alerts" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8" style="animation-delay: 0.4s">
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
                     <svg class="h-5 w-5 text-[#2A5DB0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -522,7 +603,7 @@
                 </div>
             </div>
             
-            <div class="overflow-x-auto custom-scrollbar flex flex-col max-h-[400px]">
+            <div class="overflow-x-auto custom-scrollbar flex flex-col max-h-[340px]">
                 <table class="w-full text-left border-collapse relative mobile-card-table">
                     <thead class="sticky top-0 thead-green z-10">
                         <tr class="text-xs uppercase tracking-wider">
@@ -540,6 +621,37 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Analytics Charts (below actionable records) -->
+        <div id="section-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-2 animate-slide-up" style="animation-delay: 0.5s">
+            <div class="dashboard-card p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-base font-semibold text-[#0B5E2E] flex items-center gap-2">
+                        <svg class="h-5 w-5 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                        </svg>
+                        Risk Distribution
+                    </h2>
+                </div>
+                <div class="relative h-64 w-full">
+                    <canvas id="riskPieChart"></canvas>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-base font-semibold text-[#0B5E2E] flex items-center gap-2">
+                        <svg class="h-5 w-5 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                        </svg>
+                        Last 7 Days Volume
+                    </h2>
+                </div>
+                <div class="relative h-64 w-full">
+                    <div id="ventsBarChart"></div>
+                </div>
             </div>
         </div>
 
@@ -591,7 +703,7 @@
             </div>
 
             <div class="mt-6 pt-4 border-t border-gray-200 flex justify-end shrink-0">
-                <button onclick="closeDetailModal()" class="px-6 py-3 bg-[#0B5E2E] hover:bg-[#0F6A34] text-white text-sm font-bold rounded-xl transition-colors shadow-sm">Confirm & Close</button>
+                <button onclick="closeDetailModal()" class="px-6 py-3 bg-primary hover:bg-primary-darker text-white text-sm font-bold rounded-xl transition-colors shadow-sm">Confirm & Close</button>
             </div>
         </div>
     </div>
@@ -938,6 +1050,7 @@
                 
                 toggleDeleteBtn('.vent-checkbox', '.delete-btn-vents');
                 applyVentsFilter();
+                collapseRows('ventsTableBody', 5, 7, 'section-vents');
                 },
                 error: function(xhr) {
                     if(xhr.status === 401) {
@@ -1025,7 +1138,7 @@
                                 ${isPending && !showArchivedIncidents ? `
                                     <form action="<?= base_url('admin/incident/verify/') ?>${incident.id}" method="POST">
                                         <?= csrf_field() ?>
-                                        <button type="submit" onclick="return confirm('VERIFY this report and send automated SMS & Email alerts to parents?');" class="w-full text-xs font-bold text-white bg-[#0B5E2E] hover:bg-[#0F6A34] px-3 py-2.5 rounded-lg transition-colors shadow-sm">
+                                        <button type="submit" onclick="return confirm('VERIFY this report and send automated SMS & Email alerts to parents?');" class="w-full text-xs font-bold text-white bg-primary hover:bg-primary-darker px-3 py-2.5 rounded-lg transition-colors shadow-sm">
                                             ✓ Verify & Alert Parents
                                         </button>
                                     </form>
@@ -1093,6 +1206,7 @@
                 
                 toggleDeleteBtn('.incident-checkbox', '.delete-btn-incidents');
                 applyIncidentsFilter();
+                collapseRows('incidentsTableBody', 5, 8, 'section-incidents');
                 
                 },
                 error: function(xhr) {
@@ -1108,6 +1222,50 @@
         // Alert Logs Polling
         const ALERTS_API_URL = "<?= base_url('admin/api/alerts') ?>";
         let previousAlertsDataString = "";
+
+        /**
+         * Collapse table body to `maxRows` visible rows.
+         * Appends a sticky toggle row. colSpan = number of <th> columns.
+         */
+        function collapseRows(tbodyId, maxRows, colSpan, sectionId) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+            // Remove any previous toggle rows
+            tbody.querySelectorAll('.show-all-row').forEach(r => r.remove());
+            tbody.querySelectorAll('tr.tbl-row-hidden').forEach(r => r.classList.remove('tbl-row-hidden'));
+
+            const rows = Array.from(tbody.querySelectorAll('tr:not(.show-all-row)'));
+            if (rows.length <= maxRows) return; // nothing to collapse
+
+            let expanded = false;
+
+            rows.forEach((r, i) => {
+                if (i >= maxRows) r.classList.add('tbl-row-hidden');
+            });
+
+            const toggleRow = document.createElement('tr');
+            toggleRow.className = 'show-all-row bg-gray-50 hover:bg-gray-100 transition-colors';
+            toggleRow.innerHTML = `<td colspan="${colSpan}" class="px-6 py-3 text-center">
+                <button class="text-xs font-bold text-[#0B5E2E] flex items-center gap-1.5 mx-auto" id="toggle-${tbodyId}">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    Show all ${rows.length} records
+                </button>
+            </td>`;
+            tbody.appendChild(toggleRow);
+
+            toggleRow.querySelector('button').addEventListener('click', function() {
+                expanded = !expanded;
+                rows.forEach((r, i) => {
+                    if (i >= maxRows) r.classList.toggle('tbl-row-hidden', !expanded);
+                });
+                this.innerHTML = expanded
+                    ? `<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg> Collapse`
+                    : `<svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg> Show all ${rows.length} records`;
+                if (!expanded && sectionId) {
+                    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
 
         function fetchAlertLogs() {
             $.ajax({
@@ -1456,35 +1614,54 @@
         let navMenuOpen = false;
         window.toggleNavMenu = function () {
             navMenuOpen = !navMenuOpen;
-            document.getElementById('navMenuDropdown').classList.toggle('hidden', !navMenuOpen);
+            const menuDropdown = document.getElementById('navMenuDropdown');
+            if (menuDropdown) menuDropdown.classList.toggle('hidden', !navMenuOpen);
+            // Close meeting dropdown if open to avoid mobile collisions
+            if (navMenuOpen && window.closeMeetingDropdown) {
+                window.closeMeetingDropdown();
+            }
         };
         document.addEventListener('click', function (e) {
             const wrapper = document.getElementById('navMenuWrapper');
+            const menuDropdown = document.getElementById('navMenuDropdown');
             if (wrapper && !wrapper.contains(e.target) && navMenuOpen) {
                 navMenuOpen = false;
-                document.getElementById('navMenuDropdown').classList.add('hidden');
+                if (menuDropdown) menuDropdown.classList.add('hidden');
             }
         });
 
-        /* ── Meeting Request Bell ──────────────────────────────────── */
+        /* ── Meeting Request Bell & Sessions Section ────────────────── */
         (function () {
             const POLL_INTERVAL = 15000; // 15 s
             let dropdownOpen = false;
             let lastCount = <?= (int) ($pending_meetings_count ?? 0) ?>;
 
+            window.closeMeetingDropdown = function() {
+                dropdownOpen = false;
+                const dropdown = document.getElementById('meetingDropdown');
+                if (dropdown) dropdown.classList.add('hidden');
+            };
+
             // Toggle dropdown visibility
             window.toggleMeetingDropdown = function () {
                 dropdownOpen = !dropdownOpen;
-                document.getElementById('meetingDropdown').classList.toggle('hidden', !dropdownOpen);
+                const dropdown = document.getElementById('meetingDropdown');
+                if (dropdown) dropdown.classList.toggle('hidden', !dropdownOpen);
+                // Close nav menu if open to avoid mobile collisions
+                if (dropdownOpen && navMenuOpen) {
+                    navMenuOpen = false;
+                    const menuDropdown = document.getElementById('navMenuDropdown');
+                    if (menuDropdown) menuDropdown.classList.add('hidden');
+                }
                 if (dropdownOpen) fetchMeetings();
             };
 
             // Close when clicking outside
             document.addEventListener('click', function (e) {
                 const wrapper = document.getElementById('meetingNotifWrapper');
+                const dropdown = document.getElementById('meetingDropdown');
                 if (wrapper && !wrapper.contains(e.target) && dropdownOpen) {
-                    dropdownOpen = false;
-                    document.getElementById('meetingDropdown').classList.add('hidden');
+                    window.closeMeetingDropdown();
                 }
             });
 
@@ -1497,56 +1674,137 @@
                 return Math.floor(diff / 86400) + 'd ago';
             }
 
-            function renderList(requests) {
+            function renderDropdownList(requests) {
                 const list = document.getElementById('meetingRequestsList');
                 const noMsg = document.getElementById('noRequestsMsg');
                 const countLabel = document.getElementById('dropdownCount');
 
-                countLabel.textContent = requests.length
-                    ? requests.length + ' pending'
-                    : '';
+                if (countLabel) {
+                    countLabel.textContent = requests.length ? requests.length + ' pending' : '';
+                }
+
+                if (!list) return;
 
                 if (!requests.length) {
                     list.innerHTML = '';
-                    list.appendChild(noMsg);
-                    noMsg.classList.remove('hidden');
+                    if (noMsg) {
+                        list.appendChild(noMsg);
+                        noMsg.classList.remove('hidden');
+                    }
                     return;
                 }
 
-                noMsg.classList.add('hidden');
+                if (noMsg) noMsg.classList.add('hidden');
                 list.innerHTML = requests.map(function (r) {
                     const name = r.student_name || 'Unknown Student';
                     const section = r.section ? ' · ' + r.section : '';
                     const sid = r.student_number ? ' (' + r.student_number + ')' : '';
                     const ago = timeAgo(r.requested_at);
-                    const link = '/admin/case-summary/' + r.student_id;
-                    return `<a href="${link}" class="flex items-start gap-3 px-4 py-3 hover:bg-[#166534]/10 transition-colors group">
-                        <span class="mt-0.5 w-8 h-8 rounded-full bg-[#dcfce7] border border-[#bbf7d0] flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-[#166534]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    const link = '<?= base_url('admin/case-summary/') ?>' + r.student_id;
+                    return `<a href="${link}" class="flex items-start gap-3 px-4 py-3 hover:bg-white/10 transition-colors group">
+                        <span class="mt-0.5 w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center flex-shrink-0 text-emerald-300 font-bold text-xs">
+                            ${name.charAt(0)}
                         </span>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-semibold text-gray-800 truncate group-hover:text-[#166534] transition-colors">${name}${sid}</p>
-                            <p class="text-[11px] text-gray-400">${section.replace(' · ', '')}${section ? '' : '&nbsp;'} <span class="ml-1 text-gray-300">${ago}</span></p>
+                            <p class="text-sm font-semibold text-white truncate group-hover:text-emerald-300 transition-colors">${name}${sid}</p>
+                            <p class="text-[11px] text-white/60">${section.replace(' · ', '')}${section ? '' : '&nbsp;'} <span class="ml-1 text-white/40">${ago}</span></p>
                         </div>
-                        <span class="text-[10px] text-[#166534] font-semibold self-center opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">View →</span>
+                        <span class="text-[10px] text-emerald-400 font-semibold self-center opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">View →</span>
                     </a>`;
+                }).join('');
+            }
+
+            function renderSectionCards(requests) {
+                const sectionList = document.getElementById('dashboardSessionList');
+                const emptySection = document.getElementById('dashboardSessionEmpty');
+                const sectionBadge = document.getElementById('sessionSectionCountBadge');
+
+                if (sectionBadge) {
+                    sectionBadge.textContent = requests.length + ' Pending';
+                }
+
+                if (!sectionList || !emptySection) return;
+
+                if (!requests.length) {
+                    emptySection.classList.remove('hidden');
+                    sectionList.classList.add('hidden');
+                    sectionList.innerHTML = '';
+                    return;
+                }
+
+                emptySection.classList.add('hidden');
+                sectionList.classList.remove('hidden');
+                sectionList.innerHTML = requests.map(function (r) {
+                    const name = r.student_name || 'Unknown Student';
+                    const section = r.section ? 'Section ' + r.section : 'No Section';
+                    const sid = r.student_number ? ' · ID ' + r.student_number : '';
+                    const ago = timeAgo(r.requested_at);
+                    const link = '<?= base_url('admin/case-summary/') ?>' + r.student_id;
+
+                    return `<div class="bg-white rounded-xl border border-emerald-200/90 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center flex-shrink-0 text-emerald-800 font-bold text-sm">
+                                    ${name.charAt(0)}
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="text-sm font-bold text-gray-900 truncate">${name}</h4>
+                                    <p class="text-xs text-gray-500 truncate mt-0.5">${section}${sid}</p>
+                                    <div class="mt-2 flex items-center gap-1.5 flex-wrap">
+                                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                            ⏱ Requested ${ago}
+                                        </span>
+                                        <span class="inline-flex items-center text-[11px] font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                                            Virtual 1-on-1
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                            <span class="text-xs text-gray-400">Counseling Request</span>
+                            <a href="${link}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#096328] hover:bg-[#075826] text-white text-xs font-semibold shadow-sm transition-colors">
+                                View Case & Connect →
+                            </a>
+                        </div>
+                    </div>`;
                 }).join('');
             }
 
             function updateBadge(count) {
                 const badge = document.getElementById('meetingBadge');
-                badge.textContent = count;
-                if (count > 0) {
-                    badge.classList.remove('hidden');
-                    // Brief shake animation on new requests
-                    if (count > lastCount) {
-                        const btn = document.getElementById('meetingBellBtn');
-                        btn.classList.add('ring-2', 'ring-green-400/60');
-                        setTimeout(() => btn.classList.remove('ring-2', 'ring-green-400/60'), 2000);
+                const statSessions = document.getElementById('stat-sessions');
+                const navBadge = document.getElementById('navSessionsBadge');
+
+                if (badge) {
+                    badge.textContent = count;
+                    if (count > 0) {
+                        badge.classList.remove('hidden');
+                        if (count > lastCount) {
+                            const btn = document.getElementById('meetingBellBtn');
+                            if (btn) {
+                                btn.classList.add('ring-2', 'ring-green-400/60');
+                                setTimeout(() => btn.classList.remove('ring-2', 'ring-green-400/60'), 2000);
+                            }
+                        }
+                    } else {
+                        badge.classList.add('hidden');
                     }
-                } else {
-                    badge.classList.add('hidden');
                 }
+
+                if (statSessions) {
+                    statSessions.textContent = count;
+                }
+
+                if (navBadge) {
+                    navBadge.textContent = count;
+                    if (count > 0) {
+                        navBadge.classList.remove('hidden');
+                    } else {
+                        navBadge.classList.add('hidden');
+                    }
+                }
+
                 lastCount = count;
             }
 
@@ -1556,7 +1814,8 @@
                     .then(function (data) {
                         if (data.status !== 'success') return;
                         updateBadge(data.count);
-                        if (dropdownOpen) renderList(data.requests || []);
+                        renderDropdownList(data.requests || []);
+                        renderSectionCards(data.requests || []);
                         const label = document.getElementById('lastCheckedLabel');
                         if (label) label.textContent = 'Updated ' + timeAgo(new Date().toISOString());
                     })
@@ -1579,6 +1838,7 @@
         <div id="bulkDeleteIncidentsInputs"></div>
     </form>
     <?= view('reports/modals/student_profile') ?>
+    <?= view('partials/session_idle_modal') ?>
 </body>
 </html>
 

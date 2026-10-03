@@ -9,6 +9,7 @@
     <title>Staff Portal - Secure Login</title>
     <link rel="preload" as="image" href="<?= base_url('images/logo.png?v=6') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
         <script>
         tailwind.config = {
             theme: {
@@ -40,7 +41,7 @@
                             600: '#C24545',
                             700: '#A33535',
                         },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
                         calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
@@ -58,45 +59,37 @@
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-admin {
-            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 15s ease infinite alternate;
-        }
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
         }
 
         .bg-grid {
-            background-size: 40px 40px;
-            background-image:
-                linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
-            mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
-            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
             position: absolute; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
         .admin-card {
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.10);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
             box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4);
         }
 
         .input-admin {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1.5px solid rgba(255, 255, 255, 0.1);
-            color: #f1f5f9;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            color: #ffffff;
             transition: all 0.3s ease;
         }
         .input-admin:focus {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.45);
             box-shadow: 0 0 0 3px rgba(242, 195, 0, 0.25);
             border-color: #F2C300;
         }
-        .input-admin::placeholder { color: rgba(255,255,255,0.6); }
+        .input-admin::placeholder { color: rgba(255,255,255,0.75); }
 
         .glow-blob {
             position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.12; z-index: 0;
@@ -146,7 +139,7 @@
         }
     </style>
 </head>
-<body class="bg-admin min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto">
+<body class="school-auth-page bg-admin min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto">
 
             <!-- Premium Fast-Load Splash Screen -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-admin backdrop-blur-xl transition-all duration-700 ease-in-out">

@@ -90,6 +90,46 @@ class AuthFilter implements FilterInterface
             }
         }
 
+        // ── SERVER-ENFORCED IDLE TIMEOUT (15 MINUTES = 900 SECONDS) ──
+        $lastActivity = session()->get('last_activity');
+        $idleTimeout = 900; // 15 minutes inactivity limit for shared school computers
+
+        if ($lastActivity && (time() - (int)$lastActivity) > $idleTimeout) {
+            $userRole = (int) session()->get('role');
+            $userId   = session()->get('user_id');
+
+            // Audit log timeout event
+            if ($userId) {
+                try {
+                    $db = \Config\Database::connect();
+                    if ($db->tableExists('audit_logs')) {
+                        $db->table('audit_logs')->insert([
+                            'user_id'     => $userId,
+                            'action'      => 'SESSION_IDLE_TIMEOUT',
+                            'entity_type' => 'system',
+                            'entity_id'   => $userId,
+                            'details'     => 'Session terminated due to 15-minute inactivity.',
+                            'created_at'  => date('Y-m-d H:i:s')
+                        ]);
+                    }
+                } catch (\Throwable $e) {}
+            }
+
+            session()->destroy();
+
+            if ($request instanceof IncomingRequest && $request->isAJAX()) {
+                return service('response')
+                    ->setStatusCode(401)
+                    ->setJSON(['status' => 'error', 'message' => 'Session expired due to inactivity. Please log in again.']);
+            }
+
+            $redirectUrl = ($userRole === 1 || $userRole === 2) ? '/admin/login' : '/login';
+            return redirect()->to($redirectUrl)->with('error', 'Session expired due to inactivity. Please log in again.');
+        }
+
+        // Keep last_activity current on valid user activity
+        session()->set('last_activity', time());
+
         $role = session()->get('role');
         $uriStr = $request->getUri()->getPath();
 

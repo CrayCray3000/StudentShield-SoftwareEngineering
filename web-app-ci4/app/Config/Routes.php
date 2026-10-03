@@ -17,6 +17,8 @@ $routes->get('/admin/login', 'AuthController::adminLoginView');
 $routes->match(['GET', 'POST'], '/admin/login/authenticate', 'AuthController::authenticateAdmin');
 $routes->get('/admin/otp', 'AuthController::otpView');
 $routes->post('/admin/verify-otp', 'AuthController::verifyOtp');
+$routes->post('/admin/resend-otp', 'AuthController::resendOtp');
+$routes->get('/session/ping', 'AuthController::pingSession');
 $routes->match(['GET', 'POST'], '/logout', 'AuthController::logout');
 $routes->match(['GET', 'POST'], '/admin/logout', 'AuthController::logout');
 

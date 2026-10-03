@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudentShield — Pending Registrations</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -19,7 +20,7 @@
                         heading: ['Outfit', 'sans-serif']
                     },
                     colors: {
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', dark: '#B5881D' },
                     }
                 }
@@ -32,8 +33,9 @@
         body { background-color: #f8faf6; font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
         .glass-header {
-            background: #166534;
+            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
             border-bottom: 3px solid #EAB308;
+            box-shadow: 0 4px 20px -2px rgba(7, 88, 38, 0.35);
         }
         .dashboard-card {
             background: #ffffff;
@@ -43,13 +45,13 @@
         }
         .section-header {
             background: #ffffff;
-            color: #166534;
+            color: #0B5E2E;
             padding: 16px 24px;
             border-bottom: 1px solid #e5ebe5;
-            border-left: 4px solid #166534;
+            border-left: 4px solid #0B5E2E;
         }
         .thead-green {
-            background: linear-gradient(90deg, #0B5E2E, #166534);
+            background: linear-gradient(90deg, #0B5E2E, #096328);
             color: #fff;
         }
         .badge-pending {
@@ -63,14 +65,14 @@
         }
         .animate-slide-up { animation: slideUp 0.4s ease both; }
         .approve-btn {
-            background: linear-gradient(135deg, #166534, #22c55e);
+            background: #096328;
             color: white;
             transition: all 0.2s ease;
         }
         .approve-btn:hover {
-            background: linear-gradient(135deg, #14532d, #16a34a);
+            background: #075826;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(22, 101, 52, 0.3);
+            box-shadow: 0 4px 12px rgba(11, 94, 46, 0.3);
         }
         .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f5f7f5; border-radius: 10px; }
@@ -79,16 +81,16 @@
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="school-staff-page min-h-screen flex flex-col">
 
     <!-- Navbar -->
     <nav class="glass-header text-white sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-16 w-16 object-contain">
-                <div>
-                    <h1 class="text-xl font-bold tracking-tight">StudentShield</h1>
-                    <span class="text-[#F2C300] text-xs font-semibold tracking-widest uppercase">
+        <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
+            <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0">
+                <div class="truncate">
+                    <h1 class="text-base sm:text-xl font-bold tracking-tight leading-tight truncate">StudentShield</h1>
+                    <span class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">
                         <?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> · Pending Registrations
                     </span>
                 </div>
@@ -394,5 +396,6 @@
             }
         }
     </script>
+    <?= view('partials/session_idle_modal') ?>
 </body>
 </html>

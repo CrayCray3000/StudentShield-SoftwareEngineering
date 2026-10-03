@@ -12,7 +12,7 @@
 
         <!-- Header Profile Info -->
         <div
-            class="bg-gradient-to-r from-[#166534] to-[#14532D] text-white px-8 py-6 flex shrink-0 justify-between items-start border-b-4 border-[#EAB308]">
+        class="school-profile-banner bg-primary text-white px-8 py-6 flex shrink-0 justify-between items-start border-b-4 border-[#EAB308]">
             <div class="flex gap-4 items-center">
                 <div
                     class="h-16 w-16 bg-white/10 rounded-full flex items-center justify-center border-2 border-white/20 text-2xl font-bold font-heading shadow-inner">

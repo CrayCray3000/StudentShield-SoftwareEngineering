@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudentShield - User Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
         <script>
         tailwind.config = {
             theme: {
@@ -39,7 +40,7 @@
                             600: '#C24545',
                             700: '#A33535',
                         },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
                         calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
@@ -59,8 +60,9 @@
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
         .modal-backdrop { background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); }
         .glass-header {
-            background: #166534; /* Simple solid primary green */
-            border-bottom: 3px solid #EAB308; /* Solid gold accent */
+            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
+            border-bottom: 3px solid #EAB308;
+            box-shadow: 0 4px 20px -2px rgba(7, 88, 38, 0.35);
         }
         
         .dashboard-card {
@@ -73,10 +75,10 @@
         
         .section-header {
             background: #ffffff;
-            color: #166534;
+            color: #0B5E2E;
             padding: 16px 24px;
             border-bottom: 1px solid #e5ebe5;
-            border-left: 4px solid #166534;
+            border-left: 4px solid #0B5E2E;
             border-radius: 14px 14px 0 0;
         }
 
@@ -112,7 +114,7 @@
         .stat-card.gold-accent { border-left: 4px solid #F59E0B; }
         
         .thead-green {
-            background: #166534;
+            background: #096328;
             color: white;
         }
         .thead-green th {
@@ -123,18 +125,18 @@
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="school-staff-page min-h-screen">
 
     <!-- Navbar -->
     <nav class="glass-header text-white sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-24 w-24 object-contain"
+        <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
+            <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0"
                      onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
 
-                <div>
-                    <h1 class="text-2xl font-bold tracking-tight font-heading">StudentShield</h1>
-                    <span class="text-[#EAB308] text-xs font-semibold tracking-widest uppercase">Super Admin Panel</span>
+                <div class="truncate">
+                    <h1 class="text-base sm:text-2xl font-bold tracking-tight font-heading leading-tight truncate">StudentShield</h1>
+                    <span class="text-[#EAB308] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">Super Admin Panel</span>
                 </div>
             </div>
             
@@ -242,7 +244,7 @@
                     System Directory
                 </h2>
                 <div class="flex flex-wrap gap-2">
-                    <button onclick="filterUsers('all')" id="filter-all" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#166534] text-white">All</button>
+                    <button onclick="filterUsers('all')" id="filter-all" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-white">All</button>
                     <button onclick="filterUsers('0')" id="filter-0" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors">Students</button>
                     <button onclick="filterUsers('1')" id="filter-1" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors">Counselors</button>
                     <button onclick="filterUsers('2')" id="filter-2" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-amber-50 hover:text-amber-700 transition-colors">Admins</button>
@@ -267,7 +269,7 @@
                         <?php foreach ($users as $user): ?>
                         <tr class="user-row border-b border-gray-50 hover:bg-gray-50/50 transition-colors" data-role="<?= $user['role'] ?>">
                             <td class="px-6 py-4 font-medium text-gray-900">
-                                <button onclick="openStudentProfile(<?= $user['id'] ?>)" class="hover:text-[#166534] hover:underline underline-offset-2 transition-colors">
+                                <button onclick="openStudentProfile(<?= $user['id'] ?>)" class="hover:text-[#096328] hover:underline underline-offset-2 transition-colors">
                                     <?= esc($user['name']) ?>
                                 </button>
                             </td>
@@ -315,7 +317,7 @@
                 <div class="user-card p-5 hover:bg-gray-50/50 transition-colors" data-role="<?= $user['role'] ?>">
                     <div class="flex justify-between items-start mb-3">
                         <div class="pr-3">
-                            <button onclick="openStudentProfile(<?= $user['id'] ?>)" class="font-bold text-gray-900 hover:text-[#166534] hover:underline transition-colors text-left leading-tight"><?= esc($user['name']) ?></button>
+                            <button onclick="openStudentProfile(<?= $user['id'] ?>)" class="font-bold text-gray-900 hover:text-[#096328] hover:underline transition-colors text-left leading-tight"><?= esc($user['name']) ?></button>
                             <span class="text-xs text-gray-500 font-mono inline-block mt-0.5"><?= esc($user['student_id'] ?: 'No ID') ?></span>
                         </div>
                         <div class="flex-shrink-0">
@@ -552,14 +554,14 @@
     function filterUsers(role) {
         // Reset button styles
         document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('bg-[#166534]', 'text-white', 'bg-blue-50', 'text-blue-600', 'bg-emerald-50', 'text-emerald-600', 'bg-amber-50', 'text-amber-700');
+            btn.classList.remove('bg-primary', 'text-white', 'bg-blue-50', 'text-blue-600', 'bg-emerald-50', 'text-emerald-600', 'bg-amber-50', 'text-amber-700');
             btn.classList.add('bg-gray-100', 'text-gray-600');
         });
 
         // Set active button style
         const activeBtn = document.getElementById('filter-' + role);
         activeBtn.classList.remove('bg-gray-100', 'text-gray-600');
-        if (role === 'all') activeBtn.classList.add('bg-[#166534]', 'text-white');
+        if (role === 'all') activeBtn.classList.add('bg-primary', 'text-white');
         else if (role === '0') activeBtn.classList.add('bg-blue-50', 'text-blue-600');
         else if (role === '1') activeBtn.classList.add('bg-emerald-50', 'text-emerald-600');
         else if (role === '2') activeBtn.classList.add('bg-amber-50', 'text-amber-700');
@@ -576,6 +578,7 @@
 </script>
 
     <?= view('reports/modals/student_profile') ?>
+    <?= view('partials/session_idle_modal') ?>
 </body>
 </html>
 

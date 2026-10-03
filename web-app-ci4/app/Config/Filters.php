@@ -68,12 +68,12 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            // 'honeypot',
+            'honeypot', // Bot protection: traps automated form submissions
             'csrf',
             // 'invalidchars',
         ],
         'after' => [
-            // 'honeypot',
+            'honeypot', // Inject hidden bot-trap field into HTML responses
             'secureheaders',
         ],
     ];
@@ -93,7 +93,10 @@ class Filters extends BaseFilters
      * @var array<string, array<string, list<string>>>
      */
     public array $filters = [
-        'ratelimit'   => ['before' => ['login/authenticate', 'admin/login/authenticate', 'admin/verify-otp']],
+        'ratelimit'   => [
+            'before' => ['login/authenticate', 'admin/login/authenticate', 'admin/verify-otp', 'admin/resend-otp'],
+            'after'  => ['login/authenticate', 'admin/login/authenticate', 'admin/verify-otp', 'admin/resend-otp'],
+        ],
         'ipwhitelist' => ['before' => ['admin', 'admin/*']],
     ];
 }

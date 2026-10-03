@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudentShield - Incident Report</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
         <script>
         tailwind.config = {
             theme: {
@@ -17,7 +18,7 @@
                         heading: ['Outfit', 'sans-serif'] 
                     },
                     colors: {
-                        white: '#FBFDFB', // Anti-glare soft white
+                        white: '#FFFFFF', // Anti-glare soft white
                         black: '#131A15', // Softened black
                         gray: {
                             50: '#F4F7F5',
@@ -25,21 +26,22 @@
                             200: '#CFD9D4',
                             300: '#AAB8B1',
                             400: '#82958B',
-                            500: '#61756B',
+                            500: '#526259',
                             600: '#4D5D55',
                             700: '#3D4943',
                             800: '#2E3833',
-                            900: '#212825', // Replaces harsh text-gray-900 with deep sage
+                            900: '#24352B', // Replaces harsh text-gray-900 with deep sage
                         },
                         red: {
                             50: '#FDF7F7',
                             100: '#FAEDED',
                             200: '#F4D6D6',
-                            500: '#D95A5A', // Less neon, softer warning red
-                            600: '#C24545',
+                            400: '#B3261E',
+                            500: '#B3261E', // Muted red for report and error accents
+                            600: '#B3261E',
                             700: '#A33535',
                         },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
                         calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
@@ -48,138 +50,19 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        /* Responsive scaling for smaller monitors/laptops */
-        @media (max-width: 1440px) { html { font-size: 15px; } }
-        @media (max-width: 1280px) { html { font-size: 14px; } }
-        @media (max-width: 1024px) { html { font-size: 13px; } }
-        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
-
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
-
-        .split-layout { display: grid; grid-template-columns: 420px 1fr; min-height: 100vh; }
-        @media (max-width: 1366px) { .split-layout { grid-template-columns: 360px 1fr; } }
-        @media (max-width: 1024px) { .split-layout { grid-template-columns: 1fr; } }
-        @media (min-width: 1400px) { .split-layout { grid-template-columns: 480px 1fr; } }
-
-        /* Left Panel — Calming therapeutic feel */
-        .brand-panel {
-            background: linear-gradient(-45deg, #14532d, #064e3b, #15803d, #14532d);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
-            position: relative; overflow: hidden;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .brand-panel::before {
-            content: ''; position: absolute; inset: 0;
-            background:
-                radial-gradient(ellipse at 30% 0%, rgba(242,195,0,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 100%, rgba(255,255,255,0.05) 0%, transparent 50%);
-        }
-
-        /* Organic wave shapes for calming feel */
-        .wave-top, .wave-bottom { position: absolute; width: 100%; overflow: hidden; z-index: 1; }
-        .wave-top { top: 0; height: 120px; }
-        .wave-bottom { bottom: 0; height: 120px; transform: rotate(180deg); }
-
-        /* Breathing circle animation — therapeutic */
-        .breath-circle {
-            animation: breathe 6s ease-in-out infinite;
-        }
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.15; }
-            50% { transform: scale(1.15); opacity: 0.25; }
-        }
-
-        /* Textarea (Premium Feel) */
-        .textarea-field {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1.5px solid #D4E2D9;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
-        }
-        .textarea-field:focus {
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(11, 94, 46, 0.05), 0 15px 35px rgba(11, 94, 46, 0.04);
-            border-color: #0B5E2E;
-            outline: none;
-        }
-        .textarea-field::-webkit-scrollbar { width: 5px; }
-        .textarea-field::-webkit-scrollbar-track { background: transparent; }
-        .textarea-field::-webkit-scrollbar-thumb { background: #c5d0c2; border-radius: 99px; }
-
-        /* Mood Chips */
-        .mood-btn {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 13px;
-        }
-        .mood-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .mood-btn.active {
-            background: #DCF0E4 !important; border-color: #4A9B6E !important;
-            color: #2D6B47 !important; font-weight: 600 !important;
-            box-shadow: 0 2px 10px rgba(74, 155, 110, 0.12);
-        }
-
-        /* Submit Button */
-        .submit-btn {
-            background: linear-gradient(135deg, #0B5E2E, #157A3E);
-            position: relative; overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .submit-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-            transform: skewX(-20deg); transition: 0.5s;
-        }
-        .submit-btn:hover {
-            box-shadow: 0 12px 28px rgba(11, 94, 46, 0.3);
-            transform: translateY(-2px);
-        }
-        .submit-btn:hover::before { left: 150%; }
-
-        /* Animations */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-4px); } }
-
-        .anim-1 { animation: slideUp 0.6s ease-out both; }
-        .anim-2 { animation: slideUp 0.6s ease-out 0.12s both; }
-        .anim-3 { animation: slideUp 0.6s ease-out 0.24s both; }
-        .anim-4 { animation: slideUp 0.6s ease-out 0.36s both; }
-        .anim-form { animation: fadeInUp 0.5s ease-out 0.1s both; }
-
-        .char-count { transition: color 0.2s ease; }
-
-
-    </style>
+    <link rel="stylesheet" href="<?= base_url('css/student-forms.css?v=4') ?>">
 </head>
-<body class="text-gray-800 antialiased min-h-screen flex items-center justify-center p-0 relative overflow-x-hidden bg-white">
+<body class="student-form-page student-form-page--report antialiased min-h-screen">
 
-    <!-- Ambient Base glowing orbs (Optimized for performance, removed heavy blur animations) -->
-    <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-[-20%] left-[-10%] w-[700px] h-[700px] rounded-full bg-calm-200/20 blur-3xl"></div>
-        <div class="absolute bottom-[-20%] right-[-10%] w-[900px] h-[900px] rounded-full bg-gold-light/10 blur-3xl"></div>
-    </div>
-
-
-
-    <!-- Main Fullscreen Glass Container (Edge-to-Edge Aesthetic) -->
-    <div class="w-full h-full min-h-screen flex flex-col lg:flex-row relative z-10 bg-white">
+    <!-- Student form layout -->
+    <div class="student-form-layout w-full flex flex-col lg:flex-row">
 
         <!-- ===== LEFT — Calming Branding Panel (Expanded) ===== -->
         <div class="brand-panel hidden lg:flex w-full lg:w-[420px] 2xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 py-8 lg:py-12 relative">
-
-            <!-- Breathing circle — calming ambient element -->
-            <div class="breath-circle absolute w-[280px] h-[280px] rounded-full bg-gold/10 top-[20%] right-[-60px] pointer-events-none"></div>
-            <div class="breath-circle absolute w-[180px] h-[180px] rounded-full bg-white/5 bottom-[15%] left-[-30px] pointer-events-none" style="animation-delay: 3s;"></div>
+            <div class="bg-grid"></div>
 
             <!-- Top — Logo & Brand -->
-            <div class="relative z-10 anim-1">
+            <div class="relative z-10">
                 <a href="<?= base_url('student/dashboard') ?>"
                    aria-label="Go to StudentShield action selection"
                    class="inline-flex items-center gap-3.5 mb-14 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-primary-dark">
@@ -205,7 +88,7 @@
             </div>
 
             <!-- Middle — Trust Features -->
-            <div class="relative z-10 space-y-4 anim-2">
+            <div class="relative z-10 space-y-4">
                 <div class="flex items-center gap-3.5 group">
                     <div class="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center flex-shrink-0 border border-white/5 group-hover:bg-white/10 transition-colors">
                         <svg class="w-4 h-4 text-gold/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -236,7 +119,7 @@
             </div>
 
             <!-- Bottom — Helpline + Footer -->
-            <div class="relative z-10 space-y-5 anim-3">
+            <div class="relative z-10 space-y-5">
 
                 <div class="border-t border-white/8 pt-4 flex items-center justify-between">
                     <p class="text-white/60 text-[11px]">© 2026 StudentShield · SVBSM</p>
@@ -249,66 +132,24 @@
         </div>
 
         <!-- ===== RIGHT — Vent Form Panel (Fullscreen Expanded) ===== -->
-        <div class="flex flex-col lg:min-h-screen flex-1 bg-[#FAFDF5] relative items-center justify-start lg:justify-stretch">
+        <div class="student-form-main flex flex-col min-h-screen flex-1 relative items-center">
 
-            <!-- Mobile Top Bar — Visible only on mobile since branding is hidden -->
-            <nav aria-label="Incident report navigation" class="lg:hidden sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm support-backdrop-blur:bg-white/60">
-                <div class="px-5 py-3.5 flex items-center">
-                    <!-- Left: Branding -->
-                    <a href="<?= base_url('student/dashboard') ?>"
-                       aria-label="Go to StudentShield action selection"
-                       class="flex min-h-11 items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-10 w-10 object-contain">
-                        <div class="flex flex-col">
-                            <span class="font-heading font-extrabold text-gray-900 text-[14px] leading-none">StudentShield</span>
-                            <span class="text-[9px] text-emerald-500 font-bold uppercase tracking-wider flex items-center gap-1.5 mt-1">
-                                <span class="relative flex h-1.5 w-1.5">
-                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                  <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                                </span>
-                                Safe Space
-                            </span>
-                        </div>
-                    </a>
+            <?= view('partials/student_mobile_form_header', ['page' => 'report']) ?>
 
-                </div>
-            </nav>
-
-            <!-- Form Area (Stretched to top and bottom to eat up whitespace, max-capped for extreme ultrawides) -->
-            <div class="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 xl:px-24 py-4 lg:py-6 xl:py-8 relative flex flex-col flex-1 justify-center">
-                <div class="w-full relative z-20 flex flex-col flex-1 justify-center">
+            <!-- Form content -->
+            <div class="student-form-content mx-auto relative">
+                <div class="student-form-body w-full relative">
                 <?= view('partials/student_form_navigation', ['page' => 'report']) ?>
 
-                <!-- Ultra-fast Ambient Depth for Mobile -->
-                <div class="absolute top-[10%] right-[-15%] w-80 h-80 bg-primary/5 rounded-full blur-[60px] lg:hidden pointer-events-none"></div>
-
-                <!-- Desktop Header -->
-                <div class="hidden lg:flex items-center justify-between mb-4 anim-form">
-                    <div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <svg class="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                            <span class="text-[12px] font-bold text-amber-600 tracking-wider uppercase">Secure Reporting</span>
-                        </div>
-                        <h2 class="text-3xl lg:text-4xl xl:text-[2.6rem] font-heading font-extrabold text-gray-900 tracking-tight">Report an Incident</h2>
-                    </div>
-                </div>
-
-                <!-- Daily Affirmation Banner -->
-                <div class="bg-calm-50/50 rounded-xl p-5 border border-calm-100/60 relative mb-6 anim-form shadow-sm">
-                    <p id="dailyAffirmation" class="text-[16px] xl:text-[18px] font-medium text-calm-800 text-center leading-relaxed italic font-serif">
-                        "Your current situation is not your final destination. Take it one day at a time."
-                    </p>
-                </div>
-
-                <!-- Mobile Header -->
-                <div class="lg:hidden mb-5">
-                    <div class="flex items-center gap-2 mb-2">
-                        <svg class="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        <span class="text-[11px] font-semibold text-amber-600 tracking-wide uppercase">Secure Reporting</span>
-                    </div>
-                    <h2 class="text-2xl font-heading font-extrabold text-gray-900">Report an Incident</h2>
-                    <p class="text-gray-500 mt-1 text-sm">Your report is strictly confidential.</p>
-                </div>
+                <!-- Page heading stays ahead of the form on every screen size. -->
+                <header class="student-page-header">
+                    <span class="student-section-label">
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m10.3 3.9-8 14a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0ZM12 9v4m0 4h.01" /></svg>
+                        Incident Report
+                    </span>
+                    <h2>Report an Incident</h2>
+                    <p>Tell us what happened so your guidance counselor can review it.</p>
+                </header>
 
                 <!-- Flash Messages -->
                 <?php if (session()->getFlashdata('message')): ?>
@@ -324,8 +165,8 @@
                     </div>
                 <?php endif; ?>
 
-                <!-- Vent Form -->
-                <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="bullyingForm" enctype="multipart/form-data" class="flex-1 flex flex-col space-y-5 anim-form">
+                <!-- Incident Report Form -->
+                <form action="<?= base_url('report-bullying/submit') ?>" method="POST" id="bullyingForm" enctype="multipart/form-data" class="student-entry-form">
                     <div class="hidden"><?= csrf_field() ?></div>
 
                     
@@ -334,14 +175,14 @@
                         
                         <!-- Role Toggle -->
                         <div>
-                            <p class="text-xs font-semibold text-gray-800 mb-2.5">I am reporting as a:</p>
+                            <p class="role-prompt mb-2.5">I am reporting as a:</p>
                             <input type="hidden" name="reporter_type" id="roleInput" value="self">
-                            <div class="flex gap-2">
-                                <button type="button" onclick="setRole('self', this)" data-role="self" class="role-btn active px-4 py-2.5 rounded-xl border border-calm-300 bg-calm-50 text-[13px] font-bold text-calm-700 transition-all shadow-[0_2px_10px_rgba(74,155,110,0.12)] flex items-center gap-2">
+                            <div class="role-options">
+                                <button type="button" onclick="setRole('self', this)" data-role="self" aria-pressed="true" class="role-btn active px-4 py-2.5 rounded-xl border border-calm-300 bg-calm-50 text-[13px] font-bold text-calm-700 transition-all shadow-[0_2px_10px_rgba(74,155,110,0.12)] flex items-center gap-2">
                                     <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                                     I am the victim
                                 </button>
-                                <button type="button" onclick="setRole('bystander', this)" data-role="bystander" class="role-btn px-4 py-2.5 rounded-xl border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white text-[13px] font-semibold text-gray-500 transition-all hover:bg-gray-50 flex items-center gap-2">
+                                <button type="button" onclick="setRole('bystander', this)" data-role="bystander" aria-pressed="false" class="role-btn px-4 py-2.5 rounded-xl border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white text-[13px] font-semibold text-gray-500 transition-all hover:bg-gray-50 flex items-center gap-2">
                                     <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     I am a bystander
                                 </button>
@@ -351,11 +192,11 @@
                         <!-- Who is involved? -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div id="victimNameBox" class="hidden" style="display:none;">
-                                <label class="block text-xs font-semibold text-gray-800 mb-2">Who is being bullied? <span class="text-red-400">*</span></label>
+                                <label for="victim_name" class="block text-xs font-semibold text-gray-800 mb-2">Who is being bullied? <span class="text-red-400">*</span></label>
                                 <input type="text" id="victim_name" name="victim_name" class="w-full bg-white/80 border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Full name of the victim">
                             </div>
                             <div id="aggressorNameBox" class="md:col-span-2">
-                                <label class="block text-xs font-semibold text-gray-800 mb-2">Who is the aggressor? <span class="text-red-400">*</span></label>
+                                <label for="aggressor_name" class="block text-xs font-semibold text-gray-800 mb-2">Who is the aggressor? <span class="text-red-400">*</span></label>
                                 <input type="text" id="aggressor_name" name="bully_name" required class="w-full bg-white/80 border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] rounded-xl px-4 py-3 text-[14px] focus:ring-2 focus:ring-calm-200 focus:border-calm-400 outline-none transition-all placeholder-gray-400 font-medium" placeholder="Full name of the aggressor">
                             </div>
                         </div>
@@ -363,10 +204,10 @@
                         <!-- Incident Details -->
                         <div class="flex flex-col flex-1 pb-4 pt-2">
                             <div class="flex items-center justify-between mb-2">
-                                <label class="block text-xs font-semibold text-gray-800">What happened? <span class="text-red-400">*</span></label>
+                                <label for="incident_details" class="block text-xs font-semibold text-gray-800">What happened? <span class="text-red-400">*</span></label>
                                 <span id="charCount" class="char-count text-[11px] font-mono font-semibold text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">0 / 2000</span>
                             </div>
-                            <p class="text-[11px] text-gray-500 mb-2 flex items-center gap-1.5">
+                            <p class="field-help mb-2 flex items-center gap-1.5">
                                 <svg class="w-3 h-3 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Include who was involved, what happened, where and when it occurred.
                             </p>
@@ -375,8 +216,8 @@
                         
                         <!-- Evidence Upload -->
                         <div class="flex flex-col pb-4">
-                            <label class="block text-xs font-semibold text-gray-800 mb-2">Attach Evidence (Optional)</label>
-                            <p class="text-[11px] text-gray-500 mb-2 flex items-center gap-1.5">
+                            <label for="evidence_file" class="block text-xs font-semibold text-gray-800 mb-2">Attach Evidence (Optional)</label>
+                            <p class="field-help mb-2 flex items-center gap-1.5">
                                 <svg class="w-3 h-3 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
                                 Upload a photo or video (max 10MB)
                             </p>
@@ -399,8 +240,19 @@
 
                 </form>
 
+                <!-- Reassurance and counseling access are secondary to the writing task. -->
+                <aside class="student-secondary" aria-label="Student support">
+                    <div class="student-affirmation-card text-center flex flex-col items-center justify-center py-4 px-6 w-full">
+                        <div class="inline-flex items-center gap-2 mb-1.5">
+                            <svg class="w-4 h-4 text-primary flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                            <span class="text-[11px] uppercase tracking-wider font-bold text-primary">Support & Protection</span>
+                        </div>
+                        <p id="dailyAffirmation" class="text-gray-700 text-sm leading-relaxed italic text-center">"We are here to protect you."</p>
+                    </div>
+                </aside>
+
                 <!-- Footer -->
-                <div class="mt-4 flex items-center justify-center gap-4 text-[11px] text-gray-500">
+                <div class="student-form-footer flex items-center justify-center">
                     <span class="flex items-center gap-1">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         Protected by StudentShield
@@ -492,10 +344,12 @@
             // Reset all buttons
             document.querySelectorAll('.role-btn').forEach(b => {
                 b.className = inactiveRoleClasses;
+                b.setAttribute('aria-pressed', 'false');
             });
             
             // Set the clicked button to active
             btnElement.className = activeRoleClasses;
+            btnElement.setAttribute('aria-pressed', 'true');
             
             // Set the hidden input value
             document.getElementById('roleInput').value = role;
@@ -526,9 +380,9 @@
             const len = this.value.length;
             charCount.innerText = len + ' / 2000';
             if (len > 1800) {
-                charCount.style.color = '#D95A5A';
+                charCount.style.color = '#B3261E';
             } else if (len > 1000) {
-                charCount.style.color = '#B5881D';
+                charCount.style.color = '#8A5700';
             } else {
                 charCount.style.color = '';
             }

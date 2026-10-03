@@ -10,6 +10,7 @@
     <title>StudentShield - Path Selection</title>
     <link rel="preload" as="image" href="<?= base_url('images/logo.png?v=6') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
         <script>
         tailwind.config = {
             theme: {
@@ -41,7 +42,7 @@
                             600: '#C24545',
                             700: '#A33535',
                         },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
                         calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
@@ -67,13 +68,51 @@
             background-image: radial-gradient(circle at 15% 50%, rgba(234, 179, 8, 0.15), transparent 40%),
                               radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.05), transparent 40%);
         }
+    
+        .bg-student {
+            background:
+                radial-gradient(ellipse at 85% 85%, rgba(0,0,0,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 10%, rgba(217,170,46,0.08) 0%, transparent 45%),
+                linear-gradient(160deg, #128F42 0%, #0E7C38 55%, #09682D 100%);
+        }
+        .bg-grid {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+        .bg-rings {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+        }
+        .bg-rings::before {
+            content: '';
+            position: absolute;
+            width: 520px; height: 520px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.10);
+            top: -200px; left: -200px;
+            box-shadow: inset 0 0 0 40px rgba(255,255,255,0.03);
+        }
+        .bg-rings::after {
+            content: '';
+            position: absolute;
+            width: 420px; height: 420px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.08);
+            bottom: -160px; right: -160px;
+            box-shadow: inset 0 0 0 30px rgba(255,255,255,0.03);
+        }
     </style>
 </head>
-<body class="text-white antialiased min-h-screen flex flex-col items-center justify-center relative overflow-x-hidden bg-primary-dark bg-gradient-to-br from-primary-dark via-primary-darker to-primary-darkest bg-theme-glow">
+<body class="school-student-page text-white antialiased min-h-screen flex flex-col items-center justify-center relative overflow-x-hidden bg-student">
+    <div class="bg-grid"></div>
+    <div class="bg-rings"></div>
 
-    <!-- Breathing circles -->
-    <div class="absolute w-[350px] h-[350px] rounded-full bg-gold/5 top-[10%] right-[-5%] pointer-events-none blur-3xl"></div>
-    <div class="absolute w-[250px] h-[250px] rounded-full bg-calm-200/5 bottom-[10%] left-[-5%] pointer-events-none blur-3xl"></div>
+    <!-- Soft ambient glow orbs — give the eye natural resting points -->
+    <div class="absolute w-[400px] h-[400px] rounded-full bg-gold/[0.08] top-[5%] right-[-8%] pointer-events-none blur-3xl"></div>
+    <div class="absolute w-[300px] h-[300px] rounded-full bg-white/[0.06] bottom-[8%] left-[-8%] pointer-events-none blur-3xl"></div>
+    <div class="absolute w-[200px] h-[200px] rounded-full bg-white/[0.04] top-[50%] left-[40%] -translate-x-1/2 -translate-y-1/2 pointer-events-none blur-3xl"></div>
 
     <!-- Top Navigation -->
     <nav class="absolute top-0 w-full z-50 px-6 py-4 flex items-center justify-between">
@@ -88,7 +127,7 @@
                 <span class="text-[10px] text-white/80 font-bold uppercase tracking-widest mt-1">Mental Wellness Portal</span>
             </div>
         </a>
-        <form action="<?= base_url('logout') ?>" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="text-[13px] font-bold text-white/60 hover:text-white transition-colors flex items-center gap-2">
+        <form action="<?= base_url('logout') ?>" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="text-xs font-semibold text-white/90 hover:text-white bg-white/10 hover:bg-white/20 px-3.5 py-2 rounded-xl border border-white/20 transition-all flex items-center gap-2 shadow-sm">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
             Sign Out
         </button></form>
@@ -97,16 +136,16 @@
     <!-- Main Content (Centered) -->
     <div class="w-full max-w-6xl mx-auto px-6 py-16 mt-10 relative z-20 flex flex-col items-center">
         
-        <?= view('partials/student_meet_card') ?>
+        <div class="w-full max-w-lg mx-auto mb-10 shadow-lg rounded-2xl overflow-hidden"><?= view('partials/student_meet_card') ?></div>
 
         
         <!-- Header Section -->
         <div class="text-center mb-12 sm:mb-16">
-            <p class="text-gold/90 text-sm font-semibold tracking-widest uppercase mb-4">Select Action</p>
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 text-[#FCEEA1] font-bold text-xs tracking-widest uppercase border border-white/20 mb-5 shadow-sm">Select Action</span>
             <h1 class="text-4xl sm:text-5xl md:text-[3.5rem] font-heading font-extrabold text-white mb-6 tracking-tight leading-tight">
                 How can we help you today?
             </h1>
-            <p class="text-white/60 text-[15px] sm:text-base max-w-xl mx-auto leading-relaxed">
+            <p class="text-white/90 text-[15px] sm:text-base max-w-xl mx-auto leading-relaxed font-normal">
                 Choose the path that best fits what you need right now. Whether you just need someone to listen, or you need immediate intervention, we are here for you.
             </p>
         </div>
@@ -182,7 +221,7 @@
 
         <!-- Footer Footer -->
         <div class="mt-16 text-center">
-            <p class="text-white/20 text-[11px] font-medium tracking-wider">© 2026 StudentShield · SVBSM</p>
+            <p class="text-white/70 text-xs font-medium tracking-wider">© 2026 StudentShield · SVBSM</p>
         </div>
     </div>
 
@@ -276,6 +315,7 @@
     </div>
     <?php endif; ?>
 
+    <?= view('partials/session_idle_modal') ?>
 </body>
 </html>
 

@@ -1,0 +1,77 @@
+/* Brighter school branding. Risk and report status colors keep their meaning. */
+.school-auth-page .student-card,
+.school-auth-page .admin-card {
+    background: var(--school-green-hover);
+    border-color: rgba(255, 255, 255, .3);
+    box-shadow: 0 18px 44px -20px rgba(0, 51, 22, .4);
+}
+.school-auth-page .input-dark,
+.school-auth-page .input-admin,
+.school-auth-page .otp-input {
+    background: var(--school-green-input);
+    border-color: rgba(255, 255, 255, .65);
+    color: #FFFFFF;
+}
+.school-auth-page .input-dark:focus,
+.school-auth-page .input-admin:focus,
+.school-auth-page .otp-input:focus {
+    background: var(--school-green-input);
+    border-color: var(--school-cream);
+    box-shadow: 0 0 0 3px rgba(255, 244, 199, .25);
+}
+.school-auth-page input::placeholder { color: #EDF7F0; opacity: 1; }
+.school-auth-page [class~="bg-gold"],
+.school-auth-page [class~="bg-gold"] .text-primary { color: #173E25; }
+.school-auth-page [class~="text-white/30"],
+.school-auth-page [class~="text-white/40"],
+.school-auth-page [class~="text-white/50"],
+.school-auth-page [class~="text-white/60"],
+.school-auth-page [class~="text-white/70"],
+.school-auth-page [class~="text-white/80"],
+.school-auth-page [class~="text-white/90"],
+.school-student-page [class~="text-white/60"],
+.school-student-page [class~="text-white/70"],
+.school-student-page [class~="text-white/80"] { color: #FFFFFF; }
+.school-auth-page [class~="text-gold"],
+.school-auth-page [class~="text-gold-light"],
+.school-auth-page [class~="text-gold/70"],
+.school-auth-page [class~="text-gold/80"],
+.school-auth-page [class~="text-gold/90"],
+.school-student-page [class~="text-gold/90"] { color: var(--school-cream); }
+.school-auth-page [class~="hover:text-gold"]:hover,
+.school-auth-page .group:hover [class~="group-hover:text-gold"] { color: var(--school-cream); }
+.school-auth-page .glow-blob { display: none; }
+.school-auth-page .spotlight { background: none; }
+.school-student-page.bg-theme-glow {
+    background-color: var(--school-green);
+    background-image: none;
+}
+.school-student-page > .pointer-events-none { display: none; }
+.school-staff-page .glass-header,
+.school-staff-page .thead-green { background: var(--school-green); }
+.school-staff-page .section-header { color: var(--school-green); border-left-color: var(--school-green); }
+.school-staff-page .stat-card.green-accent { border-left-color: var(--school-green); }
+.school-staff-page .footer-bar { background: var(--school-green); color: #FFFFFF; }
+.school-staff-page .thead-green th { color: #FFFFFF; }
+.school-staff-page .glass-header [class~="text-white/70"],
+.school-staff-page .glass-header [class~="text-white/80"],
+.school-staff-page .glass-header [class~="text-white/90"] { color: #FFFFFF; }
+.school-staff-page .glass-header [class~="text-[#EAB308]"],
+.school-staff-page .glass-header [class~="text-[#F2C300]"],
+.school-staff-page .glass-header [class~="text-[#FACC15]"],
+.school-staff-page .glass-header [class~="text-gold"],
+.school-staff-page .glass-header [class~="text-gold-light"] { color: var(--school-cream); }
+.school-staff-page .glass-header [class~="bg-white/10"],
+.school-staff-page .glass-header a:hover,
+.school-staff-page .glass-header button:hover { background-color: var(--school-green-hover); }
+.school-staff-page #meetingDropdown,
+.school-staff-page #navMenuDropdown { background-color: var(--school-green-hover); }
+.school-staff-page .glass-header [class~="text-white/30"],
+.school-staff-page .glass-header [class~="text-white/40"],
+.school-staff-page .glass-header [class~="text-white/50"] { color: #FFFFFF; }
+.school-case-banner,
+.school-profile-banner { background: var(--school-green); }
+.school-case-banner [class~="text-white/70"],
+.school-case-banner [class~="text-white/80"],
+.school-profile-banner [class~="text-white/70"],
+.school-profile-banner [class~="text-white/80"] { color: #FFFFFF; }

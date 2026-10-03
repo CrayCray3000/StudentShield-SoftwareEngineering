@@ -11,6 +11,11 @@ class AdminController extends BaseController
 
         // Auto-migrate logic removed: schema alterations should be handled by CI4 Migrations.
     }
+        private function guardStaffAccess(): bool
+    {
+        return (bool) (session()->get('isLoggedIn') && in_array((int) session()->get('role'), [1, 2], true));
+    }
+
     public function dashboard()
     {
         $db = \Config\Database::connect();
@@ -149,6 +154,7 @@ class AdminController extends BaseController
 
     public function resolveVent($id)
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $db = \Config\Database::connect();
         $db->table('vent_logs')->where('id', $id)->update(['status' => 'Reviewed']);
         $this->logAudit('RESOLVE', 'vent', (int) $id);
@@ -157,6 +163,7 @@ class AdminController extends BaseController
 
     public function deleteVent($id)
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $db = \Config\Database::connect();
         // Soft Delete: set deleted_at timestamp instead of permanent removal
         $db->table('vent_logs')->where('id', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
@@ -166,6 +173,7 @@ class AdminController extends BaseController
 
     public function deleteMultipleVents()
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $ids = $this->request->getPost('vent_ids');
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();
@@ -181,6 +189,7 @@ class AdminController extends BaseController
 
     public function restoreVent($id)
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $db = \Config\Database::connect();
         $db->table('vent_logs')->where('id', $id)->update(['deleted_at' => null]);
         $this->logAudit('RESTORE', 'vent', (int) $id);
@@ -189,6 +198,7 @@ class AdminController extends BaseController
 
     public function restoreMultipleVents()
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $ids = $this->request->getPost('vent_ids');
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();
@@ -241,6 +251,7 @@ class AdminController extends BaseController
 
     public function resolveIncident($id)
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update(['status' => 'resolved']);
         $this->logAudit('RESOLVE', 'incident', (int) $id);
@@ -257,6 +268,7 @@ class AdminController extends BaseController
      */
     public function verifyIncident($id)
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $db = \Config\Database::connect();
 
         // Update status to verified
@@ -319,6 +331,7 @@ class AdminController extends BaseController
      */
     public function rejectIncident($id)
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $db = \Config\Database::connect();
 
         // Fetch the report to identify the reporter
@@ -397,6 +410,7 @@ class AdminController extends BaseController
      */
     public function undoIncident($id)
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update([
             'status' => 'pending_review',
@@ -465,6 +479,7 @@ class AdminController extends BaseController
 
     public function deleteIncident($id)
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $db = \Config\Database::connect();
         // Soft Delete
         $db->table('bully_reports')->where('id', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
@@ -474,6 +489,7 @@ class AdminController extends BaseController
 
     public function deleteMultipleIncidents()
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $ids = $this->request->getPost('incident_ids');
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();
@@ -489,6 +505,7 @@ class AdminController extends BaseController
 
     public function restoreIncident($id)
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update(['deleted_at' => null]);
         $this->logAudit('RESTORE', 'incident', (int) $id);
@@ -497,6 +514,7 @@ class AdminController extends BaseController
 
     public function restoreMultipleIncidents()
     {
+        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
         $ids = $this->request->getPost('incident_ids');
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();

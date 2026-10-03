@@ -9,6 +9,7 @@
     <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <title>Case Summary Report - StudentShield</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script>
@@ -42,7 +43,7 @@
                             600: '#C24545',
                             700: '#A33535',
                         },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
                         calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
@@ -155,10 +156,10 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased text-gray-900 leading-normal">
+<body class="school-staff-page font-sans antialiased text-gray-900 leading-normal">
 
     <!-- Header Navigation (Non-print) -->
-    <header class="no-print bg-[#166534] border-b-4 border-[#EAB308] text-white py-3 px-6 md:px-8 flex justify-between items-center shadow-md">
+    <header class="glass-header no-print bg-primary border-b-4 border-[#EAB308] text-white py-3 px-6 md:px-8 flex justify-between items-center shadow-md">
         <div class="flex items-center gap-4">
             <a href="/admin/dashboard" class="text-white hover:text-[#EAB308] transition-colors flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -173,13 +174,22 @@
                 </div>
             </div>
         </div>
-        <div class="flex items-center gap-4">
-            <button onclick="window.print()" class="bg-[#EAB308] hover:bg-[#D9AA2E] text-slate-900 font-bold px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-2 shadow">
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="bg-[#EAB308] hover:bg-[#D9AA2E] text-slate-900 font-bold px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-2 shadow cursor-pointer">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                 </svg>
                 Print / Export PDF
             </button>
+            <form action="<?= base_url('logout') ?>" method="POST" class="inline">
+                <?= csrf_field() ?>
+                <button type="submit" class="flex items-center gap-1.5 px-3 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-200 hover:text-white rounded-xl border border-red-500/30 text-xs font-semibold transition-all cursor-pointer shadow">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Sign Out
+                </button>
+            </form>
         </div>
     </header>
 
@@ -227,7 +237,7 @@
         <div id="report-content" class="hidden space-y-8">
 
             <!-- Student Profile Summary Banner -->
-            <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 text-white p-6 md:p-8 rounded-2xl shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b-4 border-[#EAB308]">
+            <div class="school-case-banner bg-gradient-to-r from-primary to-primary-dark text-white p-6 md:p-8 rounded-2xl shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b-4 border-[#EAB308]">
                 <div class="flex gap-4 items-center">
                     <div class="h-16 w-16 bg-white/10 rounded-full flex items-center justify-center border-2 border-white/20 text-2xl font-bold font-heading shadow-inner">
                         <span id="stInitials">ST</span>
@@ -465,7 +475,7 @@
                             <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Note Content</label>
                             <textarea id="noteContent" rows="5" placeholder="Enter clinical assessment, guidance note, or meeting summary..." required class="mt-1 w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-1 focus:ring-emerald-700 outline-none resize-none"></textarea>
                         </div>
-                        <button type="submit" class="w-full bg-[#166534] hover:bg-[#12532B] text-white font-bold py-2.5 rounded-xl transition shadow-md">
+                        <button type="submit" class="w-full bg-primary hover:bg-primary-darker text-white font-bold py-2.5 rounded-xl transition shadow-md">
                             Save Counselor Note
                         </button>
                     </form>
@@ -532,7 +542,7 @@
                     <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Action / Meeting Remarks</label>
                     <textarea id="statusRemarks" rows="4" placeholder="Describe the reason for status change or counseling session highlights..." required class="mt-1 w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-1 focus:ring-emerald-700 outline-none resize-none"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-[#166534] hover:bg-[#12532B] text-white font-bold py-2.5 rounded-xl transition shadow-md">
+                <button type="submit" class="w-full bg-primary hover:bg-primary-darker text-white font-bold py-2.5 rounded-xl transition shadow-md">
                     Update Status & Log Case Event
                 </button>
             </form>
@@ -565,7 +575,7 @@
                 <p id="googleMeetError" class="hidden text-sm text-red-700" role="alert"></p>
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="hideGoogleMeetDialog()" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700">Cancel</button>
-                    <button id="publishGoogleMeetButton" type="submit" class="rounded-lg bg-[#166534] px-4 py-2 text-sm font-bold text-white hover:bg-[#12532B]">Publish for this student</button>
+                    <button id="publishGoogleMeetButton" type="submit" class="rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white hover:bg-primary-darker">Publish for this student</button>
                 </div>
             </form>
         </div>
@@ -730,7 +740,7 @@
                     toolbar: { show: false },
                     zoom: { enabled: false }
                 },
-                colors: ['#166534'],
+                colors: ['#096328'],
                 fill: {
                     type: 'gradient',
                     gradient: { shadeIntensity: 1, opacityFrom: 0.25, opacityTo: 0.02, stops: [0, 100] }
@@ -738,7 +748,7 @@
                 markers: {
                     size: 6,
                     colors: ['#fff'],
-                    strokeColors: '#166534',
+                    strokeColors: '#096328',
                     strokeWidth: 3,
                     hover: { size: 8 }
                 },
@@ -1207,5 +1217,6 @@
         // Bootstrap load
         window.addEventListener('DOMContentLoaded', loadCaseData);
     </script>
+    <?= view('partials/session_idle_modal') ?>
 </body>
 </html>

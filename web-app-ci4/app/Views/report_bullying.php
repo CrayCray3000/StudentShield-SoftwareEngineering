@@ -56,12 +56,12 @@
         @media (max-width: 1280px) { html { font-size: 14px; } }
         /* Rely natively on Tailwind breakpoints below 1024 for precise touch control */
         
-        body { font-family: 'Inter', sans-serif; background-color: #06401E; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
         .font-heading { font-family: 'Outfit', sans-serif; }
         
         /* Dark Ambient Background */
         .bg-dark-mesh {
-            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
+            background: linear-gradient(135deg, #128F42 0%, #0E7C38 55%, #09682D 100%);
             background-size: 200% 200%;
             animation: gradientShift 15s ease infinite alternate;
             position: fixed; inset: 0; z-index: -2;

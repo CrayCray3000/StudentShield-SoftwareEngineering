@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guardian Consent - StudentShield</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #06401E; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--school-green); }
         h1, h2, h3 { font-family: 'Outfit', sans-serif; }
     </style>
 </head>

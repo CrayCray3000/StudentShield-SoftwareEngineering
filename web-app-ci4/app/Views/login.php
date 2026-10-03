@@ -56,49 +56,83 @@
         @media (max-width: 1280px) { html { font-size: 14px; } }
         /* Disable automatic shrinking below 1024 to rely natively on tailwind mobile classes instead for pixel-perfect touch control */
         
-        body { font-family: 'Inter', sans-serif; background-color: #06401E; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-student {
-            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 15s ease infinite alternate;
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+            background:
+                radial-gradient(ellipse at 85% 85%, rgba(0,0,0,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 10%, rgba(217,170,46,0.08) 0%, transparent 45%),
+                linear-gradient(160deg, #128F42 0%, #0E7C38 55%, #09682D 100%);
         }
 
+        /* Visible cross-hatch grid */
         .bg-grid {
-            background-size: 50px 50px;
-            background-image:
-                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-            mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
-            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
             position: absolute; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Large decorative ring arcs at corners */
+        .bg-rings {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+        }
+        .bg-rings::before {
+            content: '';
+            position: absolute;
+            width: 520px; height: 520px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.10);
+            top: -200px; left: -200px;
+            box-shadow: inset 0 0 0 40px rgba(255,255,255,0.03);
+        }
+        .bg-rings::after {
+            content: '';
+            position: absolute;
+            width: 420px; height: 420px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.08);
+            bottom: -160px; right: -160px;
+            box-shadow: inset 0 0 0 30px rgba(255,255,255,0.03);
+        }
+        /* Extra inner ring top-left */
+        .bg-ring-sm {
+            position: absolute;
+            width: 280px; height: 280px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.07);
+            top: -80px; left: -80px;
+            z-index: 0; pointer-events: none;
         }
 
         .student-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow:
+                0 32px 64px -16px rgba(0,0,0,0.45),
+                0 0 0 1px rgba(255,255,255,0.10) inset,
+                0 1px 0 rgba(255,255,255,0.25) inset;
         }
 
+        /* WCAG AA fix: raised contrast to ≥4.5:1 for text on input bg */
         .input-dark {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1.5px solid rgba(255, 255, 255, 0.08); /* Fixed parsing error inside my head, continuing */
+            background: rgba(0, 0, 0, 0.35);
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
             color: #ffffff;
             transition: all 0.3s ease;
         }
         .input-dark:focus {
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 0 4px rgba(242, 195, 0, 0.2);
+            background: rgba(0, 0, 0, 0.45);
+            box-shadow: 0 0 0 4px rgba(242, 195, 0, 0.25);
             border-color: #F2C300;
+            outline: none;
         }
-        .input-dark::placeholder { color: rgba(255,255,255,0.6); }
+        /* WCAG AA fix: placeholder raised to 0.85 opacity */
+        .input-dark::placeholder { color: rgba(255,255,255,0.75); }
 
         .glow-blob {
             position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.15; z-index: 0;
@@ -174,6 +208,24 @@
             100% { width: 100%; }
         }
         
+        /* Fit shorter screens through spacing, while keeping controls readable. */
+        body.student-login { padding: clamp(12px, 2vh, 24px) 16px; }
+        .student-login .login-shell { padding-block: 0; flex-shrink: 0; }
+        .student-login .student-card { padding: clamp(20px, 3vh, 32px) clamp(20px, 4vw, 40px); }
+        .student-login .login-heading { margin-bottom: clamp(16px, 2.5vh, 24px); }
+        .student-login .login-identity { margin-bottom: 12px; }
+        .student-login .login-identity img { width: clamp(64px, 10vh, 88px); height: clamp(64px, 10vh, 88px); }
+        .student-login .login-security { margin-top: 12px; }
+        .student-login .login-form { display: flex; flex-direction: column; gap: 16px; }
+        .student-login .login-form > * { margin-block: 0; }
+        .student-login .input-dark { min-height: 48px; padding-block: 12px; }
+        .student-login .submit-btn { height: 52px; min-height: 48px; padding-block: 12px; }
+        @media (max-height: 700px) {
+            .student-login .login-heading { margin-bottom: 14px; }
+            .student-login .login-form { gap: 12px; }
+            .student-login .login-identity { margin-bottom: 8px; }
+        }
+
         /* Accessibility: Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
             /* Remove entrance animations; pausing their first frame hides the form at opacity: 0. */
@@ -181,7 +233,7 @@
         }
     </style>
 </head>
-<body class="bg-student min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
+<body class="student-login bg-student min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
 
             <!-- Premium Fast-Load Splash Screen -->
     <div id="splashScreen" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-student backdrop-blur-xl transition-all duration-700 ease-in-out">
@@ -213,22 +265,26 @@
         <!-- Interactive Spotlight Overlay -->
         <div id="spotlight-overlay" class="spotlight absolute inset-0 z-10"></div>
 
-        <!-- Deep Ambient Background -->
+        <!-- Visible cross-hatch grid -->
         <div class="bg-grid absolute inset-0"></div>
-        
-        <!-- Adjusted blob positioning to prevent horizontal overflow constraints on mobile -->
-        <div class="glow-blob bg-gold w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] top-[-5%] right-[-10%] mix-blend-screen"></div>
-        <div class="glow-blob bg-primary-light w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bottom-[-10%] left-[-15%] mix-blend-screen" style="animation-delay: -5s; animation-direction: alternate-reverse;"></div>
+        <!-- Large corner ring arcs -->
+        <div class="bg-rings absolute inset-0"></div>
+        <!-- Small inner ring top-left -->
+        <div class="bg-ring-sm"></div>
+        <!-- Ambient gold glow top-right -->
+        <div class="glow-blob bg-gold w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] top-[-5%] right-[-10%] mix-blend-screen" style="opacity:0.12;"></div>
+        <!-- Ambient light-green glow bottom-left -->
+        <div class="glow-blob bg-primary-light w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] bottom-[-10%] left-[-15%] mix-blend-screen" style="animation-delay: -5s; animation-direction: alternate-reverse; opacity:0.1;"></div>
     </div>
 
-    <div class="w-full max-w-[480px] z-20 relative animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)] my-auto py-4 sm:py-6">
+    <div class="login-shell w-full max-w-[480px] z-20 relative animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)] my-auto">
         
         <!-- Responsive Card Density: p-5 on mobile, p-8 on tablet, p-12 on desktop -->
         <div class="student-card p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-[2.5rem] relative overflow-hidden group hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] transition-shadow duration-500">
             
-            <div class="text-center mb-6 sm:mb-10">
+            <div class="login-heading text-center">
                 <!-- Crest & Clean School Identity -->
-                <div class="flex flex-col items-center justify-center mb-4 sm:mb-6">
+                <div class="login-identity flex flex-col items-center justify-center">
                     <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-20 h-20 sm:w-28 sm:h-28 object-contain mx-auto mb-2.5 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
                          onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
                     <p class="text-white/90 font-semibold text-[12px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
@@ -237,10 +293,10 @@
                 <h1 class="text-[1.65em] sm:text-[2rem] font-heading font-extrabold tracking-tight text-white mb-1 leading-tight">Student <span class="text-gold">Portal</span></h1>
                 <p class="text-white/70 font-medium text-[13px] sm:text-[15px]">Sign in to your private dashboard</p>
                 
-                <!-- High-Contrast End-to-End Encrypted Badge -->
-                <div class="inline-flex items-center gap-2 mt-3.5 sm:mt-5 px-3.5 sm:px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-400/40 shadow-sm">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_#34d399]"></span>
-                    <span class="text-[10.5px] sm:text-[12px] font-bold text-emerald-200 uppercase tracking-widest whitespace-nowrap">End-to-End Encrypted</span>
+                <!-- WCAG AA fix: solid dark bg + white text for ≥4.5:1 contrast -->
+                <div class="login-security inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-black/60 border border-white/20 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-[10.5px] sm:text-[12px] font-bold text-white uppercase tracking-widest whitespace-nowrap">🔒 Secure &amp; Confidential</span>
                 </div>
             </div>
 
@@ -257,7 +313,7 @@
             <?php endif; ?>
 
             <!-- Login Form -->
-            <form action="<?= base_url('login/authenticate') ?>" method="post" class="space-y-4 sm:space-y-6 relative z-10 w-full">
+            <form action="<?= base_url('login/authenticate') ?>" method="post" class="login-form relative z-10 w-full">
                 <?= csrf_field() ?>
                 
                 <div class="space-y-1.5 sm:space-y-2">
@@ -266,7 +322,7 @@
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-gold">
                             <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
                         </div>
-                        <input type="text" name="name" id="name" required
+                        <input type="text" name="name" id="name" required autocomplete="name"
                                class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[16px] font-bold outline-none"
                                placeholder="Your registered name">
                     </div>
@@ -278,20 +334,25 @@
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-gold">
                             <i class="fas fa-lock text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
                         </div>
-                        <input type="password" name="password" id="password" required
+                        <input type="password" name="password" id="password" required autocomplete="current-password"
                                class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[16px] font-bold outline-none tracking-[0.1em]"
                                placeholder="••••••••">
                     </div>
                 </div>
 
-                <!-- Accessible Touch-Optimized (44px min-height) Remember Me -->
+                <!-- Accessible Touch-Optimized Remember Me -->
                 <div class="pt-1">
-                    <label for="remember" class="flex items-center gap-3 p-2 -ml-2 rounded-xl cursor-pointer min-h-[44px] select-none hover:bg-white/5 transition-colors group">
+                    <label for="remember" class="flex items-start gap-3 p-2 -ml-2 rounded-xl cursor-pointer select-none hover:bg-white/5 transition-colors group">
                         <input id="remember" name="remember" type="checkbox"
-                               class="w-5 h-5 text-gold bg-white/10 border-2 border-white/40 rounded focus:ring-gold/60 focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#06401E] focus-visible:outline-none cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
-                        <span class="text-[13px] sm:text-[14px] font-semibold text-white/90 group-hover:text-gold transition-colors">
-                            Remember me on this device
-                        </span>
+                               class="mt-1 w-5 h-5 text-gold bg-white/10 border-2 border-white/40 rounded focus:ring-gold/60 focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#06401E] focus-visible:outline-none cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
+                        <div class="text-[12px] sm:text-[13px] leading-snug">
+                            <span class="font-semibold text-white/90 group-hover:text-gold transition-colors block">
+                                Remember me on this device
+                            </span>
+                            <span class="text-white/60 text-[11px] block mt-0.5 font-normal">
+                                ⚠️ Personal device only. Do not check on shared school lab or library computers.
+                            </span>
+                        </div>
                     </label>
                 </div>
 

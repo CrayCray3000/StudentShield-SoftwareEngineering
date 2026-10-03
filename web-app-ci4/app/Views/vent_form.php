@@ -9,6 +9,7 @@
     <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <title>StudentShield - Safe Space Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
         <script>
         tailwind.config = {
             theme: {
@@ -18,7 +19,7 @@
                         heading: ['Outfit', 'sans-serif'] 
                     },
                     colors: {
-                        white: '#FBFDFB', // Anti-glare soft white
+                        white: '#FFFFFF', // Anti-glare soft white
                         black: '#131A15', // Softened black
                         gray: {
                             50: '#F4F7F5',
@@ -26,21 +27,22 @@
                             200: '#CFD9D4',
                             300: '#AAB8B1',
                             400: '#82958B',
-                            500: '#61756B',
+                            500: '#526259',
                             600: '#4D5D55',
                             700: '#3D4943',
                             800: '#2E3833',
-                            900: '#212825', // Replaces harsh text-gray-900 with deep sage
+                            900: '#24352B', // Replaces harsh text-gray-900 with deep sage
                         },
                         red: {
                             50: '#FDF7F7',
                             100: '#FAEDED',
                             200: '#F4D6D6',
-                            500: '#D95A5A', // Less neon, softer warning red
-                            600: '#C24545',
+                            400: '#B3261E',
+                            500: '#B3261E', // Muted red for report and error accents
+                            600: '#B3261E',
                             700: '#A33535',
                         },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
                         calm: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 600: '#16a34a' }
                     }
@@ -49,153 +51,19 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        /* Responsive scaling for smaller monitors/laptops */
-        @media (max-width: 1440px) { html { font-size: 15px; } }
-        @media (max-width: 1280px) { html { font-size: 14px; } }
-        @media (max-width: 1024px) { html { font-size: 13px; } }
-        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
-
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
-
-        .split-layout { display: grid; grid-template-columns: 420px 1fr; min-height: 100vh; }
-        @media (max-width: 1024px) { .split-layout { grid-template-columns: 1fr; } }
-        @media (min-width: 1400px) { .split-layout { grid-template-columns: 480px 1fr; } }
-
-        /* Left Panel — Calming therapeutic feel */
-        .brand-panel {
-            background: linear-gradient(-45deg, #14532d, #064e3b, #15803d, #14532d);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
-            position: relative; overflow: hidden;
-        }
-        .bg-ambient {
-            background: linear-gradient(-45deg, #F0F7F4, #FFFCE8, #E8F5E9, #f4fcf6);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .brand-panel::before {
-            content: ''; position: absolute; inset: 0;
-            background:
-                radial-gradient(ellipse at 30% 0%, rgba(242,195,0,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 100%, rgba(255,255,255,0.05) 0%, transparent 50%);
-        }
-
-        /* Organic wave shapes for calming feel */
-        .wave-top, .wave-bottom { position: absolute; width: 100%; overflow: hidden; z-index: 1; }
-        .wave-top { top: 0; height: 120px; }
-        .wave-bottom { bottom: 0; height: 120px; transform: rotate(180deg); }
-
-        /* Breathing circle animation — therapeutic */
-        .breath-circle {
-            animation: breathe 6s ease-in-out infinite;
-        }
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.15; }
-            50% { transform: scale(1.15); opacity: 0.25; }
-        }
-
-        /* Textarea (Premium Feel) */
-        .textarea-field {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1.5px solid #D4E2D9;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
-        }
-        .textarea-field:focus {
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(11, 94, 46, 0.05), 0 15px 35px rgba(11, 94, 46, 0.04);
-            border-color: #0B5E2E;
-            outline: none;
-        }
-        .textarea-field::-webkit-scrollbar { width: 5px; }
-        .textarea-field::-webkit-scrollbar-track { background: transparent; }
-        .textarea-field::-webkit-scrollbar-thumb { background: #c5d0c2; border-radius: 99px; }
-
-        /* Mood Chips */
-        .mood-btn {
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 13px;
-        }
-        .mood-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .mood-btn.active {
-            background: #DCF0E4 !important; border-color: #4A9B6E !important;
-            color: #2D6B47 !important; font-weight: 600 !important;
-            box-shadow: 0 2px 10px rgba(74, 155, 110, 0.12);
-        }
-
-        /* Submit Button */
-        .submit-btn {
-            background: linear-gradient(135deg, #0B5E2E, #157A3E);
-            position: relative; overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .submit-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-            transform: skewX(-20deg); transition: 0.5s;
-        }
-        .submit-btn:hover {
-            box-shadow: 0 12px 28px rgba(11, 94, 46, 0.3);
-            transform: translateY(-2px);
-        }
-        .submit-btn:hover::before { left: 150%; }
-
-        /* Animations */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-4px); } }
-
-        .anim-1 { animation: slideUp 0.6s ease-out both; }
-        .anim-2 { animation: slideUp 0.6s ease-out 0.12s both; }
-        .anim-3 { animation: slideUp 0.6s ease-out 0.24s both; }
-        .anim-4 { animation: slideUp 0.6s ease-out 0.36s both; }
-        .anim-form { animation: fadeInUp 0.5s ease-out 0.1s both; }
-
-        .char-count { transition: color 0.2s ease; }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation: none !important;
-                scroll-behavior: auto !important;
-                transition-duration: 0.01ms !important;
-            }
-
-            .anim-1, .anim-2, .anim-3, .anim-4, .anim-form {
-                opacity: 1 !important;
-                transform: none !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="<?= base_url('css/student-forms.css?v=7') ?>">
 </head>
-<body class="text-gray-800 antialiased min-h-screen flex items-center justify-center p-0 relative overflow-x-hidden bg-white">
+<body class="student-form-page student-form-page--vent antialiased min-h-screen">
 
-    <!-- Ambient Base glowing orbs (Optimized for performance, removed heavy blur animations) -->
-    <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-[-20%] left-[-10%] w-[700px] h-[700px] rounded-full bg-calm-200/20 blur-3xl"></div>
-        <div class="absolute bottom-[-20%] right-[-10%] w-[900px] h-[900px] rounded-full bg-gold-light/10 blur-3xl"></div>
-    </div>
-
-
-
-    <!-- Main Fullscreen Glass Container (Edge-to-Edge Aesthetic) -->
-    <div class="w-full h-full min-h-screen flex flex-col lg:flex-row relative z-10 bg-white">
+    <!-- Student form layout -->
+    <div class="student-form-layout w-full flex flex-col lg:flex-row">
 
         <!-- ===== LEFT — Calming Branding Panel (Expanded) ===== -->
         <div class="brand-panel hidden lg:flex w-full lg:w-[420px] 2xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 py-8 lg:py-12 relative">
-
-            <!-- Breathing circle — calming ambient element -->
-            <div class="breath-circle absolute w-[280px] h-[280px] rounded-full bg-gold/10 top-[20%] right-[-60px] pointer-events-none"></div>
-            <div class="breath-circle absolute w-[180px] h-[180px] rounded-full bg-white/5 bottom-[15%] left-[-30px] pointer-events-none" style="animation-delay: 3s;"></div>
+            <div class="bg-grid"></div>
 
             <!-- Top — Logo & Brand -->
-            <div class="relative z-10 anim-1">
+            <div class="relative z-10">
                 <a href="<?= base_url('student/dashboard') ?>"
                    aria-label="Go to StudentShield action selection"
                    class="inline-flex items-center gap-3.5 mb-14 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-primary-dark">
@@ -221,7 +89,7 @@
             </div>
 
             <!-- Middle — Trust Features -->
-            <div class="relative z-10 space-y-4 anim-2">
+            <div class="relative z-10 space-y-4">
                 <div class="flex items-center gap-3.5 group">
                     <div class="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center flex-shrink-0 border border-white/5 group-hover:bg-white/10 transition-colors">
                         <svg class="w-4 h-4 text-gold/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -249,10 +117,26 @@
                         <p class="text-white/60 text-[11px] mt-0.5">School guidance personnel can review and respond.</p>
                     </div>
                 </div>
+
+                <!-- Sidebar Crisis Support Hotline -->
+                <div class="p-4 rounded-2xl bg-black/20 border border-white/15 text-white space-y-2 shadow-sm backdrop-blur-sm">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/10">
+                            <svg class="w-3.5 h-3.5 text-gold/90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                        </div>
+                        <h4 class="font-heading font-semibold text-xs tracking-wider uppercase text-gold/90">24/7 Crisis Helpline</h4>
+                    </div>
+                    <p class="text-white/90 text-xs leading-relaxed">
+                        If you need immediate support, the National Center for Mental Health is always here:
+                    </p>
+                    <div class="pt-0.5 text-white font-mono font-semibold text-xs tracking-wide">
+                        Hotline: <span class="text-[#FCEEA1] font-bold text-sm">1553</span> <span class="text-white/60">·</span> <span class="text-[#FCEEA1] font-bold text-sm">0917-899-8727</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Bottom — Helpline + Footer -->
-            <div class="relative z-10 space-y-5 anim-3">
+            <div class="relative z-10 space-y-5">
 
                 <div class="border-t border-white/8 pt-4 flex items-center justify-between">
                     <p class="text-white/60 text-[11px]">© 2026 StudentShield · SVBSM</p>
@@ -265,68 +149,25 @@
         </div>
 
         <!-- ===== RIGHT — Vent Form Panel (Fullscreen Expanded) ===== -->
-        <div class="flex flex-col lg:min-h-screen flex-1 bg-[#FAFDF5] relative items-center justify-start lg:justify-stretch">
+        <div class="student-form-main flex flex-col min-h-screen flex-1 relative items-center">
 
-            <!-- Mobile Top Bar — Visible only on mobile since branding is hidden -->
-            <nav aria-label="Safe Space navigation" class="lg:hidden sticky top-0 z-50 w-full bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm support-backdrop-blur:bg-white/70">
-                <div class="px-5 py-3.5 flex items-center">
-                    <!-- Left: Branding -->
-                    <a href="<?= base_url('student/dashboard') ?>"
-                       aria-label="Go to StudentShield action selection"
-                       class="flex min-h-11 items-center gap-3 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-10 w-10 object-contain">
-                        <div class="flex flex-col">
-                            <span class="font-heading font-extrabold text-gray-900 text-[14px] leading-none">StudentShield</span>
-                            <span class="text-[9px] text-emerald-500 font-bold uppercase tracking-wider flex items-center gap-1.5 mt-1">
-                                <span class="relative flex h-1.5 w-1.5">
-                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                  <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                                </span>
-                                Safe Space
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </nav>
+            <?= view('partials/student_mobile_form_header', ['page' => 'vent']) ?>
 
-            <!-- Form Area (Stretched to top and bottom to eat up whitespace, max-capped for extreme ultrawides) -->
-            <div class="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 xl:px-24 py-4 lg:py-6 xl:py-8 relative flex flex-col flex-1 justify-center">
-                <div class="w-full relative z-20 flex flex-col flex-1 justify-center">
+            <!-- Form content -->
+            <div class="student-form-content mx-auto relative">
+                <div class="student-form-body w-full relative">
                 <?= view('partials/student_form_navigation', ['page' => 'vent']) ?>
 
-                <!-- Ultra-fast Ambient Depth for Mobile -->
-                <div class="absolute top-[10%] right-[-15%] w-80 h-80 bg-primary/5 rounded-full blur-[60px] lg:hidden pointer-events-none"></div>
-
-                <!-- Desktop Header -->
-                <div class="hidden lg:flex flex-wrap items-end justify-between gap-4 mb-5 anim-form">
-                    <div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                            <span class="text-[12px] font-bold text-emerald-600 tracking-wider uppercase">Safe Space Active</span>
-                        </div>
-                        <h2 class="text-3xl lg:text-4xl xl:text-[2.6rem] font-heading font-extrabold text-gray-900 tracking-tight">How are you feeling today?</h2>
-                    </div>
-                </div>
-
-                <!-- Daily Affirmation Banner -->
-                <div class="bg-calm-50/50 rounded-xl p-5 border border-calm-100/60 relative mb-6 anim-form shadow-sm">
-                    <p id="dailyAffirmation" class="text-[16px] xl:text-[18px] font-medium text-calm-800 text-center leading-relaxed italic font-serif">
-                        "Your current situation is not your final destination. Take it one day at a time."
-                    </p>
-                </div>
-
-                <!-- Video Session Area -->
-                <?= view('partials/student_meet_card') ?>
-
-                <!-- Mobile Header -->
-                <div class="lg:hidden mb-5">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                        <span class="text-[11px] font-semibold text-emerald-600 tracking-wide uppercase">Safe Space Active</span>
-                    </div>
-                    <h2 class="text-2xl font-heading font-extrabold text-gray-900">How are you feeling?</h2>
-                    <p class="text-gray-500 mt-1 text-sm">Take your time. There are no wrong answers.</p>
-                </div>
+                <!-- Page heading stays ahead of the form on every screen size. -->
+                <header class="student-page-header">
+                    <span class="student-section-label">
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 12a9 9 0 0 1-9 9H3l2-4a9 9 0 1 1 16-5Z" /></svg>
+                        Safe Space
+                    </span>
+                    <h2>How are you feeling today?</h2>
+                    <p>Take your time. Write what is on your mind, and choose any feelings that fit.</p>
+                    
+                </header>
 
                 <!-- Flash Messages -->
                 <?php if (session()->getFlashdata('message')): ?>
@@ -343,68 +184,67 @@
                 <?php endif; ?>
 
                 <!-- Vent Form -->
-                <form action="<?= base_url('student/vent/submit') ?>" method="POST" id="ventForm" class="flex-1 flex flex-col space-y-5 anim-form">
+                <form action="<?= base_url('student/vent/submit') ?>" method="POST" id="ventForm" class="student-entry-form">
                     <div class="hidden"><?= csrf_field() ?></div>
 
                     <!-- Textarea — grows to fill space -->
-                    <div class="flex-1 flex flex-col pb-6">
-                        <div class="flex items-center justify-between mb-4 bg-calm-50/60 p-4 rounded-xl border border-calm-100/50">
-                            <label for="vent_text" class="text-[16px] font-bold text-calm-800 flex items-center gap-3">
-                                <div id="breathDot" class="w-4 h-4 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)] transition-transform duration-[3000ms] ease-in-out"></div>
-                                <span id="breathText" class="transition-opacity duration-1000 tracking-wide font-medium">Breathe in deeply...</span>
-                            </label>
-                            <span id="charCount" class="char-count text-[13px] font-mono font-bold text-gray-500 bg-white px-3 py-1.5 rounded-[8px] shadow-sm border border-gray-100">0 / 2000</span>
+                    <div class="vent-writing-field flex flex-col">
+                        <div class="field-heading">
+                            <label for="vent_text">What's on your mind?</label>
+                            <span id="charCount" class="char-count">0 / 2000</span>
                         </div>
-                        <textarea id="vent_text" name="vent_text" maxlength="2000"
-                                  class="w-full flex-1 min-h-[180px] lg:min-h-[200px] xl:min-h-[250px] px-6 py-6 textarea-field rounded-2xl outline-none resize-none text-gray-900 placeholder-transparent focus:placeholder-gray-400/50 leading-[1.8] text-[18px] lg:text-[20px] shadow-sm"
-                                  placeholder="Start typing whenever you feel ready..." required></textarea>
+                        <p id="ventGuidance" class="breathing-guide">
+                            <span id="breathDot" aria-hidden="true"></span>
+                            <span id="breathText">Breathe in deeply...</span>
+                        </p>
+                        <textarea id="vent_text" name="vent_text" maxlength="2000" aria-describedby="ventGuidance"
+                                  class="textarea-field" required></textarea>
                     </div>
 
                     <!-- Mood Quick-Select -->
-                    <div>
-                        <p class="text-xs font-semibold text-gray-500 mb-2.5 flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            What best describes how you feel right now? (Select all that apply)
-                        </p>
+                    <div class="mood-picker" id="moodPicker">
+                        <p id="moodPrompt" class="mood-prompt">How do you feel right now?</p>
+                        <p id="moodHelp" class="mood-help">Optional. Select any feelings that fit.</p>
                         <input type="hidden" name="emotions" id="emotionsInput" value="">
-                        <div class="flex flex-wrap gap-2.5" id="moodSelect">
-                            <button type="button" data-mood="Sad" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😔 Sad</button>
-                            <button type="button" data-mood="Angry" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😠 Angry</button>
-                            <button type="button" data-mood="Anxious" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😰 Anxious</button>
-                            <button type="button" data-mood="Lonely" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😞 Lonely</button>
-                            <button type="button" data-mood="Overwhelmed" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😵 Overwhelmed</button>
-                            <button type="button" data-mood="Hurt" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">🤕 Hurt</button>
-                            <button type="button" data-mood="Numb" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😶 Numb</button>
-                            <button type="button" data-mood="Scared" class="mood-btn px-3.5 lg:px-4 py-2 lg:py-2.5 rounded-full border border-gray-300 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] bg-white hover:bg-calm-50 hover:border-calm-300 text-[13px] lg:text-[14px] font-semibold text-gray-600 transition-all">😨 Scared</button>
+                        <button type="button" id="moodToggle" class="mood-toggle" aria-expanded="false" aria-controls="moodPanel">
+                            <span id="moodSummary">Choose feelings</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                        </button>
+                        <div id="moodPanel" class="mood-panel">
+                        <div id="moodSelect" role="group" aria-labelledby="moodPrompt" aria-describedby="moodHelp">
+                            <?php
+                            $moodList = [
+                                'Okay'        => '😐',
+                                'Calm'        => '😌',
+                                'Happy'       => '😊',
+                                'Hopeful'     => '🙂',
+                                'Sad'         => '😔',
+                                'Angry'       => '😠',
+                                'Anxious'     => '😰',
+                                'Lonely'      => '🥺',
+                                'Overwhelmed' => '😵',
+                                'Hurt'        => '🤕',
+                                'Numb'        => '😶',
+                                'Scared'      => '😨',
+                            ];
+                            foreach ($moodList as $mood => $emoji): ?>
+                                <button type="button" data-mood="<?= esc($mood, 'attr') ?>" aria-pressed="false" class="mood-btn">
+                                    <span class="mood-emoji" aria-hidden="true"><?= $emoji ?></span>
+                                    <span><?= esc($mood) ?></span>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
+                        <button type="button" id="moodDone" class="mood-done">Done</button>
                         </div>
                     </div>
 
-                    <!-- Premium Confidentiality Toggle Card -->
-                    <label for="hide_from_parents" class="group relative flex items-start gap-3 lg:gap-4 p-4 lg:p-5 rounded-[16px] lg:rounded-[20px] bg-gradient-to-br from-calm-50/80 to-white border border-calm-100 shadow-[0_4px_20px_-8px_rgba(74,155,110,0.15)] hover:shadow-[0_8px_30px_-6px_rgba(74,155,110,0.25)] hover:border-calm-200 transition-all duration-300 cursor-pointer overflow-hidden transform hover:-translate-y-0.5">
-                        
-                        <!-- Soft Ambient Glow underneath the card -->
-                        <div class="absolute -right-12 -top-12 w-32 h-32 bg-calm-200/20 rounded-full blur-2xl group-hover:bg-calm-300/30 transition-colors pointer-events-none"></div>
-
-                        <!-- Custom Animated Checkbox -->
-                        <div class="relative flex items-center justify-center mt-0.5 z-10 flex-shrink-0">
-                            <input type="checkbox" id="hide_from_parents" name="hide_from_parents" value="1" 
-                                   onchange="document.getElementById('checkSvg').style.opacity = this.checked ? '1' : '0'; document.getElementById('hide_from_parents').style.backgroundColor = this.checked ? '#10B981' : 'white'; document.getElementById('hide_from_parents').style.borderColor = this.checked ? '#10B981' : 'rgb(167 243 208 / 0.8)';"
-                                   class="appearance-none w-4 h-4 lg:w-5 lg:h-5 rounded-[4px] lg:rounded-[6px] border-2 border-calm-200/80 bg-white focus:outline-none transition-all duration-200 cursor-pointer">
-                            <svg id="checkSvg" style="opacity: 0;" class="absolute w-3 h-3 lg:w-3.5 lg:h-3.5 text-white transition-all duration-200 transform pointer-events-none stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        
-                        <!-- Typography Content -->
-                        <div class="flex-1 z-10">
-                            <h4 class="text-calm-800 font-heading font-bold text-[13.5px] lg:text-[15px] flex items-center gap-1.5 lg:gap-2 mb-1 group-hover:text-calm-900 transition-colors">
-                                <svg class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-calm-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg>
-                                Let's keep this just between us.
-                            </h4>
-                            <p class="text-gray-500 text-[11.5px] lg:text-[13px] leading-[1.6] pr-2 font-medium">
-                                It is completely okay if you aren't ready for your family to know yet. By checking this box, we promise to strictly notify our Guidance Counselors only. <span class="text-calm-600 font-semibold inline-block relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-calm-200/60 after:-z-10">You are safe here.</span>
-                            </p>
-                        </div>
+                    <!-- Counselor notification preference -->
+                    <label for="hide_from_parents" class="confidentiality-option">
+                        <input type="checkbox" id="hide_from_parents" name="hide_from_parents" value="1" aria-labelledby="parentPreferenceLabel" aria-describedby="parentPreferenceHelp">
+                        <span class="confidentiality-copy">
+                            <span id="parentPreferenceLabel" class="confidentiality-title">Only alert my guidance counselor</span>
+                            <span id="parentPreferenceHelp" class="confidentiality-help">Turn off automated parent or guardian alerts for this entry.</span>
+                        </span>
                     </label>
 
                     <!-- Submit -->
@@ -416,8 +256,22 @@
                     </button>
                 </form>
 
+                <!-- Reassurance and counseling access are secondary to the writing task. -->
+                <aside class="student-secondary" id="meet-section" aria-label="Student support">
+                    <div class="student-affirmation-card">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+                            <span class="text-[11px] uppercase tracking-wider font-bold text-primary">Daily Encouragement</span>
+                        </div>
+                        <p id="dailyAffirmation" class="text-gray-700 text-sm leading-relaxed">"Your current situation is not your final destination. Take it one day at a time."</p>
+                    </div>
+                    <div class="student-meet-wrapper">
+                        <?= view('partials/student_meet_card') ?>
+                    </div>
+                </aside>
+
                 <!-- Footer -->
-                <div class="mt-4 flex items-center justify-center gap-4 text-[11px] text-gray-500">
+                <div class="student-form-footer flex items-center justify-center">
                     <span class="flex items-center gap-1">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         Protected by StudentShield
@@ -456,14 +310,46 @@
         textarea.addEventListener('input', function() {
             const len = this.value.length;
             charCount.textContent = len + ' / 2000';
-            if (len > 1800) charCount.style.color = '#ef4444';
-            else if (len > 1200) charCount.style.color = '#f59e0b';
-            else charCount.style.color = '#9ca3af';
+            if (len > 1800) charCount.style.color = '#B3261E';
+            else if (len > 1200) charCount.style.color = '#8A5700';
+            else charCount.style.color = '#526259';
         });
+
+        const moodPicker = document.getElementById('moodPicker');
+        const moodToggle = document.getElementById('moodToggle');
+        const moodPanel = document.getElementById('moodPanel');
+        const mobileMoods = window.matchMedia('(max-width: 599px)');
+        let moodsExpanded = false;
+        function renderMoodPicker() {
+            moodPanel.hidden = mobileMoods.matches && !moodsExpanded;
+            moodToggle.setAttribute('aria-expanded', String(!moodPanel.hidden));
+            const selected = [...document.querySelectorAll('.mood-btn.active')].map(button => button.dataset.mood);
+            document.getElementById('moodSummary').textContent = selected.length ? selected.join(', ') : 'Choose feelings';
+        }
+        function closeMoodPicker() {
+            moodsExpanded = false;
+            renderMoodPicker();
+            moodToggle.focus();
+        }
+        moodPicker.classList.add('is-enhanced');
+        moodToggle.addEventListener('click', () => {
+            moodsExpanded = !moodsExpanded;
+            renderMoodPicker();
+        });
+        document.getElementById('moodDone').addEventListener('click', closeMoodPicker);
+        moodPanel.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && mobileMoods.matches) {
+                event.preventDefault();
+                closeMoodPicker();
+            }
+        });
+        mobileMoods.addEventListener('change', renderMoodPicker);
+        renderMoodPicker();
 
         document.querySelectorAll('.mood-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 this.classList.toggle('active');
+                this.setAttribute('aria-pressed', this.classList.contains('active') ? 'true' : 'false');
                 
                 // Update hidden input with active moods
                 const activeMoods = [];
@@ -471,6 +357,7 @@
                     activeMoods.push(activeBtn.getAttribute('data-mood'));
                 });
                 document.getElementById('emotionsInput').value = activeMoods.join(',');
+                renderMoodPicker();
             });
         });
 
@@ -488,17 +375,13 @@
         
         setInterval(() => {
             if(textarea.value.length > 0) {
-                breathText.innerText = "Listening...";
+                breathText.innerText = "Keep writing at your own pace.";
                 breathDot.className = "w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]";
                 return;
             }
-            breathText.style.opacity = 0;
-            setTimeout(() => {
-                breathIdx = (breathIdx + 1) % breathStages.length;
-                breathText.innerText = breathStages[breathIdx].text;
-                breathDot.className = "w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)] transition-transform duration-[3000ms] ease-in-out " + breathStages[breathIdx].scale;
-                breathText.style.opacity = 1;
-            }, 1000);
+            breathIdx = (breathIdx + 1) % breathStages.length;
+            breathText.innerText = breathStages[breathIdx].text;
+            breathDot.className = "w-3 h-3 rounded-full bg-emerald-400 transition-transform duration-[3000ms] ease-in-out " + breathStages[breathIdx].scale;
         }, 4000);
 
         const affirmations = [
@@ -570,10 +453,15 @@
                 charCount.textContent = '0 / 2000';
                 btn.classList.remove('opacity-90', 'cursor-wait');
                 btn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
-                text.innerText = 'Sent Securely ✓';
+                text.innerText = 'Submitted Securely';
                 spinner.classList.add('hidden');
-                document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.mood-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-pressed', 'false');
+                });
                 document.getElementById('emotionsInput').value = '';
+                moodsExpanded = false;
+                renderMoodPicker();
 
                 if (data.risk_level === 'HIGH' || data.risk_level === 'CRITICAL') {
                     const modal = document.getElementById('empathyModal');
@@ -587,7 +475,7 @@
                     };
                 } else {
                     const toast = document.createElement('div');
-                    toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-3.5 rounded-xl shadow-xl shadow-primary/25 text-sm font-semibold flex items-center gap-2.5 z-50 anim-form';
+                    toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-3.5 rounded-xl shadow-xl shadow-primary/25 text-sm font-semibold flex items-center gap-2.5 z-50';
                     toast.innerHTML = '<svg class="w-5 h-5 text-gold" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Thank you for sharing. We hear you.';
                     document.body.appendChild(toast);
                     setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.5s'; setTimeout(() => toast.remove(), 500); }, 3500);

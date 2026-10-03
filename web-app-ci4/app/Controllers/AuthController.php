@@ -75,7 +75,7 @@ class AuthController extends BaseController
         // Find student by name (role = 0)
         $user = $db->table('users')->where(['name' => $name, 'role' => 0])->get()->getRowArray();
 
-        $pwHash = $user['password_hash'] ?? $user['passcode'] ?? '';
+        $pwHash = $user['password_hash'] ?? $user['passcode'] ?? '$2y$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ012';
         if ($user && password_verify($password, $pwHash)) {
             
             // Approval-Based Registration Check
@@ -106,11 +106,12 @@ class AuthController extends BaseController
                 'role'       => (int) $user['role'],
                 'role_name'  => 'student',
                 'isLoggedIn' => true,
+                'last_activity' => time(),
             ]);
             $this->logAudit('USER_LOGIN', 'system', $user['id']);
             return redirect()->to('/student/dashboard');
         }
-        return redirect()->back()->with('error', 'Invalid Student credentials.');
+        return redirect()->back()->with('error', 'Invalid credentials provided.');
     }
 
     /**
@@ -139,15 +140,16 @@ class AuthController extends BaseController
             ->whereIn('users.role', [1, 2])
             ->get()->getRowArray();
 
-        if (!$user) {
-            return redirect()->back()->with('error', 'Invalid credentials.');
-        }
+        // Always verify password to ensure constant-time response (timing attack mitigation)
+        // Account existence is evaluated after password_verify to avoid timing differences
+
+
 
         // Authenticate with bcrypt only — plaintext fallback removed for security
-        $pwHash = $user['password_hash'] ?? $user['passcode'] ?? '';
+        $pwHash = $user['password_hash'] ?? $user['passcode'] ?? '$2y$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ012';
         $passwordValid = password_verify($password, $pwHash);
 
-        if ($passwordValid) {
+        if ($user && $passwordValid) {
             $roleNames = [1 => 'counselor', 2 => 'super_admin'];
 
             // ── LAYER 5: TRUSTED DEVICE BYPASS ──
@@ -164,6 +166,7 @@ class AuthController extends BaseController
                             'role'       => (int) $user['role'],
                             'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
                             'isLoggedIn' => true,
+                            'last_activity' => time(),
                         ]);
                         $this->logAudit('USER_LOGIN', 'system', $user['id']);
                         return redirect()->to('/admin/dashboard');
@@ -182,7 +185,9 @@ class AuthController extends BaseController
                 'temp_role_name' => $roleNames[(int)$user['role']] ?? 'counselor',
                 'otp'            => $otp,
                 'otp_expires'    => time() + 300, // 5 minutes strict expiration
-                'otp_attempts'   => 0
+                'otp_attempts'     => 0,
+                'otp_resend_count' => 0,
+                'otp_resend_time'  => time(),
             ]);
 
             // Determine recipient email:
@@ -207,95 +212,13 @@ class AuthController extends BaseController
             }
             session()->set('otp_masked_email', $maskedEmail);
 
-            // Attempt to send the OTP via Email to the Counselor/Admin registered email
-            $emailSent = false;
-            try {
-                $email = \Config\Services::email();
-                $smtpUser = trim((string) env('email.SMTPUser', ''));
-                $smtpPass = (string) env('email.SMTPPass', '');
-                $smtpHost = env('email.SMTPHost', 'smtp.gmail.com');
-                $smtpPort = (int) env('email.SMTPPort', 587);
-                $smtpCrypto = env('email.SMTPCrypto', 'tls');
-
-                $email->initialize([
-                    'protocol'     => 'smtp',
-                    'SMTPHost'     => $smtpHost,
-                    'SMTPUser'     => $smtpUser,
-                    'SMTPPass'     => $smtpPass,
-                    'SMTPPort'     => $smtpPort,
-                    'SMTPCrypto'   => $smtpCrypto,
-                    'SMTPTimeout'  => 10,
-                    'mailType'     => 'html',
-                    'charset'      => 'utf-8',
-                    'newline'      => "\r\n",
-                    'CRLF'         => "\r\n",
-                    'wordWrap'     => true,
-                ]);
-
-                $email->setFrom($smtpUser, 'StudentShield Security');
-                $email->setTo($recipientEmail);
-                $email->setSubject('StudentShield Security: Your 6-Digit Admin Verification Code');
-
-                $userNameEsc = esc($user['name']);
-                $html = "
-                <div style='background:#f4f7f5; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;'>
-                    <div style='max-width: 520px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;'>
-                        <div style='background: linear-gradient(135deg, #166534, #022c22); padding: 30px 20px; text-align: center;'>
-                            <h1 style='color: #ffffff; margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 0.5px;'>Student<span style='color: #F2C300;'>Shield</span></h1>
-                            <p style='color: rgba(255,255,255,0.8); margin: 6px 0 0 0; font-size: 13px;'>Counselor & Admin Portal Verification</p>
-                        </div>
-                        <div style='padding: 35px 30px; text-align: center;'>
-                            <h2 style='color: #1e293b; margin: 0 0 12px; font-size: 20px; font-weight: 600;'>Security Passcode</h2>
-                            <p style='color: #64748b; margin: 0 0 24px; font-size: 14px; line-height: 1.5;'>
-                                Hello <strong>{$userNameEsc}</strong>, use the one-time verification code below to authorize your session:
-                            </p>
-                            <div style='background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 18px 24px; margin-bottom: 24px; display: inline-block;'>
-                                <span style='font-family: Courier, monospace; font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #166534;'>{$otp}</span>
-                            </div>
-                            <p style='color: #ef4444; margin: 0 0 20px; font-size: 13px; font-weight: 500;'>
-                                ⏱️ This verification code is valid for <strong>5 minutes</strong>.
-                            </p>
-                            <hr style='border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;' />
-                            <p style='color: #94a3b8; font-size: 12px; margin: 0;'>
-                                If you did not attempt to sign in to StudentShield, please disregard this email and secure your account immediately.
-                            </p>
-                        </div>
-                    </div>
-                </div>";
-
-                $email->setMessage($html);
-                if ($email->send(false)) {
-                    $emailSent = true;
-                    log_message('info', "OTP verification email successfully sent to {$recipientEmail} for user {$user['name']}");
-                } else {
-                    $debug = $email->printDebugger(['headers', 'subject']);
-                    log_message('error', "OTP Email sending failed: " . $debug);
-                }
-            } catch (\Throwable $e) {
-                log_message('error', "OTP Email Exception: " . $e->getMessage());
-            }
-
-            // Record to email_logs table
-            try {
-                $db->table('email_logs')->insert([
-                    'student_id'      => $user['id'],
-                    'recipient_email' => $recipientEmail,
-                    'alert_type'      => 'ADMIN_LOGIN_OTP',
-                    'subject'         => 'Admin Verification Code',
-                    'message_content' => "Admin login OTP delivery attempted for user {$user['name']}",
-                    'sent_status'     => $emailSent ? 'sent' : 'failed'
-                ]);
-            } catch (\Throwable $e) {
-                // Ignore if table schema differences exist
-            }
-
-            log_message('info', "OTP delivery attempt completed for user {$user['id']} with status " . ($emailSent ? 'sent' : 'failed'));
+            $this->sendOtpEmail($user, $recipientEmail, $otp);
 
             // Redirect to OTP verification page
             return redirect()->to('/admin/otp');
         }
 
-        return redirect()->back()->with('error', 'Invalid credentials.');
+        return redirect()->back()->with('error', 'Invalid credentials provided.');
     }
 
     public function otpView()
@@ -309,95 +232,281 @@ class AuthController extends BaseController
 
     public function verifyOtp()
     {
-        if (!session()->has('otp')) {
+        if (!session()->has('otp') || !session()->has('temp_user_id')) {
             return redirect()->to('/admin/login');
         }
 
-        $inputOtp = trim((string)$this->request->getPost('otp'));
+        $inputOtp  = trim((string)$this->request->getPost('otp'));
         $storedOtp = session()->get('otp');
-        $expiresAt = session()->get('otp_expires');
+        $expiresAt = (int) session()->get('otp_expires');
 
-        // Security: OTP brute-force protection (max 5 attempts)
-        $otpAttempts = session()->get('otp_attempts') ?? 0;
-        if ($otpAttempts >= 5) {
-            session()->remove(['otp', 'otp_expires', 'otp_attempts', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
-            return redirect()->to('/admin/login')->with('error', 'Too many failed verification attempts. Please log in again.');
-        }
-
+        // Codes must expire (5 minutes strict limit)
         if (time() > $expiresAt) {
-            session()->remove(['otp', 'otp_expires', 'otp_attempts', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
+            $this->clearOtpSession();
             return redirect()->to('/admin/login')->with('error', 'Security code has expired. Please log in again.');
         }
 
-        if ($inputOtp === $storedOtp) {
-            // Official Authentication Authorization!
-            
-            // Check Trust Device
-            if ($this->request->getPost('trust_device') == '1') {
-                $token = bin2hex(random_bytes(32));
-                $db = \Config\Database::connect();
-                $db->table('users')->where('id', session()->get('temp_user_id'))->update([
-                    'remember_token' => password_hash($token, PASSWORD_BCRYPT)
-                ]);
-                $cookieValue = base64_encode(session()->get('temp_user_id') . ':' . $token);
-                setcookie('admin_trusted_device', $cookieValue, [
-                    'expires' => time() + (86400 * 30),
-                    'path' => '/',
-                    'secure' => $this->shouldUseSecureCookie(),
-                    'httponly' => true,
-                    'samesite' => 'Strict'
-                ]);
+        // Limit incorrect codes: max 5 attempts before session invalidation
+        if ($inputOtp !== $storedOtp) {
+            $otpAttempts = (int) (session()->get('otp_attempts') ?? 0) + 1;
+            session()->set('otp_attempts', $otpAttempts);
+
+            if ($otpAttempts >= 5) {
+                $tempUserId = session()->get('temp_user_id');
+                if ($tempUserId) {
+                    $this->logAudit('OTP_LOCKOUT', 'system', $tempUserId);
+                }
+                $this->clearOtpSession();
+                return redirect()->to('/admin/login')->with('error', 'Too many failed verification attempts. Please log in again.');
             }
 
-            // Read temp values BEFORE regenerate() to prevent data loss
-            $userId   = session()->get('temp_user_id');
-            $name     = session()->get('temp_name');
-            $role     = session()->get('temp_role');
-            $roleName = session()->get('temp_role_name');
-
-            session()->regenerate();
-            session()->set([
-                'user_id'    => $userId,
-                'name'       => $name,
-                'role'       => $role,
-                'role_name'  => $roleName,
-                'isLoggedIn' => true,
-            ]);
-
-            $this->logAudit('USER_LOGIN', 'system', $userId);
-
-            // Clear temporary OTP tokens
-            session()->remove(['otp', 'otp_expires', 'otp_attempts', 'temp_user_id', 'temp_name', 'temp_role', 'temp_role_name']);
-
-            return redirect()->to('/admin/dashboard');
+            $remaining = 5 - $otpAttempts;
+            return redirect()->back()->with('error', "Invalid verification code. {$remaining} attempt(s) remaining.");
         }
 
-        session()->set('otp_attempts', $otpAttempts + 1);
-        return redirect()->back()->with('error', 'Invalid verification code.');
+        // Official Authentication Authorization!
+        // Check Trust Device
+        if ($this->request->getPost('trust_device') == '1') {
+            $token = bin2hex(random_bytes(32));
+            $db = \Config\Database::connect();
+            $db->table('users')->where('id', session()->get('temp_user_id'))->update([
+                'remember_token' => password_hash($token, PASSWORD_BCRYPT)
+            ]);
+            $cookieValue = base64_encode(session()->get('temp_user_id') . ':' . $token);
+            setcookie('admin_trusted_device', $cookieValue, [
+                'expires' => time() + (86400 * 30),
+                'path' => '/',
+                'secure' => $this->shouldUseSecureCookie(),
+                'httponly' => true,
+                'samesite' => 'Strict'
+            ]);
+        }
+
+        // Read temp values BEFORE regenerate() to prevent data loss
+        $userId   = session()->get('temp_user_id');
+        $name     = session()->get('temp_name');
+        $role     = session()->get('temp_role');
+        $roleName = session()->get('temp_role_name');
+
+        // Codes work only once: immediately purge OTP session keys
+        $this->clearOtpSession();
+
+        session()->regenerate();
+        session()->set([
+            'user_id'       => $userId,
+            'name'          => $name,
+            'role'          => $role,
+            'role_name'     => $roleName,
+            'isLoggedIn'    => true,
+            'last_activity' => time(),
+        ]);
+
+        $this->logAudit('USER_LOGIN', 'system', $userId);
+
+        return redirect()->to('/admin/dashboard');
+    }
+
+    /**
+     * Resend verification code with strict cooldown (60s) and attempt limit (max 3).
+     */
+    public function resendOtp()
+    {
+        if (!session()->has('otp') || !session()->has('temp_user_id')) {
+            return redirect()->to('/admin/login');
+        }
+
+        // Enforce 60-second cooldown between resends
+        $lastResend = (int) (session()->get('otp_resend_time') ?? 0);
+        if (time() - $lastResend < 60) {
+            $wait = 60 - (time() - $lastResend);
+            return redirect()->back()->with('error', "Please wait {$wait} seconds before requesting a new code.");
+        }
+
+        // Enforce max 3 resend attempts per session
+        $resendCount = (int) (session()->get('otp_resend_count') ?? 0);
+        if ($resendCount >= 3) {
+            $this->clearOtpSession();
+            return redirect()->to('/admin/login')->with('error', 'Maximum resend limit reached. Please log in again.');
+        }
+
+        $userId = session()->get('temp_user_id');
+        $db = \Config\Database::connect();
+        $user = $db->table('users')
+            ->select('users.*, COALESCE(counselors.counselor_email, admins.email) AS parent_email')
+            ->join('counselors', 'counselors.user_id = users.id', 'left')
+            ->join('admins', 'admins.user_id = users.id', 'left')
+            ->where('users.id', $userId)
+            ->get()->getRowArray();
+
+        if (!$user) {
+            $this->clearOtpSession();
+            return redirect()->to('/admin/login')->with('error', 'Session invalid. Please log in again.');
+        }
+
+        // Invalidate prior code and issue brand new 6-digit OTP
+        $newOtp = str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+        session()->set([
+            'otp'              => $newOtp,
+            'otp_expires'      => time() + 300, // 5 minutes strict expiration
+            'otp_attempts'     => 0,            // Reset incorrect attempts for the fresh code
+            'otp_resend_time'  => time(),
+            'otp_resend_count' => $resendCount + 1,
+        ]);
+
+        $recipientEmail = !empty($user['parent_email']) ? trim($user['parent_email']) : '';
+        if (empty($recipientEmail)) {
+            $recipientEmail = env('COUNSELOR_EMAIL', env('email.SMTPUser', ''));
+        }
+
+        $this->sendOtpEmail($user, $recipientEmail, $newOtp);
+
+        return redirect()->to('/admin/otp')->with('message', 'A new 6-digit verification code has been sent to your email.');
+    }
+
+    /**
+     * Session heartbeat ping for idle timeout reset when user clicks 'Stay Logged In'.
+     */
+    public function pingSession()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return $this->response->setStatusCode(401)->setJSON(['status' => 'expired']);
+        }
+        session()->set('last_activity', time());
+        return $this->response->setJSON(['status' => 'active', 'timestamp' => time()]);
     }
 
     public function logout()
     {
         $role = session()->get('role');
+        $userId = session()->get('user_id');
         
-        if (session()->get('user_id')) {
-            $this->logAudit('USER_LOGOUT', 'system', session()->get('user_id'));
-        }
-        
-        // Remove DB token and cookies
-        if (session()->get('user_id')) {
+        if ($userId) {
+            $this->logAudit('USER_LOGOUT', 'system', $userId);
             $db = \Config\Database::connect();
-            $db->table('users')->where('id', session()->get('user_id'))->update(['remember_token' => null]);
+            $db->table('users')->where('id', $userId)->update(['remember_token' => null]);
         }
+        
+        // Remove remember tokens and trusted device cookies
         setcookie('student_remember', '', time() - 3600, '/');
         setcookie('admin_trusted_device', '', time() - 3600, '/');
         
+        // Explicitly expire session cookie on shared computers
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+
+        $this->clearOtpSession();
         session()->destroy();
         
         if ($role === 1 || $role === 2) {
             return redirect()->to('/admin/login');
         }
         return redirect()->to('/login');
+    }
+
+    /**
+     * Clears all temporary two-factor authentication session variables.
+     */
+    private function clearOtpSession(): void
+    {
+        session()->remove([
+            'otp', 'otp_expires', 'otp_attempts', 'temp_user_id',
+            'temp_name', 'temp_role', 'temp_role_name',
+            'otp_resend_count', 'otp_resend_time', 'otp_masked_email'
+        ]);
+    }
+
+    /**
+     * Reusable helper to dispatch OTP verification email via SMTP and log the attempt.
+     */
+    private function sendOtpEmail(array $user, string $recipientEmail, string $otp): bool
+    {
+        $emailSent = false;
+        try {
+            $email = \Config\Services::email();
+            $smtpUser = trim((string) env('email.SMTPUser', ''));
+            $smtpPass = (string) env('email.SMTPPass', '');
+            $smtpHost = env('email.SMTPHost', 'smtp.gmail.com');
+            $smtpPort = (int) env('email.SMTPPort', 587);
+            $smtpCrypto = env('email.SMTPCrypto', 'tls');
+
+            $email->initialize([
+                'protocol'     => 'smtp',
+                'SMTPHost'     => $smtpHost,
+                'SMTPUser'     => $smtpUser,
+                'SMTPPass'     => $smtpPass,
+                'SMTPPort'     => $smtpPort,
+                'SMTPCrypto'   => $smtpCrypto,
+                'SMTPTimeout'  => 10,
+                'mailType'     => 'html',
+                'charset'      => 'utf-8',
+                'newline'      => "\r\n",
+                'CRLF'         => "\r\n",
+                'wordWrap'     => true,
+            ]);
+
+            $email->setFrom($smtpUser, 'StudentShield Security');
+            $email->setTo($recipientEmail);
+            $email->setSubject('StudentShield Security: Your 6-Digit Admin Verification Code');
+
+            $userNameEsc = esc($user['name'] ?? 'Staff Member');
+            $html = "
+            <div style='background:#f4f7f5; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;'>
+                <div style='max-width: 520px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;'>
+                    <div style='background: linear-gradient(135deg, #166534, #022c22); padding: 30px 20px; text-align: center;'>
+                        <h1 style='color: #ffffff; margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 0.5px;'>Student<span style='color: #F2C300;'>Shield</span></h1>
+                        <p style='color: rgba(255,255,255,0.8); margin: 6px 0 0 0; font-size: 13px;'>Counselor & Admin Portal Verification</p>
+                    </div>
+                    <div style='padding: 35px 30px; text-align: center;'>
+                        <h2 style='color: #1e293b; margin: 0 0 12px; font-size: 20px; font-weight: 600;'>Security Passcode</h2>
+                        <p style='color: #64748b; margin: 0 0 24px; font-size: 14px; line-height: 1.5;'>
+                            Hello <strong>{$userNameEsc}</strong>, use the one-time verification code below to authorize your session:
+                        </p>
+                        <div style='background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 18px 24px; margin-bottom: 24px; display: inline-block;'>
+                            <span style='font-family: Courier, monospace; font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #166534;'>{$otp}</span>
+                        </div>
+                        <p style='color: #ef4444; margin: 0 0 20px; font-size: 13px; font-weight: 500;'>
+                            ⏱️ This verification code is valid for <strong>5 minutes</strong>.
+                        </p>
+                        <hr style='border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;' />
+                        <p style='color: #94a3b8; font-size: 12px; margin: 0;'>
+                            If you did not attempt to sign in to StudentShield, please disregard this email and secure your account immediately.
+                        </p>
+                    </div>
+                </div>
+            </div>";
+
+            $email->setMessage($html);
+            if ($email->send(false)) {
+                $emailSent = true;
+                log_message('info', "OTP verification email successfully sent to {$recipientEmail}");
+            } else {
+                $debug = $email->printDebugger(['headers', 'subject']);
+                log_message('error', "OTP Email sending failed: " . $debug);
+            }
+        } catch (\Throwable $e) {
+            log_message('error', "OTP Email Exception: " . $e->getMessage());
+        }
+
+        try {
+            $db = \Config\Database::connect();
+            if ($db->tableExists('email_logs')) {
+                $db->table('email_logs')->insert([
+                    'student_id'      => $user['id'] ?? null,
+                    'recipient_email' => $recipientEmail,
+                    'alert_type'      => 'ADMIN_LOGIN_OTP',
+                    'subject'         => 'Admin Verification Code',
+                    'message_content' => "Admin login OTP delivery attempted for user " . ($user['name'] ?? 'Staff'),
+                    'sent_status'     => $emailSent ? 'sent' : 'failed'
+                ]);
+            }
+        } catch (\Throwable $e) {}
+
+        return $emailSent;
     }
 
     public function studentRegisterView()

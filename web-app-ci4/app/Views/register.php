@@ -9,6 +9,7 @@
     <title>Student Portal - Registration</title>
     <link rel="preload" as="image" href="<?= base_url('images/logo.png?v=6') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
     <script>
         tailwind.config = {
             theme: {
@@ -40,7 +41,7 @@
                             600: '#C24545',
                             700: '#A33535',
                         },
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B', darker: '#12331F', darkest: '#0A1C11' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255', bright: '#FCEEA1', dark: '#B5881D' },
                     }
                 }
@@ -54,49 +55,44 @@
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
         
-        body { font-family: 'Inter', sans-serif; background-color: #06401E; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-student {
-            background: linear-gradient(135deg, #166534 0%, #022c22 50%, #14532d 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 15s ease infinite alternate;
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+            background:
+                radial-gradient(ellipse at 85% 85%, rgba(0,0,0,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 10%, rgba(217,170,46,0.08) 0%, transparent 45%),
+                linear-gradient(160deg, #128F42 0%, #0E7C38 55%, #09682D 100%);
         }
 
         .bg-grid {
-            background-size: 50px 50px;
-            background-image:
-                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-            mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
-            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
             position: absolute; inset: 0; z-index: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
         .student-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.10);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.22);
             box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
         }
 
         .input-dark {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1.5px solid rgba(255, 255, 255, 0.08); 
+            background: rgba(0, 0, 0, 0.35);
+            border: 1.5px solid rgba(255, 255, 255, 0.22); 
             color: #ffffff;
             transition: all 0.3s ease;
         }
         .input-dark:focus {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.45);
             box-shadow: 0 0 0 4px rgba(242, 195, 0, 0.2);
             border-color: #F2C300;
         }
-        .input-dark::placeholder { color: rgba(255,255,255,0.6); }
+        .input-dark::placeholder { color: rgba(255,255,255,0.75); }
 
         .glow-blob {
             position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.15; z-index: 0;
@@ -159,7 +155,7 @@
         }
     </style>
 </head>
-<body class="bg-student min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
+<body class="school-auth-page bg-student min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
 
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div id="spotlight-overlay" class="spotlight absolute inset-0 z-10"></div>

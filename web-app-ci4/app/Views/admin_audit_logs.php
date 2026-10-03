@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudentShield - Audit Logs</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <?= view('partials/school_brand') ?>
     <script>
         tailwind.config = {
             theme: {
@@ -19,7 +20,7 @@
                     colors: {
                         white: '#FBFDFB',
                         black: '#131A15',
-                        primary: { DEFAULT: '#235D3A', light: '#2F754A', dark: '#19452B' },
+                        primary: StudentShieldBrand.primary,
                         gold: { DEFAULT: '#D9AA2E', light: '#EAC255' }
                     }
                 }
@@ -31,8 +32,9 @@
         body { font-family: 'Inter', sans-serif; background: #FAFDF5; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
         .glass-header {
-            background: #166534;
+            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
             border-bottom: 3px solid #EAB308;
+            box-shadow: 0 4px 20px -2px rgba(7, 88, 38, 0.35);
         }
         .dashboard-card {
             background: #ffffff;
@@ -42,27 +44,27 @@
         }
         .section-header {
             background: #ffffff;
-            color: #166534;
+            color: #0B5E2E;
             padding: 16px 24px;
             border-bottom: 1px solid #e5ebe5;
-            border-left: 4px solid #166534;
+            border-left: 4px solid #0B5E2E;
             border-radius: 14px 14px 0 0;
         }
-        .thead-green { background: #166534; color: white; }
+        .thead-green { background: #096328; color: white; }
         .thead-green th { color: rgba(255,255,255,0.92); font-weight: 600; letter-spacing: 0.05em; font-size: 0.75rem; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="school-staff-page min-h-screen">
 
     <!-- Navbar -->
     <nav class="glass-header text-white sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-24 w-24 object-contain"
+        <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
+            <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0"
                      onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
-                <div>
-                    <h1 class="text-2xl font-bold tracking-tight font-heading">StudentShield</h1>
-                    <span class="text-[#EAB308] text-xs font-semibold tracking-widest uppercase">Super Admin Panel</span>
+                <div class="truncate">
+                    <h1 class="text-base sm:text-2xl font-bold tracking-tight font-heading leading-tight truncate">StudentShield</h1>
+                    <span class="text-[#EAB308] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">Super Admin Panel</span>
                 </div>
             </div>
             
@@ -215,7 +217,7 @@
             <style>
                 .pagination { display: flex; list-style: none; padding: 0; margin: 0; gap: 0.25rem; }
                 .pagination li a, .pagination li span { padding: 0.5rem 0.75rem; border: 1px solid #e5ebe5; border-radius: 0.375rem; font-size: 0.875rem; color: #4b5563; text-decoration: none; background: white; }
-                .pagination li.active a, .pagination li.active span { background-color: #166534; color: white; border-color: #166534; }
+                .pagination li.active a, .pagination li.active span { background-color: #096328; color: white; border-color: #096328; }
                 .pagination li a:hover { background-color: #f9fafb; }
             </style>
             <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between flex-wrap gap-4">
@@ -266,5 +268,6 @@
             applyAuditFilters();
         });
     </script>
+    <?= view('partials/session_idle_modal') ?>
 </body>
 </html>
