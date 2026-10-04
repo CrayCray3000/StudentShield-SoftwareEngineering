@@ -53,7 +53,7 @@
     <style>
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
-        /* Disable aggressive scaling below 1024 to respect touch breakpoints */
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
 
         body { font-family: 'Inter', sans-serif; background-color: #096328; overflow-x: hidden; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }

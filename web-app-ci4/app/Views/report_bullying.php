@@ -54,7 +54,7 @@
         /* Responsive scaling */
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
-        /* Rely natively on Tailwind breakpoints below 1024 for precise touch control */
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
         
         body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
         .font-heading { font-family: 'Outfit', sans-serif; }

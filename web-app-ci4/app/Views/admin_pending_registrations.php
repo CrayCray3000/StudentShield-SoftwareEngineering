@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="csrf-token" content="<?= csrf_hash() ?>">
@@ -30,6 +30,7 @@
     <style>
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
         body { background-color: #f8faf6; font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
         .glass-header {
