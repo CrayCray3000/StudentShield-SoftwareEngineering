@@ -381,37 +381,37 @@
             <h3 id="addModalTitle" class="text-xl font-heading font-bold text-gray-900 mb-0.5">Add New User</h3>
             <p id="addModalSubtitle" class="text-sm text-gray-500 mb-5">Choose a role below to continue.</p>
 
-            <!-- Visual Role Picker -->
+                        <!-- Visual Role Picker -->
             <div class="grid grid-cols-3 gap-3 mb-6">
                 <!-- Student card -->
                 <button type="button" onclick="selectAddRole(0)" id="roleCard0"
-                    class="flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer border-blue-400 bg-blue-50 ring-2 ring-blue-200">
-                    <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14a4 4 0 100-8 4 4 0 000 8zm-8 8a8 8 0 0116 0"/>
+                    class="flex flex-col items-center gap-2 p-3.5 rounded-xl border-2 transition-all cursor-pointer border-blue-500 bg-blue-50/70 ring-2 ring-blue-400/40 shadow-sm">
+                    <div id="roleCircle0" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-blue-600 text-white shadow-sm">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                         </svg>
                     </div>
-                    <span class="text-xs font-bold text-blue-700">Student</span>
+                    <span id="roleLabel0" class="text-xs font-bold text-blue-700">Student</span>
                 </button>
                 <!-- Counselor card -->
                 <button type="button" onclick="selectAddRole(1)" id="roleCard1"
-                    class="flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer border-gray-200 bg-gray-50 hover:border-emerald-300 hover:bg-emerald-50">
-                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                    class="flex flex-col items-center gap-2 p-3.5 rounded-xl border-2 transition-all cursor-pointer border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50">
+                    <div id="roleCircle1" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-emerald-50 text-emerald-600">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                         </svg>
                     </div>
-                    <span class="text-xs font-bold text-gray-600">Counselor</span>
+                    <span id="roleLabel1" class="text-xs font-medium text-gray-600">Counselor</span>
                 </button>
                 <!-- Super Admin card -->
                 <button type="button" onclick="selectAddRole(2)" id="roleCard2"
-                    class="flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer border-gray-200 bg-gray-50 hover:border-amber-300 hover:bg-amber-50">
-                    <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    class="flex flex-col items-center gap-2 p-3.5 rounded-xl border-2 transition-all cursor-pointer border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50">
+                    <div id="roleCircle2" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-amber-50 text-amber-600">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                         </svg>
                     </div>
-                    <span class="text-xs font-bold text-gray-600">Super Admin</span>
+                    <span id="roleLabel2" class="text-xs font-medium text-gray-600">Super Admin</span>
                 </button>
             </div>
 
@@ -420,39 +420,38 @@
                 <input type="hidden" name="role" id="addRoleValue" value="0">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
-                        <input type="text" name="name" required class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. Maria Santos">
                     </div>
                     <!-- Student-only: Student ID -->
-                    <div id="addStudentIdWrap">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Student ID *</label>
+                    <div id="addStudentIdWrap" class="col-span-2 sm:col-span-1">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Student ID <span class="text-red-500">*</span></label>
                         <input type="text" name="student_id" id="addStudentId" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. STU-001">
                     </div>
+                    <!-- Student-only: Section -->
+                    <div id="addSectionWrap" class="col-span-2 sm:col-span-1">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Section <span class="text-red-500">*</span></label>
+                        <input type="text" name="section" id="addSection" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. 10-Rizal">
+                    </div>
+                    <!-- Student-only: Adviser -->
+                    <div id="addAdviserWrap" class="col-span-2 sm:col-span-1">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Adviser Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="adviser_name" id="addAdviser" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. Mr. Juan Dela Cruz">
+                    </div>
                     <!-- Contact email -->
-                    <div>
+                    <div id="addEmailWrap" class="col-span-2 sm:col-span-1">
                         <label id="addParentEmailLabel" class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
-                        <input type="email" name="parent_email" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
+                        <input type="email" name="parent_email" id="addParentEmail" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
                     </div>
                     <!-- Contact phone -->
-                    <div>
+                    <div id="addPhoneWrap" class="col-span-2 sm:col-span-1">
                         <label id="addParentPhoneLabel" class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
-                        <input type="text" name="parent_phone" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
+                        <input type="text" name="parent_phone" id="addParentPhone" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
                     </div>
                     <!-- Password -->
-                    <div id="addPassField" class="col-span-2">
+                    <div id="addPassWrap" class="col-span-2 sm:col-span-1">
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Password <span id="addPassReq" class="text-red-500"></span></label>
                         <input type="password" name="passcode" id="addPassInput" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Enter password (optional)">
-                    </div>
-                    <!-- Student-only: Section + Adviser -->
-                    <div class="col-span-2 grid grid-cols-2 gap-4" id="addStudentOnlyFields">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Section <span class="text-red-500">*</span></label>
-                            <input type="text" name="section" id="addSection" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. 10-Rizal">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Adviser Name <span class="text-red-500">*</span></label>
-                            <input type="text" name="adviser_name" id="addAdviser" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. Mr. Juan Dela Cruz">
-                        </div>
                     </div>
                 </div>
                 <button type="submit" id="addSubmitBtn" class="w-full mt-4 bg-primary hover:bg-primary-light text-white font-bold py-3 rounded-xl shadow-md transition-all hover:-translate-y-0.5">Create Student</button>
@@ -539,52 +538,136 @@
         if (phoneLabel) phoneLabel.textContent = isStaff ? 'Phone' : 'Parent Phone';
     }
 
-    // Add modal role-card picker
-    var ADD_ROLE_META = [
-        { title:'Add Student',    sub:'Fill in student details below.',     btn:'Create Student',   passReq:false, border:'border-blue-400 bg-blue-50 ring-2 ring-blue-200',     icon:'bg-blue-500',    lbl:'text-blue-700'   },
-        { title:'Add Counselor',  sub:'Fill in counselor account details.', btn:'Create Counselor', passReq:true,  border:'border-emerald-400 bg-emerald-50 ring-2 ring-emerald-200', icon:'bg-emerald-500', lbl:'text-emerald-700'},
-        { title:'Add Super Admin',sub:'Fill in administrator credentials.', btn:'Create Admin',     passReq:true,  border:'border-amber-400 bg-amber-50 ring-2 ring-amber-200',     icon:'bg-amber-500',   lbl:'text-amber-700'  }
+        // Add modal role-card picker
+    var ROLE_CONFIG = [
+        {
+            title: 'Add Student',
+            sub: 'Create a student profile with section & adviser details.',
+            btn: 'Create Student',
+            passReq: false,
+            cardActive: 'border-blue-500 bg-blue-50/70 ring-2 ring-blue-400/40 shadow-sm',
+            circleActive: 'bg-blue-600 text-white shadow-sm',
+            circleInactive: 'bg-blue-50 text-blue-600',
+            labelActive: 'text-blue-700 font-bold',
+            labelInactive: 'text-gray-600 font-medium'
+        },
+        {
+            title: 'Add Counselor',
+            sub: 'Create a counselor account with portal login credentials.',
+            btn: 'Create Counselor',
+            passReq: true,
+            cardActive: 'border-emerald-500 bg-emerald-50/70 ring-2 ring-emerald-400/40 shadow-sm',
+            circleActive: 'bg-emerald-600 text-white shadow-sm',
+            circleInactive: 'bg-emerald-50 text-emerald-600',
+            labelActive: 'text-emerald-800 font-bold',
+            labelInactive: 'text-gray-600 font-medium'
+        },
+        {
+            title: 'Add Super Admin',
+            sub: 'Create a full administrator account with staff portal access.',
+            btn: 'Create Admin',
+            passReq: true,
+            cardActive: 'border-amber-500 bg-amber-50/70 ring-2 ring-amber-400/40 shadow-sm',
+            circleActive: 'bg-amber-500 text-white shadow-sm',
+            circleInactive: 'bg-amber-50 text-amber-600',
+            labelActive: 'text-amber-800 font-bold',
+            labelInactive: 'text-gray-600 font-medium'
+        }
     ];
-    var ICON_BASE   = ['bg-blue-100','bg-emerald-100','bg-amber-100'];
-    var ICON_ACTIVE = ['bg-blue-500','bg-emerald-500','bg-amber-500'];
 
     function selectAddRole(role) {
+        role = parseInt(role);
+        if (isNaN(role) || role < 0 || role > 2) role = 0;
         document.getElementById('addRoleValue').value = role;
+
         for (var i = 0; i < 3; i++) {
-            var card  = document.getElementById('roleCard' + i);
-            var iconDiv = card.querySelector('div');
-            var labelEl = card.querySelector('span');
-            var m = ADD_ROLE_META[i];
-            if (i === role) {
-                card.className = 'flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer ' + m.border;
-                iconDiv.className = 'w-10 h-10 rounded-full flex items-center justify-center ' + ICON_ACTIVE[i];
-                card.querySelector('svg').className = card.querySelector('svg').className.replace(/text-\S+/, 'text-white');
-                labelEl.className = 'text-xs font-bold ' + m.lbl;
-            } else {
-                card.className = 'flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100';
-                iconDiv.className = 'w-10 h-10 rounded-full flex items-center justify-center ' + ICON_BASE[i];
-                labelEl.className = 'text-xs font-bold text-gray-600';
+            var cfg = ROLE_CONFIG[i];
+            var card = document.getElementById('roleCard' + i);
+            var circle = document.getElementById('roleCircle' + i);
+            var label = document.getElementById('roleLabel' + i);
+
+            if (card && circle && label) {
+                if (i === role) {
+                    card.className = 'flex flex-col items-center gap-2 p-3.5 rounded-xl border-2 transition-all cursor-pointer ' + cfg.cardActive;
+                    circle.className = 'w-10 h-10 rounded-full flex items-center justify-center transition-colors ' + cfg.circleActive;
+                    label.className = 'text-xs ' + cfg.labelActive;
+                } else {
+                    card.className = 'flex flex-col items-center gap-2 p-3.5 rounded-xl border-2 transition-all cursor-pointer border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50';
+                    circle.className = 'w-10 h-10 rounded-full flex items-center justify-center transition-colors ' + cfg.circleInactive;
+                    label.className = 'text-xs ' + cfg.labelInactive;
+                }
             }
         }
-        var m = ADD_ROLE_META[role];
-        document.getElementById('addModalTitle').textContent = m.title;
-        document.getElementById('addModalSubtitle').textContent = m.sub;
-        document.getElementById('addSubmitBtn').textContent = m.btn;
+
+        var activeCfg = ROLE_CONFIG[role];
+        var titleEl = document.getElementById('addModalTitle');
+        var subEl   = document.getElementById('addModalSubtitle');
+        var btnEl   = document.getElementById('addSubmitBtn');
+
+        if (titleEl) titleEl.textContent = activeCfg.title;
+        if (subEl)   subEl.textContent   = activeCfg.sub;
+        if (btnEl)   btnEl.textContent   = activeCfg.btn;
+
         var isStudent = (role === 0);
-        // Student-only fields
-        document.getElementById('addStudentIdWrap').style.display    = isStudent ? '' : 'none';
-        document.getElementById('addStudentOnlyFields').style.display = isStudent ? '' : 'none';
-        document.getElementById('addStudentId').required  = isStudent;
-        document.getElementById('addSection').required    = isStudent;
-        document.getElementById('addAdviser').required    = isStudent;
-        // Adapt labels
-        document.getElementById('addParentEmailLabel').textContent = isStudent ? 'Parent Email' : 'Email';
-        document.getElementById('addParentPhoneLabel').textContent = isStudent ? 'Parent Phone' : 'Phone';
-        // Password requirement
+
+        // Student-specific fields visibility & requirements
+        var studentIdWrap = document.getElementById('addStudentIdWrap');
+        var sectionWrap   = document.getElementById('addSectionWrap');
+        var adviserWrap   = document.getElementById('addAdviserWrap');
+
+        if (studentIdWrap) studentIdWrap.style.display = isStudent ? '' : 'none';
+        if (sectionWrap)   sectionWrap.style.display   = isStudent ? '' : 'none';
+        if (adviserWrap)   adviserWrap.style.display   = isStudent ? '' : 'none';
+
+        var studentIdInput = document.getElementById('addStudentId');
+        var sectionInput   = document.getElementById('addSection');
+        var adviserInput   = document.getElementById('addAdviser');
+
+        if (studentIdInput) studentIdInput.required = isStudent;
+        if (sectionInput)   sectionInput.required   = isStudent;
+        if (adviserInput)   adviserInput.required   = isStudent;
+
+        // Dynamic labels & requirements for contact
+        var emailInput = document.getElementById('addParentEmail');
+        var emailLabel = document.getElementById('addParentEmailLabel');
+        var phoneLabel = document.getElementById('addParentPhoneLabel');
+
+        if (isStudent) {
+            if (emailLabel) emailLabel.innerHTML = 'Parent Email <span class="text-xs text-gray-400 font-normal">(Optional)</span>';
+            if (phoneLabel) phoneLabel.innerHTML = 'Parent Phone <span class="text-xs text-gray-400 font-normal">(Optional)</span>';
+            if (emailInput) {
+                emailInput.required = false;
+                emailInput.placeholder = 'Optional';
+            }
+        } else {
+            if (emailLabel) emailLabel.innerHTML = 'Staff Email <span class="text-red-500">*</span>';
+            if (phoneLabel) phoneLabel.innerHTML = 'Phone <span class="text-xs text-gray-400 font-normal">(Optional)</span>';
+            if (emailInput) {
+                emailInput.required = true;
+                emailInput.placeholder = 'e.g. staff@school.edu.ph';
+            }
+        }
+
+        // Password requirement & styling
         var passInput = document.getElementById('addPassInput');
-        document.getElementById('addPassReq').textContent = m.passReq ? '*' : '';
-        passInput.required = m.passReq;
-        passInput.placeholder = m.passReq ? 'Required for this role' : 'Enter password (optional)';
+        var passReq   = document.getElementById('addPassReq');
+        var passWrap  = document.getElementById('addPassWrap');
+
+        if (activeCfg.passReq) {
+            if (passReq) passReq.textContent = '*';
+            if (passInput) {
+                passInput.required = true;
+                passInput.placeholder = 'Required for portal login';
+            }
+            if (passWrap) passWrap.className = 'col-span-2';
+        } else {
+            if (passReq) passReq.textContent = '';
+            if (passInput) {
+                passInput.required = false;
+                passInput.placeholder = 'Enter password (optional)';
+            }
+            if (passWrap) passWrap.className = 'col-span-2 sm:col-span-1';
+        }
     }
     selectAddRole(0); // initialise
 
