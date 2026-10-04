@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Libraries\ViolentThreats;
+
 class VentController extends BaseController
 {
     public function index()
@@ -162,7 +164,13 @@ class VentController extends BaseController
             $sentimentScore = (float)$localResult['risk_percent'];
         }
 
-        // Positive sentiment guard removed: The ML Service accurately handles positive vs masked depression via GoEmotions and mDeBERTa.
+        // Explicit threats to others must survive a low ML prediction or an outage.
+        $safeResult = ViolentThreats::enforce($text, [
+            'risk_level' => $riskLevel,
+            'risk_percent' => $sentimentScore,
+        ]);
+        $riskLevel = $safeResult['risk_level'];
+        $sentimentScore = (float) $safeResult['risk_percent'];
 
         // --- 2. DATA PRIVACY SECURE ENCRYPTION ---
         try {
@@ -540,6 +548,10 @@ class VentController extends BaseController
      */
     private function localKeywordFallback(string $text): array
     {
+        $threat = ViolentThreats::detect($text);
+        if ($threat !== null) {
+            return $threat;
+        }
         $lower = mb_strtolower($text);
 
         // Gen-Z sarcasm check — before keyword scanning

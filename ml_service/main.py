@@ -18,6 +18,7 @@ from transformers import pipeline
 from deep_translator import GoogleTranslator
 import nltk
 from risk_history import evaluate_risk_history
+from violent_threats import detect_violent_threat
 
 try:
     nltk.data.find('tokenizers/punkt')
@@ -1363,6 +1364,7 @@ def analyze_text_sync(text: str, student_id: str = None, risk_history: list[dict
             break
 
     has_cat1       = has_cat1_direct or has_cat1_method
+    violent_threat = detect_violent_threat(text)
     has_passive_ideation = any(pat.search(scan_text) for pat in COMPILED_REGEXES['passive_ideation'])
     has_cat2       = any(pat.search(scan_text) for pat in COMPILED_REGEXES['cat2'])
     has_cat3       = any(pat.search(scan_text) for pat in COMPILED_REGEXES['cat3'])
@@ -1452,8 +1454,12 @@ def analyze_text_sync(text: str, student_id: str = None, risk_history: list[dict
         risk   = "MEDIUM"
         reason = "NLP: Negative sentiment detected."
 
-    ### RULE 1: Explicit suicide keywords (Always highest priority)
-    if has_cat1:
+    ### RULE 1: Explicit threats to life (never downgraded by jokes or positivity)
+    if violent_threat:
+        risk = "CRITICAL"
+        risk_score = max(0.99, risk_score)
+        reason = violent_threat['flag_reason']
+    elif has_cat1:
         risk       = "CRITICAL"
         risk_score = max(0.95, risk_score)
         if is_joke:
@@ -1674,7 +1680,7 @@ def analyze_text_sync(text: str, student_id: str = None, risk_history: list[dict
     ## ┐
     ### STAGE 7.5: POSITIVE VENT GUARD (suppress false MEDIUM on grateful posts)
     ## ┘
-    severe_flags = has_cat1 or has_cat2 or has_sexual or has_finality
+    severe_flags = violent_threat or has_cat1 or has_cat2 or has_sexual or has_finality
     if has_positive and not severe_flags and not (has_emotional or has_isolation or has_anhedonia or has_self_worth or has_masked_dep):
         risk       = "LOW"
         risk_score = min(risk_score, 0.28)
