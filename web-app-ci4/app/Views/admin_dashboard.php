@@ -223,6 +223,30 @@
             transform: translateY(-1px);
         }
         .section-nav-pill svg { transition: color 0.18s ease; }
+        /* Active state — set by IntersectionObserver */
+        .section-nav-pill.is-active {
+            background: #0B5E2E;
+            color: #ffffff;
+            border-color: #0B5E2E;
+            box-shadow: 0 4px 12px rgba(11,94,46,0.25);
+        }
+        /* Smooth page scroll for anchor clicks */
+        html { scroll-behavior: smooth; }
+        /* Give each section breathing room under the sticky navbar + tab bar */
+        [id^="section-"] { scroll-margin-top: 110px; }
+        /* Sticky section tab nav */
+        #section-tab-nav {
+            position: sticky;
+            top: 64px; /* height of the main site navbar */
+            z-index: 40;
+            background: #f3f6f3;
+            padding: 8px 0 4px;
+            margin-bottom: 16px;
+            margin-left: -1rem;
+            margin-right: -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
 
         /* Collapsed table rows — show first 5, hide the rest until expanded */
         .tbl-row-hidden { display: none; }
@@ -359,7 +383,7 @@
     <main class="container mx-auto px-4 sm:px-6 py-8 flex-1 animate-fade-in">
 
         <!-- Section Navigation -->
-        <nav class="mb-6 flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar sm:flex-wrap animate-slide-up" style="animation-delay: 0.05s" aria-label="Dashboard sections">
+        <nav id="section-tab-nav" class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar sm:flex-wrap animate-slide-up" style="animation-delay: 0.05s" aria-label="Dashboard sections">
             <a href="#section-vents" class="section-nav-pill whitespace-nowrap">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/></svg>
                 Vents
@@ -1898,6 +1922,48 @@
             this.style.boxShadow = '0 6px 20px -4px rgba(0,0,0,0.35), 0 0 0 3px rgba(217,170,46,0.20)';
             this.style.transform = 'translateY(0) scale(1)';
         });
+    })();
+    </script>
+
+    <!-- Section tab active-state via IntersectionObserver -->
+    <script>
+    (function () {
+        var sections = ['section-vents', 'section-incidents', 'section-sessions', 'section-alerts', 'section-charts'];
+        var pills = {};
+        sections.forEach(function (id) {
+            // Find the pill whose href ends with #<id>
+            var pill = document.querySelector('#section-tab-nav a[href="#' + id + '"]');
+            if (pill) pills[id] = pill;
+        });
+
+        function clearActive() {
+            Object.values(pills).forEach(function (p) { p.classList.remove('is-active'); });
+        }
+
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    clearActive();
+                    var pill = pills[entry.target.id];
+                    if (pill) {
+                        pill.classList.add('is-active');
+                        // Scroll the tab bar so the active pill is in view on mobile
+                        pill.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+                    }
+                }
+            });
+        }, {
+            rootMargin: '-20% 0px -70% 0px', // trigger when section is 20% from top of viewport
+            threshold: 0
+        });
+
+        sections.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) observer.observe(el);
+        });
+
+        // Also activate first pill by default on page load
+        if (pills['section-vents']) pills['section-vents'].classList.add('is-active');
     })();
     </script>
 </body>
