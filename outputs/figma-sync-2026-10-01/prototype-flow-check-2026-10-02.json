@@ -1,0 +1,2978 @@
+{
+  "date": "2026-10-02",
+  "pageId": "771:684",
+  "flows": [
+    {
+      "nodeId": "771:696",
+      "name": "Student Flow"
+    },
+    {
+      "nodeId": "958:864",
+      "name": "Admin Flow"
+    }
+  ],
+  "activeFrames": [
+    {
+      "id": "771:688",
+      "name": "01 — Student Dashboard",
+      "overflow": "NONE"
+    },
+    {
+      "id": "771:690",
+      "name": "Safe Space — complete scrollable form",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "771:694",
+      "name": "04 — Student Incident Report",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "771:696",
+      "name": "05 — Student Login",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "771:698",
+      "name": "06 — Student Registration",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "970:883",
+      "name": "Student login — required name feedback",
+      "overflow": "NONE"
+    },
+    {
+      "id": "970:895",
+      "name": "Student login — required passcode feedback",
+      "overflow": "NONE"
+    },
+    {
+      "id": "771:700",
+      "name": "Admin Dashboard — vents, incidents, sessions, alerts and analytics",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "771:716",
+      "name": "Student Case Summary — jc",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "771:706",
+      "name": "10 — Admin Pending Student Registrations",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "771:710",
+      "name": "12 — Admin User Management",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "771:708",
+      "name": "11 — Admin System Audit Logs",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "771:712",
+      "name": "Student Profile — scrollable overlay",
+      "overflow": "NONE"
+    },
+    {
+      "id": "771:704",
+      "name": "Incident Detail — overlay",
+      "overflow": "NONE"
+    },
+    {
+      "id": "771:722",
+      "name": "Case Status — overlay",
+      "overflow": "NONE"
+    },
+    {
+      "id": "771:724",
+      "name": "Google Meet Setup — overlay",
+      "overflow": "NONE"
+    },
+    {
+      "id": "885:1174",
+      "name": "Admin Navigation — overlay",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "958:864",
+      "name": "Staff Portal — login",
+      "overflow": "VERTICAL"
+    },
+    {
+      "id": "958:983",
+      "name": "Sessions — pending requests dropdown",
+      "overflow": "NONE"
+    },
+    {
+      "id": "972:880",
+      "name": "Staff Security Verification — email OTP",
+      "overflow": "NONE"
+    },
+    {
+      "id": "972:910",
+      "name": "Staff login — required identifier feedback",
+      "overflow": "NONE"
+    },
+    {
+      "id": "972:922",
+      "name": "Staff login — required access-key feedback",
+      "overflow": "NONE"
+    },
+    {
+      "id": "972:935",
+      "name": "Staff OTP — required-code feedback",
+      "overflow": "NONE"
+    }
+  ],
+  "interactiveNodes": 231,
+  "actions": {
+    "SET_VARIABLE": 1920,
+    "NODE": 95,
+    "BACK": 3,
+    "CONDITIONAL": 513,
+    "CLOSE": 85
+  },
+  "invalidDestinations": [],
+  "imageAssets": [
+    {
+      "id": "801:685",
+      "name": "Rectangle",
+      "w": 58,
+      "h": 58
+    },
+    {
+      "id": "801:714",
+      "name": "Rectangle",
+      "w": 58,
+      "h": 58
+    },
+    {
+      "id": "801:828",
+      "name": "Rectangle",
+      "w": 58,
+      "h": 58
+    },
+    {
+      "id": "963:874",
+      "name": "School crest",
+      "w": 112,
+      "h": 112
+    },
+    {
+      "id": "938:2906",
+      "name": "image 1",
+      "w": 75,
+      "h": 75
+    },
+    {
+      "id": "869:1674",
+      "name": "School logo",
+      "w": 56,
+      "h": 56
+    },
+    {
+      "id": "873:1954",
+      "name": "School logo",
+      "w": 36,
+      "h": 36
+    },
+    {
+      "id": "862:1638",
+      "name": "School logo",
+      "w": 56,
+      "h": 56
+    },
+    {
+      "id": "872:2393",
+      "name": "School logo",
+      "w": 56,
+      "h": 56
+    },
+    {
+      "id": "871:1725",
+      "name": "School logo",
+      "w": 56,
+      "h": 56
+    },
+    {
+      "id": "958:940",
+      "name": "School crest",
+      "w": 96,
+      "h": 96
+    },
+    {
+      "id": "972:883",
+      "name": "School crest",
+      "w": 160,
+      "h": 160
+    }
+  ],
+  "anchors": [
+    {
+      "id": "946:908",
+      "parent": "869:1796",
+      "y": -87
+    },
+    {
+      "id": "946:910",
+      "parent": "869:2343",
+      "y": -87
+    },
+    {
+      "id": "946:912",
+      "parent": "869:2568",
+      "y": -87
+    },
+    {
+      "id": "946:916",
+      "parent": "869:2588",
+      "y": -87
+    },
+    {
+      "id": "946:918",
+      "parent": "869:2615",
+      "y": -87
+    }
+  ],
+  "chart": {
+    "id": "957:912",
+    "nativeVectors": 4,
+    "visible": true
+  },
+  "moods": [
+    "😐  Okay",
+    "😌  Calm",
+    "😊  Happy",
+    "🙂  Hopeful",
+    "😔  Sad",
+    "😠  Angry",
+    "😰  Anxious",
+    "🥺  Lonely",
+    "😵  Overwhelmed",
+    "🤕  Hurt",
+    "😶  Numb",
+    "😨  Scared"
+  ],
+  "reportOverflow": "VERTICAL",
+  "checks": [
+    {
+      "id": "963:904",
+      "name": "Access Portal — validated sign-in required",
+      "reactions": [
+        {
+          "action": {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "NODE",
+                    "destinationId": "970:883",
+                    "navigation": "OVERLAY",
+                    "transition": null,
+                    "resetVideoPosition": false
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "type": "VARIABLE_ALIAS",
+                          "id": "VariableID:970:876"
+                        },
+                        "type": "VARIABLE_ALIAS",
+                        "resolvedType": "BOOLEAN"
+                      }
+                    ],
+                    "expressionFunction": "NOT"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": []
+              }
+            ]
+          },
+          "actions": [
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "970:883",
+                      "navigation": "OVERLAY",
+                      "transition": null,
+                      "resetVideoPosition": false
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:970:876"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "NOT"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "970:895",
+                      "navigation": "OVERLAY",
+                      "transition": null,
+                      "resetVideoPosition": false
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:970:876"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "type": "VARIABLE_ALIAS",
+                                  "id": "VariableID:970:877"
+                                },
+                                "type": "VARIABLE_ALIAS",
+                                "resolvedType": "BOOLEAN"
+                              }
+                            ],
+                            "expressionFunction": "NOT"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "771:688",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:970:876"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:970:877"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "958:964",
+      "name": "Sign In — requires actual credential validation",
+      "reactions": [
+        {
+          "action": {
+            "type": "CONDITIONAL",
+            "conditionalBlocks": [
+              {
+                "actions": [
+                  {
+                    "type": "NODE",
+                    "destinationId": "972:910",
+                    "navigation": "OVERLAY",
+                    "transition": null,
+                    "resetVideoPosition": false
+                  }
+                ],
+                "condition": {
+                  "value": {
+                    "expressionArguments": [
+                      {
+                        "value": {
+                          "type": "VARIABLE_ALIAS",
+                          "id": "VariableID:972:876"
+                        },
+                        "type": "VARIABLE_ALIAS",
+                        "resolvedType": "BOOLEAN"
+                      }
+                    ],
+                    "expressionFunction": "NOT"
+                  },
+                  "type": "EXPRESSION",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "actions": []
+              }
+            ]
+          },
+          "actions": [
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "972:910",
+                      "navigation": "OVERLAY",
+                      "transition": null,
+                      "resetVideoPosition": false
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:972:876"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "NOT"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "972:922",
+                      "navigation": "OVERLAY",
+                      "transition": null,
+                      "resetVideoPosition": false
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:972:876"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "expressionArguments": [
+                              {
+                                "value": {
+                                  "type": "VARIABLE_ALIAS",
+                                  "id": "VariableID:972:877"
+                                },
+                                "type": "VARIABLE_ALIAS",
+                                "resolvedType": "BOOLEAN"
+                              }
+                            ],
+                            "expressionFunction": "NOT"
+                          },
+                          "type": "EXPRESSION",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            },
+            {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "972:880",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "expressionArguments": [
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:972:876"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "BOOLEAN"
+                        },
+                        {
+                          "value": {
+                            "type": "VARIABLE_ALIAS",
+                            "id": "VariableID:972:877"
+                          },
+                          "type": "VARIABLE_ALIAS",
+                          "resolvedType": "BOOLEAN"
+                        }
+                      ],
+                      "expressionFunction": "AND"
+                    },
+                    "type": "EXPRESSION",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": []
+                }
+              ]
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "869:1703",
+      "name": "button / meetingBellBtn",
+      "reactions": [
+        {
+          "action": {
+            "type": "NODE",
+            "destinationId": "958:983",
+            "navigation": "OVERLAY",
+            "transition": null,
+            "resetVideoPosition": false
+          },
+          "actions": [
+            {
+              "type": "NODE",
+              "destinationId": "958:983",
+              "navigation": "OVERLAY",
+              "transition": null,
+              "resetVideoPosition": false
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "958:991",
+      "name": "View Section ↓",
+      "reactions": [
+        {
+          "action": {
+            "type": "CLOSE"
+          },
+          "actions": [
+            {
+              "type": "CLOSE"
+            },
+            {
+              "type": "NODE",
+              "destinationId": "946:912",
+              "navigation": "SCROLL_TO",
+              "transition": {
+                "type": "SCROLL_ANIMATE",
+                "easing": {
+                  "type": "EASE_OUT"
+                },
+                "duration": 0.20000000298023224
+              },
+              "resetVideoPosition": false
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "871:1752",
+      "name": "button / flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg t",
+      "reactions": [
+        {
+          "action": {
+            "type": "SET_VARIABLE",
+            "variableId": "VariableID:972:876",
+            "variableValue": {
+              "value": false,
+              "type": "BOOLEAN",
+              "resolvedType": "BOOLEAN"
+            }
+          },
+          "actions": [
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:876",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:877",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:878",
+              "variableValue": {
+                "value": "Enter staff identifier",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:879",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "NODE",
+              "destinationId": "958:864",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "872:2422",
+      "name": "button / flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg t",
+      "reactions": [
+        {
+          "action": {
+            "type": "SET_VARIABLE",
+            "variableId": "VariableID:972:876",
+            "variableValue": {
+              "value": false,
+              "type": "BOOLEAN",
+              "resolvedType": "BOOLEAN"
+            }
+          },
+          "actions": [
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:876",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:877",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:878",
+              "variableValue": {
+                "value": "Enter staff identifier",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:879",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "NODE",
+              "destinationId": "958:864",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "862:1674",
+      "name": "button / flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg t",
+      "reactions": [
+        {
+          "action": {
+            "type": "SET_VARIABLE",
+            "variableId": "VariableID:972:876",
+            "variableValue": {
+              "value": false,
+              "type": "BOOLEAN",
+              "resolvedType": "BOOLEAN"
+            }
+          },
+          "actions": [
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:876",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:877",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:878",
+              "variableValue": {
+                "value": "Enter staff identifier",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:879",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "NODE",
+              "destinationId": "958:864",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "885:1199",
+      "name": "button / w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-300 hover:text-red-200 hover:bg-red-500/10 transition-c",
+      "reactions": [
+        {
+          "action": {
+            "type": "CLOSE"
+          },
+          "actions": [
+            {
+              "type": "CLOSE"
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:876",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:877",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:878",
+              "variableValue": {
+                "value": "Enter staff identifier",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:879",
+              "variableValue": {
+                "value": false,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            },
+            {
+              "type": "NODE",
+              "destinationId": "958:864",
+              "navigation": "NAVIGATE",
+              "transition": null,
+              "resetVideoPosition": false,
+              "resetScrollPosition": true
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    }
+  ],
+  "navRows": [
+    {
+      "id": "871:1731",
+      "registrations": [
+        {
+          "id": "958:973",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "771:706",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "771:706",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "872:2399",
+      "registrations": [
+        {
+          "id": "958:978",
+          "reactions": [
+            {
+              "action": {
+                "type": "NODE",
+                "destinationId": "771:706",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              },
+              "actions": [
+                {
+                  "type": "NODE",
+                  "destinationId": "771:706",
+                  "navigation": "NAVIGATE",
+                  "transition": null,
+                  "resetVideoPosition": false,
+                  "resetScrollPosition": true
+                }
+              ],
+              "trigger": {
+                "type": "ON_CLICK"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "previewPlaybackVerified": false,
+  "backendChanged": false,
+  "otpAcceptanceSimulated": true,
+  "loginBranchTests": [
+    {
+      "button": "963:904",
+      "nameSelected": false,
+      "passcodeSelected": false,
+      "expectedDestination": "970:883",
+      "actualDestinations": [
+        "970:883"
+      ],
+      "passed": true
+    },
+    {
+      "button": "963:904",
+      "nameSelected": false,
+      "passcodeSelected": true,
+      "expectedDestination": "970:883",
+      "actualDestinations": [
+        "970:883"
+      ],
+      "passed": true
+    },
+    {
+      "button": "963:904",
+      "nameSelected": true,
+      "passcodeSelected": false,
+      "expectedDestination": "970:895",
+      "actualDestinations": [
+        "970:895"
+      ],
+      "passed": true
+    },
+    {
+      "button": "963:904",
+      "nameSelected": true,
+      "passcodeSelected": true,
+      "expectedDestination": "771:688",
+      "actualDestinations": [
+        "771:688"
+      ],
+      "passed": true
+    },
+    {
+      "button": "958:964",
+      "nameSelected": false,
+      "passcodeSelected": false,
+      "expectedDestination": "972:910",
+      "actualDestinations": [
+        "972:910"
+      ],
+      "passed": true
+    },
+    {
+      "button": "958:964",
+      "nameSelected": false,
+      "passcodeSelected": true,
+      "expectedDestination": "972:910",
+      "actualDestinations": [
+        "972:910"
+      ],
+      "passed": true
+    },
+    {
+      "button": "958:964",
+      "nameSelected": true,
+      "passcodeSelected": false,
+      "expectedDestination": "972:922",
+      "actualDestinations": [
+        "972:922"
+      ],
+      "passed": true
+    },
+    {
+      "button": "958:964",
+      "nameSelected": true,
+      "passcodeSelected": true,
+      "expectedDestination": "972:880",
+      "actualDestinations": [
+        "972:880"
+      ],
+      "passed": true
+    }
+  ],
+  "loginFieldReactions": [
+    {
+      "id": "963:883",
+      "reactions": [
+        {
+          "action": {
+            "type": "SET_VARIABLE",
+            "variableId": "VariableID:970:878",
+            "variableValue": {
+              "value": "vonn",
+              "type": "STRING",
+              "resolvedType": "STRING"
+            }
+          },
+          "actions": [
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:970:878",
+              "variableValue": {
+                "value": "vonn",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:970:876",
+              "variableValue": {
+                "value": true,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "963:891",
+      "reactions": [
+        {
+          "action": {
+            "type": "SET_VARIABLE",
+            "variableId": "VariableID:970:877",
+            "variableValue": {
+              "value": true,
+              "type": "BOOLEAN",
+              "resolvedType": "BOOLEAN"
+            }
+          },
+          "actions": [
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:970:877",
+              "variableValue": {
+                "value": true,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "958:948",
+      "reactions": [
+        {
+          "action": {
+            "type": "SET_VARIABLE",
+            "variableId": "VariableID:972:878",
+            "variableValue": {
+              "value": "SuperAdmin",
+              "type": "STRING",
+              "resolvedType": "STRING"
+            }
+          },
+          "actions": [
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:878",
+              "variableValue": {
+                "value": "SuperAdmin",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:876",
+              "variableValue": {
+                "value": true,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    },
+    {
+      "id": "958:957",
+      "reactions": [
+        {
+          "action": {
+            "type": "SET_VARIABLE",
+            "variableId": "VariableID:972:877",
+            "variableValue": {
+              "value": true,
+              "type": "BOOLEAN",
+              "resolvedType": "BOOLEAN"
+            }
+          },
+          "actions": [
+            {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:972:877",
+              "variableValue": {
+                "value": true,
+                "type": "BOOLEAN",
+                "resolvedType": "BOOLEAN"
+              }
+            }
+          ],
+          "trigger": {
+            "type": "ON_CLICK"
+          }
+        }
+      ]
+    }
+  ],
+  "loginVerification": "Persisted reactions reread; all 8 state combinations passed a local evaluation of saved conditions. Preview playback not verified.",
+  "otpSimulationScope": "Figma demonstration only: clicking a code box selects sample digits, then Verify opens the captured dashboard. No website or real authentication changed.",
+  "otpSavedVerification": {
+    "flows": [
+      {
+        "nodeId": "771:696",
+        "name": "Student Flow"
+      },
+      {
+        "nodeId": "958:864",
+        "name": "Admin Flow"
+      }
+    ],
+    "checks": [
+      {
+        "id": "972:886",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "1",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "1",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "2",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "3",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "4",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "5",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "6",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": true,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "972:887",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "1",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "1",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "2",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "3",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "4",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "5",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "6",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": true,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "972:888",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "1",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "1",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "2",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "3",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "4",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "5",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "6",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": true,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "972:889",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "1",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "1",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "2",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "3",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "4",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "5",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "6",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": true,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "972:890",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "1",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "1",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "2",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "3",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "4",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "5",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "6",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": true,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "972:891",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "1",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "1",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "2",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "3",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "4",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "5",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "6",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": true,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "972:892",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "1",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "1",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "2",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "3",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "4",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "5",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "6",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": true,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "972:900",
+        "reactions": [
+          {
+            "action": {
+              "type": "CONDITIONAL",
+              "conditionalBlocks": [
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "771:700",
+                      "navigation": "NAVIGATE",
+                      "transition": null,
+                      "resetVideoPosition": false,
+                      "resetScrollPosition": true
+                    }
+                  ],
+                  "condition": {
+                    "value": {
+                      "type": "VARIABLE_ALIAS",
+                      "id": "VariableID:986:876"
+                    },
+                    "type": "VARIABLE_ALIAS",
+                    "resolvedType": "BOOLEAN"
+                  }
+                },
+                {
+                  "actions": [
+                    {
+                      "type": "NODE",
+                      "destinationId": "972:935",
+                      "navigation": "OVERLAY",
+                      "transition": null,
+                      "resetVideoPosition": false
+                    }
+                  ]
+                }
+              ]
+            },
+            "actions": [
+              {
+                "type": "CONDITIONAL",
+                "conditionalBlocks": [
+                  {
+                    "actions": [
+                      {
+                        "type": "NODE",
+                        "destinationId": "771:700",
+                        "navigation": "NAVIGATE",
+                        "transition": null,
+                        "resetVideoPosition": false,
+                        "resetScrollPosition": true
+                      }
+                    ],
+                    "condition": {
+                      "value": {
+                        "type": "VARIABLE_ALIAS",
+                        "id": "VariableID:986:876"
+                      },
+                      "type": "VARIABLE_ALIAS",
+                      "resolvedType": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "actions": [
+                      {
+                        "type": "NODE",
+                        "destinationId": "972:935",
+                        "navigation": "OVERLAY",
+                        "transition": null,
+                        "resetVideoPosition": false
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "958:964",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "CONDITIONAL",
+                "conditionalBlocks": [
+                  {
+                    "actions": [
+                      {
+                        "type": "NODE",
+                        "destinationId": "972:910",
+                        "navigation": "OVERLAY",
+                        "transition": null,
+                        "resetVideoPosition": false
+                      }
+                    ],
+                    "condition": {
+                      "value": {
+                        "expressionArguments": [
+                          {
+                            "value": {
+                              "type": "VARIABLE_ALIAS",
+                              "id": "VariableID:972:876"
+                            },
+                            "type": "VARIABLE_ALIAS",
+                            "resolvedType": "BOOLEAN"
+                          }
+                        ],
+                        "expressionFunction": "NOT"
+                      },
+                      "type": "EXPRESSION",
+                      "resolvedType": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "actions": []
+                  }
+                ]
+              },
+              {
+                "type": "CONDITIONAL",
+                "conditionalBlocks": [
+                  {
+                    "actions": [
+                      {
+                        "type": "NODE",
+                        "destinationId": "972:922",
+                        "navigation": "OVERLAY",
+                        "transition": null,
+                        "resetVideoPosition": false
+                      }
+                    ],
+                    "condition": {
+                      "value": {
+                        "expressionArguments": [
+                          {
+                            "value": {
+                              "type": "VARIABLE_ALIAS",
+                              "id": "VariableID:972:876"
+                            },
+                            "type": "VARIABLE_ALIAS",
+                            "resolvedType": "BOOLEAN"
+                          },
+                          {
+                            "value": {
+                              "expressionArguments": [
+                                {
+                                  "value": {
+                                    "type": "VARIABLE_ALIAS",
+                                    "id": "VariableID:972:877"
+                                  },
+                                  "type": "VARIABLE_ALIAS",
+                                  "resolvedType": "BOOLEAN"
+                                }
+                              ],
+                              "expressionFunction": "NOT"
+                            },
+                            "type": "EXPRESSION",
+                            "resolvedType": "BOOLEAN"
+                          }
+                        ],
+                        "expressionFunction": "AND"
+                      },
+                      "type": "EXPRESSION",
+                      "resolvedType": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "actions": []
+                  }
+                ]
+              },
+              {
+                "type": "CONDITIONAL",
+                "conditionalBlocks": [
+                  {
+                    "actions": [
+                      {
+                        "type": "NODE",
+                        "destinationId": "972:880",
+                        "navigation": "NAVIGATE",
+                        "transition": null,
+                        "resetVideoPosition": false,
+                        "resetScrollPosition": true
+                      }
+                    ],
+                    "condition": {
+                      "value": {
+                        "expressionArguments": [
+                          {
+                            "value": {
+                              "type": "VARIABLE_ALIAS",
+                              "id": "VariableID:972:876"
+                            },
+                            "type": "VARIABLE_ALIAS",
+                            "resolvedType": "BOOLEAN"
+                          },
+                          {
+                            "value": {
+                              "type": "VARIABLE_ALIAS",
+                              "id": "VariableID:972:877"
+                            },
+                            "type": "VARIABLE_ALIAS",
+                            "resolvedType": "BOOLEAN"
+                          }
+                        ],
+                        "expressionFunction": "AND"
+                      },
+                      "type": "EXPRESSION",
+                      "resolvedType": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "actions": []
+                  }
+                ]
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "972:905",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "NODE",
+                "destinationId": "958:864",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "871:1752",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:877",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:878",
+                "variableValue": {
+                  "value": "Enter staff identifier",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:879",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "NODE",
+                "destinationId": "958:864",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "872:2422",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:877",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:878",
+                "variableValue": {
+                  "value": "Enter staff identifier",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:879",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "NODE",
+                "destinationId": "958:864",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "862:1674",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:877",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:878",
+                "variableValue": {
+                  "value": "Enter staff identifier",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:879",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "NODE",
+                "destinationId": "958:864",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      },
+      {
+        "id": "885:1199",
+        "reactions": [
+          {
+            "action": {
+              "type": "SET_VARIABLE",
+              "variableId": "VariableID:986:877",
+              "variableValue": {
+                "value": "",
+                "type": "STRING",
+                "resolvedType": "STRING"
+              }
+            },
+            "actions": [
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:877",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:878",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:879",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:880",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:881",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:882",
+                "variableValue": {
+                  "value": "",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:986:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "CLOSE"
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:876",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:877",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:878",
+                "variableValue": {
+                  "value": "Enter staff identifier",
+                  "type": "STRING",
+                  "resolvedType": "STRING"
+                }
+              },
+              {
+                "type": "SET_VARIABLE",
+                "variableId": "VariableID:972:879",
+                "variableValue": {
+                  "value": false,
+                  "type": "BOOLEAN",
+                  "resolvedType": "BOOLEAN"
+                }
+              },
+              {
+                "type": "NODE",
+                "destinationId": "958:864",
+                "navigation": "NAVIGATE",
+                "transition": null,
+                "resetVideoPosition": false,
+                "resetScrollPosition": true
+              }
+            ],
+            "trigger": {
+              "type": "ON_CLICK"
+            }
+          }
+        ]
+      }
+    ],
+    "targets": [
+      {
+        "id": "771:700",
+        "exists": true,
+        "visible": true
+      },
+      {
+        "id": "972:935",
+        "exists": true,
+        "visible": true
+      }
+    ]
+  },
+  "otpStateTests": [
+    {
+      "case": "Blank code",
+      "passed": true,
+      "destination": "972:935"
+    },
+    {
+      "case": "Click code box then Verify",
+      "passed": true,
+      "destination": "771:700"
+    },
+    {
+      "case": "All six boxes fill the sample code",
+      "passed": true
+    },
+    {
+      "case": "Login, Back and Logout reset code state",
+      "passed": true
+    }
+  ],
+  "interactiveNodeCountMethod": "Counted saved reactions in both active flow sections.",
+  "feedInteractionVerification": {
+    "tests": [
+      {
+        "name": "Resolved status",
+        "passed": true,
+        "detail": [
+          1
+        ]
+      },
+      {
+        "name": "Action Required status",
+        "passed": true,
+        "detail": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "name": "HIGH search",
+        "passed": true,
+        "detail": [
+          1,
+          2,
+          3,
+          7,
+          9,
+          10,
+          12
+        ]
+      },
+      {
+        "name": "Search plus status",
+        "passed": true,
+        "detail": [
+          1
+        ]
+      },
+      {
+        "name": "Captured date filter",
+        "passed": true,
+        "detail": [
+          12
+        ]
+      },
+      {
+        "name": "Mark Resolved demo",
+        "passed": true
+      },
+      {
+        "name": "Resolved filter after row change",
+        "passed": true,
+        "detail": [
+          1,
+          2
+        ]
+      },
+      {
+        "name": "Cancel archive leaves record active",
+        "passed": true
+      },
+      {
+        "name": "Archive removes active demo row",
+        "passed": true
+      },
+      {
+        "name": "Archived filter shows archived row",
+        "passed": true,
+        "detail": [
+          2
+        ]
+      },
+      {
+        "name": "Unarchive reverses archive",
+        "passed": true
+      },
+      {
+        "name": "Restored row appears in active view",
+        "passed": true
+      },
+      {
+        "name": "Select all checks all twelve",
+        "passed": true
+      },
+      {
+        "name": "Bulk archive changes selected demo rows",
+        "passed": true
+      },
+      {
+        "name": "Bulk restore reverses bulk archive",
+        "passed": true
+      },
+      {
+        "name": "Correct student profiles",
+        "passed": true
+      },
+      {
+        "name": "Excerpt belongs to clicked row",
+        "passed": true
+      }
+    ],
+    "allPassed": true,
+    "interactiveNodes": 231,
+    "actions": {
+      "SET_VARIABLE": 1920,
+      "NODE": 95,
+      "BACK": 3,
+      "CONDITIONAL": 513,
+      "CLOSE": 85
+    },
+    "invalidDestinations": [],
+    "overlays": [
+      {
+        "id": "994:2218",
+        "width": 460,
+        "height": 362,
+        "overlaps": []
+      },
+      {
+        "id": "994:2223",
+        "width": 460,
+        "height": 330,
+        "overlaps": []
+      },
+      {
+        "id": "994:2228",
+        "width": 460,
+        "height": 312,
+        "overlaps": []
+      },
+      {
+        "id": "994:2233",
+        "width": 740,
+        "height": 305,
+        "overlaps": []
+      },
+      {
+        "id": "994:2238",
+        "width": 520,
+        "height": 250,
+        "overlaps": []
+      },
+      {
+        "id": "994:2243",
+        "width": 620,
+        "height": 318,
+        "overlaps": []
+      }
+    ],
+    "anchors": [
+      {
+        "id": "946:908",
+        "parent": "869:1796",
+        "y": -87
+      },
+      {
+        "id": "946:910",
+        "parent": "869:2343",
+        "y": -87
+      },
+      {
+        "id": "946:912",
+        "parent": "869:2568",
+        "y": -87
+      },
+      {
+        "id": "946:916",
+        "parent": "869:2588",
+        "y": -87
+      },
+      {
+        "id": "946:918",
+        "parent": "869:2615",
+        "y": -87
+      }
+    ],
+    "editableTextCount": 157,
+    "imageAssets": [],
+    "browserPreviewVerified": false,
+    "websiteChanged": false
+  },
+  "feedKnownContentLimit": "Only captured vent excerpts and ashlog contact fields were used. Full entries and other profile information were not invented."
+}

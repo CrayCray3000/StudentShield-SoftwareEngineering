@@ -1,0 +1,46 @@
+{
+  "pdf_pages": 77,
+  "template_margin_attributes": {
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}top": "1440",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}right": "1440",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}bottom": "1440",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left": "2835",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}header": "850",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}footer": "0",
+    "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}gutter": "0"
+  },
+  "all_section_margins_match": true,
+  "styles": {
+    "Normal": {
+      "font": "Times New Roman",
+      "size": 12.0
+    },
+    "Heading 1": {
+      "font": "Times New Roman",
+      "size": 12.0
+    },
+    "Heading 2": {
+      "font": "Times New Roman",
+      "size": 12.0
+    },
+    "Heading 3": {
+      "font": "Times New Roman",
+      "size": 12.0
+    },
+    "Caption": {
+      "font": "Times New Roman",
+      "size": 12.0
+    }
+  },
+  "template_images_preserved": {
+    "word/media/image1.png": true
+  },
+  "blank_test_result_cells": true,
+  "required_headings_in_order": true,
+  "source_text_unlocated": [],
+  "body_character_overflows": [],
+  "original_backup_sha256": "f0ca38d18d7776953778bd725de63b99a8367766fb634721e5bc13547446a567",
+  "new_pdf_sha256": "b684bdf95a4b53fbf81a8cf1f814df1398c17131e2269a0afb3902bb077e62c2",
+  "source_paragraphs_retained": 385,
+  "modified_source_paragraphs": 163
+}

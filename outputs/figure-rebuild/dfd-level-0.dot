@@ -1,0 +1,22 @@
+digraph G { graph [bgcolor=white, rankdir=TB, nodesep=0.45, ranksep=0.7, pad=0.1, splines=polyline]; node [fontname="Times New Roman", fontsize=20, color=black, penwidth=1.2, margin="0.12,0.08"]; edge [fontname="Times New Roman", fontsize=15, color=black, arrowsize=0.65, penwidth=1.1];
+ S [shape=box,label="Student"]; C [shape=box,label="Counselor /
+Super Administrator"]; M [shape=box,label="ML screening service"]; R [shape=box,label="Parent / Guardian"];
+ P [shape=ellipse,label="0
+StudentShield
+Web Application",width=3,height=1.7];
+ {rank=same;S;C} {rank=same;M;R}
+ S -> P [label="Account details; vent and incident data;
+session requests"];
+ P -> S [label="Access and submission results;
+session status and meeting link"];
+ C -> P [label="Credentials / OTP; review decisions;
+account and case changes; queries; Meet URL"];
+ P -> C [label="Access / update results; records and summaries;
+session details; verification and triage notices"];
+ P -> M [label="Current vent, student ID,
+14-day risk history"];
+ M -> P [label="Risk and trajectory
+assessment"];
+ P -> R [label="Eligible wellness / incident notices
+and submission receipts"];
+}

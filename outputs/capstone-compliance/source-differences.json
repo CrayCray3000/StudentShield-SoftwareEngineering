@@ -1,0 +1,54 @@
+[
+  [
+    114,
+    "To implement a Predictive Risk Classification Architecture (with mDeBERTa-v3, GoEmotions classifier, and FAISS recurrence model) that analyzes text-based data inputs and detects psychological distress indicators to predict the likelihood of risk escalations, apart from the normal risk categories of Low, Medium, High, and facCritical."
+  ],
+  [
+    204,
+    "Multi-Level Severity and Risk Classification in Text-Based Cyberbullying and Distress Detection"
+  ],
+  [
+    205,
+    "According to Malam et al. (2020), traditional binary classification models that merely label text as \"bullying\" or \"non-bullying\" fail to provide actionable context for institutional intervention. In their study, machine learning classifiers were trained to categorize text into four distinct severity levels (None, Low, Medium, and High), demonstrating that multi-level severity scoring allows responders to differentiate routine insults from high-harm threats. Complementing this, EMNLP Findings (2022) and Fodeh et al. (2022) applied natural language processing to stratify text-based psychological distress into four risk tiers (Low, Moderate/Medium, High, and Critical/Severe). Their research highlighted that isolating a dedicated Critical tier is essential for identifying emergency scenarios such as explicit self-harm or severe harassment that necessitate immediate escalation and intervention."
+  ],
+  [
+    206,
+    "StudentShield adopts this exact multi-level risk architecture by mapping analyzed student entries into four structured risk bands: Low (1%–30%), Medium (31%–60%), High (61%–85%), and Critical (86%–100%). By combining sentiment analysis, emotion classification, and heuristic rule triggers, StudentShield ensures that low-level venting is logged appropriately, while entries reaching the Critical threshold automatically trigger real-time SMS and email alerts to parents and guidance counselors for prompt intervention."
+  ],
+  [
+    268,
+    "Machine Learning Analysis Engine (Python): The Machine Learning Analysis Engine is built using Python with FastAPI and incorporates a FAISS (Facebook AI Similarity Search) Vector Store to analyze and track student risk history and behavioral trajectories over time."
+  ],
+  [
+    338,
+    "The diagram highlights a student safety system that calls for three primary user roles: students, administrators (or school counselors), and parents. Besides administrators or counselors having access to a dashboard where they can review complaints, analyze behavior, and settle the problem, students can also make an conditional anonymous complaint through the website or app. Data is kept in a MySQL database, and the back-end handles roles, user authentication, and simple service calls. In addition, it uses NLP/machine learning capabilities for risk assessment purposes and integration with third-party applications like email and SMS notifications. The FastAPI ML Engine, along with its FAISS vector memory, is packaged as a Docker container and deployed directly to Hugging Face Spaces, functioning as an isolated microservice."
+  ],
+  [
+    341,
+    "Based on the Level 0 Data Flow Diagram, StudentShield is seen as the key system that serves as the communication channel between the student, counselor, or super admin, parent, or guardian, and the HuggingFace ML microservice. The students are able to enter their login credentials to log in and submit their venting logs and reports of any bullying they encounter. As input to the system, the output from the system is the session token and confirmation of status as a way of letting the student know that the action was processed. The FastAPI ML Engine, along with its FAISS vector memory, is packaged as a Docker container and deployed directly to Hugging Face Spaces, functioning as an isolated microservice."
+  ],
+  [
+    355,
+    "If a student sends their vent, the system sends it to the HuggingFace ML Service, which generates a classification based on risks associated with the event. Afterward, the event is stored in vent_logs, and a confirmed alert is generated if necessary. Bullying reports are processed in the Process Bullying Reports process and stored in bully_reports. The Monitor Cases and Analytics process permits the counselor and the super admin to view user records, vent records, and reports. All their actions are saved. In the end, notifications are dispatched via the Local SMS Gateway and Gmail SMTP Server. All the messages are stored in sms_logs and email_logs. The FastAPI ML Engine, along with its FAISS vector memory, is packaged as a Docker container and deployed directly to Hugging Face Spaces, functioning as an isolated microservice."
+  ],
+  [
+    546,
+    "High availability is ensured by deploying the core web application on InfinityFree Production Hosting. To maintain absolute reliability and sub-second response times if the Hugging Face Space is sleeping or offline, CodeIgniter 4 implements a native PHP fallback function (localKeywordFallback()) to evaluate student risk status locally without downtime."
+  ],
+  [
+    573,
+    "The machine power will play a significant role in the machine learning features allowing to run models (in the case of the machine learning features this will be Mdeberta, Go Emotions and the FAISS vector memory). As a result, the machine learning service employs a distinct entry and exit points as compared to the web app. The ML Engine is a containerized Python service built with FastAPI, running inside a Docker Container hosted on Hugging Face Spaces. The environment is stable and updates are easier thanks to running the service within a Docker container. Using Python scripts, the deployment is automated, whereby the older versions of the containers are removed to save disk space, other containers are zipped and transferred via SFTP, and the models are pushed into a Docker container via Hugging Face. However, on restarts, regardless of whether they are intentional or not, the API will continue to function. Last but not least, the system is interfaced with the device for the emergency notification purposes. For these regular email alerts which it transmits to parents and counselors via the Gmail SMTP protocol with an app password. If it is an emergency, the webapplication will send messages to the mobile phone, that will also be running an application for SMS-gateway within the local network. This phone will read the numbers out loud, and will text the parents/counsellors right away."
+  ],
+  [
+    670,
+    "EMNLP Findings. (2022). Towards intention understanding in suicidal risk assessment with natural language processing. Findings of the Association for Computational Linguistics: EMNLP 2022, 297. https://aclanthology.org/2022.findings-emnlp.297.pdf"
+  ],
+  [
+    671,
+    "Fodeh, S., & colleagues. (2022). Detection of depression and suicide risk based on text using machine learning and NLP. Frontiers in Psychiatry / PMC, PMC9170939. https://pmc.ncbi.nlm.nih.gov/articles/PMC9170939/"
+  ],
+  [
+    672,
+    "Malam, A., & colleagues. (2020). Cyberbullying severity detection: A machine learning approach. PLOS ONE, 15(10), e0240924. https://pmc.ncbi.nlm.nih.gov/articles/PMC7591033/"
+  ]
+]

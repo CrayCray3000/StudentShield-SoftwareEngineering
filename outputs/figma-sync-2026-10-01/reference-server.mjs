@@ -1,0 +1,2 @@
+import http from 'node:http';import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';const dir=path.dirname(fileURLToPath(import.meta.url));
+http.createServer((req,res)=>{if(req.url!=='/chart-reference.html'){res.writeHead(404);res.end();return;}res.setHeader('Content-Type','text/html');res.end(fs.readFileSync(path.join(dir,'chart-reference.html')));}).listen(8094,'127.0.0.1',()=>console.log('Chart reference: http://127.0.0.1:8094/chart-reference.html'));

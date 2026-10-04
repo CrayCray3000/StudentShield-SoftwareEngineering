@@ -1,0 +1,260 @@
+P0 [No Spacing] TITLE
+P1 [No Spacing] Font: Bold, Times New Roman; Size: 12
+P2 [No Spacing] 
+P3 [No Spacing] Subtitle (If Applicable)
+P4 [No Spacing] Font: Times New Roman; Size: 12
+P5 [No Spacing] 
+P6 [No Spacing] 
+P7 [No Spacing] A Capstone Project
+P8 [No Spacing] presented to the Faculty of the
+P9 [No Spacing] School of Arts, Science and Technology
+P10 [No Spacing] National Teachers College
+P11 [No Spacing] Quiapo, Manila
+P12 [No Spacing] Font: Times New Roman; Size: 12
+P13 [Normal] 
+P14 [No Spacing] In Partial Fulfillment of the
+P15 [No Spacing] Requirements for the Degree of
+P16 [No Spacing] Bachelor of Science in Information Technology
+P17 [No Spacing] Font: Times New Roman; Size: 12
+P18 [No Spacing] 
+P19 [No Spacing] 
+P20 [No Spacing] 
+P21 [No Spacing] 
+P22 [No Spacing] By
+P23 [No Spacing] Proponents
+P24 [No Spacing] Font: Times New Roman; Size: 12
+P25 [No Spacing] 
+P26 [No Spacing] 
+P27 [No Spacing] 
+P28 [No Spacing] 
+P29 [No Spacing] 
+P30 [No Spacing] 
+P31 [No Spacing] 
+P32 [No Spacing] 
+P33 [No Spacing] June 2026
+P34 [No Spacing] Font: Times New Roman; Size: 12
+P35 [No Spacing] 
+P36 [No Spacing] APPROVAL SHEET FOR TITLE DEFENSE
+P37 [No Spacing] Font: Times New Roman; Size: 12
+P38 [No Spacing] 
+P39 [No Spacing] 
+P40 [No Spacing] 
+P41 [No Spacing] 
+P42 [No Spacing] 
+P43 [No Spacing] 
+P44 [No Spacing] 
+P45 [No Spacing] 
+P46 [No Spacing] 
+P47 [No Spacing] 
+P48 [No Spacing] 
+P49 [No Spacing] 
+P50 [No Spacing] 
+P51 [No Spacing] 
+P52 [No Spacing] 
+P53 [No Spacing] 
+P54 [No Spacing] 
+P55 [No Spacing] 
+P56 [No Spacing] 
+P57 [No Spacing] 
+P58 [No Spacing] 
+P59 [No Spacing] 
+P60 [No Spacing] 
+P61 [No Spacing] 
+P62 [No Spacing] 
+P63 [No Spacing] 
+P64 [No Spacing] 
+P65 [No Spacing] 
+P66 [No Spacing] 
+P67 [No Spacing] 
+P68 [No Spacing] 
+P69 [No Spacing] 
+P70 [No Spacing] 
+P71 [No Spacing] 
+P72 [No Spacing] 
+P73 [No Spacing] 
+P74 [No Spacing] 
+P75 [No Spacing] 
+P76 [No Spacing] 
+P77 [No Spacing] 
+P78 [No Spacing] 
+P79 [No Spacing] ABSTRACT
+P80 [No Spacing] Font: Times New Roman; Size: 12
+P81 [No Spacing] 
+P82 [No Spacing] 
+P83 [No Spacing] 
+P84 [No Spacing] 
+P85 [No Spacing] 
+P86 [No Spacing] 
+P87 [No Spacing] 
+P88 [No Spacing] 
+P89 [No Spacing] 
+P90 [No Spacing] 
+P91 [No Spacing] 
+P92 [No Spacing] 
+P93 [No Spacing] 
+P94 [No Spacing] 
+P95 [No Spacing] 
+P96 [No Spacing] 
+P97 [No Spacing] 
+P98 [No Spacing] 
+P99 [No Spacing] 
+P100 [No Spacing] 
+P101 [No Spacing] 
+P102 [No Spacing] 
+P103 [No Spacing] 
+P104 [No Spacing] 
+P105 [No Spacing] 
+P106 [No Spacing] 
+P107 [No Spacing] 
+P108 [No Spacing] 
+P109 [No Spacing] 
+P110 [No Spacing] 
+P111 [No Spacing] 
+P112 [No Spacing] 
+P113 [No Spacing] 
+P114 [No Spacing] 
+P115 [No Spacing] 
+P116 [No Spacing] 
+P117 [No Spacing] ACKNOWLEDGMENT
+P118 [No Spacing] Font: Times New Roman; Size: 12
+P119 [No Spacing] 
+P120 [No Spacing] 
+P121 [No Spacing] 
+P122 [No Spacing] 
+P123 [No Spacing] 
+P124 [No Spacing] 
+P125 [No Spacing] 
+P126 [No Spacing] 
+P127 [No Spacing] 
+P128 [No Spacing] 
+P129 [No Spacing] 
+P130 [No Spacing] 
+P131 [No Spacing] 
+P132 [No Spacing] 
+P133 [No Spacing] 
+P134 [No Spacing] 
+P135 [No Spacing] 
+P136 [No Spacing] 
+P137 [No Spacing] 
+P138 [No Spacing] 
+P139 [No Spacing] 
+P140 [No Spacing] 
+P141 [No Spacing] 
+P142 [No Spacing] 
+P143 [No Spacing] 
+P144 [No Spacing] 
+P145 [No Spacing] 
+P146 [No Spacing] 
+P147 [No Spacing] 
+P148 [No Spacing] 
+P149 [No Spacing] 
+P150 [No Spacing] 
+P151 [No Spacing] 
+P152 [No Spacing] 
+P153 [No Spacing] 
+P154 [No Spacing] 
+P155 [No Spacing] TABLE OF CONTENTS 
+P156 [No Spacing] Title Page ...................................................................................................... i
+P157 [No Spacing] Approval Sheet ............................................................................................ ii
+P158 [No Spacing] Abstract ...................................................................................................... iii
+P159 [No Spacing] Acknowledgments ...................................................................................... iv
+P160 [No Spacing] Table of Contents ......................................................................................... v
+P161 [No Spacing] List of Tables .............................................................................................. vi
+P162 [No Spacing] List of Figures ........................................................................................... vii
+P163 [No Spacing] CHAPTER 1: INTRODUCTION
+P164 [No Spacing] 1.1 Project Context ...................................................................................... 1
+P165 [No Spacing] 1.2 Purpose and Description ........................................................................ 3
+P166 [No Spacing] 1.3 Objectives of the Study ......................................................................... 4
+P167 [No Spacing] 1.3.1 General Objective. .............................................................................. 4
+P168 [No Spacing] 1.3.2 Specific Objectives.............................................................................. 5
+P169 [No Spacing] 1.4 Scope and Delimitations ........................................................................ 6
+P170 [No Spacing] 1.5 Significance of the Study ...................................................................... 8
+P171 [No Spacing] 1.6 Definition of Terms ............................................................................. 10
+P172 [No Spacing] CHAPTER 2: REVIEW OF RELATED LITERATURE AND STUDIES
+P173 [No Spacing] 2.1 Related Literature (Foreign and Local) ................................................ 12
+P174 [No Spacing] 2.2 Related Studies (Foreign and Local) ................................................... 15
+P175 [No Spacing] 2.3 Synthesis of the Reviewed Literature and Studies .............................. 20
+P176 [No Spacing] CHAPTER 3: TECHNICAL BACKGROUND
+P177 [No Spacing] 3.1 Overview of Current Technologies ..................................................... 22
+P178 [No Spacing] 3.2 Evaluation of the Existing System (Manual or Automated) ............... 24
+P179 [No Spacing] 3.3 Technical Feasibility ........................................................................... 26
+P180 [No Spacing] 3.3.1 Hardware Specifications................................................................... 26
+P181 [No Spacing] 3.3.2 Software Specifications..................................................................... 26
+P182 [No Spacing] 3.3.3 Network/Architecture Specifications................................................ 26
+P183 [No Spacing] CHAPTER 4: METHODOLOGY, TESTING, AND EVALUATION
+P184 [No Spacing] 4.1 Software Development Life Cycle (SDLC Model) ............................ 30
+P185 [No Spacing] 4.2 Requirements Analysis ........................................................................ 33
+P186 [No Spacing] 4.3 System Design and Modeling ............................................................. .36
+P187 [No Spacing] 4.3.1 Context Diagram............................................................................... 37
+P188 [No Spacing] 4.3.2 Use Case Diagram............................................................................. 38
+P189 [No Spacing] 4.3.3 Data Flow Diagram (DFD) or Activity Diagram.............................. 37
+P190 [No Spacing] 4.3.4 Entity Relationship Diagram (ERD) ................................................ 38
+P191 [No Spacing] 4.3.5 Data Dictionary................................................................................. 39
+P192 [No Spacing] 4.4 Software Testing Plan ......................................................................... 45
+P193 [No Spacing] 4.4.1 Unit Testing....................................................................................... 46
+P194 [No Spacing] 4.4.2 Integration Testing............................................................................ 47
+P195 [No Spacing] 4.4.3 System Testing.................................................................................. 47
+P196 [No Spacing] 4.5 User Acceptance Testing (UAT) and Evaluation ................................ 48
+P197 [No Spacing] CHAPTER 5: RESULTS AND DISCUSSION
+P198 [No Spacing] 5.1 System Implementation ....................................................................... 50
+P199 [No Spacing] 5.1.1 Main Interface / Dashboard............................................................... 51
+P200 [No Spacing] 5.1.2 Core Modules Features...................................................................... 52
+P201 [No Spacing] 5.2 Evaluation Results (ISO/IEC 25010) .................................................. 55
+P202 [No Spacing] 5.3 Discussion of Findings ......................................................................... 60
+P203 [No Spacing] CONCLUSIONS AND RECOMMENDATIONS
+P204 [No Spacing] 6.1 Summary of Findings ........................................................................... 65
+P205 [No Spacing] 6.2 Conclusions ......................................................................................... 67
+P206 [No Spacing] 6.3 Recommendations ............................................................................... 68
+P207 [No Spacing] BACK MATTERS
+P208 [No Spacing] References (APA Format) ......................................................................... 70
+P209 [No Spacing] Appendices................................................................................................. 71
+P210 [No Spacing] Appendix A: Relevant Source Code Snippets............................................ 72
+P211 [No Spacing] Appendix B: User Manual.......................................................................... 73
+P212 [No Spacing] Appendix C: Survey Instruments / Questionnaires..................................... 74
+P213 [No Spacing] Appendix D: Grammarian’s Certificate / Plagiarism Report...................... 75
+P214 [No Spacing] Curriculum Vitae........................................................................................ 76
+P215 [No Spacing] 
+P216 [Normal] 
+P217 [Normal] 
+P218 [Normal] 
+P219 [Normal] 
+P220 [Normal] 
+P221 [Normal] 
+P222 [Normal] 
+P223 [Normal] 
+P224 [Normal] 
+P225 [Normal] 
+P226 [Normal] 
+P227 [Normal] 
+P228 [Normal] 
+P229 [Normal] 
+P230 [Normal] 
+P231 [Normal] 
+P232 [Normal] II. DETAILED CONTENT DESCRIPTION
+P233 [Normal] Chapter 1: The "Why"
+P234 [Normal] Project Context: Describe the current situation of the organization. What is the "pain point"?
+P235 [Normal] Objectives: The General Objective is the "what" (To develop a system...). Specific Objectives are the "how" (To design, To implement, To test).
+P236 [Normal] Scope & Delimitation: Be very specific. If you aren't doing SMS notifications, put it in Delimitation so the panel won't ask for it.
+P237 [Normal] Chapter 2: The "Foundation"
+P238 [Normal] RRL/RRS: Don't just copy-paste. Explain how each study relates to your project.
+P239 [Normal] Synthesis: Summarize the gap. "Existing systems lack X, which our system provides."
+P240 [Normal] Chapter 3: The "Tech Stack"
+P241 [Normal] Hardware/Software Specs: List the minimum and recommended requirements to run your app.
+P242 [Normal] Chapter 4: The "How" (Most Important for IT)
+P243 [Normal] SDLC: Most students use Agile or Iterative. Explain your sprints/phases.
+P244 [Normal] Diagrams: These must be technically accurate. Your ERD must match your actual database tables.
+P245 [Normal] Evaluation Method: Explain how you used the ISO/IEC 25010 standard to let users rate your software.
+P246 [Normal] Chapter 5: The "Output"
+P247 [Normal] Screenshots: Include clear screenshots of your best features.
+P248 [Normal] Data Tables: Present the mean scores of your surveys (Usability, Security, Reliability).
+P249 [Normal] Chapter 6: The "Wrap-up"
+P250 [Normal] Conclusion: Must directly answer your Objectives in Chapter 1. If you had 5 objectives, you should have 5 corresponding conclusions.
+SECTIONS
+<w:sectPr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex" xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex" xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex" xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex" xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex" xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex" xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink" xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" w:rsidR="007B383E" w:rsidRPr="002D7D9A" w:rsidSect="00AB6934">
+  <w:headerReference w:type="default" r:id="rId8"/>
+  <w:footerReference w:type="default" r:id="rId9"/>
+  <w:pgSz w:w="12240" w:h="15840"/>
+  <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="2835" w:header="850" w:footer="0" w:gutter="0"/>
+  <w:cols w:space="708"/>
+  <w:docGrid w:linePitch="360"/>
+</w:sectPr>

@@ -56,29 +56,35 @@
         @media (max-width: 1024px) { html { font-size: 13px; } }
         @media (max-width: 768px) { html { font-size: 16px; } }
 
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-admin {
-            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
+            background:
+                radial-gradient(ellipse at 85% 85%, rgba(0,0,0,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 10%, rgba(217,170,46,0.08) 0%, transparent 45%),
+                linear-gradient(160deg, #128F42 0%, #0E7C38 55%, #09682D 100%);
         }
 
         .bg-grid {
             background-size: 40px 40px;
             background-image:
-                linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+                linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px);
             mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
             -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
             position: absolute; inset: 0; z-index: 0;
         }
 
         .admin-card {
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.10) !important;
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            box-shadow:
+                0 32px 64px -16px rgba(0, 0, 0, 0.45),
+                0 0 0 1px rgba(255, 255, 255, 0.10) inset,
+                0 1px 0 rgba(255, 255, 255, 0.25) inset !important;
         }
 
         .otp-input {
@@ -126,7 +132,7 @@
         }
     </style>
 </head>
-<body class="school-auth-page bg-admin min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+<body class="bg-admin min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
 
 <div class="bg-grid"></div>
 <div class="glow-blob bg-gold w-[500px] h-[500px] top-[-20%] right-[-10%]"></div>

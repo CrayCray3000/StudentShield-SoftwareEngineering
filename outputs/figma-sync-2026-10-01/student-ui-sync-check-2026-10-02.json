@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-02",
+  "fileKey": "jsz5S5cyXNPcuEYMgl3ATb",
+  "scope": "Existing student Figma UI only",
+  "screens": [
+    {
+      "id": "771:696",
+      "name": "Student Login",
+      "overflow": "NONE",
+      "cardHeight": 858.5
+    },
+    {
+      "id": "771:698",
+      "name": "Student Registration",
+      "overflow": "VERTICAL",
+      "viewportHeight": 945,
+      "contentHeight": 1063
+    },
+    {
+      "id": "771:690",
+      "name": "Safe Space",
+      "viewportId": "1044:932",
+      "viewportHeight": 945,
+      "contentHeight": 1227
+    },
+    {
+      "id": "771:694",
+      "name": "Incident Report",
+      "viewportId": "1052:976",
+      "viewportHeight": 945,
+      "contentHeight": 1262.2
+    }
+  ],
+  "verified": [
+    "Rendered login and registration styles follow current local source",
+    "Full native vent and report renders have no overlapping text or controls",
+    "Only small school crests use image fills",
+    "Inter and Outfit fonts",
+    "Logo returns to student dashboard",
+    "Back uses history",
+    "Safe Space and Incident Report cross-navigation",
+    "Sign Out resets login selection state and returns to student login",
+    "Stored bystander action reveals victim name and changes aggressor width to 347",
+    "Stored victim action hides victim name and restores aggressor width to 710",
+    "Stored Request Session and Cancel session request state transitions",
+    "Temporary full-content proof frames deleted"
+  ],
+  "limitations": [
+    "Figma Preview click-through not verified because browser requires sign-in",
+    "No backend form submission, upload or draft persistence in Figma",
+    "Registration field/submit/terms interactions not completed in this appearance pass",
+    "No new mobile frames"
+  ],
+  "websiteCodeChanged": false,
+  "databaseChanged": false
+}

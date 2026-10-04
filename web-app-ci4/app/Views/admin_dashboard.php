@@ -1839,6 +1839,67 @@
     </form>
     <?= view('reports/modals/student_profile') ?>
     <?= view('partials/session_idle_modal') ?>
+
+    <!-- ── Floating Scroll-to-Top Button ── -->
+    <button id="scrollTopBtn" title="Back to top"
+        aria-label="Scroll back to top"
+        style="
+            position: fixed;
+            bottom: 28px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #D9AA2E 0%, #B5881D 100%);
+            color: #083318;
+            box-shadow: 0 6px 20px -4px rgba(0,0,0,0.35), 0 0 0 3px rgba(217,170,46,0.20);
+            opacity: 0;
+            transform: translateY(16px) scale(0.85);
+            pointer-events: none;
+            transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+        ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"/>
+        </svg>
+    </button>
+    <script>
+    (function () {
+        var btn = document.getElementById('scrollTopBtn');
+        var SHOW_AT = 400;
+        function update() {
+            var scrolled = window.scrollY || document.documentElement.scrollTop;
+            if (scrolled > SHOW_AT) {
+                btn.style.opacity = '1';
+                btn.style.transform = 'translateY(0) scale(1)';
+                btn.style.pointerEvents = 'auto';
+            } else {
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(16px) scale(0.85)';
+                btn.style.pointerEvents = 'none';
+            }
+        }
+        window.addEventListener('scroll', update, { passive: true });
+        btn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        btn.addEventListener('mouseenter', function () {
+            this.style.boxShadow = '0 10px 28px -4px rgba(0,0,0,0.45), 0 0 0 4px rgba(217,170,46,0.30)';
+            this.style.transform = 'translateY(-2px) scale(1.07)';
+        });
+        btn.addEventListener('mouseleave', function () {
+            this.style.boxShadow = '0 6px 20px -4px rgba(0,0,0,0.35), 0 0 0 3px rgba(217,170,46,0.20)';
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    })();
+    </script>
 </body>
 </html>
 

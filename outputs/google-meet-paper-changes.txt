@@ -1,0 +1,40 @@
+STUDENTSHIELD PAPER UPDATES — GOOGLE MEET
+
+Replace references to “Jitsi Meet,” “Jitsi,” “room name,” and “Jitsi link” with “Google Meet,” “Google Meet session,” and “Google Meet URL,” unless a historical comparison is explicitly intended.
+
+1. Scope and Delimitations — replace the meeting statement with:
+
+The system includes one-to-one online counseling sessions between an authenticated student and an assigned counselor. The counselor creates a new Google Meet session, configures Google Meet admission as Restricted with Host must join enabled, and publishes the session URL to that student through StudentShield. The student and assigned counselor select StudentShield’s per-session Join Google Meet control, which redirects them to Google Meet in a new browser tab. This module stores the session URL, assigned student, assigned counselor, status, and creation time; the video conference itself is provided by Google Meet.
+
+2. System Description / Core Features — use:
+
+StudentShield supports counselor-initiated Google Meet sessions. A student may request a session, and a counselor may publish one newly created Google Meet URL to that student. StudentShield exposes only the assigned session through the authenticated student or counselor account, then redirects the participant to Google Meet; it records requested, active, cancelled, and ended states.
+
+3. Context Diagram — keep StudentShield as process 0. Add the actual meeting information exchanged with its users:
+
+Counselor → StudentShield: new Google Meet URL and host/access confirmation
+StudentShield → Student: assigned-session join control
+StudentShield → Counselor: assigned-session join control and meeting status
+Student → StudentShield: session request or cancellation; assigned-session access request
+
+Do not draw arrows directly between external entities in the context DFD. The implementation does not call a Google API or receive attendance or video data. Show the browser redirect and external Google Meet call in the architecture or workflow diagram; do not invent an API exchange for the context diagram. Do not show one permanent school-wide link.
+
+4. Requirements / Security — add:
+
+The counselor must create a separate Google Meet URL for each counseling session. StudentShield validates the URL format and rejects links already stored in its meeting history. It checks the authenticated user's role and session assignment before redirecting; ended sessions and sessions at least two hours old cannot be opened through StudentShield. This does not expire Google's URL or disconnect a running call. The app cannot verify whether a correctly formatted URL really exists or was used outside StudentShield. Google Meet admission must be configured separately using a school Workspace account: invite only the intended student, choose Restricted access, disable uninvited users' requests to join, and enable Host must join. These settings are confirmed manually, not checked by StudentShield. Restricted access is unavailable on consumer accounts. Do not publish if the required controls are unavailable.
+
+5. Workflow — use:
+
+The student requests a counseling session. The counselor creates a new Google Meet, configures its admission controls, pastes the URL into the student’s case, confirms the settings, and publishes it. StudentShield stores the URL against that student and counselor. Both participants select Join Google Meet. The counselor ends the StudentShield session when the consultation is finished and also ends the call in Google Meet.
+
+6. Database / ERD — label virtual_meetings.meet_link as a Google Meet URL reserved for one counseling session. Retain student_id, counselor_id, status, and created_at. Do not describe the field as a Jitsi room name. The current schema does not store Google Calendar event IDs, Google Meet attendance, recordings, transcripts, or a separate participant list.
+
+7. Testing limitations — do not claim that Google Meet link creation, admission settings, participant identity, or call delivery were automatically verified by StudentShield. The current implementation requires the counselor to create the meeting in Google and confirm the settings before publication. Formal Google Workspace API automation is not implemented.
+
+8. Participant-count clarification — StudentShield assigns each session to one student and the staff member who publishes it (counselor or administrator). It does not enforce exactly two connected devices in Google Meet. A forwarded Google URL bypasses the StudentShield redirect. The host must configure Restricted admission, invite only the intended student, disable uninvited requests to join, and require the host to join first. Restricted access alone still allows outsiders to request entry. StudentShield does not verify Google account identity, attendance, or admission settings.
+
+9. Figure caption / explanation — replace “Jitsi Meet” with “Google Meet” and state that the diagram shows a per-session link handoff. Explain that the application is a controlled access layer and record of assignment; Google Meet is the external conferencing provider.
+
+Verification status: These are local implementation descriptions, not evidence of production deployment or completed user acceptance testing. Unit tests use an in-memory database double. Live Google calls, the school's Workspace settings, and production MySQL advisory-lock support still require environment verification. Do not put local developer checks in the paper as completed experimental results.
+
+Official Google guidance: https://support.google.com/a/users/answer/11989526?hl=en (reviewed 20 September 2026).

@@ -1,0 +1,274 @@
+[
+  {
+    "index": 0,
+    "text": "StudentShield: Machine Learning-Based Emotional Distress Detection and Bullying Reporting System with Automated Parental Alerts for Junior High School Students at Saint Vincent Blessed School of Manila"
+  },
+  {
+    "index": 59,
+    "text": "APPROVAL SHEET FOR PRE - ORAL DEFENSE"
+  },
+  {
+    "index": 70,
+    "text": "has been approved by the REVIEW COMMITTEE as partial fulfillment of the requirements for the subject Capstone Project."
+  },
+  {
+    "index": 76,
+    "text": "    Panelist 1\t\t\t\t\t\t\t      \t Panelist 2\t"
+  },
+  {
+    "index": 77,
+    "text": "                 Panelist\t\t\t\t\t\t\t           \t   Panelist"
+  },
+  {
+    "index": 78,
+    "text": "Panelist"
+  },
+  {
+    "index": 79,
+    "text": "Panelist Chair"
+  },
+  {
+    "index": 82,
+    "text": "Accepted and approved by:"
+  },
+  {
+    "index": 88,
+    "text": "TABLE OF CONTENTS"
+  },
+  {
+    "index": 91,
+    "text": "LIST OF FIGURES"
+  },
+  {
+    "index": 94,
+    "text": "LIST OF TABLES"
+  },
+  {
+    "index": 95,
+    "text": "CHAPTER I. INTRODUCTION"
+  },
+  {
+    "index": 99,
+    "text": "Project Purpose   "
+  },
+  {
+    "index": 109,
+    "text": "Objective of the Study"
+  },
+  {
+    "index": 110,
+    "text": "General Objective of the Study"
+  },
+  {
+    "index": 112,
+    "text": "Specific Objectives of the Study"
+  },
+  {
+    "index": 119,
+    "text": "Significance of the Study"
+  },
+  {
+    "index": 133,
+    "text": "Scope and Delimitations of the Study"
+  },
+  {
+    "index": 134,
+    "text": "Scope"
+  },
+  {
+    "index": 142,
+    "text": "Limitations"
+  },
+  {
+    "index": 148,
+    "text": "Review of Related Literature"
+  },
+  {
+    "index": 203,
+    "text": "Review of Related Studies"
+  },
+  {
+    "index": 263,
+    "text": "Technical Background"
+  },
+  {
+    "index": 272,
+    "text": "Conceptual Framework"
+  },
+  {
+    "index": 298,
+    "text": "Definition of Terms"
+  },
+  {
+    "index": 316,
+    "text": "Figure 2: StudentShield Metrics"
+  },
+  {
+    "index": 318,
+    "text": "Final Score Output Bands"
+  },
+  {
+    "index": 319,
+    "text": "LOW: 1% - 30%"
+  },
+  {
+    "index": 320,
+    "text": "MEDIUM: 31% - 60%"
+  },
+  {
+    "index": 321,
+    "text": "HIGH: 61% - 85%"
+  },
+  {
+    "index": 322,
+    "text": "CRITICAL: 86% - 100%"
+  },
+  {
+    "index": 325,
+    "text": "CHAPTER II. METHODOLOGY"
+  },
+  {
+    "index": 326,
+    "text": "Design of Software, System, Product or Process"
+  },
+  {
+    "index": 328,
+    "text": "Software Architecture"
+  },
+  {
+    "index": 337,
+    "text": "Figure 2. Software Architecture "
+  },
+  {
+    "index": 339,
+    "text": "Data Flow Diagram"
+  },
+  {
+    "index": 340,
+    "text": "Figure 3. DFD Level 0 "
+  },
+  {
+    "index": 352,
+    "text": "Figure 4. DFD Level 1"
+  },
+  {
+    "index": 356,
+    "text": "Software Development Life Cycle"
+  },
+  {
+    "index": 358,
+    "text": "Figure 5. Software Development Life Cycle - Agile Model"
+  },
+  {
+    "index": 384,
+    "text": "System Flowchart"
+  },
+  {
+    "index": 386,
+    "text": "Figure 6. Super Admin Flowchart of StudentShield System"
+  },
+  {
+    "index": 408,
+    "text": "Entity Relationship Diagram"
+  },
+  {
+    "index": 410,
+    "text": "Figure 9. Entity Relationship Diagram"
+  },
+  {
+    "index": 421,
+    "text": "Use Case Diagram"
+  },
+  {
+    "index": 422,
+    "text": "Figure 10. Use Case Diagram"
+  },
+  {
+    "index": 438,
+    "text": "Requirements Analysis"
+  },
+  {
+    "index": 439,
+    "text": "1. Software Requirements"
+  },
+  {
+    "index": 461,
+    "text": "2. Hardware Requirements"
+  },
+  {
+    "index": 462,
+    "text": "This is the physical resource that will be required in developing, testing, and deploying the application."
+  },
+  {
+    "index": 477,
+    "text": "Requirements Documentation"
+  },
+  {
+    "index": 560,
+    "text": "Development and Pre-Testing procedures"
+  },
+  {
+    "index": 562,
+    "text": "Table 1: Test Case Scenario for Authentication Module"
+  },
+  {
+    "index": 563,
+    "text": "Table 2: Test Case Scenario for Vent Log Module"
+  },
+  {
+    "index": 564,
+    "text": "Table 3: Test Case Scenario for Bully Report Module"
+  },
+  {
+    "index": 565,
+    "text": "Table 4: Test Case Scenario for Dashboard and Case Management Module"
+  },
+  {
+    "index": 566,
+    "text": "Table 5: Test Case Scenario for User Management Module"
+  },
+  {
+    "index": 567,
+    "text": "Table 6: Test Case Scenario for Audit Log Module"
+  },
+  {
+    "index": 569,
+    "text": "Implementation Plan (Infrastructure/ Deployment)"
+  },
+  {
+    "index": 570,
+    "text": "Figure 11. Implementation Plan using Gantt Chart"
+  },
+  {
+    "index": 575,
+    "text": "Statistical Treatment of Data"
+  },
+  {
+    "index": 591,
+    "text": "Statistical Treatment of Data"
+  },
+  {
+    "index": 609,
+    "text": "Table 7: Mean Interpretation"
+  },
+  {
+    "index": 620,
+    "text": "Table 8: Standard Deviation Interpretation"
+  },
+  {
+    "index": 638,
+    "text": "REFERENCES"
+  },
+  {
+    "index": 670,
+    "text": "EMNLP Findings. (2022). Towards intention understanding in suicidal risk assessment with natural language processing. Findings of the Association for Computational Linguistics: EMNLP 2022, 297. https://aclanthology.org/2022.findings-emnlp.297.pdf"
+  },
+  {
+    "index": 671,
+    "text": "Fodeh, S., & colleagues. (2022). Detection of depression and suicide risk based on text using machine learning and NLP. Frontiers in Psychiatry / PMC, PMC9170939. https://pmc.ncbi.nlm.nih.gov/articles/PMC9170939/"
+  },
+  {
+    "index": 672,
+    "text": "Malam, A., & colleagues. (2020). Cyberbullying severity detection: A machine learning approach. PLOS ONE, 15(10), e0240924. https://pmc.ncbi.nlm.nih.gov/articles/PMC7591033/"
+  }
+]

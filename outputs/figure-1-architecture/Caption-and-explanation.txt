@@ -1,0 +1,3 @@
+Figure 1. Software Architecture of StudentShield
+
+Figure 1 presents the architecture of StudentShield. Students, counselors, and super administrators access the CodeIgniter 4 web application through a browser. The application stores records in MySQL and sends current vent text and recent risk history to the FastAPI screening service on Hugging Face Spaces. Screening results support counselor review, while configured SMS and SMTP services handle conditional notifications. Parents and guardians receive eligible alerts without a login portal. For online counseling, authorized staff publish a new Google Meet link for each session, and StudentShield directs the assigned participants to Google Meet.

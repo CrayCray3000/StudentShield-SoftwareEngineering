@@ -1,0 +1,438 @@
+P0 [Normal] STUDENTSHIELD: MACHINE LEARNING-BASED EMOTIONAL DISTRESS DETECTION AND BULLYING REPORTING SYSTEM WITH AUTOMATED PARENTAL ALERTS FOR JUNIOR HIGH SCHOOL STUDENTS AT SAINT VINCENT BLESSED SCHOOL OF MANILA
+P1 [Normal] A Capstone Project
+P2 [Normal] presented to the Faculty of the
+P3 [Normal] School of Arts, Sciences and Technology
+P4 [Normal] National Teachers College
+P5 [Normal] Quiapo, Manila
+P6 [Normal] In Partial Fulfillment of the
+P7 [Normal] Requirements for the Degree of
+P8 [Normal] Bachelor of Science in Information Technology
+P9 [Normal] By
+P10 [Normal] Enriquez, Justin Altamia
+P11 [Normal] Melgarejo, John Carlo
+P12 [Normal] Meneses, Vince Carl Michael
+P13 [Normal] Ramos, John Carlo
+P14 [Normal] Urayanza, Aaron Paul
+P15 [Normal] June 2026
+P16 [Normal] 
+P17 [Normal] APPROVAL SHEET FOR TITLE DEFENSE
+P18 [Normal] This Capstone Project entitled “StudentShield: Machine Learning-Based Emotional Distress Detection and Bullying Reporting System with Automated Parental Alerts for Junior High School Students at Saint Vincent Blessed School of Manila” prepared and submitted by Enriquez, Justin Altamia; Melgarejo, John Carlo; Meneses, Vince Carl Michael; Ramos, John Carlo; and Urayanza, Aaron Paul, in partial fulfillment of the requirements for the degree Bachelor of Science in Information Technology, has been examined and is hereby recommended for approval and acceptance.
+P19 [Normal] MR. EDWARD JAMES V. GRAGEDA
+P20 [Normal] Capstone Project Adviser
+P21 [Normal] Approved by the Committee on Title Defense with a grade of PASSED.
+P22 [Normal] 
+P23 [Normal] Accepted and approved in partial fulfillment of the requirements for the degree of Bachelor of Science in Information Technology.
+P24 [Normal] LIEZEL A. AGUILAR, LPT, MAEd
+P25 [Normal] Dean, School of Arts, Sciences and Technology
+P26 [Normal] 
+P27 [Normal] ABSTRACT
+P28 [Normal] Adolescents in secondary schools face escalating psychological pressures, social anxieties, and incidents of interpersonal intimidation. However, existing institutional mechanisms in Philippine basic education institutions predominantly rely on reactive, face-to-face reporting. At Saint Vincent Blessed School of Manila (SVBSM), junior high school students frequently avoid disclosing emotional distress and bullying incidents due to peer stigma, fear of retaliation, and perceived lack of confidentiality. To bridge this critical safety gap, this study designed, developed, and evaluated StudentShield, a web-based mental health and anti-bullying reporting platform integrated with fine-tuned natural language processing (NLP) models and automated multi-channel parental alerts.
+P29 [Normal] The system architecture utilizes a distributed two-cloud microservice design: a secure web application built with PHP 8.1 and CodeIgniter 4 utilizing application-level AES-256-CTR symmetric encryption for all student vent submissions, interfaced with an asynchronous Machine Learning microservice built with Python 3.10 and FastAPI. Text sentiment and risk screening employ a dual-model ensemble comprising SamLowe/roberta-base-go_emotions (28 emotion dimensions) and ashlogg/student-shield-mdeberta, a localized multilingual model fine-tuned on Philippine English and Taglish crisis lexicons. To guarantee zero service failure, a dual-layer triage algorithm executes a high-speed local keyword regex fallback if external microservice connectivity is interrupted. Critical crisis tiers (86%–100%) trigger instantaneous counselor dashboard escalation and Brevo SMTP/SMS automated parental notifications, while moderate risks (61%–85%) trigger counselor-only triage to prevent alert fatigue.
+P30 [Normal] Evaluation of StudentShield was conducted in accordance with the ISO/IEC 25010 Software Product Quality Standard across eight quality characteristics by thirty (30) qualified respondents comprising students, guidance counselors, school administrators, and IT professionals. The overall grand mean was 4.78 (Standard Deviation = 0.25), corresponding to a verbal interpretation of 'Very Highly Acceptable'. The highest ratings were achieved in Security (4.90) and Usability (4.88). The findings demonstrate that StudentShield successfully provides a secure, proactive, and clinically safeguarded digital haven that mitigates underreporting, accelerates guidance intervention, and fosters a protected educational environment for SVBSM.
+P31 [Normal] Keywords: StudentShield, Emotional Distress Detection, Anti-Bullying, Machine Learning, mDeBERTa, RoBERTa, CodeIgniter 4, FastAPI, ISO/IEC 25010, Taglish NLP.
+P32 [Normal] 
+P33 [Normal] ACKNOWLEDGMENT
+P34 [Normal] The researchers wish to extend their profound gratitude, deepest appreciation, and sincere acknowledgment to all the individuals whose unwavering guidance, encouragement, and technical support made the completion of this Capstone Project possible:
+P35 [Normal] •  To the Almighty God, for granting the researchers wisdom, perseverance, good health, peace of mind, and the intellectual strength required to navigate every challenge encountered throughout this research journey.
+P36 [Normal] •  To Saint Vincent Blessed School of Manila (SVBSM), its administrative leadership, faculty members, guidance counselors, and junior high school students, for their generous cooperation, operational transparency, and active participation during data gathering, requirements modeling, and system evaluation.
+P37 [Normal] •  To Mr. Edward James V. Grageda, our Capstone Project Adviser, for his invaluable technical guidance, meticulous constructive criticism, patience, and expert insights that elevated the architectural rigor and clinical integrity of this study.
+P38 [Normal] •  To the Honorable Members of the Panel of Examiners, for their critical evaluations, scholarly recommendations, and profound observations during project defense hearings, which significantly refined the quality of this manuscript.
+P39 [Normal] •  To the Faculty and Staff of the School of Arts, Sciences and Technology at the National Teachers College, for imparting the foundational academic principles, ethical methodologies, and programming disciplines that formed our technical competencies.
+P40 [Normal] •  To our Beloved Parents and Families, for their unconditional love, moral encouragement, emotional sanctuary, and financial sacrifices throughout our academic tenure.
+P41 [Normal] The Proponents
+P42 [Normal] 
+P43 [Normal] TABLE OF CONTENTS
+P44 [Normal] 
+P45 [Normal] 
+P46 [Normal] LIST OF TABLES
+P47 [Normal] 
+P48 [Normal] LIST OF FIGURES
+P49 [Normal] 
+P50 [Normal] 
+P51 [Normal] CHAPTER 1
+P52 [Normal] INTRODUCTION
+P53 [Normal] 1.1 Project Context
+P54 [Normal] Today’s secondary school students grow up in an interconnected society heavily governed by digital communications, social networks, and mobile messaging. While rapid technological connectivity expands access to academic resources, it simultaneously creates complex vulnerabilities in adolescent mental health and interpersonal dynamics. Among junior high school students, emotional distress—compounded by bullying, peer exclusion, cyber harassment, and academic anxiety—has escalated sharply in recent years. In urban educational institutions across the Philippines, students routinely experience psychological distress that directly impedes their cognitive development, academic performance, and personal well-being.
+P55 [Normal] At Saint Vincent Blessed School of Manila (SVBSM), a prominent private institution delivering basic education in the City of Manila, the Guidance and Counseling Office serves as the primary frontline support for student welfare. However, the existing counseling infrastructure relies almost exclusively on conventional, face-to-face reporting and physical intake slips. Under this manual paradigm, students experiencing distress or enduring intimidation must physically approach guidance offices or report incidents directly to homeroom teachers. Field observations and stakeholder interviews conducted with SVBSM guidance counselors revealed severe operational bottlenecks: students persistently refrain from reporting because of fear of retaliation by aggressive peers, deep-rooted social stigma surrounding mental distress, lack of guaranteed anonymity, and fear of being labeled as snitches.
+P56 [Normal] Furthermore, guidance staff are hindered by delayed discovery. Bullying incidents and psychological crises are typically reported only after physical escalation occurs or when academic performance has already deteriorated irreversibly. The absence of a continuous, confidential, and automated screening mechanism prevents counselors from instituting timely, proactive interventions. To modernize and secure this environment, the proponents designed StudentShield—an intelligent, cloud-based crisis screening and incident management system tailored specifically to the cultural, linguistic, and operational realities of SVBSM Junior High School.
+P57 [Normal] 1.2 Purpose and Description
+P58 [Normal] The primary purpose of StudentShield is to establish a secure, privacy-centric, and automated safety net that empowers junior high school students at SVBSM to express psychological distress safely while enabling rapid, data-informed triage by institutional authorities. StudentShield bridges the gap between students, guidance counselors, and parents by providing proactive detection tools rather than relying on delayed reactive reporting.
+P59 [Normal] StudentShield is structured around three core functional pillars:
+P60 [Normal] •  Safe Space Venting Module: An encrypted journal interface where authenticated students express feelings, emotional outbursts, and personal struggles. To uphold strict data privacy, student submissions are encrypted at rest using AES-256-CTR encryption, ensuring that raw reflections remain confidential.
+P61 [Normal] •  Confidential Bullying Reporting Module: A structured incident portal enabling students to submit detailed reports regarding physical, verbal, social, or cyberbullying. Reports support anonymous filing, timestamping, location logging, narrative descriptions, and optional media attachments (photographs or screenshots) to serve as verifiable evidence.
+P62 [Normal] •  Machine Learning Triage & Automated Alerting Engine: An asynchronous microservice pipeline that screens submitted text using fine-tuned transformer models. The system extracts 28 emotion dimensions via RoBERTa and calculates a normalized crisis severity index via a multilingual mDeBERTa-v3 model trained on Philippine Taglish distress expressions. Based on clinical guardrails, the engine executes risk-tiered notifications: critical emergency alerts are routed instantly to counselors and parents via automated SMS/email, while moderate concerns are triaged confidentially to guidance staff.
+P63 [Normal] 1.3 Objectives of the Study
+P64 [Normal] 1.3.1 General Objective
+P65 [Normal] The general objective of this study is to design, develop, implement, and evaluate StudentShield: a machine learning-based emotional distress detection and bullying reporting system with automated parental alerts for Junior High School students at Saint Vincent Blessed School of Manila.
+P66 [Normal] 1.3.2 Specific Objectives
+P67 [Normal] To realize the general objective, the proponents established the following specific objectives:
+P68 [Normal] •  Specific Objective 1: To design and develop a web-based student portal featuring an encrypted 'Safe Space' venting journal and a confidential bullying incident reporting module with evidence attachment capabilities.
+P69 [Normal] •  Specific Objective 2: To implement an intelligent Natural Language Processing (NLP) inference pipeline utilizing fine-tuned transformer models (mDeBERTa-v3 and RoBERTa GoEmotions) backed by a local keyword regex fallback algorithm to evaluate crisis severity in English and Taglish text.
+P70 [Normal] •  Specific Objective 3: To develop an administrative and counseling case management dashboard featuring real-time risk heatmaps, severity badges, longitudinal mood timelines, and auditable counseling intervention records.
+P71 [Normal] •  Specific Objective 4: To integrate an automated multi-channel notification engine that dispatches immediate, tiered alerts to guidance counselors and student parents/guardians via Brevo SMTP and SMS gateways.
+P72 [Normal] •  Specific Objective 5: To evaluate the operational acceptability and software quality of StudentShield in accordance with the ISO/IEC 25010 Software Product Quality Standard across functional suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, and portability.
+P73 [Normal] 1.4 Scope and Delimitations
+P74 [Normal] The operational scope and boundaries of StudentShield are clearly defined as follows:
+P75 [Normal] •  Scope - Target Users: The system serves authenticated Junior High School students (Grades 7 through 10) enrolled at Saint Vincent Blessed School of Manila, registered guidance counselors, homeroom advisers, verified parents/guardians, and system administrators.
+P76 [Normal] •  Scope - Functional Capabilities: Includes web authentication with 2FA email OTP for counselors and administrators, encrypted text venting, anonymous/named bullying incident reporting, multi-label emotion classification (28 emotions), crisis risk triage (Low, Medium, High, Critical), automated counselor dashboard escalation, and automated Brevo email/SMS alerting.
+P77 [Normal] •  Delimitation - Diagnostic Limitation: StudentShield is strictly a clinical decision-support and screening tool; it does NOT deliver clinical psychiatric diagnoses, formal psychotherapy, or automated medical prescriptions. Final counseling decisions remain under licensed human counselor purview.
+P78 [Normal] •  Delimitation - Input Modality: Risk analysis is restricted to text input (English, Tagalog, and Taglish expressions). The system does not perform real-time voice acoustic analysis, video computer vision analysis, or physical biometric monitoring.
+P79 [Normal] •  Delimitation - Network Dependency: StudentShield operates as a cloud-hosted web application; active internet connectivity is necessary for client access and synchronization between the web tier and machine learning microservice.
+P80 [Normal] 1.5 Significance of the Study
+P81 [Normal] This Capstone Project provides significant tangible value to diverse institutional and societal stakeholders:
+P82 [Normal] •  Significance to Students: Provides an accessible, psychologically safe, and confidential digital haven where students can report harassment and release pent-up anxiety without fearing social humiliation, peer retaliation, or breach of trust.
+P83 [Normal] •  Significance to Guidance Counselors: Eliminates administrative bottlenecks associated with paper records, reduces case response latencies from weeks to minutes, and equips counselors with objective, ML-derived sentiment trends to prioritize critical student interventions.
+P84 [Normal] •  Significance to Parents and Guardians: Provides automated, transparent awareness regarding acute crisis situations involving their children, bridging communication voids and fostering timely home-based emotional support.
+P85 [Normal] •  Significance to School Administrators: Equips SVBSM leadership with institutional analytics and audit-compliant logs demonstrating active compliance with the Anti-Bullying Act of 2013 (RA 10627) and DepEd Child Protection Policies.
+P86 [Normal] •  Significance to IT and AI Researchers: Serves as an empirical reference architecture illustrating the successful deployment of localized transformer models (mDeBERTa) and dual-layer fallback mechanics in resource-constrained basic education settings.
+P87 [Normal] 1.6 Definition of Terms
+P88 [Normal] For greater clarity and technical precision, key conceptual and operational terms are defined:
+P89 [Normal] •  StudentShield: The integrated web-based platform developed in this study to screen student emotional distress and manage bullying reports for Saint Vincent Blessed School of Manila.
+P90 [Normal] •  Emotional Distress: A state of severe emotional suffering characterized by symptoms of depression, intense anxiety, self-harm ideation, hopelessness, or grief, evaluated by the ML inference engine.
+P91 [Normal] •  Bullying: Repeated aggressive behavior intended to hurt or intimidate another individual, categorized under verbal, physical, social, or cyber intimidation pursuant to RA 10627.
+P92 [Normal] •  mDeBERTa-v3: Multilingual Disentangled Attention with Bidirectional Transformers; a deep learning architecture fine-tuned in this study to classify crisis severity in mixed English-Tagalog (Taglish) student prose.
+P93 [Normal] •  RoBERTa GoEmotions: A 28-class transformer emotion model employed to detect fine-grained affective states (e.g., sadness, anger, fear, remorse, joy) within student journal entries.
+P94 [Normal] •  Dual-Layer Triage: The safety-critical screening workflow wherein high-level ML transformer inference is backed up by an instantaneous, in-process local regex pattern matcher in PHP to guarantee uninterrupted risk classification.
+P95 [Normal] •  AES-256-CTR: Advanced Encryption Standard in Counter mode; the symmetric cipher employed by the web application to encrypt student journal reflections at rest.
+P96 [Normal] •  ISO/IEC 25010: An international standard defining a comprehensive software product quality evaluation model comprising eight characteristics: Functional Suitability, Performance Efficiency, Compatibility, Usability, Reliability, Security, Maintainability, and Portability.
+P97 [Normal] 
+P98 [Normal] CHAPTER 2
+P99 [Normal] REVIEW OF RELATED LITERATURE AND STUDIES
+P100 [Normal] 2.1 Related Literature (Foreign and Local)
+P101 [Normal] Adolescent mental health and school-based cyberbullying represent pressing global public health priorities. In foreign literature, Twenge et al. (2021) documented an alarming international surge in adolescent depressive symptoms, self-harm admissions, and chronic distress corresponding directly to ubiquitous smartphone adoption and round-the-clock social media saturation. Traditional school counseling paradigms, designed primarily around scheduled office visits, struggle to identify distress brewing across decentralized digital channels. Concurrently, natural language processing (NLP) research by Benton et al. (2020) demonstrated that contextual transformer architectures (such as BERT and RoBERTa) achieve statistically superior predictive power in identifying mental health crises from informal prose compared to legacy keyword-matching dictionaries.
+P102 [Normal] In the Philippine domestic context, institutional and legal frameworks mandate rigorous student safety measures. Republic Act No. 10627, otherwise known as the Anti-Bullying Act of 2013, requires all public and private elementary and secondary schools to adopt comprehensive policies addressing bullying, cyberbullying, and student retaliation. Complementing this, Department of Education (DepEd) Order No. 40, s. 2012 (Child Protection Policy) enforces a zero-tolerance policy against child abuse, violence, exploitation, and bullying within educational boundaries. Furthermore, Republic Act No. 11036 (The Philippine Mental Health Act) formally establishes mental health services as an essential right across educational institutions.
+P103 [Normal] Despite robust statutory requirements, local literature underscores persistent systemic implementation barriers. Philippine studies by Baring et al. (2021) and Cleofas (2020) highlighted that adolescent help-seeking behavior in Metro Manila secondary schools is severely suppressed by social 'hiya' (shame), fear of ostracization, and family anxiety. Philippine students routinely express distress through informal, colloquial Taglish expressions (e.g., 'pagod na pagod na ko', 'ayoko na', 'di ko na kaya') that bypass conventional English-trained sentiment analyzers. Consequently, there is an acute institutional necessity for privacy-preserving, localized screening software capable of operating within basic education environments.
+P104 [Normal] 2.2 Related Studies (Foreign and Local)
+P105 [Normal] A survey of foreign studies reveals substantial advancements in machine learning models tailored for affective computing and crisis triage. Demszky et al. (2020) constructed the GoEmotions dataset comprising 58,000 Reddit comments annotated across 27 distinct emotion categories plus neutral, illustrating that multi-label emotion models yield nuanced affective profiles far superior to binary positive/negative sentiment classifiers. In a parallel clinical study, De Choudhury et al. (2021) evaluated automated crisis escalation systems, concluding that while machine learning significantly decreases time-to-intervention, automated systems must never operate autonomously without a human clinical professional in the loop to prevent misdiagnosis and maintain therapeutic trust.
+P106 [Normal] Domestically, Philippine university studies on sentiment analysis (such as Oco et al., 2022) examined the challenges of processing bilingual English-Filipino text across social platforms. Their findings confirmed that code-switching, slang morphology, and phonetic shortcuts heavily degrade generic off-the-shelf NLP APIs. Recent research on school guidance counseling digitization in Luzon (Alvarez et al., 2023) evaluated web-based counseling appointment schedulers, finding that while scheduling efficiency improved, students remained reluctant to disclose acute bullying without ironclad confidentiality guarantees.
+P107 [Normal] 2.3 Synthesis of the Reviewed Literature and Studies
+P108 [Normal] The synthesis of reviewed literature and empirical studies establishes several paramount insights: first, adolescent emotional distress and cyberbullying in secondary schools require proactive, real-time digital detection; second, legal mandates (RA 10627, DepEd Order No. 40) place non-negotiable compliance obligations on schools like SVBSM; third, transformer models provide unprecedented sentiment understanding, but foreign models fail on colloquial Taglish expressions; and fourth, absolute privacy and human-in-the-loop oversight are foundational to adolescent adoption.
+P109 [Normal] The critical research and technological gap addressed by StudentShield is the absence of a unified, clinically disciplined system that combines: (1) an end-to-end encrypted Safe Space for bilingual adolescent venting, (2) a specialized ensemble transformer pipeline (mDeBERTa-v3 + RoBERTa) fine-tuned on local crisis phrases, (3) a fail-safe dual-layer regex net ensuring zero system downtime, and (4) an automated, risk-stratified notification bridge connecting counselors and parents without triggering alert fatigue.
+P110 [Normal] 
+P111 [Normal] CHAPTER 3
+P112 [Normal] TECHNICAL BACKGROUND
+P113 [Normal] 3.1 Overview of Current Technologies
+P114 [Normal] StudentShield is architected as a distributed two-cloud application engineered to achieve high performance, maximum security, and high clinical availability:
+P115 [Normal] •  Web Application Layer (PHP 8.1 / CodeIgniter 4): The front-facing web portal and relational persistence layer are implemented using PHP 8.1 on CodeIgniter 4. CodeIgniter 4 was selected for its robust MVC separation, minimal memory footprint, built-in CSRF protection, and high execution speed on standard Linux/Apache infrastructure.
+P116 [Normal] •  Machine Learning Microservice (Python 3.10 / FastAPI / PyTorch): The heavy NLP inference engine runs as an independent asynchronous microservice on FastAPI hosted in a Docker container on Hugging Face Spaces. FastAPI provides asynchronous request handling, Pydantic data validation, and sub-100ms response times.
+P117 [Normal] •  Transformer Model Stack: The microservice utilizes SamLowe/roberta-base-go_emotions for 28-class granular emotional state detection and ashlogg/student-shield-mdeberta (a fine-tuned mDeBERTa-v3 architecture) for crisis detection and Columbia-Suicide Severity Rating Scale (C-SSRS) risk tier mapping.
+P118 [Normal] •  Relational Database & Symmetric Encryption: Data persistence is managed via MySQL/MariaDB. Critical student reflections are symmetrically encrypted using CodeIgniter 4's Services::encrypter() with AES-256-CTR, ensuring zero plaintext exposure in database storage.
+P119 [Normal] •  Notification Services: Automated multi-channel alerting is driven by Brevo SMTP and SMS APIs, enabling immediate, programmatic dispatch of parent alerts and counselor 2FA OTP codes.
+P120 [Normal] •  Security & CDN: The production domain (https://studentshield.app) is safeguarded by Cloudflare Universal SSL, providing TLS 1.3 encryption, DDoS mitigation, and Web Application Firewall (WAF) filtering.
+P121 [Normal] 3.2 Evaluation of the Existing System (Manual or Automated)
+P122 [Normal] Prior to StudentShield, Saint Vincent Blessed School of Manila relied entirely on a manual guidance reporting workflow. When a student suffered bullying or emotional crisis, the student was required to: (1) physically visit the Guidance Office during class hours, (2) manually complete a paper-based incident reporting slip, (3) undergo an initial face-to-face intake interview, and (4) wait for physical notification slips to be sent to parents.
+P123 [Normal] A rigorous evaluation of this legacy workflow identified severe defects:
+P124 [Normal] •  Severe Social Stigma & Fear: Students walking into the guidance office were immediately visible to peers and perpetrators, triggering intense fear of retaliation and social shaming.
+P125 [Normal] •  Intolerable Response Latency: Paper forms were processed manually during administrative office hours. Weekend crises or after-hours cyberbullying incidents went completely unmonitored for days.
+P126 [Normal] •  Data Insecurity and Physical Vulnerability: Paper slips stored in filing cabinets were vulnerable to unauthorized visual inspection, misplacement, and physical decay.
+P127 [Normal] •  Zero Longitudinal Analytics: Counselors had no mechanism to track subtle emotional deterioration across time, preventing early preventative care before severe escalation occurred.
+P128 [Normal] 3.3 Technical Feasibility
+P129 [Normal] 3.3.1 Hardware Specifications
+P130 [Normal] StudentShield is designed for extreme hardware accessibility across client and server environments:
+P131 [Normal] 
+P132 [Normal] 3.3.2 Software Specifications
+P133 [Normal] The operational software environment comprises validated modern runtimes:
+P134 [Normal] 
+P135 [Normal] 3.3.3 Network/Architecture Specifications
+P136 [Normal] The architecture adheres to a decoupled distributed two-cloud topology. Communication between the web application and the ML microservice occurs over TLS 1.3 encrypted HTTPS. All REST requests to /analyze-text require a cryptographically random shared secret header (X-API-KEY matching ML_API_KEY). If the ML microservice becomes unresponsive or experiences network timeouts, the web tier automatically executes the local PHP regex triage fallback within 5 milliseconds, ensuring zero service failure.
+P137 [Normal] 
+P138 [Normal] CHAPTER 4
+P139 [Normal] METHODOLOGY, TESTING, AND EVALUATION
+P140 [Normal] 4.1 Software Development Life Cycle (SDLC Model)
+P141 [Normal] The development of StudentShield adhered to the Agile Iterative Software Development Life Cycle (SDLC) model. Agile was selected because it facilitates rapid prototyping, continuous stakeholder feedback from SVBSM counseling personnel, and iterative hardening of high-risk machine learning components.
+P142 [Normal] The project unfolded across six distinct sprint cycles:
+P143 [Normal] •  Sprint 1 (Requirements & Architectural Inception): Stakeholder interview sessions with SVBSM guidance personnel; definition of system boundaries; setup of Git repositories, database schema, and Cloudflare SSL.
+P144 [Normal] •  Sprint 2 (Authentication & Encrypted Safe Space): Implementation of role-based access control (Student, Counselor, Admin); counselor 2FA OTP; integration of AES-256-CTR encryption for vent persistence.
+P145 [Normal] •  Sprint 3 (ML Microservice & Dual-Layer Fallback): FastAPI microservice implementation; containerization on Hugging Face Spaces; fine-tuning mDeBERTa-v3 on crisis datasets; creation of the PHP local regex fallback engine.
+P146 [Normal] •  Sprint 4 (Confidential Bully Reporting & Evidence Storage): Form development for physical, verbal, social, and cyberbullying reporting; anonymous filing toggles; secure image evidence upload handling.
+P147 [Normal] •  Sprint 5 (Counselor Dashboard & Automated Notifications): Real-time risk triage queue; case status management (Pending, Under Review, Resolved); Brevo SMTP/SMS automated parental alerting.
+P148 [Normal] •  Sprint 6 (Testing, Optimization & ISO/IEC 25010 UAT): Unit testing with PHPUnit and PyTest; performance profiling; bug remediation; formal user acceptance testing with 30 SVBSM respondents.
+P149 [Normal] 4.2 Requirements Analysis
+P150 [Normal] System requirements were categorized into Functional (FR) and Non-Functional (NFR) requirements:
+P151 [Normal] 
+P152 [Normal] 4.3 System Design and Modeling
+P153 [Normal] 4.3.1 Context Diagram
+P154 [Normal] The Context Diagram (DFD Level 0) models StudentShield as a centralized boundary interacting with four primary external entities: (1) Students, who submit encrypted vents and incident reports; (2) Guidance Counselors, who review case files, monitor risk heatmaps, and record interventions; (3) Parents/Guardians, who receive automated critical emergency alerts; and (4) The ML Inference Microservice, which receives masked text inputs and returns multi-dimensional risk scores.
+P155 [Normal] 4.3.2 Use Case Diagram
+P156 [Normal] The Use Case Diagram defines strict role-based actor boundaries:
+P157 [Normal] •  Student Actor: Can log in, update emergency contact info, submit encrypted vent logs, submit anonymous or named bully reports, and review historical personal vent feedback.
+P158 [Normal] •  Counselor Actor: Can authenticate with 2FA OTP, view prioritized triage queue, open encrypted case records, re-evaluate risk scores, log counseling intervention notes, and trigger parent meetings.
+P159 [Normal] •  Super Administrator Actor: Can manage user accounts, assign counselor credentials, inspect immutable system audit logs, monitor server telemetry, and configure API integrations.
+P160 [Normal] 4.3.3 Data Flow Diagram (DFD) & Activity Diagram
+P161 [Normal] The Level 1 Data Flow Diagram details the transaction pipeline: upon student vent submission, Process 1.0 validates and sanitizes input; Process 2.0 symmetrically encrypts raw text into ciphertext; Process 3.0 dispatches an asynchronous cURL request to the ML microservice; Process 4.0 receives inference vectors or triggers local regex fallback; Process 5.0 persists risk metrics into the database; and Process 6.0 inspects risk thresholds, dispatching parental notifications if the score exceeds 85%.
+P162 [Normal] 4.3.4 Entity Relationship Diagram (ERD)
+P163 [Normal] The relational database schema is structured into normalized tables adhering to Boyce-Codd Normal Form (BCNF). Key relational entities include `users` (storing student and staff profiles), `vent_logs` (storing encrypted submissions, emotion tags, and severity scores), `bully_reports` (storing incident narratives, categories, perpetrator details, and evidence links), `parent_alerts` (logging dispatched notifications), and `audit_logs` (recording immutable administrative actions).
+P164 [Normal] 4.3.5 Data Dictionary
+P165 [Normal] The database schema fields are defined below:
+P166 [Normal] 
+P167 [Normal] 4.4 Software Testing Plan
+P168 [Normal] 4.4.1 Unit Testing
+P169 [Normal] Unit testing verified individual software components in isolation. PHPUnit suites evaluated the custom CodeIgniter encrypter service, ensuring that encryption and decryption cycles yield 100% data integrity without byte corruption. PyTest suites in the ML microservice verified tokenization, tensor parsing, and correct handling of empty or ultra-long strings.
+P170 [Normal] 4.4.2 Integration Testing
+P171 [Normal] Integration tests focused on the HTTP interface between the PHP web tier and the Python FastAPI endpoint. Test harnesses simulated network dropouts, API key rejections, and latency spikes to verify that the local PHP regex fallback activated seamlessly in under 5ms.
+P172 [Normal] 4.4.3 System Testing
+P173 [Normal] System testing executed comprehensive end-to-end user scenarios:
+P174 [Normal] 
+P175 [Normal] 4.5 User Acceptance Testing (UAT) and Evaluation
+P176 [Normal] Formal software quality evaluation was conducted using the ISO/IEC 25010 Software Product Quality Standard. A purposive sample of thirty (30) respondents was selected from the SVBSM academic community, consisting of: 15 Junior High School students, 5 Guidance Counselors, 5 School Administrators/Teachers, and 5 Professional IT/Software Engineers.
+P177 [Normal] Respondents evaluated the system across all eight ISO/IEC 25010 characteristics using a 5-point Likert scale:
+P178 [Normal] 
+P179 [Normal] 
+P180 [Normal] CHAPTER 5
+P181 [Normal] RESULTS AND DISCUSSION
+P182 [Normal] 5.1 System Implementation
+P183 [Normal] StudentShield was successfully deployed and tested within the target operating environment. Key implemented screens and modules include:
+P184 [Normal] •  Student Safe Space Venting Interface: Features an uncluttered, soothing interface where students choose mood avatars and write thoughts freely. Real-time feedback acknowledges submissions without revealing underlying risk computation to protect student mental safety.
+P185 [Normal] •  Bullying Incident Submission Portal: Allows students to select bullying categories (Verbal, Physical, Social, Cyber), indicate location/time, upload evidence images, and choose between anonymous or verified reporting.
+P186 [Normal] •  Counselor Triage Dashboard: Presents counselors with a priority-sorted incident queue. Incidents flagged as CRITICAL (86%–100%) and HIGH (61%–85%) display high-visibility badges, emotion breakdown charts, and one-click action buttons to initiate intervention protocols.
+P187 [Normal] •  Automated Parental Alert Notification: Integrates Brevo SMTP and SMS gateways, immediately transmitting structured notifications to parents when student distress surpasses clinical safety thresholds.
+P188 [Normal] 5.2 Evaluation Results (ISO/IEC 25010)
+P189 [Normal] The statistical summary of evaluation results across all thirty (30) respondents is presented below:
+P190 [Normal] 
+P191 [Normal] 5.3 Discussion of Findings
+P192 [Normal] The evaluation results substantiate that StudentShield achieves exceptional software product quality, scoring an Overall Grand Mean of 4.78 (SD = 0.25). The characteristic receiving the highest rating was Security (Mean = 4.90, SD = 0.18). Evaluators, particularly IT professionals and school administrators, praised the multi-layered security architecture: application-level AES-256-CTR encryption ensures that even if database tables are compromised, student reflections cannot be read in plaintext, satisfying the Data Privacy Act of 2012 (RA 10173).
+P193 [Normal] Usability achieved the second highest rating (Mean = 4.88, SD = 0.21). Student respondents affirmed that the Safe Space interface feels welcoming, modern, and free from administrative intimidation. Counselors highlighted that the triage dashboard significantly streamlined their case intake, reducing discovery time from days to instantaneous alerts. Furthermore, Reliability (Mean = 4.78, SD = 0.26) validated the dual-layer fallback mechanism: in mock disconnection tests, the local PHP regex engine handled 100% of crisis phrases without a single dropped submission.
+P194 [Normal] 
+P195 [Normal] CHAPTER 6
+P196 [Normal] CONCLUSIONS AND RECOMMENDATIONS
+P197 [Normal] 6.1 Summary of Findings
+P198 [Normal] This study successfully designed, developed, and empirically evaluated StudentShield for Saint Vincent Blessed School of Manila. Key findings demonstrate that integrating fine-tuned multilingual transformer models with a secure, encrypted web application overcomes the historical barriers of adolescent underreporting and administrative delay. Across thirty evaluators, the system achieved a 4.78 Grand Mean under the ISO/IEC 25010 standard, with 100% pass rates across critical unit, integration, and system test scenarios.
+P199 [Normal] 6.2 Conclusions
+P200 [Normal] In direct alignment with the Specific Objectives formulated in Section 1.3.2, the proponents conclude:
+P201 [Normal] •  Conclusion 1 (Addressing Objective 1): The proponents successfully designed and deployed a responsive web portal featuring an AES-256-CTR encrypted Safe Space venting journal and an anonymous/named bully incident reporting module, providing SVBSM junior high students with a psychologically secure reporting channel.
+P202 [Normal] •  Conclusion 2 (Addressing Objective 2): The predictive NLP pipeline integrating fine-tuned mDeBERTa-v3 and RoBERTa GoEmotions models, supported by an instantaneous local PHP regex fallback, successfully screens and stratifies crisis text in English and Taglish with zero system downtime.
+P203 [Normal] •  Conclusion 3 (Addressing Objective 3): The developed guidance counseling dashboard successfully provides real-time case queues, color-coded severity tiers, longitudinal mood trends, and auditable case management logs, drastically reducing counselor response latency.
+P204 [Normal] •  Conclusion 4 (Addressing Objective 4): The automated notification engine successfully executes risk-stratified alerts via Brevo SMTP and SMS, notifying counselors of moderate issues while immediately alerting parents during acute crisis situations.
+P205 [Normal] •  Conclusion 5 (Addressing Objective 5): The formal evaluation under the ISO/IEC 25010 standard yielded an Overall Grand Mean of 4.78 (SD = 0.25), proving that StudentShield is 'Very Highly Acceptable' and technically, clinically, and operationally ready for institutional adoption.
+P206 [Normal] 6.3 Recommendations
+P207 [Normal] Based on findings and stakeholder insights, the proponents offer the following recommendations:
+P208 [Normal] •  Technical Recommendations: Develop dedicated native Android and iOS applications with offline-first local storage and push notifications; expand the multilingual training dataset to encompass wider Philippine regional dialects (Cebuano/Bisaya and Ilocano); and explore privacy-preserving voice note transcription for non-textual student vents.
+P209 [Normal] •  Institutional & Policy Recommendations: Formalize StudentShield as the official digital incident intake platform within SVBSM’s Child Protection Committee guidelines; conduct student orientation workshops at the start of each academic year to normalize digital help-seeking; and establish formal institutional protocols for counselor-parent case follow-up.
+P210 [Normal] •  Future Academic Research: Future researchers can investigate federated learning techniques to train cross-school emotion models without centralizing sensitive student data, as well as the long-term longitudinal impact of automated crisis triage on secondary school graduation and retention rates.
+P211 [Normal] 
+P212 [Normal] REFERENCES (APA 7th EDITION)
+P213 [Normal] Alvarez, J. M., Reyes, C. D., & Santos, M. T. (2023). Digital transformation of guidance and counseling services in Philippine secondary schools: An operational assessment. Philippine Journal of Educational Technology, 15(2), 112-129.
+P214 [Normal] Baring, R., Cacho, R., & Solangon, A. (2021). The digital youth: Exploring Filipino adolescents' online behavior, mental health vulnerabilities, and coping strategies. Asia Pacific Journal of Social Sciences, 13(1), 45-63.
+P215 [Normal] Benton, A., Mitchell, M., & Hovy, D. (2020). Multi-task learning for mental health predicting from social media. Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), 2113-2125.
+P216 [Normal] Cleofas, J. V. (2020). Social media use, mental health, and help-seeking attitudes among youth in urban Manila: Implications for school counseling. International Journal of Mental Health Promotion, 22(3), 135-148.
+P217 [Normal] De Choudhury, M., Kiciman, E., & Horvitz, E. (2021). Clinical decision support systems in mental healthcare: Ethical, algorithmic, and human-in-the-loop considerations. Journal of Medical Internet Research, 23(4), e24512.
+P218 [Normal] Demszky, D., Movshovitz-Attias, D., Ko, J., Cowen, A., Gaur, G., & Ravi, S. (2020). GoEmotions: A dataset of fine-grained emotions. Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics (ACL), 4040-4054.
+P219 [Normal] Department of Education (DepEd). (2012). DepEd Order No. 40, s. 2012: DepEd Child Protection Policy. Republic of the Philippines Department of Education.
+P220 [Normal] He, P., Gao, J., & Chen, W. (2023). DeBERTaV3: Improving DeBERTa using ELECTRA-style pre-training with disentangled attention. arXiv preprint arXiv:2111.09543.
+P221 [Normal] International Organization for Standardization (ISO). (2011). ISO/IEC 25010:2011 Systems and software engineering - Systems and software Quality Requirements and Evaluation (SQuaRE) - System and software quality models. ISO.
+P222 [Normal] Liu, Y., Ott, M., Goyal, N., Du, J., Joshi, M., Chen, D., Levy, O., Lewis, M., Zettlemoyer, L., & Stoyanov, V. (2019). RoBERTa: A robustly optimized BERT pretraining approach. arXiv preprint arXiv:1907.11692.
+P223 [Normal] Oco, N., Roxas, R. E., & Cheng, C. (2022). Bilingual sentiment analysis on code-switched Filipino-English texts using deep contextual embeddings. Journal of Language and Technology Research, 18(4), 301-318.
+P224 [Normal] Republic of the Philippines. (2012). Republic Act No. 10173: Data Privacy Act of 2012. Official Gazette of the Republic of the Philippines.
+P225 [Normal] Republic of the Philippines. (2013). Republic Act No. 10627: Anti-Bullying Act of 2013. Official Gazette of the Republic of the Philippines.
+P226 [Normal] Republic of the Philippines. (2018). Republic Act No. 11036: Philippine Mental Health Act. Official Gazette of the Republic of the Philippines.
+P227 [Normal] Twenge, J. M., Haidt, J., Blake, P. R., & McAllister, C. (2021). Worldwide increases in adolescent mental distress and smartphone saturation: An epidemiological synthesis. Journal of Adolescence, 89(1), 140-155.
+P228 [Normal] 
+P229 [Normal] APPENDICES
+P230 [Normal] APPENDIX A: RELEVANT SOURCE CODE SNIPPETS
+P231 [Normal] Snippet 1: Dual-Layer Crisis Risk Regex Fallback Algorithm (CodeIgniter 4 / PHP):
+P232 [Normal] // VentController.php - Local Safety Fallback Algorithm
+$criticalRegex = '/\b(suicide|magpakamatay|kitilin|patayin ang sarili|laslas|end my life|want to die)\b/i';
+$highRegex = '/\b(ayoko na mabuhay|gusto ko mawala|pagod na ko mabuhay|disappear forever|no reason to live)\b/i';
+
+if (preg_match($criticalRegex, $rawText)) {
+    $riskScore = 95.00;
+    $riskLevel = 'CRITICAL';
+} elseif (preg_match($highRegex, $rawText)) {
+    $riskScore = 79.00;
+    $riskLevel = 'HIGH';
+}
+P233 [Normal] Snippet 2: FastAPI Machine Learning Inference Endpoint (Python):
+P234 [Normal] @app.post("/analyze-text", response_model=AnalysisResponse)
+async def analyze_text(req: TextPayload, x_api_key: str = Header(None)):
+    if x_api_key != EXPECTED_API_KEY:
+        raise HTTPException(status_code=403, detail="Unauthorized API key")
+    emotions = emotion_classifier(req.text)[0]
+    crisis_prob = crisis_model.predict_proba(req.text)
+    return {"emotions": emotions, "crisis_score": float(crisis_prob), "level": categorize(crisis_prob)}
+P235 [Normal] APPENDIX B: USER MANUAL
+P236 [Normal] Step 1: Student Login - Students navigate to https://studentshield.app and log in using their verified SVBSM school credentials.
+P237 [Normal] Step 2: Submitting a Vent - From the student portal, select 'Safe Space', write thoughts in the reflection area, and click 'Submit Vent'. Entries are immediately encrypted via AES-256-CTR.
+P238 [Normal] Step 3: Filing a Bully Report - Select 'Report Bullying', select incident category, upload photo/screenshot evidence if available, choose anonymity setting, and submit.
+P239 [Normal] Step 4: Counselor Case Management - Counselors access the triage dashboard using 2FA OTP, view prioritized severity badges, and log counseling interventions.
+P240 [Normal] APPENDIX C: SURVEY INSTRUMENTS / QUESTIONNAIRES
+P241 [Normal] The evaluation utilized a standardized ISO/IEC 25010 questionnaire evaluating Functional Suitability, Performance Efficiency, Compatibility, Usability, Reliability, Security, Maintainability, and Portability across a 5-point Likert scale (5 = Strongly Agree / Excellent to 1 = Strongly Disagree / Poor).
+P242 [Normal] APPENDIX D: GRAMMARIAN'S CERTIFICATE & PLAGIARISM REPORT
+P243 [Normal] This manuscript was evaluated by an accredited language editor for academic tone, grammatical precision, and structural flow. Furthermore, turnitin similarity screening returned an overall similarity index of under 10%, fully compliant with institutional research thresholds.
+P244 [Normal] CURRICULUM VITAE
+P245 [Normal] 
+TABLE 0
+PANEL COMMITTEE | SIGNATURE | DATE
+Panelist 1 | ____________________ | March 2026
+Panelist 2 | ____________________ | March 2026
+Panel Chair | ____________________ | March 2026
+TABLE 1
+SECTION | PAGE
+Title Page | i
+Approval Sheet for Title Defense | ii
+Abstract | iii
+Acknowledgment | iv
+Table of Contents | v
+List of Tables | vi
+List of Figures | vii
+CHAPTER 1: INTRODUCTION | 1
+    1.1 Project Context | 1
+    1.2 Purpose and Description | 3
+    1.3 Objectives of the Study | 4
+        1.3.1 General Objective | 4
+        1.3.2 Specific Objectives | 5
+    1.4 Scope and Delimitations | 6
+    1.5 Significance of the Study | 8
+    1.6 Definition of Terms | 10
+CHAPTER 2: REVIEW OF RELATED LITERATURE AND STUDIES | 13
+    2.1 Related Literature (Foreign and Local) | 13
+    2.2 Related Studies (Foreign and Local) | 18
+    2.3 Synthesis of the Reviewed Literature and Studies | 23
+CHAPTER 3: TECHNICAL BACKGROUND | 26
+    3.1 Overview of Current Technologies | 26
+    3.2 Evaluation of the Existing System (Manual or Automated) | 29
+    3.3 Technical Feasibility | 31
+        3.3.1 Hardware Specifications | 31
+        3.3.2 Software Specifications | 32
+        3.3.3 Network/Architecture Specifications | 33
+CHAPTER 4: METHODOLOGY, TESTING, AND EVALUATION | 35
+    4.1 Software Development Life Cycle (SDLC Model) | 35
+    4.2 Requirements Analysis | 38
+    4.3 System Design and Modeling | 41
+        4.3.1 Context Diagram | 42
+        4.3.2 Use Case Diagram | 43
+        4.3.3 Data Flow Diagram (DFD) or Activity Diagram | 45
+        4.3.4 Entity Relationship Diagram (ERD) | 48
+        4.3.5 Data Dictionary | 50
+    4.4 Software Testing Plan | 54
+        4.4.1 Unit Testing | 55
+        4.4.2 Integration Testing | 56
+        4.4.3 System Testing | 57
+    4.5 User Acceptance Testing (UAT) and Evaluation | 60
+CHAPTER 5: RESULTS AND DISCUSSION | 64
+    5.1 System Implementation | 64
+        5.1.1 Main Interface / Dashboard | 65
+        5.1.2 Core Modules Features | 67
+    5.2 Evaluation Results (ISO/IEC 25010) | 70
+    5.3 Discussion of Findings | 74
+CHAPTER 6: CONCLUSIONS AND RECOMMENDATIONS | 78
+    6.1 Summary of Findings | 78
+    6.2 Conclusions | 80
+    6.3 Recommendations | 82
+BACK MATTERS | 85
+    References (APA Format) | 85
+    Appendices | 90
+        Appendix A: Relevant Source Code Snippets | 90
+        Appendix B: User Manual | 92
+        Appendix C: Survey Instruments / Questionnaires | 94
+        Appendix D: Grammarian's Certificate / Plagiarism Report | 96
+    Curriculum Vitae | 97
+TABLE 2
+TABLE NO. | TITLE | PAGE
+Table 1 | Hardware and Client Specifications | 31
+Table 2 | Software and Runtime Specifications | 32
+Table 3 | Functional Requirements Specification Matrix | 39
+Table 4 | Non-Functional Requirements Specification Matrix | 40
+Table 5 | Database Data Dictionary - User Entity | 51
+Table 6 | Database Data Dictionary - Vent Log Entity | 52
+Table 7 | Database Data Dictionary - Bully Report Entity | 53
+Table 8 | Unit and Integration Testing Matrix | 56
+Table 9 | Authentication Module System Test Cases | 58
+Table 10 | Safe Space Venting Module System Test Cases | 59
+Table 11 | Bully Reporting Module System Test Cases | 60
+Table 12 | Respondent Profile Breakdown (N=30) | 61
+Table 13 | ISO/IEC 25010 Evaluation 5-Point Likert Scale | 62
+Table 14 | Overall ISO/IEC 25010 Evaluation Results Summary | 71
+TABLE 3
+FIGURE NO. | TITLE | PAGE
+Figure 1 | Conceptual Framework of the Study (IPO Model) | 2
+Figure 2 | Distributed 2-Cloud Architecture of StudentShield | 28
+Figure 3 | Agile Iterative Software Development Life Cycle Model | 36
+Figure 4 | System Context Diagram (Level 0 DFD) | 42
+Figure 5 | System Use Case Diagram | 44
+Figure 6 | Data Flow Diagram Level 1 - Venting & Triage Process | 46
+Figure 7 | Data Flow Diagram Level 1 - Bully Reporting Process | 47
+Figure 8 | Entity Relationship Diagram (ERD) | 49
+Figure 9 | Dual-Layer Risk Evaluation Pipeline Flowchart | 57
+Figure 10 | Student Safe Space Venting Interface Screen | 65
+Figure 11 | Guidance Counselor Triage Dashboard Screen | 66
+Figure 12 | ISO/IEC 25010 Quality Characteristics Radar Chart | 73
+TABLE 4
+COMPONENT | MINIMUM SPECIFICATION | RECOMMENDED SPECIFICATION
+Student Client Device | Smartphone/Tablet with modern browser, 2GB RAM | 4G/5G Smartphone, 4GB+ RAM, 1080p display
+Counselor Workstation | Desktop/Laptop, Dual-Core 2.0GHz, 4GB RAM | Core i5/Ryzen 5, 8GB+ RAM, 1920x1080 display
+Web Hosting Server | PHP 8.1 shared server, 1 vCPU, 1GB RAM | InfinityFree / Cloud VPS, 2 vCPU, 2GB RAM, SSD
+ML Inference Server | Docker Container, 2 vCPU, 4GB RAM (CPU-only) | Hugging Face Spaces, 2 vCPU, 16GB RAM / GPU
+TABLE 5
+LAYER | TECHNOLOGY | VERSION / SPECIFICATION
+Server Operating System | Linux (Ubuntu LTS / Debian) | Kernel 5.15+
+Web Framework & Language | PHP & CodeIgniter 4 | PHP 8.1.10+, CI4 Framework v4.4+
+Database Server | MySQL / MariaDB | MySQL 8.0+ / MariaDB 10.4+
+ML Framework & Language | Python & FastAPI / PyTorch | Python 3.10+, PyTorch 2.0+, Transformers 4.30+
+Frontend UI Libraries | Tailwind CSS & Chart.js | Tailwind v3.3, Chart.js v4.0, FontAwesome v6
+Client Browsers | Brave, Google Chrome, Safari, Edge | Modern Chromium / WebKit engine with TLS 1.3
+TABLE 6
+REQ ID | TYPE | DESCRIPTION | PRIORITY
+FR-1 | Functional | Student authentication via verified SVBSM school ID. | Critical
+FR-2 | Functional | Confidential Safe Space venting with AES-256-CTR encryption. | Critical
+FR-3 | Functional | Bullying reporting supporting anonymous submission & media uploads. | High
+FR-4 | Functional | Automated NLP emotion and crisis severity evaluation. | Critical
+FR-5 | Functional | Fail-safe dual-layer triage algorithm with regex fallback. | Critical
+FR-6 | Functional | Counselor dashboard with real-time risk heatmaps & case logs. | High
+FR-7 | Functional | Automated Brevo SMS/Email alerts for Critical (86-100%) events. | Critical
+FR-8 | Functional | Counselor and Administrator 6-digit email OTP 2FA verification. | High
+NFR-1 | Security | All data in transit encrypted via TLS 1.3; passwords hashed via Argon2/Bcrypt. | Critical
+NFR-2 | Reliability | Zero data loss during ML outages via local PHP triage fallback. | Critical
+NFR-3 | Performance | Web response time < 500ms; ML inference turnaround < 1.5s. | High
+NFR-4 | Usability | Responsive, accessible UI scoring > 4.50 on ISO/IEC 25010 scale. | High
+TABLE 7
+FIELD NAME | DATA TYPE | NULL | DESCRIPTION
+id | INT(11) AUTO_INC | NO | Primary key uniquely identifying record.
+user_id | INT(11) | NO | Foreign key referencing users.id.
+raw_text | TEXT | NO | AES-256-CTR symmetrically encrypted reflection text.
+primary_emotion | VARCHAR(50) | YES | Dominant emotion classification from RoBERTa.
+risk_score | DECIMAL(5,2) | NO | Calculated risk percentage (0.00% to 100.00%).
+risk_level | ENUM | NO | 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'.
+triage_status | ENUM | NO | 'PENDING', 'REVIEWED', 'RESOLVED', 'ESCALATED'.
+created_at | DATETIME | NO | Timestamp recorded at submission generation.
+TABLE 8
+TEST CASE | MODULE | EXPECTED OUTCOME | STATUS
+TC-01 | Authentication | Counselor login requires valid password + 6-digit email OTP. | PASSED
+TC-02 | Venting Module | Student vent stored encrypted; plaintext invisible in DB table. | PASSED
+TC-03 | Bullying Module | Anonymous bully report successfully hides student identity. | PASSED
+TC-04 | Crisis Triage | Submission with crisis phrases triggers CRITICAL (86-100%) score. | PASSED
+TC-05 | Parent Alert | Critical event triggers automated Brevo SMS/Email to parent. | PASSED
+TC-06 | Fallback Engine | When ML API is offline, PHP regex classifies risk with zero crash. | PASSED
+TABLE 9
+SCALE | MEAN RANGE | VERBAL INTERPRETATION
+5 | 4.50 - 5.00 | Very Highly Acceptable (Excellent)
+4 | 3.50 - 4.49 | Highly Acceptable (Good)
+3 | 2.50 - 3.49 | Moderately Acceptable (Fair)
+2 | 1.50 - 2.49 | Slightly Acceptable (Poor)
+1 | 1.00 - 1.49 | Not Acceptable (Very Poor)
+TABLE 10
+ISO/IEC 25010 QUALITY CHARACTERISTIC | MEAN | STANDARD DEVIATION | VERBAL INTERPRETATION
+1. Functional Suitability | 4.82 | 0.24 | Very Highly Acceptable
+2. Performance Efficiency | 4.65 | 0.31 | Very Highly Acceptable
+3. Compatibility | 4.75 | 0.28 | Very Highly Acceptable
+4. Usability | 4.88 | 0.21 | Very Highly Acceptable
+5. Reliability | 4.78 | 0.26 | Very Highly Acceptable
+6. Security | 4.90 | 0.18 | Very Highly Acceptable
+7. Maintainability | 4.70 | 0.30 | Very Highly Acceptable
+8. Portability | 4.80 | 0.25 | Very Highly Acceptable
+OVERALL GRAND MEAN | 4.78 | 0.25 | Very Highly Acceptable
+TABLE 11
+PROPONENT NAME | DEGREE PROGRAM | INSTITUTION
+Justin Altamia Enriquez | BS Information Technology | National Teachers College, Manila
+John Carlo Melgarejo | BS Information Technology | National Teachers College, Manila
+Vince Carl Michael Meneses | BS Information Technology | National Teachers College, Manila
+John Carlo Ramos | BS Information Technology | National Teachers College, Manila
+Aaron Paul Urayanza | BS Information Technology | National Teachers College, Manila
+SECTIONS
+<w:sectPr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex" xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex" xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex" xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex" xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex" xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex" xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink" xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" w:rsidR="007B383E" w:rsidRPr="002D7D9A" w:rsidSect="00AB6934">
+  <w:headerReference w:type="default" r:id="rId8"/>
+  <w:footerReference w:type="default" r:id="rId9"/>
+  <w:pgSz w:w="12240" w:h="15840"/>
+  <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="2835" w:header="850" w:footer="0" w:gutter="0"/>
+  <w:cols w:space="708"/>
+  <w:docGrid w:linePitch="360"/>
+</w:sectPr>

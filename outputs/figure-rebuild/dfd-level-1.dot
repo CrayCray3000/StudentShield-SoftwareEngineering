@@ -1,0 +1,56 @@
+digraph G { graph [bgcolor=white, rankdir=TB, nodesep=0.45, ranksep=0.7, pad=0.1, splines=polyline]; node [fontname="Times New Roman", fontsize=20, color=black, penwidth=1.2, margin="0.12,0.08"]; edge [fontname="Times New Roman", fontsize=15, color=black, arrowsize=0.65, penwidth=1.1];
+ graph [ranksep=0.85,nodesep=0.6];
+ S [shape=box,label="Student"]; C [shape=box,label="Counselor /
+Super Administrator"]; M [shape=box,label="ML screening
+service"]; R [shape=box,label="Parent /
+Guardian"];
+ P1 [shape=ellipse,label="1.0
+Manage accounts
+and access"];
+ P2 [shape=ellipse,label="2.0
+Assess and
+record vents"];
+ P3 [shape=ellipse,label="3.0
+Handle incident
+reports"];
+ P4 [shape=ellipse,label="4.0
+Review cases and
+manage sessions"];
+ P5 [shape=ellipse,label="5.0
+Prepare and send
+notifications"];
+ D1 [shape=plain,label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD SIDES="TB" BORDER="1">D1  Account and profile records</TD></TR></TABLE>>];
+ D2 [shape=plain,label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD SIDES="TB" BORDER="1">D2  Student case records</TD></TR></TABLE>>];
+ D3 [shape=plain,label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD SIDES="TB" BORDER="1">D3  Activity records</TD></TR></TABLE>>];
+ {rank=same;S;C} {rank=same;P1;P2;P3} {rank=same;D1;M;D2} {rank=same;P4;P5} {rank=same;D3;R}
+ S -> P1 [label="Account / login data"]; P1 -> S [label="Access / registration result"];
+ C -> P1 [label="Credentials / OTP;
+account decisions"]; P1 -> C [label="Account / access results"];
+ S -> P2 [label="Vent, moods,
+privacy choice"]; P2 -> S [label="Submission result"];
+ S -> P3 [label="Report and evidence"]; P3 -> S [label="Submission result"];
+ C -> P3 [label="Report / review decision"]; P3 -> C [label="Review result"];
+ P1 -> D1 [label="Account changes"]; D1 -> P1 [label="Account records"];
+ P2 -> M [label="Vent, ID, risk history"]; M -> P2 [label="Risk / trajectory result"];
+ D2 -> P2 [label="Recent risk history"]; P2 -> D2 [label="Vent and risk record"];
+ P3 -> D2 [label="Incident / evidence updates"]; D2 -> P3 [label="Incident records"];
+ D1 -> P3 [label="Identity records"]; P3 -> D1 [label="False-report account lock"];
+ C -> P4 [label="Case queries, notes, status,
+Meet URL / session details"];
+ P4 -> C [label="Records, summaries,
+case / session results"];
+ S -> P4 [label="Session request / cancellation"]; P4 -> S [label="Session status / Meet link"];
+ D1 -> P4 [label="Profile records"];
+ D2 -> P4 [label="Vents, incidents,
+notes and sessions"];
+ P4 -> D2 [label="Case / session changes"];
+ P1 -> P5 [label="Verification / account notice data"];
+ P2 -> P5 [label="Risk notice data"];
+ P3 -> P5 [label="Receipt / incident notice data"];
+ D1 -> P5 [label="Recipient contacts"];
+ P5 -> P1 [label="OTP delivery outcome"];
+ P5 -> C [label="Verification / triage notices"];
+ P5 -> R [label="Eligible notices / receipts"];
+ P1 -> D3 [label="Account audit events"]; P3 -> D3 [label="Incident audit events"]; P4 -> D3 [label="Case audit events"]; D3 -> P4 [label="Audit / alert records"];
+ P5 -> D3 [label="Vent alert / OTP attempts"]; D3 -> P5 [label="Recent alert attempts"];
+}

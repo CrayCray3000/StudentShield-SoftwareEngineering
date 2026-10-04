@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Favicon -->
@@ -374,43 +374,77 @@
 
     <!-- Add User Modal -->
     <div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
-        <div class="bg-white rounded-2xl p-5 sm:p-8 max-w-lg w-[95%] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative">
+        <div class="bg-white rounded-2xl p-5 sm:p-8 max-w-lg w-[95%] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative max-h-[90dvh] overflow-y-auto">
             <button onclick="closeModal('addModal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-600">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
-            <h3 class="text-xl font-heading font-bold text-gray-900 mb-6">Add New User</h3>
+            <h3 id="addModalTitle" class="text-xl font-heading font-bold text-gray-900 mb-0.5">Add New User</h3>
+            <p id="addModalSubtitle" class="text-sm text-gray-500 mb-5">Choose a role below to continue.</p>
+
+            <!-- Visual Role Picker -->
+            <div class="grid grid-cols-3 gap-3 mb-6">
+                <!-- Student card -->
+                <button type="button" onclick="selectAddRole(0)" id="roleCard0"
+                    class="flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer border-blue-400 bg-blue-50 ring-2 ring-blue-200">
+                    <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14a4 4 0 100-8 4 4 0 000 8zm-8 8a8 8 0 0116 0"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-bold text-blue-700">Student</span>
+                </button>
+                <!-- Counselor card -->
+                <button type="button" onclick="selectAddRole(1)" id="roleCard1"
+                    class="flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer border-gray-200 bg-gray-50 hover:border-emerald-300 hover:bg-emerald-50">
+                    <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-bold text-gray-600">Counselor</span>
+                </button>
+                <!-- Super Admin card -->
+                <button type="button" onclick="selectAddRole(2)" id="roleCard2"
+                    class="flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer border-gray-200 bg-gray-50 hover:border-amber-300 hover:bg-amber-50">
+                    <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-bold text-gray-600">Super Admin</span>
+                </button>
+            </div>
+
             <form action="/admin/users/create" method="post" class="space-y-4">
                 <?= csrf_field() ?>
+                <input type="hidden" name="role" id="addRoleValue" value="0">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2">
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name *</label>
                         <input type="text" name="name" required class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10">
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Student ID</label>
-                        <input type="text" name="student_id" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
+                    <!-- Student-only: Student ID -->
+                    <div id="addStudentIdWrap">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Student ID *</label>
+                        <input type="text" name="student_id" id="addStudentId" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. STU-001">
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Role *</label>
-                        <select name="role" id="addRole" required onchange="toggleAddPassword()" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 bg-white">
-                            <option value="0">Student</option>
-                            <option value="1">Counselor</option>
-                            <option value="2">Super Admin</option>
-                        </select>
-                    </div>
-                    <div id="addPassField" class="col-span-2">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Password <span id="addPassReq">*</span></label>
-                        <input type="password" name="passcode" id="addPassInput" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Enter password">
-                    </div>
+                    <!-- Contact email -->
                     <div>
                         <label id="addParentEmailLabel" class="block text-sm font-semibold text-gray-700 mb-1">Parent Email</label>
                         <input type="email" name="parent_email" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
                     </div>
+                    <!-- Contact phone -->
                     <div>
                         <label id="addParentPhoneLabel" class="block text-sm font-semibold text-gray-700 mb-1">Parent Phone</label>
                         <input type="text" name="parent_phone" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Optional">
                     </div>
-                    <div class="col-span-2 grid grid-cols-2 gap-4">
+                    <!-- Password -->
+                    <div id="addPassField" class="col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Password <span id="addPassReq" class="text-red-500"></span></label>
+                        <input type="password" name="passcode" id="addPassInput" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Enter password (optional)">
+                    </div>
+                    <!-- Student-only: Section + Adviser -->
+                    <div class="col-span-2 grid grid-cols-2 gap-4" id="addStudentOnlyFields">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Section <span class="text-red-500">*</span></label>
                             <input type="text" name="section" id="addSection" class="w-full px-4 py-2.5 border border-gray-300 rounded-xl outline-none focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. 10-Rizal">
@@ -421,7 +455,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="w-full mt-4 bg-primary hover:bg-primary-light text-white font-bold py-3 rounded-xl shadow-md transition-all hover:-translate-y-0.5">Create User</button>
+                <button type="submit" id="addSubmitBtn" class="w-full mt-4 bg-primary hover:bg-primary-light text-white font-bold py-3 rounded-xl shadow-md transition-all hover:-translate-y-0.5">Create Student</button>
             </form>
         </div>
     </div>
@@ -491,41 +525,68 @@
         m.classList.add('hidden');
         m.classList.remove('flex');
     }
+    // Edit modal field toggling
     function toggleFieldsForRole(prefix) {
-        const role = document.getElementById(prefix + 'Role').value;
-        const sectionInput = document.getElementById(prefix + 'Section');
-        const adviserInput = document.getElementById(prefix + 'Adviser');
-        const emailLabel = document.getElementById(prefix + 'ParentEmailLabel');
-        const phoneLabel = document.getElementById(prefix + 'ParentPhoneLabel');
-
-        const isStaff = (role == 1 || role == 2);
-
-        if (role == 0) {
-            if(sectionInput) sectionInput.required = true;
-            if(adviserInput) adviserInput.required = true;
-        } else {
-            if(sectionInput) sectionInput.required = false;
-            if(adviserInput) adviserInput.required = false;
-        }
-
+        var role = parseInt(document.getElementById(prefix + 'Role').value);
+        var sectionInput = document.getElementById(prefix + 'Section');
+        var adviserInput = document.getElementById(prefix + 'Adviser');
+        var emailLabel   = document.getElementById(prefix + 'ParentEmailLabel');
+        var phoneLabel   = document.getElementById(prefix + 'ParentPhoneLabel');
+        var isStaff = (role === 1 || role === 2);
+        if (sectionInput) sectionInput.required = !isStaff;
+        if (adviserInput) adviserInput.required = !isStaff;
         if (emailLabel) emailLabel.textContent = isStaff ? 'Email' : 'Parent Email';
         if (phoneLabel) phoneLabel.textContent = isStaff ? 'Phone' : 'Parent Phone';
     }
 
-    function toggleAddPassword() {
-        const role = document.getElementById('addRole').value;
-        const req = document.getElementById('addPassReq');
-        const input = document.getElementById('addPassInput');
-        if (role >= 1) {
-            req.textContent = '*';
-            input.required = true;
-            input.placeholder = 'Required for staff';
-        } else {
-            req.textContent = '';
-            input.required = false;
-            input.placeholder = 'Enter password for student';
+    // Add modal role-card picker
+    var ADD_ROLE_META = [
+        { title:'Add Student',    sub:'Fill in student details below.',     btn:'Create Student',   passReq:false, border:'border-blue-400 bg-blue-50 ring-2 ring-blue-200',     icon:'bg-blue-500',    lbl:'text-blue-700'   },
+        { title:'Add Counselor',  sub:'Fill in counselor account details.', btn:'Create Counselor', passReq:true,  border:'border-emerald-400 bg-emerald-50 ring-2 ring-emerald-200', icon:'bg-emerald-500', lbl:'text-emerald-700'},
+        { title:'Add Super Admin',sub:'Fill in administrator credentials.', btn:'Create Admin',     passReq:true,  border:'border-amber-400 bg-amber-50 ring-2 ring-amber-200',     icon:'bg-amber-500',   lbl:'text-amber-700'  }
+    ];
+    var ICON_BASE   = ['bg-blue-100','bg-emerald-100','bg-amber-100'];
+    var ICON_ACTIVE = ['bg-blue-500','bg-emerald-500','bg-amber-500'];
+
+    function selectAddRole(role) {
+        document.getElementById('addRoleValue').value = role;
+        for (var i = 0; i < 3; i++) {
+            var card  = document.getElementById('roleCard' + i);
+            var iconDiv = card.querySelector('div');
+            var labelEl = card.querySelector('span');
+            var m = ADD_ROLE_META[i];
+            if (i === role) {
+                card.className = 'flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer ' + m.border;
+                iconDiv.className = 'w-10 h-10 rounded-full flex items-center justify-center ' + ICON_ACTIVE[i];
+                card.querySelector('svg').className = card.querySelector('svg').className.replace(/text-\S+/, 'text-white');
+                labelEl.className = 'text-xs font-bold ' + m.lbl;
+            } else {
+                card.className = 'flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all cursor-pointer border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100';
+                iconDiv.className = 'w-10 h-10 rounded-full flex items-center justify-center ' + ICON_BASE[i];
+                labelEl.className = 'text-xs font-bold text-gray-600';
+            }
         }
-        toggleFieldsForRole('add');
+        var m = ADD_ROLE_META[role];
+        document.getElementById('addModalTitle').textContent = m.title;
+        document.getElementById('addModalSubtitle').textContent = m.sub;
+        document.getElementById('addSubmitBtn').textContent = m.btn;
+        var isStudent = (role === 0);
+        // Student-only fields
+        document.getElementById('addStudentIdWrap').style.display    = isStudent ? '' : 'none';
+        document.getElementById('addStudentOnlyFields').style.display = isStudent ? '' : 'none';
+        document.getElementById('addStudentId').required  = isStudent;
+        document.getElementById('addSection').required    = isStudent;
+        document.getElementById('addAdviser').required    = isStudent;
+        // Adapt labels
+        document.getElementById('addParentEmailLabel').textContent = isStudent ? 'Parent Email' : 'Email';
+        document.getElementById('addParentPhoneLabel').textContent = isStudent ? 'Parent Phone' : 'Phone';
+        // Password requirement
+        var passInput = document.getElementById('addPassInput');
+        document.getElementById('addPassReq').textContent = m.passReq ? '*' : '';
+        passInput.required = m.passReq;
+        passInput.placeholder = m.passReq ? 'Required for this role' : 'Enter password (optional)';
+    }
+    selectAddRole(0); // initialise
     }
 
     document.getElementById('editRole').addEventListener('change', function() {
@@ -579,6 +640,66 @@
 
     <?= view('reports/modals/student_profile') ?>
     <?= view('partials/session_idle_modal') ?>
+    <!-- ── Floating Scroll-to-Top Button ── -->
+    <button id="scrollTopBtn" title="Back to top"
+        aria-label="Scroll back to top"
+        style="
+            position: fixed;
+            bottom: 28px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #D9AA2E 0%, #B5881D 100%);
+            color: #083318;
+            box-shadow: 0 6px 20px -4px rgba(0,0,0,0.35), 0 0 0 3px rgba(217,170,46,0.20);
+            opacity: 0;
+            transform: translateY(16px) scale(0.85);
+            pointer-events: none;
+            transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+        ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"/>
+        </svg>
+    </button>
+    <script>
+    (function () {
+        var btn = document.getElementById('scrollTopBtn');
+        var SHOW_AT = 400;
+        function update() {
+            var scrolled = window.scrollY || document.documentElement.scrollTop;
+            if (scrolled > SHOW_AT) {
+                btn.style.opacity = '1';
+                btn.style.transform = 'translateY(0) scale(1)';
+                btn.style.pointerEvents = 'auto';
+            } else {
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(16px) scale(0.85)';
+                btn.style.pointerEvents = 'none';
+            }
+        }
+        window.addEventListener('scroll', update, { passive: true });
+        btn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        btn.addEventListener('mouseenter', function () {
+            this.style.boxShadow = '0 10px 28px -4px rgba(0,0,0,0.45), 0 0 0 4px rgba(217,170,46,0.30)';
+            this.style.transform = 'translateY(-2px) scale(1.07)';
+        });
+        btn.addEventListener('mouseleave', function () {
+            this.style.boxShadow = '0 6px 20px -4px rgba(0,0,0,0.35), 0 0 0 3px rgba(217,170,46,0.20)';
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    })();
+    </script>
 </body>
 </html>
 

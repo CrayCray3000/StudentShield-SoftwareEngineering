@@ -1,0 +1,82 @@
+
+Review scope and how to use these notes
+
+Reviewed the 76-page PDF supplied from Downloads against the local repository on 20 September 2026. These notes are appended after the original pages. Only blocks labeled COPY are ready for the paper; drawing instructions are revision notes. This is a source-code review, not verification of a live production database or measured results.
+
+
+Figure 1 — retain; align the caption and explanation
+
+Location: PDF page 33 / printed page 25. The image shows Requirements, Design, Development, Testing, Deployment, and Review. The prose instead starts with Planning and System Analysis. Map these activities explicitly to the six image labels. Remove the editorial phrase “retained from the original paper” from the caption. The figure itself has no visible overlap, but the small white phase labels need a clearer source image or a carefully redrawn diagram. Confirm its original source before adding attribution; do not invent a citation.
+
+
+COPY — replacement caption
+
+Figure 1. Agile-Iterative Development Model for StudentShield
+
+
+COPY — paragraph following the figure
+
+Figure 1 presents the Agile-Iterative development approach used to organize StudentShield development. Requirements covers planning and system analysis; Design organizes interfaces, data structures, and workflows; and Development implements the application modules. Testing covers the planned verification of system behavior, while Deployment concerns the web application and machine learning service. Review provides a stage for examining issues and revising subsequent iterations. The diagram represents the development approach and does not establish that pilot evaluation or user acceptance testing has been completed.
+
+
+Figure 2 — redraw labels; retain its stated partial scope
+
+Location: PDF page 44 / printed page 36. The diagram is crowded and its labels are too small at normal page size. Several arrows touch boxes closely. No obvious overlap is visible, but readability is poor. The caption and paragraph correctly identify a partial vent/report view; this is not a complete model of StudentShield.
+
+Choose an explicit boundary: if the ML service remains outside the central process, label the central process “0.0 StudentShield Web Application.” Label the external service “FastAPI ML Service — Hugging Face Spaces.” A system-wide diagram would instead place ML inside the system boundary.
+
+
+Figure 2 — exact changes to the drawing
+
+1. Replace “Raw Vent Text” with “Current vent text, student identifier, and 14-day risk history (labels and timestamps).” Prior raw vent text is not part of this history payload.
+
+2. Label ML responses “Risk classification, score, and emotion results.” The PHP fallback belongs in a detailed activity diagram or DFD, not as an external actor.
+
+3. Replace “Real-time Alert” with “Counselor notification attempts.” Label the parent flow “Conditional SMS/email notification attempts.” This avoids implying guaranteed or measured delivery.
+
+4. Put the alert conditions in a readable note below the drawing: High vents route to counselors; Critical vents also permit parent alerts subject to parent hiding, contact availability, and applicable cooldowns; bullying intake alerts counselors, and staff verification permits incident alerts to resolved victim/alleged-bully parent contacts. A second false-report strike has a separate reporter-parent notification path.
+
+5. Separate Counselor and Super Administrator if showing permissions. User/role management and audit access must not appear to be shared counselor permissions. Retain staff verification as a supported staff action.
+
+6. Add “Optional incident evidence” to student report inputs. Keep arrows separate and labeled in one direction. Put long conditions in the note rather than squeezing them onto arrows. Do not add database stores inside a context diagram.
+
+
+COPY — replacement caption after the redraw
+
+Figure 2. Context Diagram of StudentShield Vent Screening and Bullying Reporting
+
+
+COPY — replacement explanation after the redraw
+
+Figure 2 shows the boundary of the StudentShield web application for vent screening and bullying reporting. Authenticated students submit vents and incident reports, with optional incident evidence. The application sends current vent text, a student identifier, and prior risk labels and timestamps from a 14-day window to the external machine learning service. Screening results support staff review. High-risk vents trigger counselor notification attempts, while Critical vents may also trigger parent notifications subject to the parent-hiding option and applicable delivery conditions. Bullying intake alerts counselors; staff verification precedes incident notifications to resolved parent contacts. A separate false-report procedure may notify the reporter’s parent after a second rejected report. This partial context view excludes the online meeting workflow.
+
+Layout: use readable labels, sufficient space between parallel arrows, and a centered caption directly below the figure. Preserve the template header, borders, margins, and Times New Roman 12-point caption/body styling. Verify the exported PDF at normal size; the template requires technical accuracy but does not prescribe a special diagram-label font size.
+
+
+Required diagram sections that are still unfinished
+
+The PDF contains only two numbered figures. Sections 4.3.2, 4.3.3, and 4.3.4 contain descriptions but no current use-case, DFD/activity, or ERD figure. Do not treat the text as a completed diagram. The template explicitly requires technically accurate diagrams and an ERD matching the actual database.
+
+
+4.3.2 Use Case Diagram — PDF pages 45–46 / printed 37–38
+
+Prepare a current diagram with Student, Counselor, and Super Administrator as authenticated actors; Parent/Guardian is a notification recipient, not a portal user. Include student vent/report submission and meeting requests; counselor review, verification/rejection, case follow-up, and meetings; and administrator account/role management and audits. Show alert conditions in notes or correctly conditioned relationships. Do not show student OTP, public counselor/admin signup, or automatic incident-to-parent alerts on submission.
+
+
+4.3.3 DFD or Activity Diagram — PDF pages 46–47 / printed 38–39
+
+Document the vent and incident branches separately: authenticate; submit; analyze vents through the ML service with the PHP fallback path; store records; review cases; apply notification conditions. Incident intake must reach staff review before verified-incident parent alerts. Include meeting request/start/end/cancel flows if claiming complete system coverage. Keep data stores in a DFD and decisions in an activity diagram. Do not mix notation or draw FAISS as current risk-history storage.
+
+
+4.3.4 ERD — PDF page 47 / printed 39
+
+Use schema.sql as the checked-in reference, then reconcile it with a current database export before calling the ERD the deployed schema. It contains 12 tables: users, students, counselors, admins, vent_logs, bully_reports, audit_logs, sms_logs, email_logs, counselor_notes, case_status_history, and virtual_meetings.
+
+Show students/counselors/admins linked through user_id; vent_logs and audit_logs through user_id; the three nullable incident user references; student and counselor references in notes and meetings; and student/changed_by references in case history. Copy actual keys, nullability, and cardinality from the schema. Do not substitute the older video_conferences table or omit notes, case history, and meetings.
+
+
+Final checks before copying into Google Docs
+
+Update the List of Figures with exact final captions and actual page numbers after layout settles. Number newly completed figures in document order. The current list has no page numbers. Leave missing diagrams unfinished until drafted and checked. The Chapter 5 interface section also contains no screenshots; add only genuine current captures if that section is completed.
+
+Evidence checked: template diagram instruction; schema.sql; VentController.php (ML payload/history/alerts); BullyReportController.php (intake); AdminController.php (verifyIncident/rejectIncident); VirtualMeetingController.php (request/start/end/cancel).

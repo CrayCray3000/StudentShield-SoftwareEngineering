@@ -1,0 +1,19 @@
+<!doctype html><meta charset="utf-8"><title>StudentShield source chart reference</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>body{margin:0;background:white;font-family:Inter,sans-serif}div{width:682px;height:256px}</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div><canvas id="riskPieChart"></canvas></div>
+<script>
+// Configuration copied from the current dashboard. Counts come from its 12 captured rows.
+document.fonts.ready.then(()=>{
+ Chart.defaults.font.family="'Inter', sans-serif";
+ Chart.defaults.color='#64748b';
+ Chart.defaults.plugins.tooltip.backgroundColor='rgba(15, 23, 42, 0.9)';
+ Chart.defaults.plugins.tooltip.padding=12;
+ Chart.defaults.plugins.tooltip.cornerRadius=8;
+ new Chart(document.getElementById('riskPieChart').getContext('2d'),{
+ type:'doughnut',data:{labels:['Critical','High','Medium','Low'],datasets:[{data:[1,7,3,1],backgroundColor:['#E04B3F','#F59E0B','#2A5DB0','#0B5E2E'],borderWidth:0,hoverOffset:4}]},
+ options:{maintainAspectRatio:false,cutout:'70%',animation:false,plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:20}}}}
+ });
+});
+</script>

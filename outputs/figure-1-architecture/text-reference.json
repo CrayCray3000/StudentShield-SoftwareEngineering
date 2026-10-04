@@ -1,0 +1,432 @@
+[
+  {
+    "value": "StudentShield web application",
+    "x": 965.0,
+    "y": 272.0,
+    "w": 436.109375,
+    "h": 44.8,
+    "size": 32.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=32;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "CodeIgniter 4 / PHP",
+    "x": 965.0,
+    "y": 315.0,
+    "w": 247.890625,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Vents, incident reports and sessions",
+    "x": 965.0,
+    "y": 362.0,
+    "w": 389.0625,
+    "h": 36.4,
+    "size": 26.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=26;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Local screening fallback",
+    "x": 965.0,
+    "y": 408.0,
+    "w": 275.5625,
+    "h": 36.4,
+    "size": 26.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=26;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "MySQL / MariaDB",
+    "x": 1565.0,
+    "y": 272.0,
+    "w": 250.203125,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Application records",
+    "x": 1565.0,
+    "y": 318.0,
+    "w": 225.78125,
+    "h": 36.4,
+    "size": 26.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=26;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Risk history",
+    "x": 1565.0,
+    "y": 362.0,
+    "w": 146.40625,
+    "h": 36.4,
+    "size": 26.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=26;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Meeting records",
+    "x": 1565.0,
+    "y": 406.0,
+    "w": 189.6875,
+    "h": 36.4,
+    "size": 26.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=26;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "InfinityFree web hosting",
+    "x": 1195.0,
+    "y": 106.0,
+    "w": 376.421875,
+    "h": 47.599999999999994,
+    "size": 34.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=34;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Hugging Face Spaces",
+    "x": 340.0,
+    "y": 843.0,
+    "w": 309.78125,
+    "h": 44.8,
+    "size": 32.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=32;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "FastAPI / PyTorch screening",
+    "x": 340.0,
+    "y": 900.0,
+    "w": 342.328125,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "mDeBERTa / GoEmotions",
+    "x": 340.0,
+    "y": 952.0,
+    "w": 318.109375,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Risk scores, levels and emotions",
+    "x": 340.0,
+    "y": 1004.0,
+    "w": 384.671875,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Google Meet",
+    "x": 900.0,
+    "y": 843.0,
+    "w": 193.25,
+    "h": 44.8,
+    "size": 32.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=32;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Online counseling",
+    "x": 900.0,
+    "y": 900.0,
+    "w": 224.5,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Staff-created link for each session",
+    "x": 900.0,
+    "y": 952.0,
+    "w": 400.421875,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Video calls hosted externally",
+    "x": 900.0,
+    "y": 1004.0,
+    "w": 344.0625,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Notification services",
+    "x": 1460.0,
+    "y": 843.0,
+    "w": 296.359375,
+    "h": 44.8,
+    "size": 32.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=32;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "SMS gateway / SMTP",
+    "x": 1460.0,
+    "y": 900.0,
+    "w": 271.25,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Configured notification channels",
+    "x": 1460.0,
+    "y": 952.0,
+    "w": 388.546875,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Delivery follows alert rules",
+    "x": 1460.0,
+    "y": 1004.0,
+    "w": 327.109375,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Student",
+    "x": 120.0,
+    "y": 184.0,
+    "w": 123.359375,
+    "h": 43.4,
+    "size": 31.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=31;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Web browser",
+    "x": 120.0,
+    "y": 220.0,
+    "w": 151.96875,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Staff",
+    "x": 120.0,
+    "y": 454.0,
+    "w": 83.71875,
+    "h": 43.4,
+    "size": 31.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=31;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Counselor /",
+    "x": 120.0,
+    "y": 493.0,
+    "w": 135.984375,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Super Administrator",
+    "x": 120.0,
+    "y": 527.0,
+    "w": 223.5,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Cloudflare",
+    "x": 393.0,
+    "y": 338.70000000000005,
+    "w": 162.375,
+    "h": 43.4,
+    "size": 31.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=31;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "HTTPS web access",
+    "x": 393.0,
+    "y": 368.2,
+    "w": 222.203125,
+    "h": 36.4,
+    "size": 26.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=26;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Counselors and eligible",
+    "x": 1460.0,
+    "y": 1215.0,
+    "w": 298.484375,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": true,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=1;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "parents / guardians",
+    "x": 1460.0,
+    "y": 1258.0,
+    "w": 231.46875,
+    "h": 39.199999999999996,
+    "size": 28.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=28;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Uses portal",
+    "x": 260.0,
+    "y": 89.0,
+    "w": 133.1875,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Uses portal",
+    "x": 218.59,
+    "y": 414.8,
+    "w": 133.1875,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Web requests",
+    "x": 540.0,
+    "y": 214.0,
+    "w": 153.375,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "HTTPS",
+    "x": 540.0,
+    "y": 250.0,
+    "w": 96.390625,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Reads / writes",
+    "x": 1335.0,
+    "y": 245.0,
+    "w": 161.65625,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "SQL",
+    "x": 1335.0,
+    "y": 280.0,
+    "w": 67.21875,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Screens vent text and risk history",
+    "x": 550.0,
+    "y": 545.0,
+    "w": 365.890625,
+    "h": 36.4,
+    "size": 26.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=26;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "HTTPS / JSON; X-API-KEY",
+    "x": 550.0,
+    "y": 582.0,
+    "w": 315.125,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Opens session link",
+    "x": 1017.52,
+    "y": 562.7,
+    "w": 215.03125,
+    "h": 36.4,
+    "size": 26.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=26;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Browser redirect",
+    "x": 1017.52,
+    "y": 598.4,
+    "w": 187.296875,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "Attempts conditional alerts",
+    "x": 1410.0,
+    "y": 579.0,
+    "w": 301.609375,
+    "h": 36.4,
+    "size": 26.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=26;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "HTTP(S) / SMTP",
+    "x": 1410.0,
+    "y": 617.0,
+    "w": 197.8125,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  },
+  {
+    "value": "SMS / email",
+    "x": 1536.72,
+    "y": 1082.5,
+    "w": 145.046875,
+    "h": 35.0,
+    "size": 25.0,
+    "bold": false,
+    "style": "text;html=0;align=center;verticalAlign=middle;whiteSpace=wrap;fontFamily=Times New Roman;fontSize=25;fontStyle=0;fontColor=#000000;strokeColor=none;fillColor=none;spacing=0;"
+  }
+]
