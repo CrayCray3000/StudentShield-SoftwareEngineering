@@ -587,7 +587,6 @@
         passInput.placeholder = m.passReq ? 'Required for this role' : 'Enter password (optional)';
     }
     selectAddRole(0); // initialise
-    }
 
     document.getElementById('editRole').addEventListener('change', function() {
         toggleFieldsForRole('edit');
