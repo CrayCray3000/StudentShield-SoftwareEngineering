@@ -83,6 +83,12 @@
 
         /* Reset for mobile */
 
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+            width: 100%;
+        }
+
         body {
             background-color: #f8faf6;
             background-image: radial-gradient(circle at 25px 25px, rgba(22, 101, 52, 0.02) 2px, transparent 0);
@@ -277,6 +283,8 @@
             position: sticky;
             top: 0;
             z-index: 40;
+            width: 100%;
+            max-width: 100vw;
             box-shadow: 0 4px 18px -4px rgba(7, 88, 38, 0.20);
         }
 
@@ -286,8 +294,8 @@
         }
 
         #dashboardHeader.is-scrolled .dash-logo-img {
-            height: 2.25rem;
-            width: 2.25rem;
+            height: 2rem;
+            width: 2rem;
         }
 
         .section-nav-strip {
@@ -297,16 +305,22 @@
             border-bottom: 2px solid rgba(11, 94, 46, 0.12);
             border-top: 1px solid rgba(255, 255, 255, 0.20);
             box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 100vw;
+            overflow: hidden;
         }
 
         .section-tabs-scroller {
             display: flex;
             align-items: center;
-            gap: 4px;
-            padding: 5px 0;
+            gap: 6px;
+            padding: 6px 2px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            width: 100%;
+            min-width: 0;
+            flex: 1 1 0%;
         }
         .section-tabs-scroller::-webkit-scrollbar {
             display: none;
@@ -315,10 +329,10 @@
         .dash-tab {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 13px;
+            gap: 5px;
+            padding: 5px 11px;
             border-radius: 9999px;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #4b6354;
             text-decoration: none;
@@ -327,6 +341,14 @@
             background: transparent;
             border: 1px solid transparent;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (min-width: 640px) {
+            .dash-tab {
+                gap: 6px;
+                padding: 6px 13px;
+                font-size: 0.78rem;
+            }
         }
 
         .dash-tab:hover {
@@ -446,17 +468,19 @@
     <header id="dashboardHeader" class="sticky top-0 z-40 transition-all duration-200">
         <!-- Brand Navbar -->
         <nav class="glass-header text-white transition-all duration-200" id="mainNavBar">
-            <div id="navContainer" class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center transition-all duration-200">
-                <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
+            <div id="navContainer" class="container mx-auto px-3 sm:px-6 py-2 sm:py-3.5 flex justify-between items-center transition-all duration-200 max-w-full">
+                <div class="flex items-center gap-2 sm:gap-4 min-w-0">
                     <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo"
-                        class="dash-logo-img h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0 transition-all duration-200"
+                        class="dash-logo-img h-8 w-8 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0 transition-all duration-200"
                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
 
-                <div class="truncate">
-                    <h1 class="text-base sm:text-2xl font-bold tracking-tight leading-tight truncate">StudentShield</h1>
+                <div class="truncate min-w-0">
+                    <h1 class="text-sm sm:text-2xl font-bold tracking-tight leading-tight truncate">StudentShield</h1>
                     <span
-                        class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?>
-                        Dashboard</span>
+                        class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">
+                        <span class="sm:hidden"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?></span>
+                        <span class="hidden sm:inline"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</span>
+                    </span>
                 </div>
             </div>
 
@@ -606,36 +630,36 @@
 
     <!-- Secondary Section Navigation Strip -->
     <div id="sectionNavStrip" class="section-nav-strip">
-        <div class="container mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between gap-3">
-                <nav class="section-tabs-scroller" aria-label="Dashboard Section Navigation">
+        <div class="container mx-auto px-3 sm:px-6 max-w-full">
+            <div class="flex items-center justify-between gap-2 w-full min-w-0">
+                <nav class="section-tabs-scroller flex-1 min-w-0" aria-label="Dashboard Section Navigation">
                     <a href="#section-vents" class="dash-tab is-active" data-section="section-vents" onclick="tpToSection('section-vents', event)">
-                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/>
                         </svg>
-                        <span>Student Vents</span>
+                        <span>Vents</span>
                     </a>
                     <a href="#section-incidents" class="dash-tab" data-section="section-incidents" onclick="tpToSection('section-incidents', event)">
-                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                         </svg>
-                        <span>Incident Reports</span>
+                        <span>Incidents</span>
                     </a>
                     <a href="#section-sessions" class="dash-tab" data-section="section-sessions" onclick="tpToSection('section-sessions', event)">
-                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                         </svg>
                         <span>Sessions</span>
                         <span id="navSessionsBadge" class="tab-badge <?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?>"><?= esc($pending_meetings_count ?? 0) ?></span>
                     </a>
                     <a href="#section-alerts" class="dash-tab" data-section="section-alerts" onclick="tpToSection('section-alerts', event)">
-                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                         </svg>
-                        <span>Crisis Alerts</span>
+                        <span>Alerts</span>
                     </a>
                     <a href="#section-charts" class="dash-tab" data-section="section-charts" onclick="tpToSection('section-charts', event)">
-                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                         </svg>
                         <span>Analytics</span>
@@ -651,7 +675,7 @@
 </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 flex-1 animate-fade-in pt-6">
+    <main class="container mx-auto px-3 sm:px-6 max-w-full flex-1 animate-fade-in pt-4 sm:pt-6">
 
         <!-- Welcome Metric Row -->
         <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up"
