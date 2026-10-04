@@ -460,6 +460,9 @@ def compile_regexes(patterns):
 
 ### CATEGORY 1: CRITICAL — Explicit Suicide Intent/Methods 
 CAT1_DIRECT = [
+    # Tagalog self-harm inflections; keep aligned with ExplicitCrisisGuard.php.
+    r"\b(?:laslas|naglaslas|naglalaslas|maglaslas|maglalaslas|nilaslas|nilalaslas|paglaslas|paglalaslas|lalaslas|laslasin|lilaslasin)\b",
+    r"\b(?:sinasaktan|sinaktan|sasaktan|saktan|sinasaksak|sinaksak|sasaksakin|saksakin)\s+(?:ko\s+(?:ang\s+)?sarili(?:\s+ko)?|(?:ang\s+)?sarili\s+ko)\b",
     r"\bsuicide\b", r"\bkill myself\b", r"\bend it all\b", r"\bcut myself\b",
     r"\bwant to die\b", r"\bno reason to live\b",
     r"\bmagpakamatay\b", r"\blaslas\b", r"\btatalon\b", r"\bbibigti\b", r"\bsugatan\b",
