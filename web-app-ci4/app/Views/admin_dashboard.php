@@ -271,59 +271,113 @@
 
 
         /* ═══════════════════════════════════════
-           FIXED SECTION TAB BAR
+           UNIFIED STICKY DASHBOARD HEADER & NAV
         ═══════════════════════════════════════ */
-        #section-tab-nav {
-            position: fixed;
-            top: 64px;
-            left: 0;
-            right: 0;
+        #dashboardHeader {
+            position: sticky;
+            top: 0;
             z-index: 40;
-            background: rgba(255,255,255,0.97);
-            border-bottom: 2px solid rgba(11,94,46,0.12);
-            box-shadow: 0 2px 10px -4px rgba(11,94,46,0.18);
+            box-shadow: 0 4px 18px -4px rgba(7, 88, 38, 0.20);
         }
-        #section-tab-nav .tab-scroll-wrapper {
+
+        #dashboardHeader.is-scrolled #navContainer {
+            padding-top: 0.35rem;
+            padding-bottom: 0.35rem;
+        }
+
+        #dashboardHeader.is-scrolled .dash-logo-img {
+            height: 2.25rem;
+            width: 2.25rem;
+        }
+
+        .section-nav-strip {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 2px solid rgba(11, 94, 46, 0.12);
+            border-top: 1px solid rgba(255, 255, 255, 0.20);
+            box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-tabs-scroller {
             display: flex;
-            align-items: stretch;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 0;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1rem;
         }
-        #section-tab-nav .tab-scroll-wrapper::-webkit-scrollbar { display: none; }
-        .section-tab {
+        .section-tabs-scroller::-webkit-scrollbar {
+            display: none;
+        }
+
+        .dash-tab {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 10px 14px;
-            white-space: nowrap;
-            flex-shrink: 0;
-            color: #6B7C72;
+            padding: 6px 13px;
+            border-radius: 9999px;
             font-size: 0.78rem;
             font-weight: 600;
+            color: #4b6354;
             text-decoration: none;
-            border-bottom: 3px solid transparent;
-            transition: color 0.2s, border-color 0.2s;
-            letter-spacing: 0.01em;
+            white-space: nowrap;
+            flex-shrink: 0;
+            background: transparent;
+            border: 1px solid transparent;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .section-tab:hover { color: #0B5E2E; }
-        .section-tab.is-active {
+
+        .dash-tab:hover {
             color: #0B5E2E;
-            border-bottom-color: #0B5E2E;
+            background: rgba(11, 94, 46, 0.08);
+            border-color: rgba(11, 94, 46, 0.15);
+        }
+
+        .dash-tab.is-active {
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0D7B34 0%, #075826 100%) !important;
+            border-color: #075826 !important;
             font-weight: 700;
+            box-shadow: 0 2px 8px -1px rgba(7, 88, 38, 0.35);
         }
+
+        .dash-tab.is-active .tab-icon {
+            color: #FACC15 !important;
+        }
+
         .tab-badge {
-            display: inline-flex; align-items: center; justify-content: center;
-            min-width: 17px; height: 17px; padding: 0 4px;
-            border-radius: 9999px; background: #059669;
-            color: #fff; font-size: 9px; font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 9999px;
+            background: #EAB308;
+            color: #083318;
+            font-size: 10px;
+            font-weight: 800;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
         }
-        .tab-badge.hidden { display: none; }
-        html { scroll-behavior: smooth; }
-        [id^="section-"] { scroll-margin-top: 128px; }
+
+        .dash-tab.is-active .tab-badge {
+            background: #FACC15;
+            color: #075826;
+        }
+
+        .tab-badge.hidden {
+            display: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        [id^="section-"] {
+            scroll-margin-top: 130px;
+        }
 
         /* Collapsed table rows — show first 5, hide the rest until expanded */
         .tbl-row-hidden {
@@ -388,12 +442,14 @@
 
 <body class="school-staff-page font-sans antialiased text-gray-800 min-h-screen flex flex-col relative">
 
-    <!-- Navbar -->
-    <nav class="glass-header text-white sticky top-0 z-50">
-        <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
-            <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo"
-                    class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0"
+    <!-- Sticky Unified Header: Both Brand Navbar and Section Strip scroll together smoothly -->
+    <header id="dashboardHeader" class="sticky top-0 z-40 transition-all duration-200">
+        <!-- Brand Navbar -->
+        <nav class="glass-header text-white transition-all duration-200" id="mainNavBar">
+            <div id="navContainer" class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center transition-all duration-200">
+                <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                    <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo"
+                        class="dash-logo-img h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0 transition-all duration-200"
                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
 
                 <div class="truncate">
@@ -548,35 +604,54 @@
         </div>
     </nav>
 
-    <!-- Fixed Section Tab Bar - follows scroll always -->
-    <div id="section-tab-nav">
-        <div class="tab-scroll-wrapper">
-            <a href="#section-vents" class="section-tab" onclick="scrollToSection('section-vents',event)">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/></svg>
-                Vents
-            </a>
-            <a href="#section-incidents" class="section-tab" onclick="scrollToSection('section-incidents',event)">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                Incidents
-            </a>
-            <a href="#section-sessions" class="section-tab" onclick="scrollToSection('section-sessions',event)">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                Sessions
-                <span id="navSessionsBadge" class="tab-badge <?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?>"><?= esc($pending_meetings_count ?? 0) ?></span>
-            </a>
-            <a href="#section-alerts" class="section-tab" onclick="scrollToSection('section-alerts',event)">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                Alert Log
-            </a>
-            <a href="#section-charts" class="section-tab" onclick="scrollToSection('section-charts',event)">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                Analytics
-            </a>
+    <!-- Secondary Section Navigation Strip -->
+    <div id="sectionNavStrip" class="section-nav-strip">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between gap-3">
+                <nav class="section-tabs-scroller" aria-label="Dashboard Section Navigation">
+                    <a href="#section-vents" class="dash-tab is-active" data-section="section-vents" onclick="tpToSection('section-vents', event)">
+                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/>
+                        </svg>
+                        <span>Student Vents</span>
+                    </a>
+                    <a href="#section-incidents" class="dash-tab" data-section="section-incidents" onclick="tpToSection('section-incidents', event)">
+                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <span>Incident Reports</span>
+                    </a>
+                    <a href="#section-sessions" class="dash-tab" data-section="section-sessions" onclick="tpToSection('section-sessions', event)">
+                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        <span>Sessions</span>
+                        <span id="navSessionsBadge" class="tab-badge <?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?>"><?= esc($pending_meetings_count ?? 0) ?></span>
+                    </a>
+                    <a href="#section-alerts" class="dash-tab" data-section="section-alerts" onclick="tpToSection('section-alerts', event)">
+                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        <span>Crisis Alerts</span>
+                    </a>
+                    <a href="#section-charts" class="dash-tab" data-section="section-charts" onclick="tpToSection('section-charts', event)">
+                        <svg class="w-3.5 h-3.5 tab-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        <span>Analytics</span>
+                    </a>
+                </nav>
+                <div class="hidden lg:flex items-center gap-2 text-[11px] font-semibold text-emerald-900/60 uppercase tracking-wider flex-shrink-0">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Live Portal</span>
+                </div>
+            </div>
         </div>
     </div>
+</header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 flex-1 animate-fade-in" style="padding-top: calc(64px + 45px + 24px);">
+    <main class="container mx-auto px-4 sm:px-6 flex-1 animate-fade-in pt-6">
 
         <!-- Welcome Metric Row -->
         <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up"
@@ -2190,124 +2265,96 @@
             });
         })();
     </script>
-</body>
 
-</html>
-
-
-<div id="bulkDeleteIncidentsInputs"></div>
-</form>
-<?= view('reports/modals/student_profile') ?>
-<?= view('partials/session_idle_modal') ?>
-
-<!-- ── Floating Scroll-to-Top Button ── -->
-<button id="scrollTopBtn" title="Back to top" aria-label="Scroll back to top" style="
-            position: fixed;
-            bottom: 28px;
-            right: 24px;
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            background: linear-gradient(135deg, #D9AA2E 0%, #B5881D 100%);
-            color: #083318;
-            box-shadow: 0 6px 20px -4px rgba(0,0,0,0.35), 0 0 0 3px rgba(217,170,46,0.20);
-            opacity: 0;
-            transform: translateY(16px) scale(0.85);
-            pointer-events: none;
-            transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
-        ">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="18 15 12 9 6 15" />
-    </svg>
-</button>
-<script>
-    (function () {
-        var btn = document.getElementById('scrollTopBtn');
-        var SHOW_AT = 400;
-        function update() {
-            var scrolled = window.scrollY || document.documentElement.scrollTop;
-            if (scrolled > SHOW_AT) {
-                btn.style.opacity = '1';
-                btn.style.transform = 'translateY(0) scale(1)';
-                btn.style.pointerEvents = 'auto';
-            } else {
-                btn.style.opacity = '0';
-                btn.style.transform = 'translateY(16px) scale(0.85)';
-                btn.style.pointerEvents = 'none';
-            }
-        }
-        window.addEventListener('scroll', update, { passive: true });
-        btn.addEventListener('click', function () {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        btn.addEventListener('mouseenter', function () {
-            this.style.boxShadow = '0 10px 28px -4px rgba(0,0,0,0.45), 0 0 0 4px rgba(217,170,46,0.30)';
-            this.style.transform = 'translateY(-2px) scale(1.07)';
-        });
-        btn.addEventListener('mouseleave', function () {
-            this.style.boxShadow = '0 6px 20px -4px rgba(0,0,0,0.35), 0 0 0 3px rgba(217,170,46,0.20)';
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    })();
-</script>
-
-<!-- Section tab: scroll helper + active-state via IntersectionObserver -->
-<script>
-    // Smooth scroll to section, accounting for the fixed tab bar height
-    function scrollToSection(id, e) {
-        if (e) e.preventDefault();
-        var el = document.getElementById(id);
-        if (!el) return;
-        var offset = 128; // green navbar (64px) + tab bar (~45px) + breathing room
-        var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top: top, behavior: 'smooth' });
-    }
-
-    (function () {
-        var sections = ['section-vents', 'section-incidents', 'section-sessions', 'section-alerts', 'section-charts'];
-        var tabs = {};
-        sections.forEach(function (id) {
-            var tab = document.querySelector('#section-tab-nav a[href="#' + id + '"]');
-            if (tab) tabs[id] = tab;
-        });
-
-        function clearActive() {
-            Object.values(tabs).forEach(function (t) { t.classList.remove('is-active'); });
-        }
-
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    clearActive();
-                    var tab = tabs[entry.target.id];
-                    if (tab) {
-                        tab.classList.add('is-active');
-                        // Keep active tab visible on mobile by scrolling the tab bar
-                        tab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
-                    }
-                }
-            });
-        }, {
-            rootMargin: '-20% 0px -70% 0px',
-            threshold: 0
-        });
-
-        sections.forEach(function (id) {
+    <!-- Section Navigation: Smooth Teleport & High-Performance Reactive Scrollspy -->
+    <script>
+        // Smooth teleport to section accounting for dynamic sticky header height
+        function tpToSection(id, e) {
+            if (e) e.preventDefault();
             var el = document.getElementById(id);
-            if (el) observer.observe(el);
-        });
+            if (!el) return;
 
-        // Default: first tab active on load
-        if (tabs['section-vents']) tabs['section-vents'].classList.add('is-active');
-    })();
-</script>
+            var header = document.getElementById('dashboardHeader');
+            var headerHeight = header ? header.getBoundingClientRect().height : 100;
+            var targetTop = el.getBoundingClientRect().top + window.pageYOffset - headerHeight - 14;
+
+            window.scrollTo({
+                top: Math.max(0, targetTop),
+                behavior: 'smooth'
+            });
+        }
+
+        (function () {
+            var header = document.getElementById('dashboardHeader');
+            var sections = ['section-vents', 'section-incidents', 'section-sessions', 'section-alerts', 'section-charts'];
+            var tabs = {};
+
+            sections.forEach(function (id) {
+                var tab = document.querySelector('.dash-tab[data-section="' + id + '"]');
+                if (tab) tabs[id] = tab;
+            });
+
+            function setActiveTab(activeId) {
+                sections.forEach(function (id) {
+                    var tab = tabs[id];
+                    if (!tab) return;
+                    if (id === activeId) {
+                        if (!tab.classList.contains('is-active')) {
+                            tab.classList.add('is-active');
+                            tab.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+                        }
+                    } else {
+                        tab.classList.remove('is-active');
+                    }
+                });
+            }
+
+            var ticking = false;
+            function onScroll() {
+                if (!ticking) {
+                    window.requestAnimationFrame(function () {
+                        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+                        // 1. Condense header on scroll for extra table view area
+                        if (header) {
+                            if (scrollY > 50) {
+                                header.classList.add('is-scrolled');
+                            } else {
+                                header.classList.remove('is-scrolled');
+                            }
+                        }
+
+                        // 2. Deterministic active section detection
+                        var headerHeight = (header ? header.offsetHeight : 100) + 24;
+                        var currentId = sections[0];
+
+                        // Detect bottom of page so last section is highlighted accurately
+                        if ((window.innerHeight + scrollY) >= document.documentElement.scrollHeight - 60) {
+                            currentId = sections[sections.length - 1];
+                        } else {
+                            for (var i = 0; i < sections.length; i++) {
+                                var sec = document.getElementById(sections[i]);
+                                if (sec) {
+                                    var top = sec.getBoundingClientRect().top + scrollY;
+                                    if (top - headerHeight <= scrollY) {
+                                        currentId = sections[i];
+                                    }
+                                }
+                            }
+                        }
+
+                        setActiveTab(currentId);
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            // Initial run to highlight correct tab on load
+            onScroll();
+        })();
+    </script>
 </body>
 
 </html>
