@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" style="scroll-behavior:smooth">
+
 <head>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
@@ -12,14 +13,16 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { 
-                        sans: ['Inter', 'sans-serif'], 
-                        heading: ['Outfit', 'sans-serif'] 
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif']
                     },
                     colors: {
                         white: '#FBFDFB', // Anti-glare soft white
@@ -54,10 +57,31 @@
     </script>
     <style>
         /* Responsive scaling for smaller monitors/laptops */
-        @media (max-width: 1440px) { html { font-size: 15px; } }
-        @media (max-width: 1280px) { html { font-size: 14px; } }
-        @media (max-width: 1024px) { html { font-size: 13px; } }
-        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
+        @media (max-width: 1440px) {
+            html {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 1280px) {
+            html {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            html {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 16px;
+            }
+        }
+
+        /* Reset for mobile */
 
         body {
             background-color: #f8faf6;
@@ -76,10 +100,11 @@
             border: 1px solid #e5ebe5;
             border-radius: 14px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
+
         .dashboard-card:hover {
-            box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
             border-color: #cddacd;
         }
 
@@ -97,8 +122,9 @@
             border-radius: 12px;
             padding: 20px 24px;
             transition: all 0.25s ease;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
+
         .stat-card::after {
             content: '';
             position: absolute;
@@ -110,22 +136,31 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .stat-card:hover::after {
             opacity: 1;
         }
+
         .stat-card:hover {
             border-color: #d4ddd4;
-            box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
             transform: translateY(-2px);
         }
+
         .stat-card.gold-accent {
             border-left: 4px solid #EAB308;
         }
+
         .stat-card.green-accent {
             border-left: 4px solid #096328;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: 'Outfit', sans-serif;
         }
 
@@ -134,30 +169,48 @@
             width: 5px;
             height: 5px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-track {
             background: #f5f7f5;
             border-radius: 10px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #c8dac8;
             border-radius: 10px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #0B5E2E;
         }
 
         /* Entry animations */
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
+
         .animate-slide-up {
             animation: slideUp 0.5s ease-out forwards;
         }
+
         .animate-fade-in {
             animation: fadeIn 0.4s ease-out forwards;
         }
@@ -166,18 +219,31 @@
             box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
             animation: pulse-live 2s infinite;
         }
+
         @keyframes pulse-live {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
         }
 
         .thead-green {
             background: #096328;
             color: white;
         }
+
         .thead-green th {
-            color: rgba(255,255,255,0.92);
+            color: rgba(255, 255, 255, 0.92);
             font-weight: 600;
             letter-spacing: 0.05em;
             font-size: 0.7rem;
@@ -185,171 +251,201 @@
 
         /* Row highlight animation for new entries */
         @keyframes newRow {
-            0% { background-color: rgba(242, 195, 0, 0.12); }
-            100% { background-color: transparent; }
+            0% {
+                background-color: rgba(242, 195, 0, 0.12);
+            }
+
+            100% {
+                background-color: transparent;
+            }
         }
 
         .footer-bar {
             background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.75rem;
             padding: 12px 0;
             text-align: center;
             letter-spacing: 0.03em;
         }
 
-        /* ═══════════════════════════════════════════
-           PREMIUM SECTION TAB BAR
-        ═══════════════════════════════════════════ */
+
+        /* ═══════════════════════════════════════
+           FIXED SECTION TAB BAR
+        ═══════════════════════════════════════ */
         #section-tab-nav {
-            position: sticky;
+            position: fixed;
             top: 64px;
+            left: 0;
+            right: 0;
             z-index: 40;
-            margin: 0 -1rem 1.5rem;
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(11,94,46,0.10);
-            box-shadow: 0 4px 24px -8px rgba(11,94,46,0.12);
+            background: rgba(255,255,255,0.97);
+            border-bottom: 2px solid rgba(11,94,46,0.12);
+            box-shadow: 0 2px 10px -4px rgba(11,94,46,0.18);
         }
         #section-tab-nav .tab-scroll-wrapper {
             display: flex;
             align-items: stretch;
             overflow-x: auto;
-            scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            max-width: 1280px;
+            margin: 0 auto;
             padding: 0 1rem;
         }
         #section-tab-nav .tab-scroll-wrapper::-webkit-scrollbar { display: none; }
-        /* Fade edges to hint at scroll on mobile */
-        #section-tab-nav::before,
-        #section-tab-nav::after {
-            content: '';
-            position: absolute;
-            top: 0; bottom: 0;
-            width: 32px;
-            z-index: 1;
-            pointer-events: none;
-        }
-        #section-tab-nav::before {
-            left: 0;
-            background: linear-gradient(to right, rgba(255,255,255,0.95), transparent);
-        }
-        #section-tab-nav::after {
-            right: 0;
-            background: linear-gradient(to left, rgba(255,255,255,0.95), transparent);
-        }
         .section-tab {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 12px 16px;
+            padding: 10px 14px;
             white-space: nowrap;
-            scroll-snap-align: start;
+            flex-shrink: 0;
             color: #6B7C72;
             font-size: 0.78rem;
             font-weight: 600;
             text-decoration: none;
             border-bottom: 3px solid transparent;
-            transition: color 0.2s ease, border-color 0.2s ease;
-            position: relative;
+            transition: color 0.2s, border-color 0.2s;
             letter-spacing: 0.01em;
         }
-        .section-tab svg {
-            transition: color 0.2s ease;
-            flex-shrink: 0;
-        }
-        .section-tab:hover {
-            color: #0B5E2E;
-        }
-        .section-tab:hover svg { color: #0B5E2E; }
+        .section-tab:hover { color: #0B5E2E; }
         .section-tab.is-active {
             color: #0B5E2E;
             border-bottom-color: #0B5E2E;
             font-weight: 700;
         }
-        .section-tab.is-active svg { color: #0B5E2E; }
-        /* Badge on Sessions tab */
         .tab-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            border-radius: 9999px;
-            background: #059669;
-            color: #fff;
-            font-size: 10px;
-            font-weight: 700;
-            line-height: 1;
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 17px; height: 17px; padding: 0 4px;
+            border-radius: 9999px; background: #059669;
+            color: #fff; font-size: 9px; font-weight: 700;
         }
         .tab-badge.hidden { display: none; }
-        /* Smooth page scroll */
         html { scroll-behavior: smooth; }
-        [id^="section-"] { scroll-margin-top: 120px; }
+        [id^="section-"] { scroll-margin-top: 128px; }
 
         /* Collapsed table rows — show first 5, hide the rest until expanded */
-        .tbl-row-hidden { display: none; }
-        .show-all-row { cursor: pointer; }
+        .tbl-row-hidden {
+            display: none;
+        }
+
+        .show-all-row {
+            cursor: pointer;
+        }
 
         /* Mobile Card Tables */
         @media (max-width: 768px) {
-            .mobile-card-table, .mobile-card-table thead, .mobile-card-table tbody, .mobile-card-table th, .mobile-card-table td, .mobile-card-table tr { display: block; width: 100%; }
-            .mobile-card-table thead { display: none; }
-            .mobile-card-table tr { margin-bottom: 1rem; background: #fff; border-radius: 12px; border: 1px solid #e5ebe5; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); overflow: hidden; }
-            .mobile-card-table td { border-bottom: 1px dashed #f3f4f6; padding: 12px 16px !important; display: flex; flex-direction: column; gap: 4px; text-align: left !important; }
-            .mobile-card-table td:last-child { border-bottom: none; background: #f8faf6; }
-            .mobile-card-table td::before { content: attr(data-label); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; color: #9ca3af; }
+
+            .mobile-card-table,
+            .mobile-card-table thead,
+            .mobile-card-table tbody,
+            .mobile-card-table th,
+            .mobile-card-table td,
+            .mobile-card-table tr {
+                display: block;
+                width: 100%;
+            }
+
+            .mobile-card-table thead {
+                display: none;
+            }
+
+            .mobile-card-table tr {
+                margin-bottom: 1rem;
+                background: #fff;
+                border-radius: 12px;
+                border: 1px solid #e5ebe5;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+                overflow: hidden;
+            }
+
+            .mobile-card-table td {
+                border-bottom: 1px dashed #f3f4f6;
+                padding: 12px 16px !important;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                text-align: left !important;
+            }
+
+            .mobile-card-table td:last-child {
+                border-bottom: none;
+                background: #f8faf6;
+            }
+
+            .mobile-card-table td::before {
+                content: attr(data-label);
+                font-size: 0.65rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                font-weight: 800;
+                color: #9ca3af;
+            }
         }
     </style>
 </head>
+
 <body class="school-staff-page font-sans antialiased text-gray-800 min-h-screen flex flex-col relative">
 
     <!-- Navbar -->
     <nav class="glass-header text-white sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
             <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0"
-                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
+                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo"
+                    class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0"
+                    onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
 
                 <div class="truncate">
                     <h1 class="text-base sm:text-2xl font-bold tracking-tight leading-tight truncate">StudentShield</h1>
-                    <span class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate"><span class="sm:hidden"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?></span><span class="hidden sm:inline"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</span></span>
+                    <span
+                        class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?>
+                        Dashboard</span>
                 </div>
             </div>
-            
+
             <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                 <!-- Live Philippine Clock -->
                 <div class="hidden md:flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/15">
-                    <svg class="w-4 h-4 text-[#F2C300] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <svg class="w-4 h-4 text-[#F2C300] flex-shrink-0" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     <div class="flex flex-col leading-tight">
-                        <span id="liveDayDate" class="text-[10px] font-bold text-[#FACC15] uppercase tracking-wider"><?= date('l, M j, Y') ?></span>
-                        <span id="liveTime" class="text-xs font-semibold text-white/90 tabular-nums"><?= date('g:i:s A') ?></span>
+                        <span id="liveDayDate"
+                            class="text-[10px] font-bold text-[#FACC15] uppercase tracking-wider"><?= date('l, M j, Y') ?></span>
+                        <span id="liveTime"
+                            class="text-xs font-semibold text-white/90 tabular-nums"><?= date('g:i:s A') ?></span>
                     </div>
                 </div>
 
                 <!-- Status indicator -->
-                <div class="hidden lg:flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/15">
+                <div
+                    class="hidden lg:flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/15">
                     <span class="w-2 h-2 rounded-full bg-[#EAB308] live-dot"></span>
                     <span class="text-xs font-semibold text-[#FACC15]">Active</span>
                 </div>
 
                 <!-- Pending Meeting Requests (Live Polling Bell) -->
                 <div class="relative" id="meetingNotifWrapper">
-                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()" class="relative flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-full border border-white/15 transition-all duration-200 focus:outline-none" aria-label="Session Requests">
+                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()"
+                        class="relative flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-full border border-white/15 transition-all duration-200 focus:outline-none"
+                        aria-label="Session Requests">
                         <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                         <span class="text-xs font-semibold text-white/90 hidden sm:inline ml-1.5">Sessions</span>
-                        <span id="meetingBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#22c55e] text-white text-[10px] font-bold shadow-lg animate-pulse">
+                        <span id="meetingBadge"
+                            class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#22c55e] text-white text-[10px] font-bold shadow-lg animate-pulse">
                             <?= esc($pending_meetings_count ?? 0) ?>
                         </span>
                     </button>
 
                     <!-- Dropdown panel: Responsive positioning avoiding overflow on mobile -->
-                    <div id="meetingDropdown" class="hidden fixed inset-x-3 top-16 sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-2 sm:w-84 max-w-[calc(100vw-1.5rem)] bg-[#0f2416] border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                    <div id="meetingDropdown"
+                        class="hidden fixed inset-x-3 top-16 sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-2 sm:w-84 max-w-[calc(100vw-1.5rem)] bg-[#0f2416] border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden">
                         <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-black/25">
                             <span class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
                                 📹 Pending Session Requests
@@ -357,28 +453,37 @@
                             <span id="dropdownCount" class="text-xs text-emerald-400 font-semibold"></span>
                         </div>
                         <div id="meetingRequestsList" class="max-h-72 overflow-y-auto divide-y divide-white/5">
-                            <div class="px-4 py-6 text-center text-white/50 text-sm" id="noRequestsMsg">No pending requests</div>
+                            <div class="px-4 py-6 text-center text-white/50 text-sm" id="noRequestsMsg">No pending
+                                requests</div>
                         </div>
-                        <div class="px-4 py-2.5 border-t border-white/10 flex items-center justify-between text-[11px] bg-black/25">
+                        <div
+                            class="px-4 py-2.5 border-t border-white/10 flex items-center justify-between text-[11px] bg-black/25">
                             <span class="text-white/40" id="lastCheckedLabel">Checking...</span>
-                            <a href="#section-sessions" onclick="toggleMeetingDropdown()" class="text-emerald-400 hover:text-emerald-300 font-semibold">View Section ↓</a>
+                            <a href="#section-sessions" onclick="toggleMeetingDropdown()"
+                                class="text-emerald-400 hover:text-emerald-300 font-semibold">View Section ↓</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Role Badge -->
                 <?php if (session()->get('role') == 2): ?>
-                    <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-bold tracking-wide">⭐ Super Admin</span>
+                    <span
+                        class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-bold tracking-wide">⭐
+                        Super Admin</span>
                 <?php else: ?>
-                    <span class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
+                    <span
+                        class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
                 <?php endif; ?>
 
                 <!-- Direct Sign Out Button (Prominent for Shared Computers) -->
                 <form action="<?= base_url('logout') ?>" method="POST" class="inline">
                     <?= csrf_field() ?>
-                    <button type="submit" class="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-200 hover:text-white rounded-lg border border-red-500/30 text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm" title="Sign Out of Portal">
+                    <button type="submit"
+                        class="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-200 hover:text-white rounded-lg border border-red-500/30 text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm"
+                        title="Sign Out of Portal">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
                         <span class="hidden sm:inline">Sign Out</span>
                     </button>
@@ -386,32 +491,54 @@
 
                 <!-- Navigation Menu Dropdown (role-aware) -->
                 <div class="relative" id="navMenuWrapper">
-                    <button onclick="toggleNavMenu()" id="navMenuBtn" class="flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-lg border border-white/15 transition-all duration-200 focus:outline-none" aria-label="Open navigation menu">
-                        <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <button onclick="toggleNavMenu()" id="navMenuBtn"
+                        class="flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-lg border border-white/15 transition-all duration-200 focus:outline-none"
+                        aria-label="Open navigation menu">
+                        <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
                         <span class="text-xs font-semibold text-white/90 hidden sm:inline ml-1.5">Menu</span>
                     </button>
-                    <div id="navMenuDropdown" class="hidden fixed right-3 top-16 w-56 sm:absolute sm:right-0 sm:top-full sm:mt-2 sm:w-52 bg-[#0f2416] border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden py-1">
+                    <div id="navMenuDropdown"
+                        class="hidden fixed right-3 top-16 w-56 sm:absolute sm:right-0 sm:top-full sm:mt-2 sm:w-52 bg-[#0f2416] border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden py-1">
                         <!-- Shared: Registrations -->
-                        <a href="/admin/pending-registrations" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
-                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                        <a href="/admin/pending-registrations"
+                            class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
                             Registrations
                         </a>
                         <?php if (session()->get('role') == 2): ?>
-                        <!-- Super Admin only -->
-                        <div class="mx-4 my-1 border-t border-white/10"></div>
-                        <a href="/admin/users" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
-                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                            Manage Users
-                        </a>
-                        <a href="/admin/audit-logs" class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
-                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                            Audit Logs
-                        </a>
+                            <!-- Super Admin only -->
+                            <div class="mx-4 my-1 border-t border-white/10"></div>
+                            <a href="/admin/users"
+                                class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                                <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                Manage Users
+                            </a>
+                            <a href="/admin/audit-logs"
+                                class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
+                                <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Audit Logs
+                            </a>
                         <?php endif; ?>
                         <div class="mx-4 my-1 border-t border-white/10"></div>
                         <form action="<?= base_url('logout') ?>" method="POST"><?= csrf_field() ?>
-                            <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-300 hover:text-red-200 hover:bg-red-500/10 transition-colors">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                            <button type="submit"
+                                class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-300 hover:text-red-200 hover:bg-red-500/10 transition-colors">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
                                 Logout
                             </button>
                         </form>
@@ -421,128 +548,172 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 py-8 flex-1 animate-fade-in">
+    <!-- Fixed Section Tab Bar - follows scroll always -->
+    <div id="section-tab-nav">
+        <div class="tab-scroll-wrapper">
+            <a href="#section-vents" class="section-tab" onclick="scrollToSection('section-vents',event)">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/></svg>
+                Vents
+            </a>
+            <a href="#section-incidents" class="section-tab" onclick="scrollToSection('section-incidents',event)">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                Incidents
+            </a>
+            <a href="#section-sessions" class="section-tab" onclick="scrollToSection('section-sessions',event)">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Sessions
+                <span id="navSessionsBadge" class="tab-badge <?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?>"><?= esc($pending_meetings_count ?? 0) ?></span>
+            </a>
+            <a href="#section-alerts" class="section-tab" onclick="scrollToSection('section-alerts',event)">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                Alert Log
+            </a>
+            <a href="#section-charts" class="section-tab" onclick="scrollToSection('section-charts',event)">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                Analytics
+            </a>
+        </div>
+    </div>
 
-        <!-- Section Navigation -->
-        <nav id="section-tab-nav" class="animate-slide-up" style="animation-delay: 0.05s; position: relative;" aria-label="Dashboard sections">
-            <div class="tab-scroll-wrapper">
-                <a href="#section-vents" class="section-tab">
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/></svg>
-                    Vents
-                </a>
-                <a href="#section-incidents" class="section-tab">
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    Incidents
-                </a>
-                <a href="#section-sessions" class="section-tab">
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                    Sessions
-                    <span id="navSessionsBadge" class="tab-badge <?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?>"><?= esc($pending_meetings_count ?? 0) ?></span>
-                </a>
-                <a href="#section-alerts" class="section-tab">
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                    Alert Log
-                </a>
-                <a href="#section-charts" class="section-tab">
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    Analytics
-                </a>
-            </div>
-        </nav>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 flex-1 animate-fade-in" style="padding-top: calc(64px + 45px + 24px);">
 
         <!-- Welcome Metric Row -->
-        <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up" style="animation-delay: 0.1s">
+        <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up"
+            style="animation-delay: 0.1s">
             <div>
                 <h2 class="text-xl sm:text-2xl font-bold text-[#0B5E2E] flex items-center gap-2">
-                    <svg class="w-6 h-6 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                    <svg class="w-6 h-6 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
                     Overview
                 </h2>
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
-                    <p class="text-gray-600 text-xs sm:text-sm">Real-time monitoring and analytics from the student portal.</p>
-                    <label class="flex items-center cursor-pointer group" title="Pause auto-refresh while you're reading">
+                    <p class="text-gray-600 text-xs sm:text-sm">Real-time monitoring and analytics from the student
+                        portal.</p>
+                    <label class="flex items-center cursor-pointer group"
+                        title="Pause auto-refresh while you're reading">
                         <div class="relative">
                             <input type="checkbox" id="pauseUpdatesToggle" class="sr-only">
-                            <div class="block bg-gray-300 w-8 h-5 rounded-full transition-colors duration-200" id="toggleBg"></div>
-                            <div class="dot absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform duration-200" id="toggleDot"></div>
+                            <div class="block bg-gray-300 w-8 h-5 rounded-full transition-colors duration-200"
+                                id="toggleBg"></div>
+                            <div class="dot absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform duration-200"
+                                id="toggleDot"></div>
                         </div>
-                        <div class="ml-2 text-xs font-semibold text-gray-500 group-hover:text-gray-800 transition-colors">Pause Auto-Refresh</div>
+                        <div
+                            class="ml-2 text-xs font-semibold text-gray-500 group-hover:text-gray-800 transition-colors">
+                            Pause Auto-Refresh</div>
                     </label>
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-2 sm:gap-3 w-full md:w-auto">
-                <div class="stat-card green-accent flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 p-2.5 sm:p-5">
-                    <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-[#0B5E2E]/10 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full md:w-auto">
+                <div class="stat-card green-accent flex items-center gap-3 p-3.5 sm:p-5">
+                    <div class="h-9 w-9 rounded-lg bg-[#0B5E2E]/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
                     </div>
                     <div class="flex flex-col min-w-0">
-                        <span class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Total Active</span>
-                        <span class="text-lg sm:text-2xl font-bold text-[#0B5E2E] leading-tight" id="stat-total">--</span>
+                        <span
+                            class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Total
+                            Active</span>
+                        <span class="text-xl sm:text-2xl font-bold text-[#0B5E2E] leading-tight"
+                            id="stat-total">--</span>
                     </div>
                 </div>
-                <div class="stat-card gold-accent flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 p-2.5 sm:p-5">
-                    <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-[#F2C300]/15 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#B89100]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <div class="stat-card gold-accent flex items-center gap-3 p-3.5 sm:p-5">
+                    <div class="h-9 w-9 rounded-lg bg-[#F2C300]/15 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#B89100]" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
                     </div>
                     <div class="flex flex-col min-w-0">
-                        <span class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Critical</span>
-                        <span class="text-lg sm:text-2xl font-bold text-[#E04B3F] leading-tight" id="stat-critical">--</span>
+                        <span
+                            class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Critical</span>
+                        <span class="text-xl sm:text-2xl font-bold text-[#E04B3F] leading-tight"
+                            id="stat-critical">--</span>
                     </div>
                 </div>
-                <a href="#section-sessions" class="stat-card flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 p-2.5 sm:p-5 border-l-4 border-l-emerald-600 hover:border-emerald-700 transition-all">
-                    <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <a href="#section-sessions"
+                    class="stat-card flex items-center gap-3 p-3.5 sm:p-5 border-l-4 border-l-emerald-600 hover:border-emerald-700 col-span-2 sm:col-span-1 transition-all">
+                    <div class="h-9 w-9 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
                     </div>
                     <div class="flex flex-col min-w-0">
-                        <span class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Sessions</span>
-                        <span class="text-lg sm:text-2xl font-bold text-emerald-700 leading-tight" id="stat-sessions"><?= esc($pending_meetings_count ?? 0) ?></span>
+                        <span
+                            class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Sessions</span>
+                        <span class="text-xl sm:text-2xl font-bold text-emerald-700 leading-tight"
+                            id="stat-sessions"><?= esc($pending_meetings_count ?? 0) ?></span>
                     </div>
                 </a>
             </div>
         </div>
 
         <!-- Live Feed Table -->
-        <div id="section-vents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col" style="animation-delay: 0.2s">
+        <div id="section-vents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col"
+            style="animation-delay: 0.2s">
             <!-- Table Header Bar -->
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
                     <svg class="h-5 w-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     Live Intelligence Feed
                 </h2>
                 <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+                    <div
+                        class="flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 live-dot"></span>
-                        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">Live Syncing</span>
+                        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">Live
+                            Syncing</span>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Table Container -->
             <div class="overflow-x-auto custom-scrollbar flex flex-col">
-                <div class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
+                <div
+                    class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
                     <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-sm relative">
-                        <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                        <input type="text" id="searchVents" placeholder="Search entries, names, or risk levels..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-1 focus:ring-[#0B5E2E]/20 transition-all">
+                        <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="searchVents" placeholder="Search entries, names, or risk levels..."
+                            class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-1 focus:ring-[#0B5E2E]/20 transition-all">
                     </div>
                     <div class="flex items-center gap-2 flex-wrap">
-                        <select id="filterStatusVents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E]">
+                        <select id="filterStatusVents"
+                            class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E]">
                             <option value="all">All Statuses</option>
                             <option value="resolved">Resolved</option>
                             <option value="unresolved">Action Required</option>
                             <option value="archived">Archived Records</option>
                         </select>
-                        <input type="date" id="filterDateVents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] text-gray-600">
+                        <input type="date" id="filterDateVents"
+                            class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] text-gray-600">
                     </div>
-                    <button type="button" onclick="submitBulkDeleteVents()" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents hidden">
+                    <button type="button" onclick="submitBulkDeleteVents()"
+                        class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents hidden">
                         📦 Archive Selected
                     </button>
                 </div>
                 <table class="w-full text-left border-collapse mobile-card-table">
                     <thead>
                         <tr class="thead-green text-xs uppercase tracking-wider">
-                            <th class="px-4 py-4 w-10 text-center"><input type="checkbox" id="selectAllVents" class="rounded border-white/40 text-[#F2C300]"></th>
+                            <th class="px-4 py-4 w-10 text-center"><input type="checkbox" id="selectAllVents"
+                                    class="rounded border-white/40 text-[#F2C300]"></th>
                             <th class="px-6 py-4">Timestamp</th>
                             <th class="px-6 py-4">Student</th>
                             <th class="px-6 py-4 w-1/3">NLP Extract</th>
@@ -555,9 +726,13 @@
                         <!-- Populated by AJAX -->
                         <tr>
                             <td colspan="7" class="px-6 py-12 text-center text-gray-500">
-                                <svg class="animate-spin h-8 w-8 mx-auto mb-4 text-[#0B5E2E]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                <svg class="animate-spin h-8 w-8 mx-auto mb-4 text-[#0B5E2E]"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
                                 </svg>
                                 <p>Initiating secure connection to StudentShield Core...</p>
                             </td>
@@ -566,43 +741,56 @@
                 </table>
             </div>
         </div>
-        
+
         <!-- Bullying Incidents Table -->
-        <div id="section-incidents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8" style="animation-delay: 0.3s">
+        <div id="section-incidents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8"
+            style="animation-delay: 0.3s">
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
                     <svg class="h-5 w-5 text-[#E04B3F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                     Bullying Incident Reports
                 </h2>
                 <div class="flex items-center gap-4">
                 </div>
             </div>
-            
+
             <div class="overflow-x-auto custom-scrollbar flex flex-col">
-                <div class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
+                <div
+                    class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
                     <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-sm relative">
-                        <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                        <input type="text" id="searchIncidents" placeholder="Search reporters, accused, or descriptions..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] focus:ring-1 focus:ring-[#E04B3F]/20 transition-all">
+                        <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="searchIncidents"
+                            placeholder="Search reporters, accused, or descriptions..."
+                            class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] focus:ring-1 focus:ring-[#E04B3F]/20 transition-all">
                     </div>
                     <div class="flex items-center gap-2 flex-wrap">
-                        <select id="filterStatusIncidents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F]">
+                        <select id="filterStatusIncidents"
+                            class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F]">
                             <option value="all">All Statuses</option>
                             <option value="resolved">Resolved</option>
                             <option value="unresolved">Action Required</option>
                             <option value="archived">Archived Records</option>
                         </select>
-                        <input type="date" id="filterDateIncidents" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] text-gray-600">
+                        <input type="date" id="filterDateIncidents"
+                            class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] text-gray-600">
                     </div>
-                    <button type="button" onclick="submitBulkDeleteIncidents()" class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents hidden">
+                    <button type="button" onclick="submitBulkDeleteIncidents()"
+                        class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents hidden">
                         📦 Archive Selected
                     </button>
                 </div>
                 <table class="w-full text-left border-collapse mobile-card-table">
                     <thead>
                         <tr class="thead-green text-xs uppercase tracking-wider">
-                            <th class="px-4 py-4 w-10 text-center"><input type="checkbox" id="selectAllIncidents" class="rounded border-white/40 text-[#F2C300]"></th>
+                            <th class="px-4 py-4 w-10 text-center"><input type="checkbox" id="selectAllIncidents"
+                                    class="rounded border-white/40 text-[#F2C300]"></th>
                             <th class="px-6 py-4">Date</th>
                             <th class="px-6 py-4">Reporter</th>
                             <th class="px-6 py-4">Perpetrator</th>
@@ -620,23 +808,27 @@
                         </tr>
                     </tbody>
                 </table>
-        </div>
+            </div>
         </div>
 
         <!-- Session Requests (Counseling / Meeting) Section -->
-        <div id="section-sessions" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8" style="animation-delay: 0.35s">
+        <div id="section-sessions" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8"
+            style="animation-delay: 0.35s">
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-3">
                 <div>
                     <h2 class="text-lg font-bold flex items-center gap-3">
                         <svg class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                         Pending Counseling Session Requests
                     </h2>
-                    <p class="text-xs text-gray-500 mt-0.5">Students requesting 1-on-1 counselor meetings or virtual sessions</p>
+                    <p class="text-xs text-gray-500 mt-0.5">Students requesting 1-on-1 counselor meetings or virtual
+                        sessions</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span id="sessionSectionCountBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-[#dcfce7] text-[#096328] border border-[#bbf7d0]">
+                    <span id="sessionSectionCountBadge"
+                        class="px-3 py-1 rounded-full text-xs font-bold bg-[#dcfce7] text-[#096328] border border-[#bbf7d0]">
                         <?= esc($pending_meetings_count ?? 0) ?> Pending
                     </span>
                 </div>
@@ -644,25 +836,32 @@
 
             <!-- Content Area: Responsive Card Grid / List -->
             <div class="p-4 sm:p-6" id="dashboardSessionContainer">
-                <div id="dashboardSessionEmpty" class="<?= ($pending_meetings_count ?? 0) > 0 ? 'hidden' : '' ?> py-8 text-center text-gray-500">
-                    <svg class="w-10 h-10 mx-auto text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <div id="dashboardSessionEmpty"
+                    class="<?= ($pending_meetings_count ?? 0) > 0 ? 'hidden' : '' ?> py-8 text-center text-gray-500">
+                    <svg class="w-10 h-10 mx-auto text-gray-300 mb-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <p class="text-sm font-medium text-gray-600">No pending session requests at this time.</p>
-                    <p class="text-xs text-gray-400 mt-1">When students request a session from their portal, it will appear here in real-time.</p>
+                    <p class="text-xs text-gray-400 mt-1">When students request a session from their portal, it will
+                        appear here in real-time.</p>
                 </div>
-                <div id="dashboardSessionList" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div id="dashboardSessionList"
+                    class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <!-- Populated dynamically via JS fetchMeetings() -->
                 </div>
             </div>
         </div>
 
         <!-- Alert Logs Monitor -->
-        <div id="section-alerts" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8" style="animation-delay: 0.4s">
+        <div id="section-alerts" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8"
+            style="animation-delay: 0.4s">
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
                     <svg class="h-5 w-5 text-[#2A5DB0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     Alert Delivery Monitor
                 </h2>
@@ -671,7 +870,7 @@
                     <span class="text-[10px] font-bold text-blue-700 uppercase tracking-widest">System Log</span>
                 </div>
             </div>
-            
+
             <div class="overflow-x-auto custom-scrollbar flex flex-col max-h-[340px]">
                 <table class="w-full text-left border-collapse relative mobile-card-table">
                     <thead class="sticky top-0 thead-green z-10">
@@ -694,13 +893,16 @@
         </div>
 
         <!-- Analytics Charts (below actionable records) -->
-        <div id="section-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-2 animate-slide-up" style="animation-delay: 0.5s">
+        <div id="section-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-2 animate-slide-up"
+            style="animation-delay: 0.5s">
             <div class="dashboard-card p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-base font-semibold text-[#0B5E2E] flex items-center gap-2">
                         <svg class="h-5 w-5 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
                         </svg>
                         Risk Distribution
                     </h2>
@@ -713,7 +915,8 @@
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-base font-semibold text-[#0B5E2E] flex items-center gap-2">
                         <svg class="h-5 w-5 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                         </svg>
                         Last 7 Days Volume
                     </h2>
@@ -728,21 +931,31 @@
 
     <!-- Universal Detail Modal -->
     <div id="detailModal" class="fixed inset-0 hidden items-center justify-center p-4 sm:p-8" style="z-index: 99999;">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" id="detailBackdrop" onclick="closeDetailModal()"></div>
-        <div class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[75vh] border border-[#e5ebe5]">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" id="detailBackdrop"
+            onclick="closeDetailModal()"></div>
+        <div
+            class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[75vh] border border-[#e5ebe5]">
             <div class="flex justify-between items-start mb-4 shrink-0">
                 <div>
-                    <div id="modalBadge" class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border"></div>
-                    <h2 id="modalTitle" class="text-2xl font-heading font-extrabold text-[#0B5E2E] tracking-tight">Report Details</h2>
+                    <div id="modalBadge"
+                        class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border">
+                    </div>
+                    <h2 id="modalTitle" class="text-2xl font-heading font-extrabold text-[#0B5E2E] tracking-tight">
+                        Report Details</h2>
                 </div>
-                <button onclick="closeDetailModal()" class="text-gray-500 hover:text-red-500 transition-colors p-2 bg-gray-50 hover:bg-red-50 rounded-full">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button onclick="closeDetailModal()"
+                    class="text-gray-500 hover:text-red-500 transition-colors p-2 bg-gray-50 hover:bg-red-50 rounded-full">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
                 </button>
             </div>
-            
+
             <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-200 shrink-0">
                 <div>
-                    <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Involved Party / Sender</p>
+                    <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Involved Party /
+                        Sender</p>
                     <p id="modalSender" class="text-sm font-semibold text-gray-800">--</p>
                 </div>
                 <div>
@@ -753,26 +966,36 @@
 
             <div class="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-2 pb-4">
                 <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Full Context Payload</p>
-                <div id="modalContent" class="text-[16px] leading-[1.85] tracking-wide text-gray-800 bg-[#f8faf6] border border-[#e5ebe5] shadow-inner p-7 rounded-2xl whitespace-pre-wrap font-medium">
+                <div id="modalContent"
+                    class="text-[16px] leading-[1.85] tracking-wide text-gray-800 bg-[#f8faf6] border border-[#e5ebe5] shadow-inner p-7 rounded-2xl whitespace-pre-wrap font-medium">
                     --
                 </div>
                 <div id="modalEvidenceContainer" class="mt-4 hidden">
                     <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Attached Evidence</p>
-                    
-                    <div id="evidencePreviewArea" class="mt-2 mb-3 bg-gray-50 rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
-                        <img id="evidenceImagePreview" src="" alt="Evidence" class="hidden max-w-full max-h-[250px] object-contain" />
-                        <video id="evidenceVideoPreview" src="" controls class="hidden max-w-full max-h-[250px]"></video>
+
+                    <div id="evidencePreviewArea"
+                        class="mt-2 mb-3 bg-gray-50 rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
+                        <img id="evidenceImagePreview" src="" alt="Evidence"
+                            class="hidden max-w-full max-h-[250px] object-contain" />
+                        <video id="evidenceVideoPreview" src="" controls
+                            class="hidden max-w-full max-h-[250px]"></video>
                     </div>
 
-                    <a id="modalEvidenceLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition-colors font-semibold text-sm w-full justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    <a id="modalEvidenceLink" href="#" target="_blank"
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg border border-blue-200 transition-colors font-semibold text-sm w-full justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
                         Open in New Tab
                     </a>
                 </div>
             </div>
 
             <div class="mt-6 pt-4 border-t border-gray-200 flex justify-end shrink-0">
-                <button onclick="closeDetailModal()" class="px-6 py-3 bg-primary hover:bg-primary-darker text-white text-sm font-bold rounded-xl transition-colors shadow-sm">Confirm & Close</button>
+                <button onclick="closeDetailModal()"
+                    class="px-6 py-3 bg-primary hover:bg-primary-darker text-white text-sm font-bold rounded-xl transition-colors shadow-sm">Confirm
+                    & Close</button>
             </div>
         </div>
     </div>
@@ -792,7 +1015,7 @@
         let pieChart, barChart;
         let previousVentsDataString = "";
         let isFirstLoadVents = true;
-        
+
         // Enable jQuery AJAX caching to rely on browser cache if Etags match
         $.ajaxSetup({ cache: true });
 
@@ -815,7 +1038,7 @@
                     hoverOffset: 4
                 }]
             },
-            options: { 
+            options: {
                 maintainAspectRatio: false,
                 cutout: '70%',
                 plugins: {
@@ -826,11 +1049,11 @@
         pieChart = new Chart(pieCtx, pieConfig);
 
         const barCtx = document.querySelector("#ventsBarChart");
-        
+
         const barConfig = {
             series: [{
                 name: 'Vents Processed',
-                data: [0,0,0,0,0,0,0]
+                data: [0, 0, 0, 0, 0, 0, 0]
             }],
             chart: {
                 type: 'area',
@@ -858,23 +1081,23 @@
                 yaxis: { lines: { show: true } }
             }
         };
-        
+
         let areaChart = new ApexCharts(barCtx, barConfig);
         areaChart.render();
-        
+
         let cachedDateLabels = null;
 
         function updateCharts(data) {
             let critical = 0, high = 0, medium = 0, low = 0;
             let criticalPending = 0;
-            
+
             data.forEach(v => {
-                if(v.risk_level === 'CRITICAL') {
+                if (v.risk_level === 'CRITICAL') {
                     critical++;
-                    if(v.status !== 'Resolved') criticalPending++;
+                    if (v.status !== 'Resolved') criticalPending++;
                 }
-                else if(v.risk_level === 'HIGH') high++;
-                else if(v.risk_level === 'MEDIUM') medium++;
+                else if (v.risk_level === 'HIGH') high++;
+                else if (v.risk_level === 'MEDIUM') medium++;
                 else low++;
             });
 
@@ -889,7 +1112,7 @@
             if (!cachedDateLabels) {
                 cachedDateLabels = [];
                 let today = new Date();
-                today.setHours(0,0,0,0);
+                today.setHours(0, 0, 0, 0);
                 for (let i = 6; i >= 0; i--) {
                     let d = new Date(today);
                     d.setDate(d.getDate() - i);
@@ -901,11 +1124,11 @@
 
             let daysData = [0, 0, 0, 0, 0, 0, 0];
             let today = new Date();
-            today.setHours(0,0,0,0);
-            
+            today.setHours(0, 0, 0, 0);
+
             data.forEach(v => {
                 let vDate = parsePHDate(v.created_at);
-                vDate.setHours(0,0,0,0);
+                vDate.setHours(0, 0, 0, 0);
                 let diffTime = Math.abs(today - vDate);
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                 if (diffDays <= 6 && diffDays >= 0) {
@@ -927,11 +1150,11 @@
 
         function escapeHtml(unsafe) {
             return (unsafe || '').toString()
-                 .replace(/&/g, "&amp;")
-                 .replace(/</g, "&lt;")
-                 .replace(/>/g, "&gt;")
-                 .replace(/"/g, "&quot;")
-                 .replace(/'/g, "&#039;");
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
         let showArchivedVents = false;
@@ -939,9 +1162,9 @@
 
         function toggleVentsView(isArchived) {
             showArchivedVents = isArchived;
-            previousVentsDataString = ""; 
+            previousVentsDataString = "";
             fetchLiveVents();
-            
+
             let form = document.getElementById('bulkDeleteVentsForm');
             let btn = document.querySelector('.delete-btn-vents');
             if (!btn) return;
@@ -958,9 +1181,9 @@
 
         function toggleIncidentsView(isArchived) {
             showArchivedIncidents = isArchived;
-            previousIncidentsDataString = ""; 
+            previousIncidentsDataString = "";
             fetchLiveIncidents();
-            
+
             let form = document.getElementById('bulkDeleteIncidentsForm');
             let btn = document.querySelector('.delete-btn-incidents');
             if (!btn) return;
@@ -979,54 +1202,54 @@
             $.ajax({
                 url: API_URL + (showArchivedVents ? "?archived=1" : ""),
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     let currentDataString = JSON.stringify(data);
                     if (currentDataString === previousVentsDataString) return;
                     previousVentsDataString = currentDataString;
-                    
+
                     let html = '';
                     window.ventsDataMap = {};
 
                     if (data.length === 0) {
                         html = `<tr><td colspan="7" class="px-6 py-8 text-center text-gray-600">No entries found yet.</td></tr>`;
                     } else {
-                    data.forEach((vent, index) => {
-                        window.ventsDataMap[vent.id] = vent;
-                        let textSnippet = vent.raw_text.length > 55 ? vent.raw_text.substring(0, 55) + '...' : vent.raw_text;
-                        let bgColor = 'bg-white';
-                        let badgeClass = 'bg-gray-100 text-gray-800';
-                        let statusIcon = '';
+                        data.forEach((vent, index) => {
+                            window.ventsDataMap[vent.id] = vent;
+                            let textSnippet = vent.raw_text.length > 55 ? vent.raw_text.substring(0, 55) + '...' : vent.raw_text;
+                            let bgColor = 'bg-white';
+                            let badgeClass = 'bg-gray-100 text-gray-800';
+                            let statusIcon = '';
 
-                        // Threat logic (Color-coded Triage)
-                        if (vent.risk_level === 'CRITICAL') {
-                            bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#E04B3F] relative';
-                            badgeClass = 'bg-[#E04B3F] text-white font-bold border-none';
-                        } else if (vent.risk_level === 'HIGH') {
-                            bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#F59E0B] relative';
-                            badgeClass = 'bg-[#F59E0B] text-white font-bold border-none';
-                        } else if (vent.risk_level === 'MEDIUM') {
-                            bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#2A5DB0]';
-                            badgeClass = 'bg-[#2A5DB0]/10 text-[#2A5DB0] border border-[#2A5DB0]/20 font-semibold';
-                        } else {
-                            bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#0B5E2E]';
-                            badgeClass = 'bg-[#0B5E2E]/10 text-[#0B5E2E] border border-[#0B5E2E]/20';
-                        }
+                            // Threat logic (Color-coded Triage)
+                            if (vent.risk_level === 'CRITICAL') {
+                                bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#E04B3F] relative';
+                                badgeClass = 'bg-[#E04B3F] text-white font-bold border-none';
+                            } else if (vent.risk_level === 'HIGH') {
+                                bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#F59E0B] relative';
+                                badgeClass = 'bg-[#F59E0B] text-white font-bold border-none';
+                            } else if (vent.risk_level === 'MEDIUM') {
+                                bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#2A5DB0]';
+                                badgeClass = 'bg-[#2A5DB0]/10 text-[#2A5DB0] border border-[#2A5DB0]/20 font-semibold';
+                            } else {
+                                bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#0B5E2E]';
+                                badgeClass = 'bg-[#0B5E2E]/10 text-[#0B5E2E] border border-[#0B5E2E]/20';
+                            }
 
-                        // Status formatting
-                        let isResolved = vent.status === 'Resolved' || vent.status === 'Reviewed';
-                        let statusColor = isResolved ? 'text-[#0B5E2E] bg-[#0B5E2E]/10' : 'text-gray-600 bg-gray-50';
-                        
-                        // Formatting dates with day name for Philippine context
-                        const dateObj = parsePHDate(vent.created_at);
-                        const timeStr = dateObj.toLocaleTimeString('en-PH', {hour: '2-digit', minute:'2-digit'});
-                        const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
-                        const dateStr = dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric'});
+                            // Status formatting
+                            let isResolved = vent.status === 'Resolved' || vent.status === 'Reviewed';
+                            let statusColor = isResolved ? 'text-[#0B5E2E] bg-[#0B5E2E]/10' : 'text-gray-600 bg-gray-50';
 
-                        // Animation delay for new loads
-                        const animDelay = isFirstLoadVents ? `style="animation-delay: ${index * 0.05}s"` : '';
-                        const animClass = isFirstLoadVents ? 'animate-slide-up opacity-0' : '';
+                            // Formatting dates with day name for Philippine context
+                            const dateObj = parsePHDate(vent.created_at);
+                            const timeStr = dateObj.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+                            const dayName = dateObj.toLocaleDateString('en-PH', { weekday: 'short' });
+                            const dateStr = dateObj.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
 
-                        const rawDate = dateObj.toISOString().split('T')[0]; const ventStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${ventStatus}" data-date="${rawDate}" class="transition-all duration-300 transform hover:-translate-y-[1px] ${bgColor} ${animClass}" ${animDelay}>
+                            // Animation delay for new loads
+                            const animDelay = isFirstLoadVents ? `style="animation-delay: ${index * 0.05}s"` : '';
+                            const animClass = isFirstLoadVents ? 'animate-slide-up opacity-0' : '';
+
+                            const rawDate = dateObj.toISOString().split('T')[0]; const ventStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${ventStatus}" data-date="${rawDate}" class="transition-all duration-300 transform hover:-translate-y-[1px] ${bgColor} ${animClass}" ${animDelay}>
                             ${vent.risk_level === 'CRITICAL' && !isResolved ? `` : ''}
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center relative z-10">
                                 <input type="checkbox" name="vent_ids[]" value="${vent.id}" class="vent-checkbox rounded border-gray-300 text-primary h-4 w-4">
@@ -1057,16 +1280,16 @@
                                 ${(() => {
                                     let s = vent.risk_percent;
                                     let s_float = parseFloat(s);
-                                    
+
                                     // Fallback UI mapping for legacy database records (decimals)
-                                    if (Math.abs(s_float) <= 1 && s_float !== 0 && s.toString().indexOf('.') !== -1) { 
+                                    if (Math.abs(s_float) <= 1 && s_float !== 0 && s.toString().indexOf('.') !== -1) {
                                         // Legacy: -1 was bad, 1 was good
                                         // Convert to new Threat Percentage where 100 is bad, 1 is good
                                         s = Math.round(((1.0 - s_float) / 2.0) * 99) + 1;
                                     } else {
                                         s = Math.round(s_float);
                                     }
-                                    
+
                                     // High percentage = High Threat
                                     let c = s >= 50 ? 'text-[#E04B3F] bg-[#E04B3F]/10' : 'text-[#0B5E2E] bg-[#0B5E2E]/10';
                                     return `<span class="text-sm font-mono font-medium ${c} px-2 py-1 rounded min-w-[3rem] inline-block">${s}%</span>`;
@@ -1109,20 +1332,20 @@
                                 `}
                             </td>
                         </tr>`;
-                    });
-                }
-                
-                document.getElementById('ventsTableBody').innerHTML = html;
-                
-                updateCharts(data);
-                isFirstLoadVents = false;
-                
-                toggleDeleteBtn('.vent-checkbox', '.delete-btn-vents');
-                applyVentsFilter();
-                collapseRows('ventsTableBody', 5, 7, 'section-vents');
+                        });
+                    }
+
+                    document.getElementById('ventsTableBody').innerHTML = html;
+
+                    updateCharts(data);
+                    isFirstLoadVents = false;
+
+                    toggleDeleteBtn('.vent-checkbox', '.delete-btn-vents');
+                    applyVentsFilter();
+                    collapseRows('ventsTableBody', 5, 7, 'section-vents');
                 },
-                error: function(xhr) {
-                    if(xhr.status === 401) {
+                error: function (xhr) {
+                    if (xhr.status === 401) {
                         console.warn('Session expired. Please refresh and log in again.');
                     } else {
                         console.error("Vents API Error:", xhr.responseText);
@@ -1139,48 +1362,48 @@
             $.ajax({
                 url: INCIDENTS_API_URL + (showArchivedIncidents ? "?archived=1" : ""),
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     let currentDataString = JSON.stringify(data);
                     if (currentDataString === previousIncidentsDataString) return;
                     previousIncidentsDataString = currentDataString;
-                    
+
                     let html = '';
                     window.incidentsDataMap = {};
-                    
+
                     if (data.length === 0) {
                         html = `<tr><td colspan="8" class="px-6 py-8 text-center text-gray-600">No incident reports available.</td></tr>`;
                     } else {
-                    data.forEach((incident, index) => {
-                        window.incidentsDataMap[incident.id] = incident;
-                        let textSnippet = incident.description.length > 55 ? incident.description.substring(0, 55) + '...' : incident.description;
-                        let statusBadge = '';
-                        let isPending = incident.status === 'pending_review';
-                        let isVerified = incident.status === 'verified';
-                        let isRejected = incident.status === 'rejected_fake';
-                        let isResolved = incident.status === 'resolved' || incident.status === 'Resolved';
-                        
-                        if (isVerified) {
-                            statusBadge = `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-green-200 block">✓ Verified</span>`;
-                        } else if (isRejected) {
-                            statusBadge = `<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-red-200 block">✗ Rejected</span>`;
-                        } else if (isResolved) {
-                            statusBadge = `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-green-200 block">Resolved</span>`;
-                        } else {
-                            statusBadge = `<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-yellow-200 animate-pulse block">⏳ Pending Review</span>`;
-                        }
+                        data.forEach((incident, index) => {
+                            window.incidentsDataMap[incident.id] = incident;
+                            let textSnippet = incident.description.length > 55 ? incident.description.substring(0, 55) + '...' : incident.description;
+                            let statusBadge = '';
+                            let isPending = incident.status === 'pending_review';
+                            let isVerified = incident.status === 'verified';
+                            let isRejected = incident.status === 'rejected_fake';
+                            let isResolved = incident.status === 'resolved' || incident.status === 'Resolved';
 
-                        let reporterName = incident.name ? incident.name : 'Anonymous';
-                        let perpetratorName = incident.perpetrator_name ? incident.perpetrator_name : 'Unknown';
+                            if (isVerified) {
+                                statusBadge = `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-green-200 block">✓ Verified</span>`;
+                            } else if (isRejected) {
+                                statusBadge = `<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-red-200 block">✗ Rejected</span>`;
+                            } else if (isResolved) {
+                                statusBadge = `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-green-200 block">Resolved</span>`;
+                            } else {
+                                statusBadge = `<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold w-max mx-auto border border-yellow-200 animate-pulse block">⏳ Pending Review</span>`;
+                            }
 
-                        const dateObj = parsePHDate(incident.created_at);
-                        const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
-                        const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+                            let reporterName = incident.name ? incident.name : 'Anonymous';
+                            let perpetratorName = incident.perpetrator_name ? incident.perpetrator_name : 'Unknown';
 
-                        let bgColor = isPending ? 'bg-white hover:bg-gray-50 border-l-4 border-l-amber-400' : (isRejected ? 'bg-white hover:bg-gray-50 border-l-4 border-l-red-500' : 'bg-white hover:bg-gray-50 border-l-4 border-l-transparent');
+                            const dateObj = parsePHDate(incident.created_at);
+                            const dayName = dateObj.toLocaleDateString('en-PH', { weekday: 'short' });
+                            const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-                        let evidenceBadge = incident.evidence_file ? `<span class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">📎 Evidence Attached</span>` : '';
+                            let bgColor = isPending ? 'bg-white hover:bg-gray-50 border-l-4 border-l-amber-400' : (isRejected ? 'bg-white hover:bg-gray-50 border-l-4 border-l-red-500' : 'bg-white hover:bg-gray-50 border-l-4 border-l-transparent');
 
-                        const rawDate = dateObj.toISOString().split('T')[0]; const incidentStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${incidentStatus}" data-date="${rawDate}" class="transition-colors duration-200 ${bgColor}">
+                            let evidenceBadge = incident.evidence_file ? `<span class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">📎 Evidence Attached</span>` : '';
+
+                            const rawDate = dateObj.toISOString().split('T')[0]; const incidentStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${incidentStatus}" data-date="${rawDate}" class="transition-colors duration-200 ${bgColor}">
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center">
                                 <input type="checkbox" name="incident_ids[]" value="${incident.id}" class="incident-checkbox rounded border-gray-300 text-primary h-4 w-4">
                             </td>
@@ -1268,18 +1491,18 @@
                                 </div>
                             </td>
                         </tr>`;
-                    });
-                }
-                
-                document.getElementById('incidentsTableBody').innerHTML = html;
-                
-                toggleDeleteBtn('.incident-checkbox', '.delete-btn-incidents');
-                applyIncidentsFilter();
-                collapseRows('incidentsTableBody', 5, 8, 'section-incidents');
-                
+                        });
+                    }
+
+                    document.getElementById('incidentsTableBody').innerHTML = html;
+
+                    toggleDeleteBtn('.incident-checkbox', '.delete-btn-incidents');
+                    applyIncidentsFilter();
+                    collapseRows('incidentsTableBody', 5, 8, 'section-incidents');
+
                 },
-                error: function(xhr) {
-                    if(xhr.status === 401) {
+                error: function (xhr) {
+                    if (xhr.status === 401) {
                         console.warn('Session expired. Please refresh and log in again.');
                     } else {
                         console.error("Incidents API Error:", xhr.responseText);
@@ -1322,7 +1545,7 @@
             </td>`;
             tbody.appendChild(toggleRow);
 
-            toggleRow.querySelector('button').addEventListener('click', function() {
+            toggleRow.querySelector('button').addEventListener('click', function () {
                 expanded = !expanded;
                 rows.forEach((r, i) => {
                     if (i >= maxRows) r.classList.toggle('tbl-row-hidden', !expanded);
@@ -1340,14 +1563,14 @@
             $.ajax({
                 url: ALERTS_API_URL,
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     let currentDataString = JSON.stringify(data);
                     if (currentDataString === previousAlertsDataString) return;
                     previousAlertsDataString = currentDataString;
-                    
+
                     let html = '';
                     window.alertsDataMap = {};
-                    
+
                     if (data.length === 0) {
                         html = `<tr><td colspan="4" class="px-6 py-8 text-center text-gray-600">No automated alerts have been sent yet.</td></tr>`;
                     } else {
@@ -1355,10 +1578,10 @@
                             window.alertsDataMap[index] = alert;
                             let badgeClass = alert.type.includes('SMS') ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-purple-100 text-purple-700 border-purple-200';
                             let icon = alert.type.includes('SMS') ? '📱' : '✉️';
-                            
+
                             const dateObj = parsePHDate(alert.timestamp);
-                            const dayName = dateObj.toLocaleDateString('en-PH', {weekday: 'short'});
-                            const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+                            const dayName = dateObj.toLocaleDateString('en-PH', { weekday: 'short' });
+                            const dateStr = dayName + ', ' + dateObj.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 
                             html += `<tr class="transition-colors duration-200 bg-white hover:bg-gray-50">
                                 <td data-label="Timestamp" class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">${dateStr}</td>
@@ -1377,7 +1600,7 @@
                     }
                     document.getElementById('alertsTableBody').innerHTML = html;
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     console.error("Alerts API Error:", xhr.responseText);
                 }
             });
@@ -1388,13 +1611,13 @@
             document.getElementById('modalSender').innerText = sender;
             document.getElementById('modalTime').innerText = timeStr;
             document.getElementById('modalContent').innerText = fullText;
-            
-            if(document.getElementById('modalEvidenceContainer')) {
+
+            if (document.getElementById('modalEvidenceContainer')) {
                 document.getElementById('modalEvidenceContainer').classList.add('hidden');
                 const videoPreview = document.getElementById('evidenceVideoPreview');
-                if(videoPreview) videoPreview.pause();
+                if (videoPreview) videoPreview.pause();
             }
-            
+
             const badge = document.getElementById('modalBadge');
             badge.innerText = badgeText;
             badge.className = `inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border ${badgeClass}`;
@@ -1402,7 +1625,7 @@
             const modal = document.getElementById('detailModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            
+
             // Subtle pop animation
             const modalBox = modal.querySelector('div.bg-white');
             modalBox.animate([{ opacity: 0, transform: 'scale(0.95)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 200, fill: 'forwards', easing: 'ease-out' });
@@ -1417,13 +1640,13 @@
             const vent = window.ventsDataMap[id];
             if (!vent) return;
             const dateObj = parsePHDate(vent.created_at);
-            const timeStr = dateObj.toLocaleTimeString('en-PH', {hour: '2-digit', minute:'2-digit'});
-            const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric'});
-            
+            const timeStr = dateObj.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = dateObj.toLocaleDateString('en-PH', { weekday: 'long', month: 'short', day: 'numeric' });
+
             let senderInfo = vent.name || 'Anonymous';
             if (vent.section) senderInfo += `\nSection: ${vent.section}`;
             if (vent.adviser_name) senderInfo += `\nAdviser: ${vent.adviser_name}`;
-            
+
             const badgeClass = vent.risk_level === 'CRITICAL' ? 'bg-[#E04B3F] text-white border-transparent' : (vent.risk_level === 'HIGH' ? 'bg-[#F59E0B] text-white border-transparent' : 'bg-[#0B5E2E]/10 text-[#0B5E2E] border-[#0B5E2E]/20');
             openDetailModal('Safe Space Vent Entry', senderInfo, `${dateStr} ${timeStr}`, vent.raw_text, `Threat Level: ${vent.risk_level}`, badgeClass);
         }
@@ -1434,10 +1657,10 @@
             const reporter = inc.name || 'Anonymous';
             const perp = inc.perpetrator_name || 'Unknown';
             const dateObj = parsePHDate(inc.created_at);
-            const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+            const dateStr = dateObj.toLocaleDateString('en-PH', { weekday: 'long', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             const isRes = inc.status === 'Resolved' || inc.status === 'resolved' || inc.status === 'verified';
             const badgeClass = isRes ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700 border-blue-200';
-            
+
             openDetailModal('Bullying Incident Report', `Reporter: ${reporter}\nAccused: ${perp}`, dateStr, inc.description, isRes ? 'Resolved' : 'Action Required', badgeClass);
 
             if (inc.evidence_file) {
@@ -1447,7 +1670,7 @@
                 const videoPreview = document.getElementById('evidenceVideoPreview');
                 const evidenceName = inc.evidence_file.split('/').pop();
                 const fileUrl = '<?= base_url('admin/evidence') ?>/' + encodeURIComponent(evidenceName);
-                
+
                 evidenceLink.href = fileUrl;
                 evidenceContainer.classList.remove('hidden');
 
@@ -1472,11 +1695,11 @@
             const alert = window.alertsDataMap[index];
             if (!alert) return;
             const dateObj = parsePHDate(alert.timestamp);
-            const dateStr = dateObj.toLocaleDateString('en-PH', {weekday: 'long', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'});
+            const dateStr = dateObj.toLocaleDateString('en-PH', { weekday: 'long', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             const isSms = alert.type.includes('SMS');
             const badgeClass = isSms ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-purple-100 text-purple-700 border-purple-200';
             const icon = isSms ? '📱' : '✉️';
-            
+
             openDetailModal('Automated Alert Log', alert.recipient, dateStr, alert.message, `${icon} ${alert.type}`, badgeClass);
         }
 
@@ -1489,26 +1712,26 @@
         }
 
         // Initialize First Fetch
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Checkbox logic
-            $(document).on('change', '#selectAllVents', function() {
+            $(document).on('change', '#selectAllVents', function () {
                 $('.vent-checkbox').prop('checked', $(this).prop('checked'));
                 toggleDeleteBtn('.vent-checkbox', '.delete-btn-vents');
             });
-            $(document).on('change', '.vent-checkbox', function() {
+            $(document).on('change', '.vent-checkbox', function () {
                 toggleDeleteBtn('.vent-checkbox', '.delete-btn-vents');
-                if($('.vent-checkbox:checked').length !== $('.vent-checkbox').length) {
+                if ($('.vent-checkbox:checked').length !== $('.vent-checkbox').length) {
                     $('#selectAllVents').prop('checked', false);
                 }
             });
 
-            $(document).on('change', '#selectAllIncidents', function() {
+            $(document).on('change', '#selectAllIncidents', function () {
                 $('.incident-checkbox').prop('checked', $(this).prop('checked'));
                 toggleDeleteBtn('.incident-checkbox', '.delete-btn-incidents');
             });
-            $(document).on('change', '.incident-checkbox', function() {
+            $(document).on('change', '.incident-checkbox', function () {
                 toggleDeleteBtn('.incident-checkbox', '.delete-btn-incidents');
-                if($('.incident-checkbox:checked').length !== $('.incident-checkbox').length) {
+                if ($('.incident-checkbox:checked').length !== $('.incident-checkbox').length) {
                     $('#selectAllIncidents').prop('checked', false);
                 }
             });
@@ -1518,12 +1741,12 @@
                 let searchValue = $('#searchVents').val().toLowerCase();
                 let statusValue = $('#filterStatusVents').val();
                 let dateValue = $('#filterDateVents').val();
-                
-                $('#ventsTableBody tr').filter(function() {
+
+                $('#ventsTableBody tr').filter(function () {
                     let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
                     let matchesStatus = statusValue === 'all' || statusValue === 'archived' || $(this).attr('data-status') === statusValue;
                     let matchesDate = !dateValue || $(this).attr('data-date') === dateValue;
-                    
+
                     $(this).toggle(matchesSearch && matchesStatus && matchesDate);
                 });
             }
@@ -1532,12 +1755,12 @@
                 let searchValue = $('#searchIncidents').val().toLowerCase();
                 let statusValue = $('#filterStatusIncidents').val();
                 let dateValue = $('#filterDateIncidents').val();
-                
-                $('#incidentsTableBody tr').filter(function() {
+
+                $('#incidentsTableBody tr').filter(function () {
                     let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
                     let matchesStatus = statusValue === 'all' || statusValue === 'archived' || $(this).attr('data-status') === statusValue;
                     let matchesDate = !dateValue || $(this).attr('data-date') === dateValue;
-                    
+
                     $(this).toggle(matchesSearch && matchesStatus && matchesDate);
                 });
             }
@@ -1549,10 +1772,10 @@
             if (localStorage.getItem('incidentsFilterDate')) $('#filterDateIncidents').val(localStorage.getItem('incidentsFilterDate'));
 
             $('#searchVents').on('keyup', applyVentsFilter);
-            $('#filterStatusVents').on('change', function() {
+            $('#filterStatusVents').on('change', function () {
                 let val = $(this).val();
                 localStorage.setItem('ventsFilterStatus', val);
-                
+
                 if (val === 'archived') {
                     if (!showArchivedVents) toggleVentsView(true);
                     else applyVentsFilter();
@@ -1561,16 +1784,16 @@
                     else applyVentsFilter();
                 }
             });
-            $('#filterDateVents').on('change', function() {
+            $('#filterDateVents').on('change', function () {
                 localStorage.setItem('ventsFilterDate', $(this).val());
                 applyVentsFilter();
             });
 
             $('#searchIncidents').on('keyup', applyIncidentsFilter);
-            $('#filterStatusIncidents').on('change', function() {
+            $('#filterStatusIncidents').on('change', function () {
                 let val = $(this).val();
                 localStorage.setItem('incidentsFilterStatus', val);
-                
+
                 if (val === 'archived') {
                     if (!showArchivedIncidents) toggleIncidentsView(true);
                     else applyIncidentsFilter();
@@ -1579,7 +1802,7 @@
                     else applyIncidentsFilter();
                 }
             });
-            $('#filterDateIncidents').on('change', function() {
+            $('#filterDateIncidents').on('change', function () {
                 localStorage.setItem('incidentsFilterDate', $(this).val());
                 applyIncidentsFilter();
             });
@@ -1595,12 +1818,12 @@
             fetchLiveVents();
             fetchLiveIncidents();
             fetchAlertLogs();
-            
+
             let isLivePaused = false;
-            
+
             const pauseToggle = document.getElementById('pauseUpdatesToggle');
-            if(pauseToggle) {
-                pauseToggle.addEventListener('change', function() {
+            if (pauseToggle) {
+                pauseToggle.addEventListener('change', function () {
                     isLivePaused = this.checked;
                     document.getElementById('toggleBg').classList.toggle('bg-amber-400', this.checked);
                     document.getElementById('toggleBg').classList.toggle('bg-gray-300', !this.checked);
@@ -1621,15 +1844,15 @@
             });
 
             // Start Polling 
-            setInterval(() => { if(!isLivePaused) fetchLiveVents(); }, 30000);
-            setInterval(() => { if(!isLivePaused) fetchLiveIncidents(); }, 30000);
-            setInterval(() => { if(!isLivePaused) fetchAlertLogs(); }, 30000);
+            setInterval(() => { if (!isLivePaused) fetchLiveVents(); }, 30000);
+            setInterval(() => { if (!isLivePaused) fetchLiveIncidents(); }, 30000);
+            setInterval(() => { if (!isLivePaused) fetchAlertLogs(); }, 30000);
 
             // Live Philippine Clock — seeded from server (Manila timezone guaranteed)
             const serverTimestamp = <?= (time() + 28800) * 1000 ?>; // +8 hours for Manila time (PHT) in ms
             const clientLoadTime = Date.now();
-            const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
             function updateClock() {
                 const elapsed = Date.now() - clientLoadTime;
@@ -1705,7 +1928,7 @@
             let dropdownOpen = false;
             let lastCount = <?= (int) ($pending_meetings_count ?? 0) ?>;
 
-            window.closeMeetingDropdown = function() {
+            window.closeMeetingDropdown = function () {
                 dropdownOpen = false;
                 const dropdown = document.getElementById('meetingDropdown');
                 if (dropdown) dropdown.classList.add('hidden');
@@ -1902,7 +2125,8 @@
         <?= csrf_field() ?>
         <div id="bulkDeleteVentsInputs"></div>
     </form>
-    <form action="<?= base_url('admin/incident/delete-multiple') ?>" method="POST" id="bulkDeleteIncidentsForm" class="hidden">
+    <form action="<?= base_url('admin/incident/delete-multiple') ?>" method="POST" id="bulkDeleteIncidentsForm"
+        class="hidden">
         <?= csrf_field() ?>
         <div id="bulkDeleteIncidentsInputs"></div>
     </form>
@@ -1910,9 +2134,7 @@
     <?= view('partials/session_idle_modal') ?>
 
     <!-- ── Floating Scroll-to-Top Button ── -->
-    <button id="scrollTopBtn" title="Back to top"
-        aria-label="Scroll back to top"
-        style="
+    <button id="scrollTopBtn" title="Back to top" aria-label="Scroll back to top" style="
             position: fixed;
             bottom: 28px;
             right: 24px;
@@ -1933,13 +2155,79 @@
             pointer-events: none;
             transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
         ">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="18 15 12 9 6 15"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15" />
         </svg>
     </button>
     <script>
+        (function () {
+            var btn = document.getElementById('scrollTopBtn');
+            var SHOW_AT = 400;
+            function update() {
+                var scrolled = window.scrollY || document.documentElement.scrollTop;
+                if (scrolled > SHOW_AT) {
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'translateY(0) scale(1)';
+                    btn.style.pointerEvents = 'auto';
+                } else {
+                    btn.style.opacity = '0';
+                    btn.style.transform = 'translateY(16px) scale(0.85)';
+                    btn.style.pointerEvents = 'none';
+                }
+            }
+            window.addEventListener('scroll', update, { passive: true });
+            btn.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            btn.addEventListener('mouseenter', function () {
+                this.style.boxShadow = '0 10px 28px -4px rgba(0,0,0,0.45), 0 0 0 4px rgba(217,170,46,0.30)';
+                this.style.transform = 'translateY(-2px) scale(1.07)';
+            });
+            btn.addEventListener('mouseleave', function () {
+                this.style.boxShadow = '0 6px 20px -4px rgba(0,0,0,0.35), 0 0 0 3px rgba(217,170,46,0.20)';
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        })();
+    </script>
+</body>
+
+</html>
+
+
+<div id="bulkDeleteIncidentsInputs"></div>
+</form>
+<?= view('reports/modals/student_profile') ?>
+<?= view('partials/session_idle_modal') ?>
+
+<!-- ── Floating Scroll-to-Top Button ── -->
+<button id="scrollTopBtn" title="Back to top" aria-label="Scroll back to top" style="
+            position: fixed;
+            bottom: 28px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #D9AA2E 0%, #B5881D 100%);
+            color: #083318;
+            box-shadow: 0 6px 20px -4px rgba(0,0,0,0.35), 0 0 0 3px rgba(217,170,46,0.20);
+            opacity: 0;
+            transform: translateY(16px) scale(0.85);
+            pointer-events: none;
+            transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+        ">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15" />
+    </svg>
+</button>
+<script>
     (function () {
         var btn = document.getElementById('scrollTopBtn');
         var SHOW_AT = 400;
@@ -1968,37 +2256,46 @@
             this.style.transform = 'translateY(0) scale(1)';
         });
     })();
-    </script>
+</script>
 
-    <!-- Section tab active-state via IntersectionObserver -->
-    <script>
+<!-- Section tab: scroll helper + active-state via IntersectionObserver -->
+<script>
+    // Smooth scroll to section, accounting for the fixed tab bar height
+    function scrollToSection(id, e) {
+        if (e) e.preventDefault();
+        var el = document.getElementById(id);
+        if (!el) return;
+        var offset = 128; // green navbar (64px) + tab bar (~45px) + breathing room
+        var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+
     (function () {
         var sections = ['section-vents', 'section-incidents', 'section-sessions', 'section-alerts', 'section-charts'];
-        var pills = {};
+        var tabs = {};
         sections.forEach(function (id) {
-            // Find the pill whose href ends with #<id>
-            var pill = document.querySelector('#section-tab-nav a[href="#' + id + '"]');
-            if (pill) pills[id] = pill;
+            var tab = document.querySelector('#section-tab-nav a[href="#' + id + '"]');
+            if (tab) tabs[id] = tab;
         });
 
         function clearActive() {
-            Object.values(pills).forEach(function (p) { p.classList.remove('is-active'); });
+            Object.values(tabs).forEach(function (t) { t.classList.remove('is-active'); });
         }
 
         var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     clearActive();
-                    var pill = pills[entry.target.id];
-                    if (pill) {
-                        pill.classList.add('is-active');
-                        // Scroll the tab bar so the active pill is in view on mobile
-                        pill.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+                    var tab = tabs[entry.target.id];
+                    if (tab) {
+                        tab.classList.add('is-active');
+                        // Keep active tab visible on mobile by scrolling the tab bar
+                        tab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
                     }
                 }
             });
         }, {
-            rootMargin: '-20% 0px -70% 0px', // trigger when section is 20% from top of viewport
+            rootMargin: '-20% 0px -70% 0px',
             threshold: 0
         });
 
@@ -2007,11 +2304,10 @@
             if (el) observer.observe(el);
         });
 
-        // Also activate first pill by default on page load
-        if (pills['section-vents']) pills['section-vents'].classList.add('is-active');
+        // Default: first tab active on load
+        if (tabs['section-vents']) tabs['section-vents'].classList.add('is-active');
     })();
-    </script>
+</script>
 </body>
+
 </html>
-
-
