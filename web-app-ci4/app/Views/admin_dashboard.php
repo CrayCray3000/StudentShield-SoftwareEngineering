@@ -198,55 +198,97 @@
             letter-spacing: 0.03em;
         }
 
-        /* Section navigation pills */
-        .section-nav-pill {
+        /* ═══════════════════════════════════════════
+           PREMIUM SECTION TAB BAR
+        ═══════════════════════════════════════════ */
+        #section-tab-nav {
+            position: sticky;
+            top: 64px;
+            z-index: 40;
+            margin: 0 -1rem 1.5rem;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(11,94,46,0.10);
+            box-shadow: 0 4px 24px -8px rgba(11,94,46,0.12);
+        }
+        #section-tab-nav .tab-scroll-wrapper {
+            display: flex;
+            align-items: stretch;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 0 1rem;
+        }
+        #section-tab-nav .tab-scroll-wrapper::-webkit-scrollbar { display: none; }
+        /* Fade edges to hint at scroll on mobile */
+        #section-tab-nav::before,
+        #section-tab-nav::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 32px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        #section-tab-nav::before {
+            left: 0;
+            background: linear-gradient(to right, rgba(255,255,255,0.95), transparent);
+        }
+        #section-tab-nav::after {
+            right: 0;
+            background: linear-gradient(to left, rgba(255,255,255,0.95), transparent);
+        }
+        .section-tab {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 14px;
-            border-radius: 9999px;
-            background: #ffffff;
-            border: 1px solid #d4ddd4;
-            color: #3D4943;
-            font-size: 0.8rem;
+            padding: 12px 16px;
+            white-space: nowrap;
+            scroll-snap-align: start;
+            color: #6B7C72;
+            font-size: 0.78rem;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.18s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            scroll-behavior: smooth;
+            border-bottom: 3px solid transparent;
+            transition: color 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            letter-spacing: 0.01em;
         }
-        .section-nav-pill:hover {
-            background: #0B5E2E;
-            color: #ffffff;
-            border-color: #0B5E2E;
-            box-shadow: 0 4px 12px rgba(11,94,46,0.2);
-            transform: translateY(-1px);
+        .section-tab svg {
+            transition: color 0.2s ease;
+            flex-shrink: 0;
         }
-        .section-nav-pill svg { transition: color 0.18s ease; }
-        /* Active state — set by IntersectionObserver */
-        .section-nav-pill.is-active {
-            background: #0B5E2E;
-            color: #ffffff;
-            border-color: #0B5E2E;
-            box-shadow: 0 4px 12px rgba(11,94,46,0.25);
+        .section-tab:hover {
+            color: #0B5E2E;
         }
-        /* Smooth page scroll for anchor clicks */
+        .section-tab:hover svg { color: #0B5E2E; }
+        .section-tab.is-active {
+            color: #0B5E2E;
+            border-bottom-color: #0B5E2E;
+            font-weight: 700;
+        }
+        .section-tab.is-active svg { color: #0B5E2E; }
+        /* Badge on Sessions tab */
+        .tab-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 9999px;
+            background: #059669;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .tab-badge.hidden { display: none; }
+        /* Smooth page scroll */
         html { scroll-behavior: smooth; }
-        /* Give each section breathing room under the sticky navbar + tab bar */
-        [id^="section-"] { scroll-margin-top: 110px; }
-        /* Sticky section tab nav */
-        #section-tab-nav {
-            position: sticky;
-            top: 64px; /* height of the main site navbar */
-            z-index: 40;
-            background: #f3f6f3;
-            padding: 8px 0 4px;
-            margin-bottom: 16px;
-            margin-left: -1rem;
-            margin-right: -1rem;
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
+        [id^="section-"] { scroll-margin-top: 120px; }
 
         /* Collapsed table rows — show first 5, hide the rest until expanded */
         .tbl-row-hidden { display: none; }
@@ -383,27 +425,30 @@
     <main class="container mx-auto px-4 sm:px-6 py-8 flex-1 animate-fade-in">
 
         <!-- Section Navigation -->
-        <nav id="section-tab-nav" class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar sm:flex-wrap animate-slide-up" style="animation-delay: 0.05s" aria-label="Dashboard sections">
-            <a href="#section-vents" class="section-nav-pill whitespace-nowrap">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/></svg>
-                Vents
-            </a>
-            <a href="#section-incidents" class="section-nav-pill whitespace-nowrap">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                Incidents
-            </a>
-            <a href="#section-sessions" class="section-nav-pill whitespace-nowrap">
-                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                Sessions <span id="navSessionsBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> ml-1 px-1.5 py-0.2 rounded-full bg-emerald-600 text-white text-[10px] font-bold"><?= esc($pending_meetings_count ?? 0) ?></span>
-            </a>
-            <a href="#section-alerts" class="section-nav-pill whitespace-nowrap">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                Alert Log
-            </a>
-            <a href="#section-charts" class="section-nav-pill whitespace-nowrap">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                Analytics
-            </a>
+        <nav id="section-tab-nav" class="animate-slide-up" style="animation-delay: 0.05s; position: relative;" aria-label="Dashboard sections">
+            <div class="tab-scroll-wrapper">
+                <a href="#section-vents" class="section-tab">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/></svg>
+                    Vents
+                </a>
+                <a href="#section-incidents" class="section-tab">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    Incidents
+                </a>
+                <a href="#section-sessions" class="section-tab">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Sessions
+                    <span id="navSessionsBadge" class="tab-badge <?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?>"><?= esc($pending_meetings_count ?? 0) ?></span>
+                </a>
+                <a href="#section-alerts" class="section-tab">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    Alert Log
+                </a>
+                <a href="#section-charts" class="section-tab">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    Analytics
+                </a>
+            </div>
         </nav>
 
         <!-- Welcome Metric Row -->
