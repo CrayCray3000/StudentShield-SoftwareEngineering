@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Libraries\ExplicitCrisisGuard;
 use App\Libraries\ViolentThreats;
 
 class VentController extends BaseController
@@ -132,29 +133,14 @@ class VentController extends BaseController
             $trajectory            = $mlResult['trajectory'] ?? 'INSUFFICIENT_DATA';
             $escalationProbability = (float)($mlResult['escalation_probability'] ?? 0.0);
 
-            // Safety net: Only hard-override ML if there is an explicit suicide phrase that ML missed
-            $lower = mb_strtolower($text, 'UTF-8');
-            $explicitSuicideKeywords = [
-                'magpakamatay', 'kill myself', 'cut myself', 'slit my wrist',
-                'bibigti', 'patayin sarili ko', 'magbibigti', 'self-harm',
-                'tapusin ko na buhay ko', 'tapusin ko na lang lahat', 'tapusin ko na lahat', 'tapusin ko na',
-                'sana matulog at di na magising', 'mas magiging madali para sa lahat', 'pain to stop tonight',
-                'pain to stop for good', 'want all this pain to stop',
-                'gusto ko nang mamatay', 'i want to die', 'i wanna die',
-                'end my life', 'gusto nako mamatay', 'kayat kon matayen',
-                'nag-iwan ng sulat para kay', 'huling paalam sa inyo',
-                'sasabay na ako', 'sasabay na ko', 'sasabay na aq', 'susunod na ako', 'susunod na ko',
-                'sasama na ako sa kanya', 'sasama na ko sa kanya', 'gusto ko nang sumunod',
-                'lost my whole motivation to live', 'lost my motivation to live'
-            ];
-            foreach ($explicitSuicideKeywords as $kw) {
-                if (mb_strpos($lower, $kw) !== false) {
-                    $riskLevel = 'CRITICAL';
-                    $sentimentScore = max($sentimentScore, 99.0);
-                    log_message('info', "Safety Net Hard-Override: Explicit crisis phrase '{$kw}' detected.");
-                    break;
-                }
-            }
+            // Enforce explicit crisis signals even when ML succeeds but returns
+            // a lower-risk result, before persistence and notifications.
+            $guardedResult = ExplicitCrisisGuard::enforce($text, [
+                'risk_level' => $riskLevel,
+                'risk_percent' => $sentimentScore,
+            ]);
+            $riskLevel = $guardedResult['risk_level'];
+            $sentimentScore = (float) $guardedResult['risk_percent'];
         }
         else {
             log_message('error', 'ML Service Error (HTTP ' . $httpCode . '): ' . ($curlError ?: 'Invalid response: ' . $response));
@@ -552,6 +538,10 @@ class VentController extends BaseController
         if ($threat !== null) {
             return $threat;
         }
+        if (ExplicitCrisisGuard::hasTagalogSelfHarm($text)) {
+            return ['risk_level' => 'CRITICAL', 'risk_percent' => 99];
+        }
+
         $lower = mb_strtolower($text);
 
         // Gen-Z sarcasm check — before keyword scanning
