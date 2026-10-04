@@ -295,7 +295,7 @@
                             <i class="fas fa-check absolute text-[14px] text-[#0A1C11] opacity-0 peer-checked:opacity-100 transition-opacity duration-300 pointer-events-none"></i>
                         </div>
                         <span class="text-sm sm:text-base text-white/90 leading-relaxed">
-                            I agree to the <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-bold underline underline-offset-2 transition-colors py-1">Terms and Conditions</button> & <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-bold underline underline-offset-2 transition-colors py-1">Data Privacy Policy</button>.
+                            I agree to the <button type="button" onclick="openTermsModal('terms')" class="text-gold hover:text-gold-light font-bold underline underline-offset-2 transition-colors py-1">Terms and Conditions</button> & <button type="button" onclick="openTermsModal('privacy')" class="text-gold hover:text-gold-light font-bold underline underline-offset-2 transition-colors py-1">Data Privacy Policy</button>.
                         </span>
                     </label>
                 </div>
@@ -338,10 +338,10 @@
             <div class="p-4 sm:p-6 overflow-y-auto flex-1 custom-scrollbar text-white/80 space-y-4 text-sm sm:text-base leading-relaxed">
                 <p>Welcome to Student Shield! By registering an account, you agree to the following terms regarding your usage and how we handle your data.</p>
                 
-                <h3 class="text-gold font-semibold text-base sm:text-lg mt-4">1. Purpose of the Portal</h3>
+                <h3 id="terms-section-terms" class="text-gold font-semibold text-base sm:text-lg mt-4">1. Purpose of the Portal</h3>
                 <p>Student Shield is a secure platform designed for St. Vincent Blessed School of Manila (SVBSM) students to report incidents (such as bullying or conflicts) and to express concerns ("Vents") to the Guidance Counselor. This platform is strictly for school-related well-being and disciplinary matters.</p>
 
-                <h3 class="text-gold font-semibold text-base sm:text-lg mt-4">2. Data Collection and Privacy</h3>
+                <h3 id="terms-section-privacy" class="text-gold font-semibold text-base sm:text-lg mt-4">2. Data Collection and Privacy</h3>
                 <p>In compliance with the <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>, we assure you that:</p>
                 <ul class="list-disc pl-5 space-y-1">
                     <li>Any personal information (Name, Student ID, Contact Info) collected during registration will be kept strictly confidential.</li>
@@ -373,32 +373,52 @@
     </style>
 
 <script>
-    function openTermsModal() {
-        const modal = document.getElementById('termsModal');
+    function openTermsModal(section) {
+        const modal    = document.getElementById('termsModal');
         const backdrop = document.getElementById('termsBackdrop');
-        const content = document.getElementById('termsContentBox');
-        
+        const content  = document.getElementById('termsContentBox');
+        const body     = content.querySelector('.overflow-y-auto');
+
         modal.classList.remove('hidden');
-        // Small delay to allow display block to apply before animating opacity
+
+        // Animate in, then teleport scroll to the requested section
         setTimeout(() => {
             backdrop.classList.remove('opacity-0');
             content.classList.remove('opacity-0', 'scale-95');
             content.classList.add('opacity-100', 'scale-100');
+
+            if (section) {
+                // Wait one more frame so the element is fully laid-out before scrolling
+                requestAnimationFrame(() => {
+                    const target = document.getElementById('terms-section-' + section);
+                    if (target && body) {
+                        // scrollIntoView inside the overflow container
+                        const offset = target.offsetTop - body.offsetTop - 12; // 12px breathing room
+                        body.scrollTo({ top: offset, behavior: 'smooth' });
+                    }
+                });
+            } else {
+                // Default: always start from the top
+                if (body) body.scrollTop = 0;
+            }
         }, 10);
     }
 
     function closeTermsModal() {
-        const modal = document.getElementById('termsModal');
+        const modal    = document.getElementById('termsModal');
         const backdrop = document.getElementById('termsBackdrop');
-        const content = document.getElementById('termsContentBox');
-        
+        const content  = document.getElementById('termsContentBox');
+
         backdrop.classList.add('opacity-0');
         content.classList.remove('opacity-100', 'scale-100');
         content.classList.add('opacity-0', 'scale-95');
-        
+
         setTimeout(() => {
             modal.classList.add('hidden');
-        }, 300); // Wait for transition
+            // Reset scroll so next open feels fresh
+            const body = content.querySelector('.overflow-y-auto');
+            if (body) body.scrollTop = 0;
+        }, 300);
     }
 
     function updateSpotlight(e) {
