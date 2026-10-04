@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Favicon -->
@@ -29,6 +29,9 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        @media (max-width: 1440px) { html { font-size: 15px; } }
+        @media (max-width: 1280px) { html { font-size: 14px; } }
+        @media (max-width: 768px) { html { font-size: 17px !important; } } /* Reset for mobile */
         body { font-family: 'Inter', sans-serif; background: #FAFDF5; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
         .glass-header {
@@ -64,7 +67,7 @@
                      onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
                 <div class="truncate">
                     <h1 class="text-base sm:text-2xl font-bold tracking-tight font-heading leading-tight truncate">StudentShield</h1>
-                    <span class="text-[#EAB308] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">Super Admin Panel</span>
+                    <span class="text-[#EAB308] text-[16px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">Super Admin Panel</span>
                 </div>
             </div>
             
@@ -200,7 +203,7 @@
                                         $bgClass = 'bg-indigo-100 text-indigo-800';
                                     }
                                 ?>
-                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider <?= $bgClass ?>">
+                                <span class="px-2.5 py-1 rounded-full text-[16px] font-bold tracking-wider <?= $bgClass ?>">
                                     <?= $entity ?>
                                 </span>
                             </td>

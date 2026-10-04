@@ -51,10 +51,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-        /* Responsive scaling */
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
-        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
+        @media (max-width: 768px) { html { font-size: 17px !important; } } /* Reset for mobile */
         
         body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
@@ -174,7 +173,7 @@
             <div class="text-center mb-5 sm:mb-8">
                 <div class="flex flex-col items-center justify-center mb-3 sm:mb-4">
                     <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-16 h-16 sm:w-24 sm:h-24 object-contain mx-auto mb-2 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
-                    <p class="text-white/90 font-semibold text-xs sm:text-sm tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
+                    <p class="text-white/90 font-semibold text-sm sm:text-base tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
                 </div>
                 
                 <h1 class="text-[1.65em] sm:text-[2rem] font-heading font-extrabold tracking-tight text-white mb-1 leading-tight">Student <span class="text-gold">Registration</span></h1>
@@ -184,12 +183,12 @@
             <!-- Error/Success Flash -->
             <?php if (session()->getFlashdata('error')): ?>
                 <div class="bg-red-500/10 backdrop-blur-md border border-red-500/30 p-3.5 sm:p-4 mb-4 sm:mb-6 rounded-2xl shadow-lg">
-                    <p class="text-[13px] sm:text-[14px] font-bold text-red-200 leading-snug tracking-tight text-center"><?= session()->getFlashdata('error') ?></p>
+                    <p class="text-[16px] sm:text-[17px] font-bold text-red-200 leading-snug tracking-tight text-center"><?= session()->getFlashdata('error') ?></p>
                 </div>
             <?php endif; ?>
             <?php if (session()->getFlashdata('success')): ?>
                 <div class="bg-green-500/10 backdrop-blur-md border border-green-500/30 p-3.5 sm:p-4 mb-4 sm:mb-6 rounded-2xl shadow-lg">
-                    <p class="text-[13px] sm:text-[14px] font-bold text-green-200 leading-snug tracking-tight text-center"><?= session()->getFlashdata('success') ?></p>
+                    <p class="text-[16px] sm:text-[17px] font-bold text-green-200 leading-snug tracking-tight text-center"><?= session()->getFlashdata('success') ?></p>
                 </div>
             <?php endif; ?>
             <?php if (isset($validation)): ?>
@@ -203,7 +202,7 @@
                 <?= csrf_field() ?>
                 
                 <div class="space-y-1.5">
-                    <label for="name" class="block text-xs sm:text-sm font-bold text-white/80 ml-1 uppercase tracking-wider">Full Name</label>
+                    <label for="name" class="block text-sm sm:text-base font-bold text-white/80 ml-1 uppercase tracking-wider">Full Name</label>
                     <div class="relative group/input">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
@@ -216,7 +215,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
                     <div class="space-y-1.5">
-                        <label for="grade_level" class="block text-xs sm:text-sm font-bold text-white/80 ml-1 uppercase tracking-wider">Grade Level</label>
+                        <label for="grade_level" class="block text-sm sm:text-base font-bold text-white/80 ml-1 uppercase tracking-wider">Grade Level</label>
                         <div class="relative group/input">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-layer-group text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
@@ -228,7 +227,7 @@
                     </div>
 
                     <div class="space-y-1.5">
-                        <label for="section" class="block text-xs sm:text-sm font-bold text-white/80 ml-1 uppercase tracking-wider">Section</label>
+                        <label for="section" class="block text-sm sm:text-base font-bold text-white/80 ml-1 uppercase tracking-wider">Section</label>
                         <div class="relative group/input">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-chalkboard-teacher text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
@@ -241,7 +240,7 @@
                 </div>
 
                 <div class="space-y-1.5">
-                    <label for="parent_contact" class="block text-xs sm:text-sm font-bold text-white/80 ml-1 uppercase tracking-wider">Parent/Guardian Contact (Phone/Email)</label>
+                    <label for="parent_contact" class="block text-sm sm:text-base font-bold text-white/80 ml-1 uppercase tracking-wider">Parent/Guardian Contact (Phone/Email)</label>
                     <div class="relative group/input">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <i class="fas fa-phone-alt text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
@@ -254,7 +253,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 pt-1 sm:pt-2">
                     <div class="space-y-1.5">
-                        <label for="password" class="block text-xs sm:text-sm font-bold text-white/80 ml-1 uppercase tracking-wider">Create Password</label>
+                        <label for="password" class="block text-sm sm:text-base font-bold text-white/80 ml-1 uppercase tracking-wider">Create Password</label>
                         <div class="relative group/input">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-lock text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
@@ -264,17 +263,17 @@
                                    placeholder="••••••••">
                         </div>
                         <!-- Anti-CLS Pre-allocated High-Contrast Password Checklist Container -->
-                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 mt-2 text-[11px] text-gray-300 min-h-[46px]" id="password-criteria">
-                            <div id="req-length" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> At least 8 chars</div>
-                            <div id="req-upper" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> 1 Uppercase</div>
-                            <div id="req-lower" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> 1 Lowercase</div>
-                            <div id="req-number" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> 1 Number</div>
-                            <div id="req-special" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[9px] text-white/50"></i> 1 Special char</div>
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 mt-2 text-sm text-gray-200 min-h-[46px]" id="password-criteria">
+                            <div id="req-length" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[16px] text-white/50"></i> At least 8 chars</div>
+                            <div id="req-upper" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[16px] text-white/50"></i> 1 Uppercase</div>
+                            <div id="req-lower" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[16px] text-white/50"></i> 1 Lowercase</div>
+                            <div id="req-number" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[16px] text-white/50"></i> 1 Number</div>
+                            <div id="req-special" class="flex items-center gap-1.5 transition-colors"><i class="far fa-circle text-[16px] text-white/50"></i> 1 Special char</div>
                         </div>
                     </div>
 
                     <div class="space-y-1.5">
-                        <label for="password_confirm" class="block text-xs sm:text-sm font-bold text-white/80 ml-1 uppercase tracking-wider">Confirm Password</label>
+                        <label for="password_confirm" class="block text-sm sm:text-base font-bold text-white/80 ml-1 uppercase tracking-wider">Confirm Password</label>
                         <div class="relative group/input">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-lock text-white/40 group-focus-within/input:text-gold transition-colors text-[16px]"></i>
@@ -283,7 +282,7 @@
                                    class="w-full pl-11 pr-4 py-3 input-dark rounded-xl text-[16px] font-bold outline-none tracking-[0.1em]"
                                    placeholder="••••••••">
                         </div>
-                        <p id="password-match-msg" class="text-[11px] text-red-400 mt-1 hidden font-medium flex items-center gap-1"><i class="fas fa-exclamation-circle"></i> Passwords do not match</p>
+                        <p id="password-match-msg" class="text-[14px] text-red-400 mt-1 hidden font-medium flex items-center gap-1"><i class="fas fa-exclamation-circle"></i> Passwords do not match</p>
                     </div>
                 </div>
 
@@ -293,9 +292,9 @@
                         <div class="relative flex items-center justify-center mt-0.5 shrink-0">
                             <input type="checkbox" name="terms" id="terms" required class="peer sr-only" <?= set_checkbox('terms', '1') ?>>
                             <div class="w-5 h-5 border-2 border-white/40 rounded-md bg-white/5 peer-checked:bg-gold peer-checked:border-gold transition-all duration-300"></div>
-                            <i class="fas fa-check absolute text-[11px] text-[#0A1C11] opacity-0 peer-checked:opacity-100 transition-opacity duration-300 pointer-events-none"></i>
+                            <i class="fas fa-check absolute text-[14px] text-[#0A1C11] opacity-0 peer-checked:opacity-100 transition-opacity duration-300 pointer-events-none"></i>
                         </div>
-                        <span class="text-xs sm:text-sm text-white/80 leading-snug">
+                        <span class="text-sm sm:text-base text-white/90 leading-relaxed">
                             I agree to the <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-bold underline underline-offset-2 transition-colors py-1">Terms and Conditions</button> & <button type="button" onclick="openTermsModal()" class="text-gold hover:text-gold-light font-bold underline underline-offset-2 transition-colors py-1">Data Privacy Policy</button>.
                         </span>
                     </label>
@@ -310,8 +309,8 @@
             
             <!-- Instant Direct Navigation to Login (Isolated from Form Events with 44px Touch Target) -->
             <div class="text-center mt-5 sm:mt-6 relative z-20">
-                <a href="<?= base_url('login') ?>" class="inline-flex items-center gap-1.5 text-[13px] sm:text-[14px] font-semibold text-white/80 hover:text-gold transition-colors py-2 px-3 rounded-lg hover:bg-white/5 min-h-[44px]">
-                    <i class="fas fa-arrow-left text-[11px]"></i> Back to Login
+                <a href="<?= base_url('login') ?>" class="inline-flex items-center gap-1.5 text-[16px] sm:text-[17px] font-semibold text-white/80 hover:text-gold transition-colors py-2 px-3 rounded-lg hover:bg-white/5 min-h-[44px]">
+                    <i class="fas fa-arrow-left text-[14px]"></i> Back to Login
                 </a>
             </div>
             
@@ -452,11 +451,11 @@
             if (isValid) {
                 el.classList.add('text-emerald-300', 'font-semibold');
                 el.classList.remove('text-gray-300');
-                icon.className = 'fas fa-check-circle text-[11px] text-emerald-400';
+                icon.className = 'fas fa-check-circle text-[14px] text-emerald-400';
             } else {
                 el.classList.remove('text-emerald-300', 'font-semibold');
                 el.classList.add('text-gray-300');
-                icon.className = 'far fa-circle text-[9px] text-white/50';
+                icon.className = 'far fa-circle text-[16px] text-white/50';
             }
         }
         checkPasswordMatch();

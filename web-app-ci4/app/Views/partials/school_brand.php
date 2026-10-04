@@ -21,4 +21,4 @@ $schoolPrimary = [
         primary: Object.freeze(<?= json_encode($schoolPrimary, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>)
     });
 </script>
-<link rel="stylesheet" href="<?= base_url('css/school-brand.css?v=1') ?>">
+<link rel="stylesheet" href="<?= base_url('css/school-brand.css?v=' . (file_exists(FCPATH . 'css/school-brand.css') ? filemtime(FCPATH . 'css/school-brand.css') : '2')) ?>">

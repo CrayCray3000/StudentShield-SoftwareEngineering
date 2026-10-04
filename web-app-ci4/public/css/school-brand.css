@@ -79,20 +79,29 @@
 /* ── Mobile Typography & Readability Scaling (Student & Staff) ── */
 @media (max-width: 768px) {
     html {
-        font-size: 16px !important;
+        font-size: 17px !important;
         -webkit-text-size-adjust: 100%;
         text-size-adjust: 100%;
     }
 
     /* Elevate mobile stat & directory cards readability */
     .school-staff-page .stat-card span.uppercase {
-        font-size: 0.75rem !important; /* 12px instead of 10px */
+        font-size: 0.8125rem !important; /* ~14px */
     }
     .school-staff-page .user-card span.uppercase {
-        font-size: 0.75rem !important; /* 12px instead of 10px */
+        font-size: 0.8125rem !important; /* ~14px */
     }
     .school-staff-page .user-card span.truncate {
-        font-size: 0.9375rem !important; /* 15px instead of 12px */
+        font-size: 1rem !important; /* ~17px */
+    }
+
+    /* Form labels & descriptions readability floor */
+    label {
+        font-size: 0.95rem !important; /* ~16px */
+    }
+    .text-xs {
+        font-size: 0.875rem !important; /* ~15px instead of 12px */
+        line-height: 1.25rem !important;
     }
 
     /* Form inputs & touch target readability floor */
@@ -102,7 +111,8 @@
     .school-staff-page select,
     .student-form-page input,
     .student-form-page select,
-    .student-form-page textarea {
-        font-size: 1rem !important; /* 16px prevents iOS Safari zoom & ensures crisp readability */
+    .student-form-page textarea,
+    input, select, textarea {
+        font-size: 1.05rem !important; /* ~18px prevents iOS Safari zoom & ensures crisp readability */
     }
 }
