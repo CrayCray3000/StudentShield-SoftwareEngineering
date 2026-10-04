@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Favicon -->
@@ -54,7 +54,7 @@
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
         @media (max-width: 1024px) { html { font-size: 13px; } }
-        @media (max-width: 768px) { html { font-size: 17px !important; } } /* Reset for mobile */
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
 
         body { font-family: 'Inter', sans-serif; background: #FAFDF5; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
@@ -136,7 +136,7 @@
 
                 <div class="truncate">
                     <h1 class="text-base sm:text-2xl font-bold tracking-tight font-heading leading-tight truncate">StudentShield</h1>
-                    <span class="text-[#EAB308] text-[16px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">Super Admin Panel</span>
+                    <span class="text-[#EAB308] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">Super Admin Panel</span>
                 </div>
             </div>
             

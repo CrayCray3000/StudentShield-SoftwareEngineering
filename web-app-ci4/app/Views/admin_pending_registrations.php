@@ -27,9 +27,10 @@
             }
         }
     </script>
+    <style>
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
-        @media (max-width: 768px) { html { font-size: 17px !important; } } /* Reset for mobile */
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
         body { background-color: #f8faf6; font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
         .glass-header {
@@ -90,7 +91,7 @@
                 <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0">
                 <div class="truncate">
                     <h1 class="text-base sm:text-xl font-bold tracking-tight leading-tight truncate">StudentShield</h1>
-                    <span class="text-[#F2C300] text-[16px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">
+                    <span class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">
                         <?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> · Pending Registrations
                     </span>
                 </div>

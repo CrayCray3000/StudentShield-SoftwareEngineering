@@ -51,9 +51,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
+        /* Responsive scaling */
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
-        @media (max-width: 768px) { html { font-size: 17px !important; } } /* Reset for mobile */
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
         
         body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
         .font-heading { font-family: 'Outfit', sans-serif; }
@@ -156,7 +157,7 @@
 
     <!-- Top Navigation Controls -->
     <div class="absolute top-4 sm:top-5 left-0 w-full px-4 sm:px-8 flex items-center justify-between z-50 pointer-events-none">
-        <a href="<?= base_url('student/vent') ?>" class="pointer-events-auto flex items-center gap-2 sm:gap-2.5 bg-white/10 backdrop-blur-xl text-white hover:text-gold px-4 sm:px-5 py-2.5 sm:py-3 rounded-[1rem] sm:rounded-2xl border border-white/20 shadow-[0_5px_15px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_25px_rgba(242,195,0,0.2)] hover:scale-[1.02] transition-all duration-300 font-bold text-[15px] sm:text-[17px]">
+        <a href="<?= base_url('student/vent') ?>" class="pointer-events-auto flex items-center gap-2 sm:gap-2.5 bg-white/10 backdrop-blur-xl text-white hover:text-gold px-4 sm:px-5 py-2.5 sm:py-3 rounded-[1rem] sm:rounded-2xl border border-white/20 shadow-[0_5px_15px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_25px_rgba(242,195,0,0.2)] hover:scale-[1.02] transition-all duration-300 font-bold text-[12px] sm:text-[14px]">
             <i class="fas fa-arrow-left text-white/60 group-hover:text-gold transition-colors"></i> <span class="hidden sm:inline">Go Back</span>
         </a>
 
@@ -187,7 +188,7 @@
                     <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-check text-emerald-300 text-sm sm:text-base"></i>
                     </div>
-                    <span class="text-emerald-100 font-bold text-[16px] sm:text-[17px] leading-snug"><?= session()->getFlashdata('message') ?></span>
+                    <span class="text-emerald-100 font-bold text-[13px] sm:text-[15px] leading-snug"><?= session()->getFlashdata('message') ?></span>
                 </div>
             <?php endif; ?>
             <?php if(session()->getFlashdata('error')): ?>
@@ -195,7 +196,7 @@
                     <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-exclamation-triangle text-red-300 text-sm sm:text-base"></i>
                     </div>
-                    <span class="text-red-100 font-bold text-[16px] sm:text-[17px] leading-snug"><?= session()->getFlashdata('error') ?></span>
+                    <span class="text-red-100 font-bold text-[13px] sm:text-[15px] leading-snug"><?= session()->getFlashdata('error') ?></span>
                 </div>
             <?php endif; ?>
         </div>
@@ -206,10 +207,10 @@
                 <?= csrf_field() ?>
                 
                 <div class="space-y-1.5 sm:space-y-2">
-                    <label for="incident_type" class="block text-[15px] sm:text-[20px] font-bold text-white/80 ml-1 uppercase tracking-wider">What kind of incident occurred?</label>
+                    <label for="incident_type" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">What kind of incident occurred?</label>
                     <div class="relative group/input">
                         <select id="incident_type" name="incident_type" required
-                                class="appearance-none w-full px-4 sm:px-6 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[17px] font-semibold cursor-pointer text-gray-800">
+                                class="appearance-none w-full px-4 sm:px-6 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[15px] font-semibold cursor-pointer text-gray-800">
                             <option value="" disabled selected>-- Select Incident Category --</option>
                             <option value="Physical Abuse">Physical Abuse (Hitting, Pushing, Fighting)</option>
                             <option value="Cyberbullying">Cyberbullying (Online Threats, Harassment)</option>
@@ -224,52 +225,52 @@
 
                 <div class="space-y-1.5 sm:space-y-2">
                     <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between ml-1 gap-1">
-                        <label for="perpetrator_name" class="block text-[15px] sm:text-[20px] font-bold text-white/80 uppercase tracking-wider">
+                        <label for="perpetrator_name" class="block text-[12px] sm:text-[13px] font-bold text-white/80 uppercase tracking-wider">
                             Name(s) of the Perpetrator / Bully
                         </label>
-                        <span class="text-[16px] sm:text-[17px] text-white/50 font-semibold bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 sm:px-2.5 sm:py-1 w-max">Optional if unknown</span>
+                        <span class="text-[10px] sm:text-[12px] text-white/50 font-semibold bg-white/5 border border-white/10 rounded-lg px-2 py-0.5 sm:px-2.5 sm:py-1 w-max">Optional if unknown</span>
                     </div>
                     <div class="relative group/input">
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-red-400">
-                            <i class="fas fa-users-slash text-white/30 group-focus-within/input:text-red-400 transition-colors text-[14px] sm:text-[20px]"></i>
+                            <i class="fas fa-users-slash text-white/30 group-focus-within/input:text-red-400 transition-colors text-[14px] sm:text-[16px]"></i>
                         </div>
                         <input type="text" id="perpetrator_name" name="perpetrator_name"
-                               class="w-full pl-11 sm:pl-14 pr-4 sm:pr-5 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[17px] font-semibold focus:border-red-400 focus:shadow-[0_0_0_4px_rgba(248,113,113,0.2)]" 
+                               class="w-full pl-11 sm:pl-14 pr-4 sm:pr-5 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[15px] font-semibold focus:border-red-400 focus:shadow-[0_0_0_4px_rgba(248,113,113,0.2)]" 
                                placeholder="Who was involved?">
                     </div>
                 </div>
 
                 <div class="space-y-1.5 sm:space-y-2">
-                    <label for="description" class="block text-[15px] sm:text-[20px] font-bold text-white/80 ml-1 uppercase tracking-wider">
+                    <label for="description" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">
                         Describe what happened <span class="text-red-400 text-sm">*</span>
                     </label>
                     <textarea id="description" name="description" rows="5" required
-                              class="w-full px-4 sm:px-6 py-4 sm:py-5 input-dark rounded-xl sm:rounded-[1.5rem] text-[14px] sm:text-[17px] font-medium leading-relaxed resize-none" 
+                              class="w-full px-4 sm:px-6 py-4 sm:py-5 input-dark rounded-xl sm:rounded-[1.5rem] text-[14px] sm:text-[15px] font-medium leading-relaxed resize-none" 
                               placeholder="Where did it happen? When? Describe exactly what was said or done. The more detail you provide, the faster counselors can intervene safely."></textarea>
                 </div>
 
                 <!-- EVIDENCE UPLOAD -->
                 <div class="space-y-1.5 sm:space-y-2">
-                    <label for="evidence_file" class="block text-[15px] sm:text-[20px] font-bold text-white/80 ml-1 uppercase tracking-wider">
+                    <label for="evidence_file" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">
                         Attach Evidence (Photo/Video)
                     </label>
                     <div class="relative group/input">
                         <input type="file" id="evidence_file" name="evidence_file" accept="image/*,video/*"
-                               class="w-full px-4 sm:px-6 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[17px] font-medium file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold file:text-[#042E15] hover:file:bg-yellow-400 cursor-pointer">
+                               class="w-full px-4 sm:px-6 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[14px] sm:text-[15px] font-medium file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold file:text-[#042E15] hover:file:bg-yellow-400 cursor-pointer">
                         <p class="mt-2 text-xs text-white/50 ml-2">Max size: 10MB. Supported: JPG, PNG, HEIC, MP4, MOV, AVI, MKV, WEBM.</p>
                     </div>
                 </div>
 
                 <!-- SUBMIT BUTTON -->
                 <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 sm:gap-3 h-[54px] sm:h-[64px] mt-6 sm:mt-8 group/btn bg-gold">
-                    <span id="btnText" class="font-heading text-[16px] sm:text-[20px] tracking-wide text-[#042E15] drop-shadow-sm mix-blend-multiply pt-0.5">Submit Official Report</span>
-                    <i id="btnIcon" class="fas fa-lock text-[#042E15] text-[16px] sm:text-[17px] mix-blend-multiply group-hover/btn:scale-110 transition-transform duration-300"></i>
+                    <span id="btnText" class="font-heading text-[16px] sm:text-[18px] tracking-wide text-[#042E15] drop-shadow-sm mix-blend-multiply pt-0.5">Submit Official Report</span>
+                    <i id="btnIcon" class="fas fa-lock text-[#042E15] text-[13px] sm:text-[15px] mix-blend-multiply group-hover/btn:scale-110 transition-transform duration-300"></i>
                     <svg id="btnSpinner" class="animate-spin h-5 w-5 sm:h-6 sm:w-6 text-[#042E15] hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </form>
             
             <!-- Trust Badges -->
-            <div class="pt-6 sm:pt-8 mt-6 sm:mt-10 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 gap-y-3 sm:gap-y-4 text-[16px] sm:text-[17px] text-white/40 font-extrabold uppercase tracking-widest">
+            <div class="pt-6 sm:pt-8 mt-6 sm:mt-10 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 gap-y-3 sm:gap-y-4 text-[10px] sm:text-[12px] text-white/40 font-extrabold uppercase tracking-widest">
                 <span class="flex items-center gap-1.5 sm:gap-2"><i class="fas fa-user-secret text-gold/70 text-xs sm:text-sm"></i> 100% Anonymous</span>
                 <span class="flex items-center gap-1.5 sm:gap-2"><i class="fas fa-shield-alt text-gold/70 text-xs sm:text-sm"></i> Admin Only</span>
             </div>
@@ -290,7 +291,7 @@
                         </div>
                         <div>
                             <h4 class="text-sm font-bold text-white mb-1">Your Identity is Hidden</h4>
-                            <p class="text-[15px] text-white/40 leading-relaxed font-medium">Unless you choose to provide your name, this report is 100% anonymous.</p>
+                            <p class="text-[12px] text-white/40 leading-relaxed font-medium">Unless you choose to provide your name, this report is 100% anonymous.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4 flex-1">
@@ -299,7 +300,7 @@
                         </div>
                         <div>
                             <h4 class="text-sm font-bold text-white mb-1">End-to-End Encryption</h4>
-                            <p class="text-[15px] text-white/40 leading-relaxed font-medium">Data is encrypted before it reaches our servers, keeping your voice secure.</p>
+                            <p class="text-[12px] text-white/40 leading-relaxed font-medium">Data is encrypted before it reaches our servers, keeping your voice secure.</p>
                         </div>
                     </div>
                 </div>

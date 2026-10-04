@@ -50,9 +50,10 @@
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
-        @media (max-width: 768px) { html { font-size: 17px !important; } } /* Reset for mobile */
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
 
         body { font-family: 'Inter', sans-serif; background-color: #096328; overflow-x: hidden; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
@@ -169,7 +170,7 @@
                 Student<span class="text-gold">Shield</span>
             </h1>
             
-            <p class="text-white/70 text-[16px] sm:text-[17px] font-semibold tracking-[0.15em] uppercase font-mono mb-8" id="splashStatusText">Authenticating Environment...</p>
+            <p class="text-white/70 text-[10px] sm:text-[11px] font-semibold tracking-[0.15em] uppercase font-mono mb-8" id="splashStatusText">Authenticating Environment...</p>
 
             <!-- Sleek Loading Bar -->
             <div class="w-48 sm:w-64 h-1.5 bg-black/40 rounded-full overflow-hidden border border-white/5 relative">
@@ -193,12 +194,12 @@
             <div class="flex flex-col items-center justify-center mb-3 sm:mb-4">
                 <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-20 h-20 sm:w-24 sm:h-24 object-contain mx-auto mb-2 drop-shadow-xl"
                      onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><path d=\'M50 15L15 30v30c0 20 35 30 35 30s35-10 35-30V30L50 15z\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linejoin=\'round\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
-                <p class="text-white/90 font-semibold text-[15px] sm:text-[17px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
+                <p class="text-white/90 font-semibold text-[12px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
             </div>
             <h1 class="text-2xl sm:text-3xl font-heading font-extrabold tracking-tight text-white leading-tight">Staff <span class="text-gold">Portal</span></h1>
             <div class="inline-flex items-center gap-2 mt-2.5 px-3.5 py-1 rounded-full bg-black/40 border border-white/20 shadow-sm">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="text-[9.5px] sm:text-[17px] font-bold text-white uppercase tracking-widest whitespace-nowrap">🛡️ Authorized Personnel Only</span>
+                <span class="text-[9.5px] sm:text-[10.5px] font-bold text-white uppercase tracking-widest whitespace-nowrap">🛡️ Authorized Personnel Only</span>
             </div>
         </div>
 
@@ -209,7 +210,7 @@
                     <svg class="h-5 w-5 sm:h-6 sm:w-6 text-red-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
-                    <p class="text-[16px] sm:text-sm font-medium text-red-200"><?= session()->getFlashdata('error') ?></p>
+                    <p class="text-[13px] sm:text-sm font-medium text-red-200"><?= session()->getFlashdata('error') ?></p>
                 </div>
             </div>
         <?php endif; ?>
@@ -218,7 +219,7 @@
         <form action="<?= base_url('admin/login/authenticate') ?>" method="post" class="space-y-4 sm:space-y-5">
             <?= csrf_field() ?>
             <div>
-                <label for="name" class="block text-[14px] sm:text-xs font-semibold text-white/80 mb-1.5 sm:mb-2 ml-1 uppercase tracking-wider">Admin ID</label>
+                <label for="name" class="block text-[11px] sm:text-xs font-semibold text-white/80 mb-1.5 sm:mb-2 ml-1 uppercase tracking-wider">Admin ID</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 sm:pl-4 flex items-center pointer-events-none">
                         <svg class="h-[18px] w-[18px] sm:h-5 sm:w-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -232,7 +233,7 @@
             </div>
 
             <div>
-                <label for="password" class="block text-[14px] sm:text-xs font-semibold text-white/80 mb-1.5 sm:mb-2 ml-1 uppercase tracking-wider">Access Key</label>
+                <label for="password" class="block text-[11px] sm:text-xs font-semibold text-white/80 mb-1.5 sm:mb-2 ml-1 uppercase tracking-wider">Access Key</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 sm:pl-4 flex items-center pointer-events-none">
                         <svg class="h-[18px] w-[18px] sm:h-5 sm:w-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -255,7 +256,7 @@
 
         <!-- Footer -->
         <div class="mt-5 sm:mt-8 pt-4 sm:pt-5 border-t border-white/10 text-center">
-            <a href="<?= base_url('login') ?>" class="inline-flex items-center gap-1.5 sm:gap-2 text-[15px] sm:text-xs text-white/50 hover:text-gold transition-colors font-semibold py-2 px-3 rounded-lg hover:bg-white/5 min-h-[44px]">
+            <a href="<?= base_url('login') ?>" class="inline-flex items-center gap-1.5 sm:gap-2 text-[12px] sm:text-xs text-white/50 hover:text-gold transition-colors font-semibold py-2 px-3 rounded-lg hover:bg-white/5 min-h-[44px]">
                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                 Back to Student Portal
             </a>

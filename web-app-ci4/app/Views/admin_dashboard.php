@@ -57,7 +57,7 @@
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
         @media (max-width: 1024px) { html { font-size: 13px; } }
-        @media (max-width: 768px) { html { font-size: 17px !important; } } /* Reset for mobile */
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
 
         body {
             background-color: #f8faf6;
@@ -250,7 +250,7 @@
 
                 <div class="truncate">
                     <h1 class="text-base sm:text-2xl font-bold tracking-tight leading-tight truncate">StudentShield</h1>
-                    <span class="text-[#F2C300] text-[16px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</span>
+                    <span class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate"><span class="sm:hidden"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?></span><span class="hidden sm:inline"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</span></span>
                 </div>
             </div>
             
@@ -259,7 +259,7 @@
                 <div class="hidden md:flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/15">
                     <svg class="w-4 h-4 text-[#F2C300] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <div class="flex flex-col leading-tight">
-                        <span id="liveDayDate" class="text-[16px] font-bold text-[#FACC15] uppercase tracking-wider"><?= date('l, M j, Y') ?></span>
+                        <span id="liveDayDate" class="text-[10px] font-bold text-[#FACC15] uppercase tracking-wider"><?= date('l, M j, Y') ?></span>
                         <span id="liveTime" class="text-xs font-semibold text-white/90 tabular-nums"><?= date('g:i:s A') ?></span>
                     </div>
                 </div>
@@ -277,7 +277,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
                         <span class="text-xs font-semibold text-white/90 hidden sm:inline ml-1.5">Sessions</span>
-                        <span id="meetingBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#22c55e] text-white text-[16px] font-bold shadow-lg animate-pulse">
+                        <span id="meetingBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#22c55e] text-white text-[10px] font-bold shadow-lg animate-pulse">
                             <?= esc($pending_meetings_count ?? 0) ?>
                         </span>
                     </button>
@@ -293,7 +293,7 @@
                         <div id="meetingRequestsList" class="max-h-72 overflow-y-auto divide-y divide-white/5">
                             <div class="px-4 py-6 text-center text-white/50 text-sm" id="noRequestsMsg">No pending requests</div>
                         </div>
-                        <div class="px-4 py-2.5 border-t border-white/10 flex items-center justify-between text-[14px] bg-black/25">
+                        <div class="px-4 py-2.5 border-t border-white/10 flex items-center justify-between text-[11px] bg-black/25">
                             <span class="text-white/40" id="lastCheckedLabel">Checking...</span>
                             <a href="#section-sessions" onclick="toggleMeetingDropdown()" class="text-emerald-400 hover:text-emerald-300 font-semibold">View Section ↓</a>
                         </div>
@@ -370,7 +370,7 @@
             </a>
             <a href="#section-sessions" class="section-nav-pill whitespace-nowrap">
                 <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                Sessions <span id="navSessionsBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> ml-1 px-1.5 py-0.2 rounded-full bg-emerald-600 text-white text-[16px] font-bold"><?= esc($pending_meetings_count ?? 0) ?></span>
+                Sessions <span id="navSessionsBadge" class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> ml-1 px-1.5 py-0.2 rounded-full bg-emerald-600 text-white text-[10px] font-bold"><?= esc($pending_meetings_count ?? 0) ?></span>
             </a>
             <a href="#section-alerts" class="section-nav-pill whitespace-nowrap">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
@@ -401,32 +401,32 @@
                     </label>
                 </div>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full md:w-auto">
-                <div class="stat-card green-accent flex items-center gap-3 p-3.5 sm:p-5">
-                    <div class="h-9 w-9 rounded-lg bg-[#0B5E2E]/10 flex items-center justify-center flex-shrink-0">
+            <div class="grid grid-cols-3 gap-2 sm:gap-3 w-full md:w-auto">
+                <div class="stat-card green-accent flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 p-2.5 sm:p-5">
+                    <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-[#0B5E2E]/10 flex items-center justify-center flex-shrink-0">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     </div>
                     <div class="flex flex-col min-w-0">
-                        <span class="text-[16px] sm:text-[20px] text-gray-600 font-semibold uppercase tracking-wider truncate">Total Active</span>
-                        <span class="text-xl sm:text-2xl font-bold text-[#0B5E2E] leading-tight" id="stat-total">--</span>
+                        <span class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Total Active</span>
+                        <span class="text-lg sm:text-2xl font-bold text-[#0B5E2E] leading-tight" id="stat-total">--</span>
                     </div>
                 </div>
-                <div class="stat-card gold-accent flex items-center gap-3 p-3.5 sm:p-5">
-                    <div class="h-9 w-9 rounded-lg bg-[#F2C300]/15 flex items-center justify-center flex-shrink-0">
+                <div class="stat-card gold-accent flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 p-2.5 sm:p-5">
+                    <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-[#F2C300]/15 flex items-center justify-center flex-shrink-0">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#B89100]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     </div>
                     <div class="flex flex-col min-w-0">
-                        <span class="text-[16px] sm:text-[20px] text-gray-600 font-semibold uppercase tracking-wider truncate">Critical</span>
-                        <span class="text-xl sm:text-2xl font-bold text-[#E04B3F] leading-tight" id="stat-critical">--</span>
+                        <span class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Critical</span>
+                        <span class="text-lg sm:text-2xl font-bold text-[#E04B3F] leading-tight" id="stat-critical">--</span>
                     </div>
                 </div>
-                <a href="#section-sessions" class="stat-card flex items-center gap-3 p-3.5 sm:p-5 border-l-4 border-l-emerald-600 hover:border-emerald-700 col-span-2 sm:col-span-1 transition-all">
-                    <div class="h-9 w-9 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                <a href="#section-sessions" class="stat-card flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 p-2.5 sm:p-5 border-l-4 border-l-emerald-600 hover:border-emerald-700 transition-all">
+                    <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                     </div>
                     <div class="flex flex-col min-w-0">
-                        <span class="text-[16px] sm:text-[20px] text-gray-600 font-semibold uppercase tracking-wider truncate">Sessions</span>
-                        <span class="text-xl sm:text-2xl font-bold text-emerald-700 leading-tight" id="stat-sessions"><?= esc($pending_meetings_count ?? 0) ?></span>
+                        <span class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Sessions</span>
+                        <span class="text-lg sm:text-2xl font-bold text-emerald-700 leading-tight" id="stat-sessions"><?= esc($pending_meetings_count ?? 0) ?></span>
                     </div>
                 </a>
             </div>
@@ -445,7 +445,7 @@
                 <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 live-dot"></span>
-                        <span class="text-[16px] font-bold text-emerald-700 uppercase tracking-widest">Live Syncing</span>
+                        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">Live Syncing</span>
                     </div>
                 </div>
             </div>
@@ -599,7 +599,7 @@
                 </h2>
                 <div class="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-200">
                     <span class="w-2 h-2 rounded-full bg-blue-500 live-dot"></span>
-                    <span class="text-[16px] font-bold text-blue-700 uppercase tracking-widest">System Log</span>
+                    <span class="text-[10px] font-bold text-blue-700 uppercase tracking-widest">System Log</span>
                 </div>
             </div>
             
@@ -663,7 +663,7 @@
         <div class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[75vh] border border-[#e5ebe5]">
             <div class="flex justify-between items-start mb-4 shrink-0">
                 <div>
-                    <div id="modalBadge" class="inline-flex px-2.5 py-1 rounded-md text-[16px] font-bold uppercase tracking-widest mb-2 border"></div>
+                    <div id="modalBadge" class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border"></div>
                     <h2 id="modalTitle" class="text-2xl font-heading font-extrabold text-[#0B5E2E] tracking-tight">Report Details</h2>
                 </div>
                 <button onclick="closeDetailModal()" class="text-gray-500 hover:text-red-500 transition-colors p-2 bg-gray-50 hover:bg-red-50 rounded-full">
@@ -673,22 +673,22 @@
             
             <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-200 shrink-0">
                 <div>
-                    <p class="text-[14px] font-bold text-gray-500 uppercase tracking-widest mb-1">Involved Party / Sender</p>
+                    <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Involved Party / Sender</p>
                     <p id="modalSender" class="text-sm font-semibold text-gray-800">--</p>
                 </div>
                 <div>
-                    <p class="text-[14px] font-bold text-gray-500 uppercase tracking-widest mb-1">Timestamp</p>
+                    <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Timestamp</p>
                     <p id="modalTime" class="text-sm font-semibold text-gray-800">--</p>
                 </div>
             </div>
 
             <div class="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-2 pb-4">
-                <p class="text-[14px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Full Context Payload</p>
+                <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Full Context Payload</p>
                 <div id="modalContent" class="text-[16px] leading-[1.85] tracking-wide text-gray-800 bg-[#f8faf6] border border-[#e5ebe5] shadow-inner p-7 rounded-2xl whitespace-pre-wrap font-medium">
                     --
                 </div>
                 <div id="modalEvidenceContainer" class="mt-4 hidden">
-                    <p class="text-[14px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Attached Evidence</p>
+                    <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Attached Evidence</p>
                     
                     <div id="evidencePreviewArea" class="mt-2 mb-3 bg-gray-50 rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
                         <img id="evidenceImagePreview" src="" alt="Evidence" class="hidden max-w-full max-h-[250px] object-contain" />
@@ -973,16 +973,16 @@
                                     </div>
                                     <div>
                                         <span class="text-sm font-medium text-gray-900 block group-hover:text-primary transition-colors hover:underline">${escapeHtml(vent.name)}</span>
-                                        ${vent.section ? `<span class="text-[14px] text-gray-600 font-bold block mt-0.5">Section: <span class="font-normal text-gray-600">${escapeHtml(vent.section)}</span></span>` : ''}
-                                        ${vent.adviser_name ? `<span class="text-[14px] text-gray-600 font-bold block mb-1">Adviser: <span class="font-normal text-gray-600">${escapeHtml(vent.adviser_name)}</span></span>` : ''}
-                                        ${vent.parent_phone ? `<span class="text-[16px] text-gray-500 block pt-0.5 border-t border-gray-200 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
-                                        ${vent.parent_email ? `<span class="text-[16px] text-gray-500 block">✉️ ${escapeHtml(vent.parent_email)}</span>` : ''}
+                                        ${vent.section ? `<span class="text-[11px] text-gray-600 font-bold block mt-0.5">Section: <span class="font-normal text-gray-600">${escapeHtml(vent.section)}</span></span>` : ''}
+                                        ${vent.adviser_name ? `<span class="text-[11px] text-gray-600 font-bold block mb-1">Adviser: <span class="font-normal text-gray-600">${escapeHtml(vent.adviser_name)}</span></span>` : ''}
+                                        ${vent.parent_phone ? `<span class="text-[10px] text-gray-500 block pt-0.5 border-t border-gray-200 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
+                                        ${vent.parent_email ? `<span class="text-[10px] text-gray-500 block">✉️ ${escapeHtml(vent.parent_email)}</span>` : ''}
                                     </div>
                                 </div>
                             </td>
                             <td data-label="NLP Extract" class="px-6 py-4 cursor-pointer group" onclick="openVentModal(${vent.id})">
                                 <p class="text-sm text-gray-600 italic line-clamp-2">"${escapeHtml(textSnippet)}"</p>
-                                <span class="text-[16px] text-[#0B5E2E] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
+                                <span class="text-[10px] text-[#0B5E2E] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
                             </td>
                             <td data-label="Risk Indicator" class="px-6 py-4 whitespace-nowrap text-center">
                                 ${(() => {
@@ -1109,7 +1109,7 @@
 
                         let bgColor = isPending ? 'bg-white hover:bg-gray-50 border-l-4 border-l-amber-400' : (isRejected ? 'bg-white hover:bg-gray-50 border-l-4 border-l-red-500' : 'bg-white hover:bg-gray-50 border-l-4 border-l-transparent');
 
-                        let evidenceBadge = incident.evidence_file ? `<span class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[16px] font-bold bg-blue-50 text-blue-700 border border-blue-200">📎 Evidence Attached</span>` : '';
+                        let evidenceBadge = incident.evidence_file ? `<span class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">📎 Evidence Attached</span>` : '';
 
                         const rawDate = dateObj.toISOString().split('T')[0]; const incidentStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${incidentStatus}" data-date="${rawDate}" class="transition-colors duration-200 ${bgColor}">
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center">
@@ -1130,7 +1130,7 @@
                             </td>
                             <td data-label="Description" class="px-6 py-4 cursor-pointer group" onclick="openIncidentModal(${incident.id})">
                                 <p class="text-sm text-gray-600 italic line-clamp-2">"${escapeHtml(textSnippet)}"</p>
-                                <span class="text-[16px] text-[#2A5DB0] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
+                                <span class="text-[10px] text-[#2A5DB0] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
                             </td>
                             <td data-label="Status" class="px-6 py-4 whitespace-nowrap text-center">${statusBadge}</td>
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
@@ -1156,7 +1156,7 @@
                                     </span>
                                     <form action="<?= base_url('admin/incident/undo/') ?>${incident.id}" method="POST">
                                         <?= csrf_field() ?>
-                                        <button type="submit" onclick="return confirm('Undo verification and reset to Pending Review? (Note: alerts already sent cannot be unsent)');" class="w-full text-[16px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
+                                        <button type="submit" onclick="return confirm('Undo verification and reset to Pending Review? (Note: alerts already sent cannot be unsent)');" class="w-full text-[10px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
                                             ↩ Undo (Nagkamali?)
                                         </button>
                                     </form>
@@ -1167,7 +1167,7 @@
                                     </span>
                                     <form action="<?= base_url('admin/incident/undo/') ?>${incident.id}" method="POST">
                                         <?= csrf_field() ?>
-                                        <button type="submit" onclick="return confirm('Undo rejection and reset to Pending Review so you can re-evaluate?');" class="w-full text-[16px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
+                                        <button type="submit" onclick="return confirm('Undo rejection and reset to Pending Review so you can re-evaluate?');" class="w-full text-[10px] font-semibold text-gray-600 hover:text-orange-600 bg-gray-50 hover:bg-orange-50 px-2 py-1.5 rounded-lg transition-colors border border-gray-300 hover:border-orange-200">
                                             ↩ Undo (Nagkamali?)
                                         </button>
                                     </form>
@@ -1301,7 +1301,7 @@
                                 <td data-label="Recipient" class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800">${escapeHtml(alert.recipient)}</td>
                                 <td data-label="Payload / Message" class="px-6 py-4 cursor-pointer group" onclick="openAlertModal(${index})">
                                     <p class="text-sm text-gray-600 line-clamp-2 italic">"${escapeHtml(alert.message)}"</p>
-                                    <span class="text-[16px] text-[#2A5DB0] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">VIEW PAYLOAD ↗</span>
+                                    <span class="text-[10px] text-[#2A5DB0] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">VIEW PAYLOAD ↗</span>
                                 </td>
                             </tr>`;
                         });
@@ -1328,7 +1328,7 @@
             
             const badge = document.getElementById('modalBadge');
             badge.innerText = badgeText;
-            badge.className = `inline-flex px-2.5 py-1 rounded-md text-[16px] font-bold uppercase tracking-widest mb-2 border ${badgeClass}`;
+            badge.className = `inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border ${badgeClass}`;
 
             const modal = document.getElementById('detailModal');
             modal.classList.remove('hidden');
@@ -1707,9 +1707,9 @@
                         </span>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-semibold text-white truncate group-hover:text-emerald-300 transition-colors">${name}${sid}</p>
-                            <p class="text-[14px] text-white/60">${section.replace(' · ', '')}${section ? '' : '&nbsp;'} <span class="ml-1 text-white/40">${ago}</span></p>
+                            <p class="text-[11px] text-white/60">${section.replace(' · ', '')}${section ? '' : '&nbsp;'} <span class="ml-1 text-white/40">${ago}</span></p>
                         </div>
-                        <span class="text-[16px] text-emerald-400 font-semibold self-center opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">View →</span>
+                        <span class="text-[10px] text-emerald-400 font-semibold self-center opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">View →</span>
                     </a>`;
                 }).join('');
             }
@@ -1751,10 +1751,10 @@
                                     <h4 class="text-sm font-bold text-gray-900 truncate">${name}</h4>
                                     <p class="text-xs text-gray-500 truncate mt-0.5">${section}${sid}</p>
                                     <div class="mt-2 flex items-center gap-1.5 flex-wrap">
-                                        <span class="inline-flex items-center gap-1 text-[14px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                                             ⏱ Requested ${ago}
                                         </span>
-                                        <span class="inline-flex items-center text-[14px] font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                                        <span class="inline-flex items-center text-[11px] font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                                             Virtual 1-on-1
                                         </span>
                                     </div>

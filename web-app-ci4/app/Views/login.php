@@ -51,9 +51,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
+        /* Responsive scaling */
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
-        @media (max-width: 768px) { html { font-size: 17px !important; } } /* Reset for mobile */
+        @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
         
         body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
@@ -249,7 +250,7 @@
                 Student<span class="text-gold">Shield</span>
             </h1>
             
-            <p class="text-white/70 text-[16px] sm:text-[17px] font-semibold tracking-[0.15em] uppercase font-mono mb-8" id="splashStatusText">Initializing Data Vectors...</p>
+            <p class="text-white/70 text-[10px] sm:text-[11px] font-semibold tracking-[0.15em] uppercase font-mono mb-8" id="splashStatusText">Initializing Data Vectors...</p>
 
             <!-- Sleek Loading Bar -->
             <div class="w-48 sm:w-64 h-1.5 bg-black/40 rounded-full overflow-hidden border border-white/5 relative">
@@ -286,16 +287,16 @@
                 <div class="login-identity flex flex-col items-center justify-center">
                     <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="w-20 h-20 sm:w-28 sm:h-28 object-contain mx-auto mb-2.5 drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
                          onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23D9AA2E\' stroke-width=\'5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
-                    <p class="text-white/90 font-semibold text-[15px] sm:text-[17px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
+                    <p class="text-white/90 font-semibold text-[12px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
                 </div>
                 
                 <h1 class="text-[1.65em] sm:text-[2rem] font-heading font-extrabold tracking-tight text-white mb-1 leading-tight">Student <span class="text-gold">Portal</span></h1>
-                <p class="text-white/70 font-medium text-[16px] sm:text-[17px]">Sign in to your private dashboard</p>
+                <p class="text-white/70 font-medium text-[13px] sm:text-[15px]">Sign in to your private dashboard</p>
                 
                 <!-- WCAG AA fix: solid dark bg + white text for ≥4.5:1 contrast -->
                 <div class="login-security inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-black/60 border border-white/20 shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="text-[14px] sm:text-[17px] font-bold text-white uppercase tracking-widest whitespace-nowrap">🔒 Secure &amp; Confidential</span>
+                    <span class="text-[10.5px] sm:text-[12px] font-bold text-white uppercase tracking-widest whitespace-nowrap">🔒 Secure &amp; Confidential</span>
                 </div>
             </div>
 
@@ -306,7 +307,7 @@
                         <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                             <i class="fas fa-exclamation text-red-400 text-sm"></i>
                         </div>
-                        <p class="text-[16px] sm:text-[17px] font-bold text-red-200 leading-snug tracking-tight pt-1 pr-1"><?= session()->getFlashdata('error') ?></p>
+                        <p class="text-[13px] sm:text-[14px] font-bold text-red-200 leading-snug tracking-tight pt-1 pr-1"><?= session()->getFlashdata('error') ?></p>
                     </div>
                 </div>
             <?php endif; ?>
@@ -316,10 +317,10 @@
                 <?= csrf_field() ?>
                 
                 <div class="space-y-1.5 sm:space-y-2">
-                    <label for="name" class="block text-[15px] sm:text-[20px] font-bold text-white/80 ml-1 uppercase tracking-wider">Student Name</label>
+                    <label for="name" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Student Name</label>
                     <div class="relative group/input">
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-gold">
-                            <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[20px]"></i>
+                            <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
                         </div>
                         <input type="text" name="name" id="name" required autocomplete="name"
                                class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[16px] font-bold outline-none"
@@ -328,10 +329,10 @@
                 </div>
 
                 <div class="space-y-1.5 sm:space-y-2">
-                    <label for="password" class="block text-[15px] sm:text-[20px] font-bold text-white/80 ml-1 uppercase tracking-wider">Secure Passcode</label>
+                    <label for="password" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Secure Passcode</label>
                     <div class="relative group/input">
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-gold">
-                            <i class="fas fa-lock text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[20px]"></i>
+                            <i class="fas fa-lock text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
                         </div>
                         <input type="password" name="password" id="password" required autocomplete="current-password"
                                class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[16px] font-bold outline-none tracking-[0.1em]"
@@ -344,11 +345,11 @@
                     <label for="remember" class="flex items-start gap-3 p-2 -ml-2 rounded-xl cursor-pointer select-none hover:bg-white/5 transition-colors group">
                         <input id="remember" name="remember" type="checkbox"
                                class="mt-1 w-5 h-5 text-gold bg-white/10 border-2 border-white/40 rounded focus:ring-gold/60 focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#06401E] focus-visible:outline-none cursor-pointer appearance-none checked:bg-gold checked:border-gold relative before:content-['✓'] before:absolute before:text-black before:text-xs before:font-bold before:opacity-0 checked:before:opacity-100 before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:transition-opacity shrink-0">
-                        <div class="text-[15px] sm:text-[20px] leading-snug">
+                        <div class="text-[12px] sm:text-[13px] leading-snug">
                             <span class="font-semibold text-white/90 group-hover:text-gold transition-colors block">
                                 Remember me on this device
                             </span>
-                            <span class="text-white/60 text-[14px] block mt-0.5 font-normal">
+                            <span class="text-white/60 text-[11px] block mt-0.5 font-normal">
                                 ⚠️ Personal device only. Do not check on shared school lab or library computers.
                             </span>
                         </div>
@@ -356,13 +357,13 @@
                 </div>
 
                 <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 sm:gap-3 h-[52px] sm:h-[60px] mt-6 sm:mt-8 group/btn">
-                    <span id="btnText" class="font-heading text-[16px] sm:text-[20px] tracking-wide pt-0.5 text-primary-light mix-blend-multiply">Access Portal</span>
-                    <i id="btnIcon" class="fas fa-arrow-right text-primary-light mix-blend-multiply text-[16px] sm:text-sm group-hover/btn:translate-x-1.5 group-hover/btn:scale-110 transition-all duration-300"></i>
+                    <span id="btnText" class="font-heading text-[16px] sm:text-[18px] tracking-wide pt-0.5 text-primary-light mix-blend-multiply">Access Portal</span>
+                    <i id="btnIcon" class="fas fa-arrow-right text-primary-light mix-blend-multiply text-[13px] sm:text-sm group-hover/btn:translate-x-1.5 group-hover/btn:scale-110 transition-all duration-300"></i>
                     <svg id="btnSpinner" class="animate-spin h-5 w-5 text-primary-light mix-blend-multiply hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
 
                 <div class="text-center mt-4 sm:mt-5">
-                    <p class="text-white/70 text-[16px]">
+                    <p class="text-white/70 text-[13px]">
                         Don't have an account?
                         <a href="<?= base_url('register') ?>" class="inline-block py-2 px-1 text-gold-light hover:text-gold font-bold underline underline-offset-2 transition-colors duration-200 min-h-[44px]">Register here</a>
                     </p>
@@ -385,7 +386,7 @@
                 <button type="button" onclick="closeModal('termsModal')" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white flex items-center justify-center transition-colors focus:outline-none min-h-[36px] min-w-[36px]"><i class="fas fa-times text-base"></i></button>
             </div>
             <!-- Scrollable Body -->
-            <div class="p-4 sm:p-6 overflow-y-auto flex-1 text-white/80 text-[16px] sm:text-sm space-y-4 font-sans leading-relaxed custom-scrollbar">
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed custom-scrollbar">
                 <p><strong class="text-gold">1. Acceptance of Terms:</strong> By accessing and using StudentShield, you agree to comply with these Terms & Conditions. This platform is designed to promote a safe and supportive school environment at St. Vincent Blessed School of Manila (SVBSM).</p>
                 <p><strong class="text-gold">2. Eligibility & Guardian Consent:</strong> You must be an actively enrolled student. If you are under 18 years of age, you represent that you have obtained verifiable consent from your parent or legal guardian to use this service.</p>
                 <p><strong class="text-gold">3. Acceptable Use:</strong> The platform must be used responsibly. Submitting false reports, impersonating others, or using the platform to harass or bully others is strictly prohibited and may result in disciplinary action from the school.</p>
@@ -411,7 +412,7 @@
                 <button type="button" onclick="closeModal('privacyModal')" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white flex items-center justify-center transition-colors focus:outline-none min-h-[36px] min-w-[36px]"><i class="fas fa-times text-base"></i></button>
             </div>
             <!-- Scrollable Body -->
-            <div class="p-4 sm:p-6 overflow-y-auto flex-1 text-white/80 text-[16px] sm:text-sm space-y-4 font-sans leading-relaxed custom-scrollbar">
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed custom-scrollbar">
                 <p>This policy outlines how we handle your personal data in strict compliance with the Data Privacy Act of 2012 (Republic Act No. 10173) of the Philippines for St. Vincent Blessed School of Manila (SVBSM).</p>
                 <p><strong class="text-gold">1. Data Collection & Legitimate Purpose:</strong> We collect personal information and sensitive personal information (such as your name, ID, and health/incident reports) solely for the legitimate purpose of processing incident reports, providing guidance counseling, and ensuring a safe educational environment.</p>
                 <p><strong class="text-gold">2. Data Processing & Protection:</strong> Your data is protected using end-to-end encryption and strict organizational, physical, and technical security measures. Only designated, authorized school personnel (such as counselors and the Data Protection Officer) have access to identifiable information.</p>
@@ -433,7 +434,7 @@
                 <h2 class="text-lg sm:text-xl font-heading font-bold text-white">Guardian Consent</h2>
                 <button type="button" onclick="closeModal('guardianModal')" class="text-white/50 hover:text-white transition-colors focus:outline-none"><i class="fas fa-times text-lg"></i></button>
             </div>
-            <div class="p-5 sm:p-6 overflow-y-auto text-white/80 text-[16px] sm:text-sm space-y-4 font-sans leading-relaxed">
+            <div class="p-5 sm:p-6 overflow-y-auto text-white/80 text-[13px] sm:text-sm space-y-4 font-sans leading-relaxed">
                 <p>In compliance with the Data Privacy Act of 2012 (RA 10173), processing the personal data and sensitive personal information of minors requires the explicit, free, and informed consent of a parent or legal guardian. By checking this box, you confirm that:</p>
                 <ul class="list-disc pl-5 space-y-2">
                     <li>Your parent or legal guardian has reviewed and agreed to the Terms & Conditions and Data Privacy Policy of StudentShield.</li>
