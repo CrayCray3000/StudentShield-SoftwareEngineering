@@ -179,9 +179,7 @@ class AdminController extends BaseController
             $db = \Config\Database::connect();
             // Soft Delete: set deleted_at timestamp instead of permanent removal
             $db->table('vent_logs')->whereIn('id', $ids)->update(['deleted_at' => date('Y-m-d H:i:s')]);
-            foreach ($ids as $id) {
-                $this->logAudit('BULK_SOFT_DELETE', 'vent', (int) $id);
-            }
+            $this->logAuditBatch('BULK_SOFT_DELETE', 'vent', $ids);
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Vents archived (soft-deleted).");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No vents selected for deletion.");
@@ -203,9 +201,7 @@ class AdminController extends BaseController
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();
             $db->table('vent_logs')->whereIn('id', $ids)->update(['deleted_at' => null]);
-            foreach ($ids as $id) {
-                $this->logAudit('BULK_RESTORE', 'vent', (int) $id);
-            }
+            $this->logAuditBatch('BULK_RESTORE', 'vent', $ids);
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Vents unarchived and restored.");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No vents selected for restoration.");
@@ -495,9 +491,7 @@ class AdminController extends BaseController
             $db = \Config\Database::connect();
             // Soft Delete
             $db->table('bully_reports')->whereIn('id', $ids)->update(['deleted_at' => date('Y-m-d H:i:s')]);
-            foreach ($ids as $id) {
-                $this->logAudit('BULK_SOFT_DELETE', 'incident', (int) $id);
-            }
+            $this->logAuditBatch('BULK_SOFT_DELETE', 'incident', $ids);
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Incident Reports archived (soft-deleted).");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No incidents selected for deletion.");
@@ -519,9 +513,7 @@ class AdminController extends BaseController
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();
             $db->table('bully_reports')->whereIn('id', $ids)->update(['deleted_at' => null]);
-            foreach ($ids as $id) {
-                $this->logAudit('BULK_RESTORE', 'incident', (int) $id);
-            }
+            $this->logAuditBatch('BULK_RESTORE', 'incident', $ids);
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Incident Reports unarchived and restored.");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No incidents selected for restoration.");
