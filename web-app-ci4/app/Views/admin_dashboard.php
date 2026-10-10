@@ -90,6 +90,8 @@
         }
 
         body {
+            /* Keep horizontal clipping from creating a scroll container around the sticky header. */
+            overflow-x: clip;
             background-color: #f8faf6;
             background-image: radial-gradient(circle at 25px 25px, rgba(22, 101, 52, 0.02) 2px, transparent 0);
             background-size: 50px 50px;
