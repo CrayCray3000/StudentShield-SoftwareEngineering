@@ -80,13 +80,43 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #c8dac8; border-radius: 10px; }
         .live-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+        .registration-table { min-width: 64rem; }
+        .registration-contact > div { max-width: 16rem; overflow-wrap: anywhere; }
+        .registration-contact svg { flex-shrink: 0; }
+        .registration-nav > *, .registration-nav svg { flex-shrink: 0; }
+        .registration-nav > a, .registration-nav > span, .registration-nav button { white-space: nowrap; }
+        @media (max-width: 1023px) {
+            nav .registration-header { flex-direction: column; align-items: stretch; gap: 12px; }
+            nav .registration-nav { width: 100%; gap: 8px; overflow-x: auto; }
+            .registration-nav > a, .registration-nav > span, .registration-nav button { min-height: 44px; }
+        }
+        @media (max-width: 767px) {
+            main.registration-main { padding-top: 24px; }
+            .registration-main .registration-section-header { flex-direction: column; align-items: flex-start; gap: 4px; padding: 16px; }
+            .registration-section-header svg { flex-shrink: 0; }
+            .registration-table, .registration-table tbody { display: block; width: 100%; min-width: 0; }
+            /* Keep column headers available to screen readers when rows stack. */
+            .registration-table thead { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+            .registration-table tbody tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; padding: 20px 16px; }
+            .registration-table td { display: block; min-width: 0; padding: 0; text-align: left; overflow-wrap: anywhere; }
+            .registration-table td::before { content: attr(data-label); display: block; margin-bottom: 4px; font-size: .75rem; font-weight: 600; color: #4b5563; }
+            .registration-table .registration-number { display: none; }
+            .registration-name, .registration-contact, .registration-actions { grid-column: 1 / -1; }
+            .registration-name::before, .registration-status::before, .registration-actions::before { display: none !important; }
+            .registration-name > div { align-items: flex-start; }
+            .registration-name > div > span { font-size: 1rem; line-height: 1.5; }
+            .registration-status { align-self: center; justify-self: end; }
+            .registration-actions > div { margin-top: 4px; }
+            .registration-actions button { flex: 1; min-width: 0; min-height: 44px; justify-content: center; font-size: .8125rem; }
+            #toastContainer { left: 16px; right: 16px; top: 16px; }
+        }
     </style>
 </head>
 <body class="school-staff-page min-h-screen flex flex-col">
 
     <!-- Navbar -->
     <nav class="glass-header text-white sticky top-0 z-50">
-        <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
+        <div class="registration-header container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
             <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
                 <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0">
                 <div class="truncate">
@@ -97,12 +127,12 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="registration-nav custom-scrollbar flex items-center gap-3">
                 <!-- Role Badge -->
                 <?php if (session()->get('role') == 2): ?>
-                    <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-semibold">Super Admin</span>
+                    <span class="hidden lg:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-semibold">Super Admin</span>
                 <?php else: ?>
-                    <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
+                    <span class="hidden lg:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
                 <?php endif; ?>
 
                 <!-- Nav Links -->
@@ -141,13 +171,13 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 py-8 flex-1">
+    <main class="registration-main container mx-auto px-4 sm:px-6 py-8 flex-1">
 
         <!-- Page Header -->
         <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up">
             <div>
                 <h2 class="text-2xl font-bold text-[#0B5E2E] flex items-center gap-3">
-                    <svg class="w-7 h-7 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="w-7 h-7 text-[#F2C300] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                     </svg>
                     Pending Student Registrations
@@ -180,7 +210,7 @@
 
         <!-- Table Card -->
         <div class="dashboard-card overflow-hidden animate-slide-up" style="animation-delay: 0.1s">
-            <div class="section-header flex justify-between items-center">
+            <div class="registration-section-header section-header flex justify-between items-center gap-4">
                 <h3 class="text-base font-bold flex items-center gap-2">
                     <svg class="h-5 w-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
@@ -202,7 +232,7 @@
                         <p class="text-gray-500 text-sm max-w-sm">No pending student registrations at this time. New registrations will appear here when students sign up.</p>
                     </div>
                 <?php else: ?>
-                    <table class="w-full text-left border-collapse">
+                    <table class="registration-table w-full text-left border-collapse" aria-label="Pending student registrations">
                         <thead>
                             <tr class="thead-green text-xs uppercase tracking-wider">
                                 <th class="px-6 py-4">#</th>
@@ -220,8 +250,8 @@
                                 $uid = (int)($student['user_id'] ?? $student['id']);
                             ?>
                             <tr id="row-user-<?= $uid ?>" class="hover:bg-gray-50 transition-all duration-300">
-                                <td class="px-6 py-4 text-sm text-gray-400 font-medium"><?= $i + 1 ?></td>
-                                <td class="px-6 py-4">
+                                <td class="registration-number px-6 py-4 text-sm text-gray-400 font-medium"><?= $i + 1 ?></td>
+                                <td data-label="Student Name" class="registration-name px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div class="w-9 h-9 rounded-full bg-[#0B5E2E]/10 flex items-center justify-center flex-shrink-0">
                                             <span class="text-sm font-bold text-[#0B5E2E]">
@@ -231,10 +261,10 @@
                                         <span class="text-sm font-semibold text-gray-800"><?= esc($student['name']) ?></span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td data-label="Student ID" class="px-6 py-4">
                                     <span class="text-sm font-mono font-medium text-gray-700"><?= esc($student['student_id'] ?? '—') ?></span>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td data-label="Grade &amp; Section" class="px-6 py-4">
                                     <div class="text-sm text-gray-800">
                                         <span class="font-semibold"><?= esc($student['grade_level'] ?? '—') ?></span>
                                         <?php if (!empty($student['section'])): ?>
@@ -243,7 +273,7 @@
                                         <?php endif; ?>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td data-label="Parent Contact" class="registration-contact px-6 py-4">
                                     <div class="text-sm text-gray-700 space-y-0.5">
                                         <?php if (!empty($student['parent_phone'])): ?>
                                             <div class="flex items-center gap-1">
@@ -262,19 +292,19 @@
                                         <?php endif; ?>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td data-label="Registered On" class="px-6 py-4">
                                     <span class="text-sm text-gray-600">
                                         <?= date('M d, Y', strtotime($student['created_at'])) ?>
                                     </span>
                                     <div class="text-xs text-gray-400"><?= date('g:i A', strtotime($student['created_at'])) ?></div>
                                 </td>
-                                <td class="px-6 py-4 text-center">
+                                <td data-label="Status" class="registration-status px-6 py-4 text-center">
                                     <span class="badge-pending inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
                                         <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
                                         Pending
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-center">
+                                <td data-label="Action" class="registration-actions px-6 py-4 text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         <button type="button" onclick="handleAction('approve', <?= $uid ?>, '<?= esc(addslashes($student['name'])) ?>', this)" class="approve-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide shadow-sm cursor-pointer">
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
