@@ -9,7 +9,7 @@
     <title>Staff Portal - Secure Login</title>
     <link rel="preload" as="image" href="<?= base_url('images/logo.png?v=6') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <?= view('partials/school_brand') ?>
+    <?= view('partials/school_brand', ['studentPalette' => true]) ?>
         <script>
         tailwind.config = {
             theme: {
@@ -55,17 +55,11 @@
         @media (max-width: 1280px) { html { font-size: 14px; } }
         @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
 
-        body { font-family: 'Inter', sans-serif; background-color: #096328; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-admin {
-            background:
-                /* Subtle depth shadow at bottom-right corner */
-                radial-gradient(ellipse at 90% 95%, rgba(0,0,0,0.22) 0%, transparent 55%),
-                /* Warm gold accent — top-left, very restrained */
-                radial-gradient(ellipse at 15% 5%, rgba(217,170,46,0.10) 0%, transparent 40%),
-                /* Core school green — matches dashboard header exactly */
-                linear-gradient(160deg, #0D7B34 0%, #096328 55%, #074F22 100%);
+            background: var(--school-header-background);
         }
 
         .bg-grid {
@@ -77,19 +71,19 @@
         }
 
         .admin-card {
-            background: rgba(255, 255, 255, 0.08) !important;
-            backdrop-filter: blur(28px) saturate(160%);
-            -webkit-backdrop-filter: blur(28px) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            background: rgba(255, 255, 255, 0.10) !important;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
             box-shadow:
-                0 40px 80px -20px rgba(0, 0, 0, 0.55),
-                0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-                0 1px 0 rgba(255, 255, 255, 0.20) inset !important;
+                0 32px 64px -16px rgba(0, 0, 0, 0.45),
+                0 0 0 1px rgba(255, 255, 255, 0.10) inset,
+                0 1px 0 rgba(255, 255, 255, 0.25) inset !important;
         }
 
         .input-admin {
-            background: rgba(0, 0, 0, 0.28) !important;
-            border: 1.5px solid rgba(255, 255, 255, 0.20) !important;
+            background: rgba(0, 0, 0, 0.35) !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.22) !important;
             color: #FFFFFF !important;
             transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
@@ -98,12 +92,14 @@
             border-color: rgba(255, 255, 255, 0.30) !important;
         }
         .input-admin:focus {
-            background: rgba(0, 0, 0, 0.38) !important;
+            background: rgba(0, 0, 0, 0.45) !important;
             box-shadow: 0 0 0 3px rgba(242, 195, 0, 0.22) !important;
             border-color: #F2C300 !important;
             outline: none;
         }
-        .input-admin::placeholder { color: rgba(255,255,255,0.50) !important; }
+        .input-admin::placeholder { color: rgba(255,255,255,0.75) !important; }
+        #submitBtn { background: linear-gradient(135deg, #cda434, #e6c55e); color: #0A1C11; }
+        #submitBtn:hover { background: linear-gradient(135deg, #dfb745, #f5d675); }
 
         .glow-blob {
             position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.10; z-index: 0;

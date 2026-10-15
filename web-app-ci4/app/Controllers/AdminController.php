@@ -16,29 +16,18 @@ class AdminController extends BaseController
         return (bool) (session()->get('isLoggedIn') && in_array((int) session()->get('role'), [1, 2], true));
     }
 
-    public function dashboard()
+    public function dashboard(string $page = 'vents')
     {
-        $db = \Config\Database::connect();
-        // Fetch initially for SSR rendering
-        $recent_vents = $db->table('vent_logs')
-            ->select('vent_logs.*, users.name, students.student_id, students.section, students.adviser_name')
-            ->join('users', 'users.id = vent_logs.user_id')
-            ->join('students', 'students.user_id = users.id', 'left')
-            ->where('vent_logs.deleted_at IS NULL')
-            ->orderBy('created_at', 'DESC')
-            ->get()->getResultArray();
-
-        $encrypter = \Config\Services::encrypter();
-        foreach ($recent_vents as &$vent) {
-            try {
-                if (ctype_xdigit($vent['raw_text'])) {
-                    $vent['raw_text'] = $encrypter->decrypt(hex2bin($vent['raw_text']));
-                }
-            } catch (\Exception $e) {
-                // Fallback for older non-encrypted plain text vents
-            }
+        if (!$this->guardStaffAccess()) {
+            return redirect()->to('/admin/login');
         }
-        $data['recent_vents'] = $recent_vents;
+        if (!in_array($page, ['vents', 'incidents', 'sessions', 'alerts', 'analytics'], true)) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $db = \Config\Database::connect();
+        // Each workspace loads its records through the existing staff-only API.
+        $data = [];
 
         // Fetch pending virtual meeting requests
         $pendingMeetingsCount = 0;
@@ -48,6 +37,7 @@ class AdminController extends BaseController
                                        ->countAllResults();
         }
         $data['pending_meetings_count'] = $pendingMeetingsCount;
+        $data['dashboard_page'] = $page;
 
 
         return view('admin_dashboard', $data);

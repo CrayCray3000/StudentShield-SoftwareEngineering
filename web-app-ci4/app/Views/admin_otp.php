@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Two-Factor Authentication | StudentShield</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <?= view('partials/school_brand') ?>
+    <?= view('partials/school_brand', ['studentPalette' => true]) ?>
         <script>
         tailwind.config = {
             theme: {
@@ -60,10 +60,7 @@
         h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
 
         .bg-admin {
-            background:
-                radial-gradient(ellipse at 85% 85%, rgba(0,0,0,0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 10%, rgba(217,170,46,0.08) 0%, transparent 45%),
-                linear-gradient(160deg, #128F42 0%, #0E7C38 55%, #09682D 100%);
+            background: var(--school-header-background);
         }
 
         .bg-grid {

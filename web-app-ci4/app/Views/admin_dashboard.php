@@ -1,3 +1,14 @@
+<?php
+$dashboardPage = $dashboard_page ?? 'vents';
+$pageLabels = ['vents' => 'Vents', 'incidents' => 'Incidents', 'sessions' => 'Sessions', 'alerts' => 'Alerts', 'analytics' => 'Analytics'];
+$pageDescriptions = [
+    'vents' => 'Review student wellness entries and follow up on students who need support.',
+    'incidents' => 'Review, verify, and follow up on bullying incident reports.',
+    'sessions' => 'Review pending counseling requests and open the student’s case to arrange a session.',
+    'alerts' => 'Review notification attempts and their recorded messages.',
+    'analytics' => 'Explore risk distribution and student entry volume over the last seven days.',
+];
+?>
 <!DOCTYPE html>
 <html lang="en" style="scroll-behavior:smooth">
 
@@ -7,9 +18,9 @@
     <link rel="shortcut icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudentShield - <?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</title>
+    <title>StudentShield - <?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> — <?= esc($pageLabels[$dashboardPage]) ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <?= view('partials/school_brand') ?>
+    <?= view('partials/school_brand', ['studentPalette' => true]) ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -92,13 +103,13 @@
         body {
             /* Keep horizontal clipping from creating a scroll container around the sticky header. */
             overflow-x: clip;
-            background-color: #f8faf6;
+            background-color: #F4F7F5;
             background-image: radial-gradient(circle at 25px 25px, rgba(22, 101, 52, 0.02) 2px, transparent 0);
             background-size: 50px 50px;
         }
 
         .glass-header {
-            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
+            background: linear-gradient(160deg, #2F754A 0%, #235D3A 60%, #19452B 100%);
             border-bottom: 3px solid #EAB308;
             box-shadow: 0 4px 20px -2px rgba(7, 88, 38, 0.35);
         }
@@ -118,10 +129,10 @@
 
         .section-header {
             background: #ffffff;
-            color: #096328;
+            color: #235D3A;
             padding: 16px 24px;
             border-bottom: 1px solid #e5ebe5;
-            border-left: 4px solid #096328;
+            border-left: 4px solid #235D3A;
         }
 
         .stat-card {
@@ -160,7 +171,7 @@
         }
 
         .stat-card.green-accent {
-            border-left: 4px solid #096328;
+            border-left: 4px solid #235D3A;
         }
 
         h1,
@@ -189,7 +200,7 @@
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #0B5E2E;
+            background: #235D3A;
         }
 
         /* Entry animations */
@@ -246,7 +257,7 @@
         }
 
         .thead-green {
-            background: #096328;
+            background: #235D3A;
             color: white;
         }
 
@@ -269,7 +280,7 @@
         }
 
         .footer-bar {
-            background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
+            background: linear-gradient(160deg, #2F754A 0%, #235D3A 60%, #19452B 100%);
             color: rgba(255, 255, 255, 0.7);
             font-size: 0.75rem;
             padding: 12px 0;
@@ -354,15 +365,15 @@
         }
 
         .dash-tab:hover {
-            color: #0B5E2E;
+            color: #235D3A;
             background: rgba(11, 94, 46, 0.08);
             border-color: rgba(11, 94, 46, 0.15);
         }
 
         .dash-tab.is-active {
             color: #ffffff !important;
-            background: linear-gradient(135deg, #0D7B34 0%, #075826 100%) !important;
-            border-color: #075826 !important;
+            background: linear-gradient(135deg, #2F754A 0%, #19452B 100%) !important;
+            border-color: #19452B !important;
             font-weight: 700;
             box-shadow: 0 2px 8px -1px rgba(7, 88, 38, 0.35);
         }
@@ -388,7 +399,7 @@
 
         .dash-tab.is-active .tab-badge {
             background: #FACC15;
-            color: #075826;
+            color: #19452B;
         }
 
         .tab-badge.hidden {
@@ -461,6 +472,25 @@
                 color: #9ca3af;
             }
         }
+
+        .staff-header-action { min-width: 44px; min-height: 44px; justify-content: center; }
+        .school-staff-page #meetingDropdown {
+            position: fixed; left: 12px; right: 12px; top: 72px;
+            width: auto; max-width: calc(100vw - 24px); background: #FBFDFB;
+            color: #212825; border: 1px solid #CFD9D4; border-radius: 16px;
+            box-shadow: 0 16px 48px rgba(10, 28, 17, .18); overflow: hidden; z-index: 50;
+        }
+        .meeting-dropdown-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #E6EBE8; }
+        .meeting-dropdown-heading h2 { font-size: 16px; line-height: 24px; font-weight: 700; }
+        .meeting-close { width: 44px; height: 44px; flex: 0 0 44px; border-radius: 8px; font-size: 24px; color: #61756B; }
+        .school-staff-page #meetingDropdown a:hover, .school-staff-page #meetingDropdown button:hover { background: #F4F7F5; }
+        .meeting-empty { padding: 28px 20px; text-align: center; color: #61756B; font-size: 14px; line-height: 22px; }
+        .meeting-empty-icon { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin: 0 auto 10px; border-radius: 50%; background: #E6EBE8; color: #235D3A; font-size: 18px; }
+        .meeting-dropdown-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 16px; border-top: 1px solid #E6EBE8; font-size: 12px; line-height: 18px; color: #61756B; }
+        .meeting-dropdown-footer a { color: #235D3A; font-weight: 600; padding: 6px 0; }
+        @media (min-width: 640px) {
+            .school-staff-page #meetingDropdown { position: absolute; left: auto; right: 0; top: calc(100% + 12px); width: 384px; }
+        }
     </style>
 </head>
 
@@ -502,18 +532,11 @@
                     </div>
                 </div>
 
-                <!-- Status indicator -->
-                <div
-                    class="hidden lg:flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full border border-white/15">
-                    <span class="w-2 h-2 rounded-full bg-[#EAB308] live-dot"></span>
-                    <span class="text-xs font-semibold text-[#FACC15]">Active</span>
-                </div>
-
                 <!-- Pending Meeting Requests (Live Polling Bell) -->
                 <div class="relative" id="meetingNotifWrapper">
                     <button id="meetingBellBtn" onclick="toggleMeetingDropdown()"
-                        class="relative flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-full border border-white/15 transition-all duration-200 focus:outline-none"
-                        aria-label="Session Requests">
+                        class="staff-header-action relative flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-full border border-white/15 transition-all duration-200 focus:outline-none"
+                        aria-label="Session requests" aria-controls="meetingDropdown" aria-expanded="false">
                         <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -525,24 +548,20 @@
                         </span>
                     </button>
 
-                    <!-- Dropdown panel: Responsive positioning avoiding overflow on mobile -->
-                    <div id="meetingDropdown"
-                        class="hidden fixed inset-x-3 top-16 sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-2 sm:w-84 max-w-[calc(100vw-1.5rem)] bg-[#0f2416] border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-white/10 flex items-center justify-between bg-black/25">
-                            <span class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
-                                📹 Pending Session Requests
-                            </span>
-                            <span id="dropdownCount" class="text-xs text-emerald-400 font-semibold"></span>
+                    <div id="meetingDropdown" class="meeting-dropdown hidden" aria-labelledby="meetingDropdownTitle">
+                        <div class="meeting-dropdown-heading">
+                            <div>
+                                <h2 id="meetingDropdownTitle">Session requests</h2>
+                                <span id="dropdownCount" class="text-xs text-gray-500"></span>
+                            </div>
+                            <button type="button" class="meeting-close" onclick="closeMeetingDropdown()" aria-label="Close session requests">×</button>
                         </div>
-                        <div id="meetingRequestsList" class="max-h-72 overflow-y-auto divide-y divide-white/5">
-                            <div class="px-4 py-6 text-center text-white/50 text-sm" id="noRequestsMsg">No pending
-                                requests</div>
+                        <div id="meetingRequestsList" class="max-h-72 overflow-y-auto divide-y divide-gray-100">
+                            <div class="meeting-empty" id="noRequestsMsg">No pending requests</div>
                         </div>
-                        <div
-                            class="px-4 py-2.5 border-t border-white/10 flex items-center justify-between text-[11px] bg-black/25">
-                            <span class="text-white/40" id="lastCheckedLabel">Checking...</span>
-                            <a href="#section-sessions" onclick="toggleMeetingDropdown()"
-                                class="text-emerald-400 hover:text-emerald-300 font-semibold">View Section ↓</a>
+                        <div class="meeting-dropdown-footer">
+                            <span id="lastCheckedLabel">Checking requests…</span>
+                            <a href="<?= base_url('admin/sessions') ?>">View all sessions</a>
                         </div>
                     </div>
                 </div>
@@ -561,8 +580,8 @@
                 <form action="<?= base_url('logout') ?>" method="POST" class="inline">
                     <?= csrf_field() ?>
                     <button type="submit"
-                        class="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-200 hover:text-white rounded-lg border border-red-500/30 text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm"
-                        title="Sign Out of Portal">
+                        class="staff-header-action flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/25 text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm"
+                        title="Sign out" aria-label="Sign out">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -574,8 +593,8 @@
                 <!-- Navigation Menu Dropdown (role-aware) -->
                 <div class="relative" id="navMenuWrapper">
                     <button onclick="toggleNavMenu()" id="navMenuBtn"
-                        class="flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-lg border border-white/15 transition-all duration-200 focus:outline-none"
-                        aria-label="Open navigation menu">
+                        class="staff-header-action flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-lg border border-white/15 transition-all duration-200 focus:outline-none"
+                        aria-label="Open navigation menu" aria-controls="navMenuDropdown" aria-expanded="false">
                         <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
@@ -614,16 +633,7 @@
                             </a>
                         <?php endif; ?>
                         <div class="mx-4 my-1 border-t border-white/10"></div>
-                        <form action="<?= base_url('logout') ?>" method="POST"><?= csrf_field() ?>
-                            <button type="submit"
-                                class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-300 hover:text-red-200 hover:bg-red-500/10 transition-colors">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                </svg>
-                                Logout
-                            </button>
-                        </form>
+
                     </div>
                 </div>
             </div>
@@ -634,33 +644,33 @@
     <div id="sectionNavStrip" class="section-nav-strip">
         <div class="container mx-auto px-3 sm:px-6 max-w-full">
             <div class="flex items-center justify-between gap-2 w-full min-w-0">
-                <nav class="section-tabs-scroller flex-1 min-w-0" aria-label="Dashboard Section Navigation">
-                    <a href="#section-vents" class="dash-tab is-active" data-section="section-vents" onclick="tpToSection('section-vents', event)">
+                <nav class="section-tabs-scroller flex-1 min-w-0" aria-label="Staff pages">
+                    <a href="<?= base_url('admin/vents') ?>" class="dash-tab <?= $dashboardPage === 'vents' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'vents' ? 'page' : 'false' ?>">
                         <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/>
                         </svg>
                         <span>Vents</span>
                     </a>
-                    <a href="#section-incidents" class="dash-tab" data-section="section-incidents" onclick="tpToSection('section-incidents', event)">
+                    <a href="<?= base_url('admin/incidents') ?>" class="dash-tab <?= $dashboardPage === 'incidents' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'incidents' ? 'page' : 'false' ?>">
                         <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                         </svg>
                         <span>Incidents</span>
                     </a>
-                    <a href="#section-sessions" class="dash-tab" data-section="section-sessions" onclick="tpToSection('section-sessions', event)">
+                    <a href="<?= base_url('admin/sessions') ?>" class="dash-tab <?= $dashboardPage === 'sessions' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'sessions' ? 'page' : 'false' ?>">
                         <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                         </svg>
                         <span>Sessions</span>
                         <span id="navSessionsBadge" class="tab-badge <?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?>"><?= esc($pending_meetings_count ?? 0) ?></span>
                     </a>
-                    <a href="#section-alerts" class="dash-tab" data-section="section-alerts" onclick="tpToSection('section-alerts', event)">
+                    <a href="<?= base_url('admin/alerts') ?>" class="dash-tab <?= $dashboardPage === 'alerts' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'alerts' ? 'page' : 'false' ?>">
                         <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                         </svg>
                         <span>Alerts</span>
                     </a>
-                    <a href="#section-charts" class="dash-tab" data-section="section-charts" onclick="tpToSection('section-charts', event)">
+                    <a href="<?= base_url('admin/analytics') ?>" class="dash-tab <?= $dashboardPage === 'analytics' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'analytics' ? 'page' : 'false' ?>">
                         <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                         </svg>
@@ -683,35 +693,23 @@
         <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up"
             style="animation-delay: 0.1s">
             <div>
-                <h2 class="text-xl sm:text-2xl font-bold text-[#0B5E2E] flex items-center gap-2">
+                <h2 class="text-xl sm:text-2xl font-bold text-[#235D3A] flex items-center gap-2">
                     <svg class="w-6 h-6 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    Overview
+                    <?= esc($pageLabels[$dashboardPage]) ?>
                 </h2>
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
-                    <p class="text-gray-600 text-xs sm:text-sm">Real-time monitoring and analytics from the student
-                        portal.</p>
-                    <label class="flex items-center cursor-pointer group"
-                        title="Pause auto-refresh while you're reading">
-                        <div class="relative">
-                            <input type="checkbox" id="pauseUpdatesToggle" class="sr-only">
-                            <div class="block bg-gray-300 w-8 h-5 rounded-full transition-colors duration-200"
-                                id="toggleBg"></div>
-                            <div class="dot absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-transform duration-200"
-                                id="toggleDot"></div>
-                        </div>
-                        <div
-                            class="ml-2 text-xs font-semibold text-gray-500 group-hover:text-gray-800 transition-colors">
-                            Pause Auto-Refresh</div>
-                    </label>
+                    <p class="text-gray-600 text-xs sm:text-sm"><?= esc($pageDescriptions[$dashboardPage]) ?></p>
+
                 </div>
             </div>
+            <?php if (in_array($dashboardPage, ['vents', 'analytics'], true)): ?>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full md:w-auto">
                 <div class="stat-card green-accent flex items-center gap-3 p-3.5 sm:p-5">
-                    <div class="h-9 w-9 rounded-lg bg-[#0B5E2E]/10 flex items-center justify-center flex-shrink-0">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24"
+                    <div class="h-9 w-9 rounded-lg bg-[#235D3A]/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#235D3A]" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -719,9 +717,8 @@
                     </div>
                     <div class="flex flex-col min-w-0">
                         <span
-                            class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Total
-                            Active</span>
-                        <span class="text-xl sm:text-2xl font-bold text-[#0B5E2E] leading-tight"
+                            class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Vent entries</span>
+                        <span class="text-xl sm:text-2xl font-bold text-[#235D3A] leading-tight"
                             id="stat-total">--</span>
                     </div>
                 </div>
@@ -740,7 +737,7 @@
                             id="stat-critical">--</span>
                     </div>
                 </div>
-                <a href="#section-sessions"
+                <a href="<?= base_url('admin/sessions') ?>"
                     class="stat-card flex items-center gap-3 p-3.5 sm:p-5 border-l-4 border-l-emerald-600 hover:border-emerald-700 col-span-2 sm:col-span-1 transition-all">
                     <div class="h-9 w-9 rounded-lg bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" fill="none" viewBox="0 0 24 24"
@@ -757,15 +754,17 @@
                     </div>
                 </a>
             </div>
+            <?php endif; ?>
         </div>
 
         <!-- Live Feed Table -->
+        <?php if ($dashboardPage === 'vents'): ?>
         <div id="section-vents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col"
             style="animation-delay: 0.2s">
             <!-- Table Header Bar -->
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
-                    <svg class="h-5 w-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="h-5 w-5 text-[#235D3A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
@@ -792,21 +791,21 @@
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                         <input type="text" id="searchVents" placeholder="Search entries, names, or risk levels..."
-                            class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-1 focus:ring-[#0B5E2E]/20 transition-all">
+                            class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#235D3A] focus:ring-1 focus:ring-[#235D3A]/20 transition-all">
                     </div>
                     <div class="flex items-center gap-2 flex-wrap">
                         <select id="filterStatusVents"
-                            class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E]">
+                            class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#235D3A]">
                             <option value="all">All Statuses</option>
                             <option value="resolved">Resolved</option>
                             <option value="unresolved">Action Required</option>
                             <option value="archived">Archived Records</option>
                         </select>
                         <input type="date" id="filterDateVents"
-                            class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] text-gray-600">
+                            class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#235D3A] text-gray-600">
                     </div>
                     <button type="button" onclick="submitBulkDeleteVents()"
-                        class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents hidden">
+                        class="text-xs font-bold text-[#235D3A] bg-[#235D3A]/5 hover:bg-[#235D3A]/10 px-4 py-2 rounded-lg border border-[#235D3A]/20 transition-colors shadow-sm delete-btn-vents hidden">
                         📦 Archive Selected
                     </button>
                 </div>
@@ -827,7 +826,7 @@
                         <!-- Populated by AJAX -->
                         <tr>
                             <td colspan="7" class="px-6 py-12 text-center text-gray-500">
-                                <svg class="animate-spin h-8 w-8 mx-auto mb-4 text-[#0B5E2E]"
+                                <svg class="animate-spin h-8 w-8 mx-auto mb-4 text-[#235D3A]"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                                         stroke-width="4"></circle>
@@ -844,7 +843,10 @@
         </div>
 
         <!-- Bullying Incidents Table -->
-        <div id="section-incidents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8"
+        <?php endif; ?>
+
+        <?php if ($dashboardPage === 'incidents'): ?>
+        <div id="section-incidents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col"
             style="animation-delay: 0.3s">
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
@@ -883,7 +885,7 @@
                             class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] text-gray-600">
                     </div>
                     <button type="button" onclick="submitBulkDeleteIncidents()"
-                        class="text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents hidden">
+                        class="text-xs font-bold text-[#235D3A] bg-[#235D3A]/5 hover:bg-[#235D3A]/10 px-4 py-2 rounded-lg border border-[#235D3A]/20 transition-colors shadow-sm delete-btn-incidents hidden">
                         📦 Archive Selected
                     </button>
                 </div>
@@ -913,7 +915,10 @@
         </div>
 
         <!-- Session Requests (Counseling / Meeting) Section -->
-        <div id="section-sessions" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8"
+        <?php endif; ?>
+
+        <?php if ($dashboardPage === 'sessions'): ?>
+        <div id="section-sessions" class="dashboard-card overflow-hidden animate-slide-up flex flex-col"
             style="animation-delay: 0.35s">
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-3">
                 <div>
@@ -929,7 +934,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <span id="sessionSectionCountBadge"
-                        class="px-3 py-1 rounded-full text-xs font-bold bg-[#dcfce7] text-[#096328] border border-[#bbf7d0]">
+                        class="px-3 py-1 rounded-full text-xs font-bold bg-[#dcfce7] text-[#235D3A] border border-[#bbf7d0]">
                         <?= esc($pending_meetings_count ?? 0) ?> Pending
                     </span>
                 </div>
@@ -956,7 +961,10 @@
         </div>
 
         <!-- Alert Logs Monitor -->
-        <div id="section-alerts" class="dashboard-card overflow-hidden animate-slide-up flex flex-col mt-8"
+        <?php endif; ?>
+
+        <?php if ($dashboardPage === 'alerts'): ?>
+        <div id="section-alerts" class="dashboard-card overflow-hidden animate-slide-up flex flex-col"
             style="animation-delay: 0.4s">
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
@@ -994,11 +1002,14 @@
         </div>
 
         <!-- Analytics Charts (below actionable records) -->
-        <div id="section-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 mb-2 animate-slide-up"
+        <?php endif; ?>
+
+        <?php if ($dashboardPage === 'analytics'): ?>
+        <div id="section-charts" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-2 animate-slide-up"
             style="animation-delay: 0.5s">
             <div class="dashboard-card p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-base font-semibold text-[#0B5E2E] flex items-center gap-2">
+                    <h2 class="text-base font-semibold text-[#235D3A] flex items-center gap-2">
                         <svg class="h-5 w-5 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
@@ -1014,7 +1025,7 @@
             </div>
             <div class="dashboard-card p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-base font-semibold text-[#0B5E2E] flex items-center gap-2">
+                    <h2 class="text-base font-semibold text-[#235D3A] flex items-center gap-2">
                         <svg class="h-5 w-5 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
@@ -1027,6 +1038,8 @@
                 </div>
             </div>
         </div>
+
+        <?php endif; ?>
 
     </main>
 
@@ -1041,7 +1054,7 @@
                     <div id="modalBadge"
                         class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border">
                     </div>
-                    <h2 id="modalTitle" class="text-2xl font-heading font-extrabold text-[#0B5E2E] tracking-tight">
+                    <h2 id="modalTitle" class="text-2xl font-heading font-extrabold text-[#235D3A] tracking-tight">
                         Report Details</h2>
                 </div>
                 <button onclick="closeDetailModal()"
@@ -1066,13 +1079,13 @@
             </div>
 
             <div class="flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-2 pb-4">
-                <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Full Context Payload</p>
+                <p class="text-[11px] font-bold text-[#235D3A] uppercase tracking-widest mb-2">Full Context Payload</p>
                 <div id="modalContent"
                     class="text-[16px] leading-[1.85] tracking-wide text-gray-800 bg-[#f8faf6] border border-[#e5ebe5] shadow-inner p-7 rounded-2xl whitespace-pre-wrap font-medium">
                     --
                 </div>
                 <div id="modalEvidenceContainer" class="mt-4 hidden">
-                    <p class="text-[11px] font-bold text-[#0B5E2E] uppercase tracking-widest mb-2">Attached Evidence</p>
+                    <p class="text-[11px] font-bold text-[#235D3A] uppercase tracking-widest mb-2">Attached Evidence</p>
 
                     <div id="evidencePreviewArea"
                         class="mt-2 mb-3 bg-gray-50 rounded-xl overflow-hidden flex justify-center items-center border border-gray-200">
@@ -1127,14 +1140,14 @@
         Chart.defaults.plugins.tooltip.padding = 12;
         Chart.defaults.plugins.tooltip.cornerRadius = 8;
 
-        const pieCtx = document.getElementById('riskPieChart').getContext('2d');
+        const pieCtx = document.getElementById('riskPieChart')?.getContext('2d');
         const pieConfig = {
             type: 'doughnut',
             data: {
                 labels: ['Critical', 'High', 'Medium', 'Low'],
                 datasets: [{
                     data: [0, 0, 0, 0],
-                    backgroundColor: ['#E04B3F', '#F59E0B', '#2A5DB0', '#0B5E2E'],
+                    backgroundColor: ['#E04B3F', '#F59E0B', '#2A5DB0', '#235D3A'],
                     borderWidth: 0,
                     hoverOffset: 4
                 }]
@@ -1147,7 +1160,7 @@
                 }
             }
         };
-        pieChart = new Chart(pieCtx, pieConfig);
+        if (pieCtx) pieChart = new Chart(pieCtx, pieConfig);
 
         const barCtx = document.querySelector("#ventsBarChart");
 
@@ -1163,7 +1176,7 @@
                 fontFamily: 'Inter, sans-serif',
                 animations: { enabled: true, easing: 'easeinout', speed: 800 }
             },
-            colors: ['#0B5E2E'],
+            colors: ['#235D3A'],
             fill: {
                 type: 'gradient',
                 gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.1, stops: [0, 90, 100] }
@@ -1183,8 +1196,8 @@
             }
         };
 
-        let areaChart = new ApexCharts(barCtx, barConfig);
-        areaChart.render();
+        let areaChart = barCtx ? new ApexCharts(barCtx, barConfig) : null;
+        if (areaChart) areaChart.render();
 
         let cachedDateLabels = null;
 
@@ -1206,8 +1219,11 @@
             $('#stat-critical').text(criticalPending);
 
             // Update Pie Chart seamlessly without destroying
-            pieChart.data.datasets[0].data = [critical, high, medium, low];
-            pieChart.update('none'); // Update without full animation redraw
+            if (pieChart) {
+                pieChart.data.datasets[0].data = [critical, high, medium, low];
+                pieChart.update('none');
+            }
+            if (!areaChart) return; // Update without full animation redraw
 
             // Only calculate Date labels once per session to save CPU
             if (!cachedDateLabels) {
@@ -1276,7 +1292,7 @@
             } else {
                 form.action = "<?= base_url('admin/vent/delete-multiple') ?>";
                 btn.innerHTML = "📦 Archive Selected";
-                btn.className = "text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-vents " + (btn.classList.contains('hidden') ? 'hidden' : '');
+                btn.className = "text-xs font-bold text-[#235D3A] bg-[#235D3A]/5 hover:bg-[#235D3A]/10 px-4 py-2 rounded-lg border border-[#235D3A]/20 transition-colors shadow-sm delete-btn-vents " + (btn.classList.contains('hidden') ? 'hidden' : '');
             }
         }
 
@@ -1295,11 +1311,12 @@
             } else {
                 form.action = "<?= base_url('admin/incident/delete-multiple') ?>";
                 btn.innerHTML = "📦 Archive Selected";
-                btn.className = "text-xs font-bold text-[#0B5E2E] bg-[#0B5E2E]/5 hover:bg-[#0B5E2E]/10 px-4 py-2 rounded-lg border border-[#0B5E2E]/20 transition-colors shadow-sm delete-btn-incidents " + (btn.classList.contains('hidden') ? 'hidden' : '');
+                btn.className = "text-xs font-bold text-[#235D3A] bg-[#235D3A]/5 hover:bg-[#235D3A]/10 px-4 py-2 rounded-lg border border-[#235D3A]/20 transition-colors shadow-sm delete-btn-incidents " + (btn.classList.contains('hidden') ? 'hidden' : '');
             }
         }
 
         function fetchLiveVents() {
+            if (!document.getElementById('ventsTableBody') && !document.getElementById('riskPieChart')) return;
             $.ajax({
                 url: API_URL + (showArchivedVents ? "?archived=1" : ""),
                 dataType: 'json',
@@ -1307,6 +1324,10 @@
                     let currentDataString = JSON.stringify(data);
                     if (currentDataString === previousVentsDataString) return;
                     previousVentsDataString = currentDataString;
+                    if (!document.getElementById('ventsTableBody')) {
+                        updateCharts(data);
+                        return;
+                    }
 
                     let html = '';
                     window.ventsDataMap = {};
@@ -1332,13 +1353,13 @@
                                 bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#2A5DB0]';
                                 badgeClass = 'bg-[#2A5DB0]/10 text-[#2A5DB0] border border-[#2A5DB0]/20 font-semibold';
                             } else {
-                                bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#0B5E2E]';
-                                badgeClass = 'bg-[#0B5E2E]/10 text-[#0B5E2E] border border-[#0B5E2E]/20';
+                                bgColor = 'bg-white hover:bg-gray-50 border-l-4 border-l-[#235D3A]';
+                                badgeClass = 'bg-[#235D3A]/10 text-[#235D3A] border border-[#235D3A]/20';
                             }
 
                             // Status formatting
                             let isResolved = vent.status === 'Resolved' || vent.status === 'Reviewed';
-                            let statusColor = isResolved ? 'text-[#0B5E2E] bg-[#0B5E2E]/10' : 'text-gray-600 bg-gray-50';
+                            let statusColor = isResolved ? 'text-[#235D3A] bg-[#235D3A]/10' : 'text-gray-600 bg-gray-50';
 
                             // Formatting dates with day name for Philippine context
                             const dateObj = parsePHDate(vent.created_at);
@@ -1375,7 +1396,7 @@
                             </td>
                             <td data-label="NLP Extract" class="px-6 py-4 cursor-pointer group" onclick="openVentModal(${vent.id})">
                                 <p class="text-sm text-gray-600 italic line-clamp-2">"${escapeHtml(textSnippet)}"</p>
-                                <span class="text-[10px] text-[#0B5E2E] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
+                                <span class="text-[10px] text-[#235D3A] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
                             </td>
                             <td data-label="Risk Indicator" class="px-6 py-4 whitespace-nowrap text-center">
                                 ${(() => {
@@ -1392,7 +1413,7 @@
                                     }
 
                                     // High percentage = High Threat
-                                    let c = s >= 50 ? 'text-[#E04B3F] bg-[#E04B3F]/10' : 'text-[#0B5E2E] bg-[#0B5E2E]/10';
+                                    let c = s >= 50 ? 'text-[#E04B3F] bg-[#E04B3F]/10' : 'text-[#235D3A] bg-[#235D3A]/10';
                                     return `<span class="text-sm font-mono font-medium ${c} px-2 py-1 rounded min-w-[3rem] inline-block">${s}%</span>`;
                                 })()}
                             </td>
@@ -1410,7 +1431,7 @@
                                         </button>
                                     </form>
                                 ` : (!showArchivedVents ? `
-                                    <span class="text-xs font-semibold px-3 py-1.5 rounded-md ${statusColor} border border-[#0B5E2E]/20 flex items-center justify-center gap-1 mx-auto w-full mb-1">
+                                    <span class="text-xs font-semibold px-3 py-1.5 rounded-md ${statusColor} border border-[#235D3A]/20 flex items-center justify-center gap-1 mx-auto w-full mb-1">
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                         Resolved
                                     </span>
@@ -1460,6 +1481,7 @@
         let previousIncidentsDataString = "";
 
         function fetchLiveIncidents() {
+            if (!document.getElementById('incidentsTableBody')) return;
             $.ajax({
                 url: INCIDENTS_API_URL + (showArchivedIncidents ? "?archived=1" : ""),
                 dataType: 'json',
@@ -1543,7 +1565,7 @@
                                     </form>
                                 ` : ''}
                                 ${isVerified && !showArchivedIncidents ? `
-                                    <span class="text-xs font-semibold px-3 py-2 rounded-lg text-[#0B5E2E] bg-[#0B5E2E]/10 border border-[#0B5E2E]/20 flex items-center justify-center gap-1.5 w-full">
+                                    <span class="text-xs font-semibold px-3 py-2 rounded-lg text-[#235D3A] bg-[#235D3A]/10 border border-[#235D3A]/20 flex items-center justify-center gap-1.5 w-full">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                         Alerts Sent
                                     </span>
@@ -1566,7 +1588,7 @@
                                     </form>
                                 ` : ''}
                                 ${isResolved && !showArchivedIncidents ? `
-                                    <span class="text-xs font-semibold px-3 py-2 rounded-lg text-[#0B5E2E] bg-[#0B5E2E]/10 border border-[#0B5E2E]/20 flex items-center justify-center gap-1.5 w-full">
+                                    <span class="text-xs font-semibold px-3 py-2 rounded-lg text-[#235D3A] bg-[#235D3A]/10 border border-[#235D3A]/20 flex items-center justify-center gap-1.5 w-full">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                         Resolved
                                     </span>
@@ -1639,7 +1661,7 @@
             const toggleRow = document.createElement('tr');
             toggleRow.className = 'show-all-row bg-gray-50 hover:bg-gray-100 transition-colors';
             toggleRow.innerHTML = `<td colspan="${colSpan}" class="px-6 py-3 text-center">
-                <button class="text-xs font-bold text-[#0B5E2E] flex items-center gap-1.5 mx-auto" id="toggle-${tbodyId}">
+                <button class="text-xs font-bold text-[#235D3A] flex items-center gap-1.5 mx-auto" id="toggle-${tbodyId}">
                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     Show all ${rows.length} records
                 </button>
@@ -1661,6 +1683,7 @@
         }
 
         function fetchAlertLogs() {
+            if (!document.getElementById('alertsTableBody')) return;
             $.ajax({
                 url: ALERTS_API_URL,
                 dataType: 'json',
@@ -1748,7 +1771,7 @@
             if (vent.section) senderInfo += `\nSection: ${vent.section}`;
             if (vent.adviser_name) senderInfo += `\nAdviser: ${vent.adviser_name}`;
 
-            const badgeClass = vent.risk_level === 'CRITICAL' ? 'bg-[#E04B3F] text-white border-transparent' : (vent.risk_level === 'HIGH' ? 'bg-[#F59E0B] text-white border-transparent' : 'bg-[#0B5E2E]/10 text-[#0B5E2E] border-[#0B5E2E]/20');
+            const badgeClass = vent.risk_level === 'CRITICAL' ? 'bg-[#E04B3F] text-white border-transparent' : (vent.risk_level === 'HIGH' ? 'bg-[#F59E0B] text-white border-transparent' : 'bg-[#235D3A]/10 text-[#235D3A] border-[#235D3A]/20');
             openDetailModal('Safe Space Vent Entry', senderInfo, `${dateStr} ${timeStr}`, vent.raw_text, `Threat Level: ${vent.risk_level}`, badgeClass);
         }
 
@@ -1838,8 +1861,8 @@
             });
 
             // Search Filters
-            function applyVentsFilter() {
-                let searchValue = $('#searchVents').val().toLowerCase();
+            window.applyVentsFilter = function () {
+                let searchValue = ($('#searchVents').val() || '').toLowerCase();
                 let statusValue = $('#filterStatusVents').val();
                 let dateValue = $('#filterDateVents').val();
 
@@ -1850,10 +1873,10 @@
 
                     $(this).toggle(matchesSearch && matchesStatus && matchesDate);
                 });
-            }
+            };
 
-            function applyIncidentsFilter() {
-                let searchValue = $('#searchIncidents').val().toLowerCase();
+            window.applyIncidentsFilter = function () {
+                let searchValue = ($('#searchIncidents').val() || '').toLowerCase();
                 let statusValue = $('#filterStatusIncidents').val();
                 let dateValue = $('#filterDateIncidents').val();
 
@@ -1864,7 +1887,7 @@
 
                     $(this).toggle(matchesSearch && matchesStatus && matchesDate);
                 });
-            }
+            };
 
             // Restore filter state from localStorage if exists
             if (localStorage.getItem('ventsFilterStatus')) $('#filterStatusVents').val(localStorage.getItem('ventsFilterStatus'));
@@ -1920,34 +1943,10 @@
             fetchLiveIncidents();
             fetchAlertLogs();
 
-            let isLivePaused = false;
-
-            const pauseToggle = document.getElementById('pauseUpdatesToggle');
-            if (pauseToggle) {
-                pauseToggle.addEventListener('change', function () {
-                    isLivePaused = this.checked;
-                    document.getElementById('toggleBg').classList.toggle('bg-amber-400', this.checked);
-                    document.getElementById('toggleBg').classList.toggle('bg-gray-300', !this.checked);
-                    document.getElementById('toggleDot').classList.toggle('translate-x-3', this.checked);
-                });
-            }
-
-            // Hover pause logic for tables to prevent jumping
-            document.querySelectorAll('table').forEach(table => {
-                table.addEventListener('mouseenter', () => {
-                    isLivePaused = true;
-                });
-                table.addEventListener('mouseleave', () => {
-                    if (pauseToggle && !pauseToggle.checked) {
-                        isLivePaused = false;
-                    }
-                });
-            });
-
-            // Start Polling 
-            setInterval(() => { if (!isLivePaused) fetchLiveVents(); }, 30000);
-            setInterval(() => { if (!isLivePaused) fetchLiveIncidents(); }, 30000);
-            setInterval(() => { if (!isLivePaused) fetchAlertLogs(); }, 30000);
+            // Refresh the current page automatically; no manual pause state.
+            setInterval(fetchLiveVents, 30000);
+            setInterval(fetchLiveIncidents, 30000);
+            setInterval(fetchAlertLogs, 30000);
 
             // Live Philippine Clock — seeded from server (Manila timezone guaranteed)
             const serverTimestamp = <?= (time() + 28800) * 1000 ?>; // +8 hours for Manila time (PHT) in ms
@@ -2009,6 +2008,7 @@
             navMenuOpen = !navMenuOpen;
             const menuDropdown = document.getElementById('navMenuDropdown');
             if (menuDropdown) menuDropdown.classList.toggle('hidden', !navMenuOpen);
+            document.getElementById('navMenuBtn').setAttribute('aria-expanded', String(navMenuOpen));
             // Close meeting dropdown if open to avoid mobile collisions
             if (navMenuOpen && window.closeMeetingDropdown) {
                 window.closeMeetingDropdown();
@@ -2020,6 +2020,7 @@
             if (wrapper && !wrapper.contains(e.target) && navMenuOpen) {
                 navMenuOpen = false;
                 if (menuDropdown) menuDropdown.classList.add('hidden');
+                document.getElementById('navMenuBtn').setAttribute('aria-expanded', 'false');
             }
         });
 
@@ -2033,18 +2034,33 @@
                 dropdownOpen = false;
                 const dropdown = document.getElementById('meetingDropdown');
                 if (dropdown) dropdown.classList.add('hidden');
+                document.getElementById('meetingBellBtn').setAttribute('aria-expanded', 'false');
             };
+
+            function positionMeetingDropdown() {
+                const dropdown = document.getElementById('meetingDropdown');
+                dropdown.style.top = window.innerWidth < 640
+                    ? (document.getElementById('mainNavBar').getBoundingClientRect().bottom + 8) + 'px' : '';
+            }
+            window.addEventListener('resize', positionMeetingDropdown);
+            window.addEventListener('scroll', () => { if (dropdownOpen) positionMeetingDropdown(); }, { passive: true });
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') window.closeMeetingDropdown();
+            });
 
             // Toggle dropdown visibility
             window.toggleMeetingDropdown = function () {
                 dropdownOpen = !dropdownOpen;
                 const dropdown = document.getElementById('meetingDropdown');
                 if (dropdown) dropdown.classList.toggle('hidden', !dropdownOpen);
+                document.getElementById('meetingBellBtn').setAttribute('aria-expanded', String(dropdownOpen));
+                positionMeetingDropdown();
                 // Close nav menu if open to avoid mobile collisions
                 if (dropdownOpen && navMenuOpen) {
                     navMenuOpen = false;
                     const menuDropdown = document.getElementById('navMenuDropdown');
                     if (menuDropdown) menuDropdown.classList.add('hidden');
+                document.getElementById('navMenuBtn').setAttribute('aria-expanded', 'false');
                 }
                 if (dropdownOpen) fetchMeetings();
             };
@@ -2069,40 +2085,28 @@
 
             function renderDropdownList(requests) {
                 const list = document.getElementById('meetingRequestsList');
-                const noMsg = document.getElementById('noRequestsMsg');
                 const countLabel = document.getElementById('dropdownCount');
-
-                if (countLabel) {
-                    countLabel.textContent = requests.length ? requests.length + ' pending' : '';
-                }
-
+                if (countLabel) countLabel.textContent = requests.length ? requests.length + ' pending' : 'You’re all caught up';
                 if (!list) return;
-
                 if (!requests.length) {
-                    list.innerHTML = '';
-                    if (noMsg) {
-                        list.appendChild(noMsg);
-                        noMsg.classList.remove('hidden');
-                    }
+                    list.innerHTML = '<div class="meeting-empty" id="noRequestsMsg"><span class="meeting-empty-icon" aria-hidden="true">✓</span><p>No pending requests</p></div>';
                     return;
                 }
-
-                if (noMsg) noMsg.classList.add('hidden');
                 list.innerHTML = requests.map(function (r) {
                     const name = r.student_name || 'Unknown Student';
                     const section = r.section ? ' · ' + r.section : '';
                     const sid = r.student_number ? ' (' + r.student_number + ')' : '';
                     const ago = timeAgo(r.requested_at);
                     const link = '<?= base_url('admin/case-summary/') ?>' + r.student_id;
-                    return `<a href="${link}" class="flex items-start gap-3 px-4 py-3 hover:bg-white/10 transition-colors group">
-                        <span class="mt-0.5 w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center flex-shrink-0 text-emerald-300 font-bold text-xs">
-                            ${name.charAt(0)}
+                    return `<a href="${link}" class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors group">
+                        <span class="mt-0.5 w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center flex-shrink-0 text-primary font-bold text-xs">
+                            ${escapeHtml(name.charAt(0))}
                         </span>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-semibold text-white truncate group-hover:text-emerald-300 transition-colors">${name}${sid}</p>
-                            <p class="text-[11px] text-white/60">${section.replace(' · ', '')}${section ? '' : '&nbsp;'} <span class="ml-1 text-white/40">${ago}</span></p>
+                            <p class="text-sm font-semibold text-gray-900 truncate group-hover:text-primary transition-colors">${escapeHtml(name)}${escapeHtml(sid)}</p>
+                            <p class="text-[11px] text-gray-600">${escapeHtml(section.replace(' · ', ''))}${section ? '' : '&nbsp;'} <span class="ml-1 text-gray-500">${escapeHtml(ago)}</span></p>
                         </div>
-                        <span class="text-[10px] text-emerald-400 font-semibold self-center opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">View →</span>
+                        <span class="text-[10px] text-primary font-semibold self-center transition-opacity flex-shrink-0">View →</span>
                     </a>`;
                 }).join('');
             }
@@ -2138,14 +2142,14 @@
                         <div>
                             <div class="flex items-start gap-3">
                                 <div class="w-10 h-10 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center flex-shrink-0 text-emerald-800 font-bold text-sm">
-                                    ${name.charAt(0)}
+                                    ${escapeHtml(name.charAt(0))}
                                 </div>
                                 <div class="min-w-0 flex-1">
-                                    <h4 class="text-sm font-bold text-gray-900 truncate">${name}</h4>
-                                    <p class="text-xs text-gray-500 truncate mt-0.5">${section}${sid}</p>
+                                    <h4 class="text-sm font-bold text-gray-900 truncate">${escapeHtml(name)}</h4>
+                                    <p class="text-xs text-gray-500 truncate mt-0.5">${escapeHtml(section)}${escapeHtml(sid)}</p>
                                     <div class="mt-2 flex items-center gap-1.5 flex-wrap">
                                         <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                                            ⏱ Requested ${ago}
+                                            ⏱ Requested ${escapeHtml(ago)}
                                         </span>
                                         <span class="inline-flex items-center text-[11px] font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                                             Virtual 1-on-1
@@ -2156,7 +2160,7 @@
                         </div>
                         <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
                             <span class="text-xs text-gray-400">Counseling Request</span>
-                            <a href="${link}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#096328] hover:bg-[#075826] text-white text-xs font-semibold shadow-sm transition-colors">
+                            <a href="${link}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#235D3A] hover:bg-[#19452B] text-white text-xs font-semibold shadow-sm transition-colors">
                                 View Case & Connect →
                             </a>
                         </div>
@@ -2292,94 +2296,12 @@
         })();
     </script>
 
-    <!-- Section Navigation: Smooth Teleport & High-Performance Reactive Scrollspy -->
     <script>
-        // Smooth teleport to section accounting for dynamic sticky header height
-        function tpToSection(id, e) {
-            if (e) e.preventDefault();
-            var el = document.getElementById(id);
-            if (!el) return;
-
-            var header = document.getElementById('dashboardHeader');
-            var headerHeight = header ? header.getBoundingClientRect().height : 100;
-            var targetTop = el.getBoundingClientRect().top + window.pageYOffset - headerHeight - 14;
-
-            window.scrollTo({
-                top: Math.max(0, targetTop),
-                behavior: 'smooth'
-            });
-        }
-
-        (function () {
-            var header = document.getElementById('dashboardHeader');
-            var sections = ['section-vents', 'section-incidents', 'section-sessions', 'section-alerts', 'section-charts'];
-            var tabs = {};
-
-            sections.forEach(function (id) {
-                var tab = document.querySelector('.dash-tab[data-section="' + id + '"]');
-                if (tab) tabs[id] = tab;
-            });
-
-            function setActiveTab(activeId) {
-                sections.forEach(function (id) {
-                    var tab = tabs[id];
-                    if (!tab) return;
-                    if (id === activeId) {
-                        if (!tab.classList.contains('is-active')) {
-                            tab.classList.add('is-active');
-                            tab.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
-                        }
-                    } else {
-                        tab.classList.remove('is-active');
-                    }
-                });
-            }
-
-            var ticking = false;
-            function onScroll() {
-                if (!ticking) {
-                    window.requestAnimationFrame(function () {
-                        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
-
-                        // 1. Condense header on scroll for extra table view area
-                        if (header) {
-                            if (scrollY > 50) {
-                                header.classList.add('is-scrolled');
-                            } else {
-                                header.classList.remove('is-scrolled');
-                            }
-                        }
-
-                        // 2. Deterministic active section detection
-                        var headerHeight = (header ? header.offsetHeight : 100) + 24;
-                        var currentId = sections[0];
-
-                        // Detect bottom of page so last section is highlighted accurately
-                        if ((window.innerHeight + scrollY) >= document.documentElement.scrollHeight - 60) {
-                            currentId = sections[sections.length - 1];
-                        } else {
-                            for (var i = 0; i < sections.length; i++) {
-                                var sec = document.getElementById(sections[i]);
-                                if (sec) {
-                                    var top = sec.getBoundingClientRect().top + scrollY;
-                                    if (top - headerHeight <= scrollY) {
-                                        currentId = sections[i];
-                                    }
-                                }
-                            }
-                        }
-
-                        setActiveTab(currentId);
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            }
-
-            window.addEventListener('scroll', onScroll, { passive: true });
-            // Initial run to highlight correct tab on load
-            onScroll();
-        })();
+        const dashboardHeader = document.getElementById('dashboardHeader');
+        document.querySelector('.dash-tab[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
+        window.addEventListener('scroll', () => {
+            dashboardHeader.classList.toggle('is-scrolled', window.scrollY > 50);
+        }, { passive: true });
     </script>
 </body>
 

@@ -33,6 +33,9 @@ $routes->get('/counselor/(:any)', static function ($path) {
 // Protected Routes
 $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/admin/dashboard', 'AdminController::dashboard');
+    foreach (['vents', 'incidents', 'sessions', 'alerts', 'analytics'] as $page) {
+        $routes->get('/admin/' . $page, 'AdminController::dashboard/' . $page);
+    }
     $routes->post('/admin/vent/resolve/(:num)', 'AdminController::resolveVent/$1');
     $routes->post('/admin/vent/delete/(:num)', 'AdminController::deleteVent/$1');
     $routes->post('/admin/vent/delete-multiple', 'AdminController::deleteMultipleVents');

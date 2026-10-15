@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudentShield - Audit Logs</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <?= view('partials/school_brand') ?>
+    <?= view('partials/school_brand', ['studentPalette' => true]) ?>
     <script>
         tailwind.config = {
             theme: {

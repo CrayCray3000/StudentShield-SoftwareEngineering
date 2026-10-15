@@ -47,7 +47,7 @@
     background-image: none;
 }
 .school-student-page > .pointer-events-none { display: none; }
-.school-staff-page .glass-header,
+.school-staff-page .glass-header { background: var(--school-header-background, var(--school-green)); border-color: #D9AA2E; }
 .school-staff-page .thead-green { background: var(--school-green); }
 .school-staff-page .section-header { color: var(--school-green); border-left-color: var(--school-green); }
 .school-staff-page .stat-card.green-accent { border-left-color: var(--school-green); }
@@ -64,7 +64,6 @@
 .school-staff-page .glass-header [class~="bg-white/10"],
 .school-staff-page .glass-header a:hover,
 .school-staff-page .glass-header button:hover { background-color: var(--school-green-hover); }
-.school-staff-page #meetingDropdown,
 .school-staff-page #navMenuDropdown { background-color: var(--school-green-hover); }
 .school-staff-page .glass-header [class~="text-white/30"],
 .school-staff-page .glass-header [class~="text-white/40"],
