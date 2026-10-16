@@ -22,8 +22,10 @@
         Back
     </a>
     <a href="<?= base_url($isIncidentPage ? 'student/vent' : 'report-bullying') ?>" class="nav-control <?= $isIncidentPage ? 'vent-link' : 'report-link' ?>">
+        <?php if ($showReportIcon ?? false): ?><svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="<?= $isIncidentPage ? 'M8 10h8M8 14h5M21 12a9 9 0 0 1-9 9H3l2-4a9 9 0 1 1 16-5Z' : 'M5 21V4m0 0c5-4 9 4 15 0v10c-6 4-10-4-15 0' ?>"/></svg><?php endif; ?>
         <?= $isIncidentPage ? 'Safe Space' : 'Report Bullying' ?>
     </a>
+    <?php if ($showSignout ?? true): ?>
     <form action="<?= base_url('logout') ?>" method="POST" class="student-desktop-signout">
         <?= csrf_field() ?>
         <button type="submit" class="nav-control">
@@ -31,6 +33,7 @@
             Sign Out
         </button>
     </form>
+    <?php endif; ?>
 </nav>
 <script>
     document.querySelector('[data-student-back]').addEventListener('click', function (event) {

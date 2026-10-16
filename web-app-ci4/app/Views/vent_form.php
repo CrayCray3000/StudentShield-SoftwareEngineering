@@ -52,120 +52,22 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('css/student-forms.css?v=7') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/student-vent.css?v=' . filemtime(FCPATH . 'css/student-vent.css')) ?>">
 </head>
-<body class="student-form-page student-form-page--vent antialiased min-h-screen">
+<body class="student-form-page student-form-page--vent student-workspace-page antialiased min-h-screen">
 
-    <!-- Student form layout -->
-    <div class="student-form-layout w-full flex flex-col lg:flex-row">
-
-        <!-- ===== LEFT — Calming Branding Panel (Expanded) ===== -->
-        <div class="brand-panel hidden lg:flex w-full lg:w-[420px] 2xl:w-[550px] lg:min-h-screen flex-shrink-0 flex-col justify-between px-8 sm:px-10 xl:px-14 py-8 lg:py-12 relative">
-            <div class="bg-grid"></div>
-
-            <!-- Top — Logo & Brand -->
-            <div class="relative z-10">
-                <a href="<?= base_url('student/dashboard') ?>"
-                   aria-label="Go to StudentShield action selection"
-                   class="inline-flex items-center gap-3.5 mb-14 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-primary-dark">
-                    <div class="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/10">
-                        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="" class="h-20 w-20 object-contain"
-                             onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\'/><path d=\'M35 55l10 10 25-25\' fill=\'none\' stroke=\'%23F2C300\' stroke-width=\'6\' stroke-linecap=\'round\' stroke-linejoin=\'round\'/></svg>';">
-                    </div>
-                    <div>
-                        <h1 class="text-white font-heading font-bold text-lg tracking-tight">StudentShield</h1>
-                        <p class="text-white/70 text-[10px] font-semibold tracking-[0.2em] uppercase">Mental Wellness Portal</p>
-                    </div>
-                </a>
-
-                <div class="space-y-4">
-                    <p class="text-gold/80 text-xs font-semibold tracking-widest uppercase">Safe & Confidential</p>
-                    <h2 class="text-white font-heading font-extrabold text-[2.2rem] sm:text-[2.6rem] xl:text-[3.2rem] leading-[1.08] tracking-tight">
-                        It's okay to<br>not be okay.
-                    </h2>
-                    <p class="text-white/80 text-[14px] sm:text-[15px] leading-relaxed max-w-sm">
-                        Your feelings are valid. This is a judgment-free space where you can express yourself freely and get the support you need.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Middle — Trust Features -->
-            <div class="relative z-10 space-y-4">
-                <div class="flex items-center gap-3.5 group">
-                    <div class="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center flex-shrink-0 border border-white/5 group-hover:bg-white/10 transition-colors">
-                        <svg class="w-4 h-4 text-gold/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-white/90 font-medium text-[13px]">Encrypted Storage</h3>
-                        <p class="text-white/60 text-[11px] mt-0.5">Your entries are protected while stored.</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3.5 group">
-                    <div class="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center flex-shrink-0 border border-white/5 group-hover:bg-white/10 transition-colors">
-                        <svg class="w-4 h-4 text-gold/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-white/90 font-medium text-[13px]">Confidential & Private</h3>
-                        <p class="text-white/60 text-[11px] mt-0.5">Stored securely for counselor review.</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3.5 group">
-                    <div class="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center flex-shrink-0 border border-white/5 group-hover:bg-white/10 transition-colors">
-                        <svg class="w-4 h-4 text-gold/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-white/90 font-medium text-[13px]">Guidance Counselor Support</h3>
-                        <p class="text-white/60 text-[11px] mt-0.5">School guidance personnel can review and respond.</p>
-                    </div>
-                </div>
-
-                <!-- Sidebar Crisis Support Hotline -->
-                <div class="p-4 rounded-2xl bg-black/20 border border-white/15 text-white space-y-2 shadow-sm backdrop-blur-sm">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/10">
-                            <svg class="w-3.5 h-3.5 text-gold/90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                        </div>
-                        <h4 class="font-heading font-semibold text-xs tracking-wider uppercase text-gold/90">24/7 Crisis Helpline</h4>
-                    </div>
-                    <p class="text-white/90 text-xs leading-relaxed">
-                        If you need immediate support, the National Center for Mental Health is always here:
-                    </p>
-                    <div class="pt-0.5 text-white font-mono font-semibold text-xs tracking-wide">
-                        Hotline: <span class="text-[#FCEEA1] font-bold text-sm">1553</span> <span class="text-white/60">·</span> <span class="text-[#FCEEA1] font-bold text-sm">0917-899-8727</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bottom — Helpline + Footer -->
-            <div class="relative z-10 space-y-5">
-
-                <div class="border-t border-white/8 pt-4 flex items-center justify-between">
-                    <p class="text-white/60 text-[11px]">© 2026 StudentShield · SVBSM</p>
-                    <div class="flex items-center gap-1.5 text-white/60 text-[11px]">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        Protected
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== RIGHT — Vent Form Panel (Fullscreen Expanded) ===== -->
-        <div class="student-form-main flex flex-col min-h-screen flex-1 relative items-center">
-
-            <?= view('partials/student_mobile_form_header', ['page' => 'vent']) ?>
-
-            <!-- Form content -->
-            <div class="student-form-content mx-auto relative">
-                <div class="student-form-body w-full relative">
-                <?= view('partials/student_form_navigation', ['page' => 'vent']) ?>
-
+    <?= view('partials/student_vent_header', ['page' => 'vent']) ?>
+    <main class="student-form-content vent-content">
+        <div class="student-form-body">
                 <!-- Page heading stays ahead of the form on every screen size. -->
                 <header class="student-page-header">
                     <span class="student-section-label">
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 12a9 9 0 0 1-9 9H3l2-4a9 9 0 1 1 16-5Z" /></svg>
                         Safe Space
+                        <svg class="vent-section-chevron" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>
                     </span>
                     <h2>How are you feeling today?</h2>
-                    <p>Take your time. Write what is on your mind, and choose any feelings that fit.</p>
+                    <p>Take your time. Write what’s on your mind, and choose any feelings that fit.</p>
                     
                 </header>
 
@@ -183,6 +85,8 @@
                     </div>
                 <?php endif; ?>
 
+                <div class="vent-workspace">
+                <div class="vent-composer">
                 <!-- Vent Form -->
                 <form action="<?= base_url('student/vent/submit') ?>" method="POST" id="ventForm" class="student-entry-form">
                     <div class="hidden"><?= csrf_field() ?></div>
@@ -193,11 +97,7 @@
                             <label for="vent_text">What's on your mind?</label>
                             <span id="charCount" class="char-count">0 / 2000</span>
                         </div>
-                        <p id="ventGuidance" class="breathing-guide">
-                            <span id="breathDot" aria-hidden="true"></span>
-                            <span id="breathText">Breathe in deeply...</span>
-                        </p>
-                        <textarea id="vent_text" name="vent_text" maxlength="2000" aria-describedby="ventGuidance"
+                        <textarea id="vent_text" name="vent_text" maxlength="2000" aria-describedby="ventStorageNote" placeholder="Start wherever you feel comfortable…"
                                   class="textarea-field" required></textarea>
                     </div>
 
@@ -206,10 +106,12 @@
                         <p id="moodPrompt" class="mood-prompt">How do you feel right now?</p>
                         <p id="moodHelp" class="mood-help">Optional. Select any feelings that fit.</p>
                         <input type="hidden" name="emotions" id="emotionsInput" value="">
-                        <button type="button" id="moodToggle" class="mood-toggle" aria-expanded="false" aria-controls="moodPanel">
-                            <span id="moodSummary">Choose feelings</span>
+                        <details id="moodDisclosure" class="mood-disclosure">
+                        <summary id="moodToggle" class="mood-toggle" aria-describedby="moodHelp">
+                            <span>Choose feelings</span>
+                            <span id="moodCount" class="mood-count" hidden></span>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-                        </button>
+                        </summary>
                         <div id="moodPanel" class="mood-panel">
                         <div id="moodSelect" role="group" aria-labelledby="moodPrompt" aria-describedby="moodHelp">
                             <?php
@@ -236,6 +138,9 @@
                         </div>
                         <button type="button" id="moodDone" class="mood-done">Done</button>
                         </div>
+                        </details>
+                        <div id="moodSelections" class="mood-selections" aria-label="Selected feelings" hidden></div>
+                        <span id="moodSelectionStatus" class="sr-only" role="status"></span>
                     </div>
 
                     <!-- Counselor notification preference -->
@@ -247,43 +152,44 @@
                         </span>
                     </label>
 
+                    <div class="vent-submit-row">
+                    <p id="ventStorageNote" class="vent-storage-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Stored securely for counselor review.</p>
                     <!-- Submit -->
                     <button type="submit" id="submitBtn"
                         class="submit-btn w-full text-white font-bold py-4 px-6 rounded-2xl shadow-[0_8px_20px_-6px_rgba(11,94,46,0.25)] focus:outline-none focus:ring-4 focus:ring-calm-200 flex items-center justify-center gap-3 h-14 lg:h-16 group transition-transform mb-2">
-                        <span id="btnText" class="font-heading text-[18px] lg:text-[20px] tracking-wide">Submit Securely</span>
+                        <span id="btnText" class="font-heading text-[18px] lg:text-[20px] tracking-wide">Submit securely</span>
                         <svg id="btnIcon" class="h-5 w-5 text-gold/80 group-hover:-translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" /></svg>
                         <svg id="btnSpinner" class="animate-spin h-5 w-5 text-white hidden" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     </button>
+                    </div>
                 </form>
 
-                <!-- Reassurance and counseling access are secondary to the writing task. -->
-                <aside class="student-secondary" id="meet-section" aria-label="Student support">
-                    <div class="student-affirmation-card">
-                        <div class="flex items-center gap-2 mb-2">
-                            <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-                            <span class="text-[11px] uppercase tracking-wider font-bold text-primary">Daily Encouragement</span>
-                        </div>
-                        <p id="dailyAffirmation" class="text-gray-700 text-sm leading-relaxed">"Your current situation is not your final destination. Take it one day at a time."</p>
-                    </div>
-                    <div class="student-meet-wrapper">
-                        <?= view('partials/student_meet_card') ?>
-                    </div>
-                </aside>
-
-                <!-- Footer -->
-                <div class="student-form-footer flex items-center justify-center">
-                    <span class="flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        Protected by StudentShield
-                    </span>
-                    <span class="text-gray-300">·</span>
-                    <span>Encrypted</span>
                 </div>
-            </div>
-
-            </div>
+                <aside class="vent-support" id="meet-section" aria-label="Student support">
+                    <div class="vent-support-intro">
+                        <h2>You don’t have to figure it out alone.</h2>
+                        <p>Your guidance counselor can review your entry and help you take the next step.</p>
+                    </div>
+                    <section class="vent-session-support" aria-labelledby="ventTalkHeading">
+                        <h2 id="ventTalkHeading">Prefer to talk?</h2>
+                        <?= view('partials/student_meet_card', ['ventStyle' => true]) ?>
+                    </section>
+                    <section class="vent-urgent-support" aria-labelledby="ventUrgentHeading">
+                        <h2 id="ventUrgentHeading">Need urgent support?</h2>
+                        <p>Find immediate support through the crisis helpline.</p>
+                        <details class="vent-crisis-details">
+                            <summary>View crisis support</summary>
+                            <div>
+                                <p>National Center for Mental Health</p>
+                                <p>Hotline: <a href="tel:1553">1553</a> · <a href="tel:09178998727">0917-899-8727</a></p>
+                            </div>
+                        </details>
+                    </section>
+                </aside>
+                </div>
+                <?= view('partials/student_form_footer') ?>
         </div>
-    </div>
+    </main>
 
     <!-- Empathy Modal -->
     <div id="empathyModal" class="fixed inset-0 z-[100] hidden items-center justify-center">
@@ -315,82 +221,77 @@
             else charCount.style.color = '#526259';
         });
 
-        const moodPicker = document.getElementById('moodPicker');
+        const moodDisclosure = document.getElementById('moodDisclosure');
         const moodToggle = document.getElementById('moodToggle');
-        const moodPanel = document.getElementById('moodPanel');
-        const mobileMoods = window.matchMedia('(max-width: 599px)');
-        let moodsExpanded = false;
-        function renderMoodPicker() {
-            moodPanel.hidden = mobileMoods.matches && !moodsExpanded;
-            moodToggle.setAttribute('aria-expanded', String(!moodPanel.hidden));
-            const selected = [...document.querySelectorAll('.mood-btn.active')].map(button => button.dataset.mood);
-            document.getElementById('moodSummary').textContent = selected.length ? selected.join(', ') : 'Choose feelings';
+        const moodSelections = document.getElementById('moodSelections');
+        const moodButtons = [...document.querySelectorAll('.mood-btn')];
+        const inlineFeelings = window.matchMedia('(min-width: 1200px)');
+        const syncFeelings = () => { moodDisclosure.open = inlineFeelings.matches; };
+        inlineFeelings.addEventListener('change', syncFeelings);
+        syncFeelings();
+        function renderMoodPicker(announce = false) {
+            const selected = moodButtons.filter(button => button.classList.contains('active'));
+            document.getElementById('emotionsInput').value = selected.map(button => button.dataset.mood).join(',');
+            const count = document.getElementById('moodCount');
+            count.hidden = selected.length === 0;
+            count.textContent = selected.length + ' selected';
+            moodSelections.hidden = selected.length === 0;
+            moodSelections.replaceChildren();
+            // Keep the collapsed summary compact even when every feeling is selected.
+            selected.slice(0, 2).forEach(button => {
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'mood-selection-chip';
+                chip.dataset.mood = button.dataset.mood;
+                chip.setAttribute('aria-label', 'Remove ' + button.dataset.mood);
+                chip.textContent = button.textContent.trim().replace(/\s+/g, ' ') + ' ×';
+                chip.addEventListener('click', () => {
+                    button.classList.remove('active');
+                    button.setAttribute('aria-pressed', 'false');
+                    renderMoodPicker(true);
+                    (moodSelections.querySelector('button') || moodToggle).focus();
+                });
+                moodSelections.appendChild(chip);
+            });
+            if (selected.length > 2) {
+                const more = document.createElement('button');
+                more.type = 'button';
+                more.className = 'mood-selection-more';
+                more.textContent = '+' + (selected.length - 2) + ' more';
+                more.setAttribute('aria-label', 'Review all ' + selected.length + ' selected feelings');
+                more.addEventListener('click', () => {
+                    moodDisclosure.open = true;
+                    document.getElementById('moodDone').focus();
+                });
+                moodSelections.appendChild(more);
+            }
+            if (announce) document.getElementById('moodSelectionStatus').textContent = selected.length
+                ? 'Selected feelings: ' + selected.map(button => button.dataset.mood).join(', ')
+                : 'No feelings selected';
         }
         function closeMoodPicker() {
-            moodsExpanded = false;
-            renderMoodPicker();
+            if (inlineFeelings.matches) return;
+            moodDisclosure.open = false;
             moodToggle.focus();
         }
-        moodPicker.classList.add('is-enhanced');
-        moodToggle.addEventListener('click', () => {
-            moodsExpanded = !moodsExpanded;
-            renderMoodPicker();
-        });
         document.getElementById('moodDone').addEventListener('click', closeMoodPicker);
-        moodPanel.addEventListener('keydown', event => {
-            if (event.key === 'Escape' && mobileMoods.matches) {
+        moodDisclosure.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
                 event.preventDefault();
                 closeMoodPicker();
             }
         });
-        mobileMoods.addEventListener('change', renderMoodPicker);
-        renderMoodPicker();
-
-        document.querySelectorAll('.mood-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                this.classList.toggle('active');
-                this.setAttribute('aria-pressed', this.classList.contains('active') ? 'true' : 'false');
-                
-                // Update hidden input with active moods
-                const activeMoods = [];
-                document.querySelectorAll('.mood-btn.active').forEach(activeBtn => {
-                    activeMoods.push(activeBtn.getAttribute('data-mood'));
-                });
-                document.getElementById('emotionsInput').value = activeMoods.join(',');
-                renderMoodPicker();
-            });
-        });
-
-        // Deep Breathing UX Guidance
-        const breathStages = [
-            { text: "Take a deep breath in...", scale: "scale-[1.8]" },
-            { text: "Hold it for a moment...", scale: "scale-[1.8]" },
-            { text: "Slowly breathe out...", scale: "scale-100" },
-            { text: "You are in a safe space.", scale: "scale-100" },
-            { text: "Whenever you are ready...", scale: "scale-100" }
-        ];
-        let breathIdx = 0;
-        const breathText = document.getElementById('breathText');
-        const breathDot = document.getElementById('breathDot');
-        
-        setInterval(() => {
-            if(textarea.value.length > 0) {
-                breathText.innerText = "Keep writing at your own pace.";
-                breathDot.className = "w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]";
-                return;
+        document.addEventListener('click', event => {
+            if (!inlineFeelings.matches && moodDisclosure.open && !moodDisclosure.contains(event.target) && !moodSelections.contains(event.target)) {
+                syncFeelings();
             }
-            breathIdx = (breathIdx + 1) % breathStages.length;
-            breathText.innerText = breathStages[breathIdx].text;
-            breathDot.className = "w-3 h-3 rounded-full bg-emerald-400 transition-transform duration-[3000ms] ease-in-out " + breathStages[breathIdx].scale;
-        }, 4000);
-
-        const affirmations = [
-            '"Your current situation is not your final destination."',
-            '"You survive 100% of your bad days. Keep going."',
-            '"Healing is not linear, and that is perfectly okay."',
-            '"You are stronger than the challenges you are facing."'
-        ];
-        document.getElementById('dailyAffirmation').innerText = affirmations[Math.floor(Math.random() * affirmations.length)];
+        });
+        moodButtons.forEach(button => button.addEventListener('click', () => {
+            button.classList.toggle('active');
+            button.setAttribute('aria-pressed', String(button.classList.contains('active')));
+            renderMoodPicker(true);
+        }));
+        renderMoodPicker();
 
         document.getElementById('ventForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -452,7 +353,7 @@
                 textarea.value = '';
                 charCount.textContent = '0 / 2000';
                 btn.classList.remove('opacity-90', 'cursor-wait');
-                btn.style.background = 'linear-gradient(135deg, #059669, #10B981)';
+                btn.style.background = 'var(--form-primary)';
                 text.innerText = 'Submitted Securely';
                 spinner.classList.add('hidden');
                 document.querySelectorAll('.mood-btn').forEach(b => {
@@ -460,7 +361,7 @@
                     b.setAttribute('aria-pressed', 'false');
                 });
                 document.getElementById('emotionsInput').value = '';
-                moodsExpanded = false;
+                syncFeelings();
                 renderMoodPicker();
 
                 if (data.risk_level === 'HIGH' || data.risk_level === 'CRITICAL') {

@@ -4,11 +4,15 @@
     data-cancel-url="<?= esc(base_url('student/meeting/cancel-request'), 'attr') ?>">
     <div class="meet-card-header">
         <div class="meet-icon-wrap">
+            <?php if ($ventStyle ?? false): ?>
+            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="5" width="14" height="14" rx="3"/><path d="m17 9 5-3v12l-5-3z"/></svg>
+            <?php else: ?>
             <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="14" height="14" rx="4" fill="#FBBC04"/><path d="M17 9 22 6v12l-5-3V9Z" fill="#34A853"/><path d="M2 14h5v5H6a4 4 0 0 1-4-4v-1Z" fill="#4285F4"/></svg>
+            <?php endif; ?>
         </div>
         <div>
-            <h3 class="meet-card-title">Counselor Video Session</h3>
-            <p class="meet-card-subtitle">Private 1-on-1 consultation</p>
+            <h3 class="meet-card-title"><?= ($ventStyle ?? false) ? 'Counselor video session' : 'Counselor Video Session' ?></h3>
+            <p class="meet-card-subtitle"><?= ($ventStyle ?? false) ? 'Private one-to-one consultation' : 'Private 1-on-1 consultation' ?></p>
         </div>
     </div>
     <div class="meet-card-body">
@@ -18,7 +22,7 @@
             Join Google Meet
         </a>
         <button data-meet-request type="button" hidden class="meet-btn meet-btn--request">
-            Request Session
+            <?= ($ventStyle ?? false) ? 'Request a session' : 'Request Session' ?>
         </button>
         <button data-meet-cancel type="button" hidden class="meet-btn--cancel">
             Cancel session request

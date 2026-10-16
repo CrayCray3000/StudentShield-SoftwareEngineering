@@ -1,0 +1,81 @@
+/* Incident reporting uses the same page grid and account header as Safe Space. */
+.student-form-page--report .student-section-label { color: #b3261e; }
+.student-form-page--report .report-fields { display: grid; gap: 24px; min-width: 0; }
+.student-form-page--report .report-fields label.block, .student-form-page--report .report-fields label, .student-form-page--report .role-prompt { display: block; margin-bottom: 10px; color: var(--form-text); font-size: 16px; font-weight: 600; line-height: 1.4; }
+.student-form-page--report .role-options { gap: 12px; }
+.student-form-page--report .role-btn { position: relative; justify-content: center; min-height: 48px; padding: 10px 16px; border-radius: 8px; color: var(--form-muted); background: white; font-size: 15px; }
+.student-form-page--report .role-btn.active { color: var(--form-primary); background: var(--form-mint); border-color: var(--form-primary); box-shadow: none; }
+.student-form-page--report .role-btn.active::after { content: '✓'; position: absolute; right: 12px; width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: var(--form-primary); color: white; font-size: 12px; }
+.student-form-page--report .role-btn svg { flex-shrink: 0; width: 19px; height: 19px; }
+.student-form-page--report .report-people { align-items: start; }
+.student-form-page--report .student-entry-form input[type="text"] { min-height: 44px; padding: 10px 16px; border-radius: 8px; line-height: 1.4; }
+.student-form-page--report .field-heading { margin-bottom: 8px; }
+.student-form-page--report .field-heading label { margin-bottom: 0; }
+.student-form-page--report .field-help { margin: 0 0 12px; font-size: 14px; line-height: 1.5; }
+.student-form-page--report .report-description .textarea-field { display: block; resize: vertical; font-size: 16px !important; }
+.report-upload { position: relative; display: flex; align-items: center; gap: 18px; min-height: 84px; padding: 16px 20px; border: 1px dashed var(--form-border); border-radius: 8px; background: #fbfdfb; }
+.report-upload > svg { width: 26px; height: 26px; flex-shrink: 0; color: var(--form-text); }
+.report-upload-copy { display: block; flex: 1; min-width: 0; color: var(--form-text); font-size: 14px; line-height: 1.5; }
+.report-upload-copy > span { display: block; overflow-wrap: anywhere; }
+.report-upload-copy #evidenceHelp { color: var(--form-muted); font-size: 12px; margin-top: 2px; }
+.report-upload-button { flex-shrink: 0; padding: 12px 18px; border-radius: 7px; background: var(--form-mint); color: var(--form-primary); font-size: 13px; font-weight: 600; }
+.student-workspace-page .report-upload #evidence_file { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; padding: 0; margin: 0; border: 0; opacity: 0; cursor: pointer; }
+.report-upload:hover { border-color: var(--form-primary); }
+.report-upload:focus-within { outline: 2px solid var(--form-primary); outline-offset: 3px; }
+.report-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 16px; border-top: 1px solid var(--form-divider); }
+.report-actions #saveDraftBtn { width: auto; min-height: 54px; margin: 0; padding: 10px 12px; font-size: 15px; color: var(--form-primary); border-radius: 7px; }
+.report-actions #saveDraftBtn:hover { background: var(--form-mint); }
+.report-actions #saveDraftBtn svg { width: 22px; height: 22px; }
+.student-form-page--report .report-actions #submitBtn { min-width: 0; width: 38%; min-height: 54px; font-size: 16px; }
+.student-form-page--report .student-entry-form > .report-review-note { margin-top: -14px; font-size: 12px; line-height: 1.6; color: var(--form-muted); }
+.report-guidance-card { padding: 24px; border: 1px solid var(--form-divider); border-radius: 10px; background: white; }
+.report-guidance-card > h2 { position: relative; padding-left: 20px; font-size: 24px; }
+.report-guidance-card > h2::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 5px; border-radius: 3px; background: #f2c300; }
+.report-guidance-list { display: grid; gap: 14px; margin: 24px 0; padding: 0; list-style: none; }
+.report-guidance-list li { position: relative; padding-left: 32px; color: var(--form-muted); font-size: 15px; line-height: 1.5; }
+.report-guidance-list li::before { content: '✓'; position: absolute; left: 0; top: 3px; display: grid; place-items: center; width: 17px; height: 17px; border-radius: 50%; color: white; background: var(--form-primary); font-size: 11px; }
+.report-support .report-guidance-note { border-top: 1px solid var(--form-divider); padding-top: 20px; }
+.report-urgent { border-top: 1px solid var(--form-divider); margin-top: 24px; padding-top: 20px; }
+.report-urgent h3 { margin: 0 0 6px; font-size: 19px; font-weight: 700; line-height: 1.4; }
+@media (min-width: 900px) {
+    .student-form-page--report .vent-header-inner { min-height: 84px; padding-block: 8px; }
+    .student-form-page--report .vent-brand img { width: 64px; height: 64px; }
+    .student-form-page--report .vent-content { padding-top: 24px; }
+    .student-form-page--report .student-page-header { margin-bottom: 16px; }
+    .student-form-page--report .student-page-header p { line-height: 1.4; }
+    .student-form-page--report .student-entry-form { gap: 22px; }
+    .student-form-page--report .report-fields { gap: 20px; }
+    .student-form-page--report .report-support { gap: 20px; }
+    .student-form-page--report .report-description .textarea-field { min-height: 124px; height: 124px; }
+    .student-form-page--report .report-upload { min-height: 80px; padding-block: 14px; }
+    .student-form-page--report .report-actions #saveDraftBtn, .student-form-page--report .report-actions #submitBtn { min-height: 52px; }
+    .student-form-page--report .report-support h2 { font-size: 25px; }
+    .student-form-page--report .report-support p { font-size: 15px; }
+    .student-form-page--report .vent-header .back-link { color: var(--form-primary); background: white; border: 0; border-radius: 9px; padding-inline: 20px; }
+}
+@media (max-width: 1099px) {
+    .student-form-page--report .report-actions #submitBtn { width: auto; padding-inline: 18px; }
+    .student-form-page--report #btnText { font-size: 14px; }
+    .report-actions #saveDraftBtn { font-size: 14px; }
+}
+@media (max-width: 767px) {
+    .student-form-page--report .report-fields { gap: 22px; }
+    .student-form-page--report .report-fields label.block, .student-form-page--report .report-fields label, .student-form-page--report .role-prompt { font-size: 14px; }
+    .student-form-page--report .role-options { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .student-form-page--report .role-btn { min-height: 48px; padding: 8px; font-size: 12px; }
+    .student-form-page--report .role-btn.active::after { display: none; }
+    .student-form-page--report .report-people { grid-template-columns: minmax(0, 1fr); }
+    .student-form-page--report .field-help { font-size: 12px; align-items: flex-start; }
+    .student-form-page--report .field-help svg { margin-top: 2px; }
+    .report-upload { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; padding: 14px; }
+    .report-upload > svg { width: 22px; height: 22px; }
+    .report-upload-copy { font-size: 13px; }
+    .report-upload-button { grid-column: 1 / -1; text-align: center; min-height: 44px; padding: 10px; }
+    .report-actions { flex-direction: column; align-items: stretch; gap: 8px; }
+    .student-form-page--report .report-actions #submitBtn, .report-actions #saveDraftBtn { width: 100%; min-height: 48px; }
+    .student-form-page--report .student-entry-form > .report-review-note { margin-top: -8px; }
+    .report-guidance-card { padding: 18px; }
+    .report-guidance-card > h2 { font-size: 21px; }
+    .report-guidance-list li { font-size: 14px; }
+    .report-support p { font-size: 13px; }
+}
