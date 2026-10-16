@@ -1,0 +1,76 @@
+<?php
+$staffPage = $staffPage ?? 'vents';
+$staffPageLabel = $staffPageLabel ?? 'Vents';
+$staffRole = (int) session()->get('role') === 2 ? 'Super Admin' : 'Counselor';
+$staffName = (string) (session()->get('name') ?: $staffRole);
+$staffInitial = mb_strtoupper(mb_substr($staffName, 0, 1));
+$staffLinks = [
+    'vents' => ['Vents', 'admin/vents', 'M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z'],
+    'incidents' => ['Incidents', 'admin/incidents', 'M12 9v2m0 4h.01M10.3 4.9L2.9 18a2 2 0 001.7 3h14.8a2 2 0 001.7-3L13.7 4.9a2 2 0 00-3.4 0z'],
+    'sessions' => ['Sessions', 'admin/sessions', 'M15 10l5-3v10l-5-3M5 6h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z'],
+    'alerts' => ['Alerts', 'admin/alerts', 'M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4'],
+    'analytics' => ['Analytics', 'admin/analytics', 'M3 21h18M5 17V9h3v8M11 17V5h3v12M17 17V2h3v15'],
+];
+$staffAdminLinks = [];
+if ((int) session()->get('role') === 2) {
+    $staffAdminLinks['users'] = ['Users', 'admin/users', 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M16 3a4 4 0 010 8M22 21v-2a4 4 0 00-3-3.9M13 7a4 4 0 11-8 0 4 4 0 018 0z'];
+}
+$staffAdminLinks['registrations'] = ['Registrations', 'admin/pending-registrations', 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M20 8v6M17 11h6M13 7a4 4 0 11-8 0 4 4 0 018 0z'];
+if ((int) session()->get('role') === 2) {
+    $staffAdminLinks['audit-logs'] = ['Audit Logs', 'admin/audit-logs', 'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M8 13h8M8 17h6'];
+}
+?>
+<a class="staff-skip-link" href="#staffMain">Skip to content</a>
+<button type="button" id="staffBackdrop" class="staff-backdrop" aria-label="Close navigation" tabindex="-1" hidden></button>
+<aside id="staffSidebar" class="staff-sidebar" aria-label="Staff navigation" tabindex="-1">
+    <div class="staff-brand">
+        <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM logo" width="44" height="44">
+        <div><strong>StudentShield</strong></div>
+        <button type="button" id="staffSidebarClose" class="staff-sidebar-close" aria-label="Close navigation">×</button>
+    </div>
+    <div class="staff-sidebar-scroll">
+        <?php foreach (['Workspace' => $staffLinks, 'Administration' => $staffAdminLinks] as $group => $links): ?>
+        <p class="staff-nav-label <?= $group === 'Workspace' ? 'staff-workspace-navigation' : '' ?>"><?= esc($group) ?></p>
+        <nav class="<?= $group === 'Workspace' ? 'staff-workspace-navigation' : '' ?>" aria-label="<?= $group === 'Workspace' ? 'Staff pages' : 'Administration' ?>">
+            <?php foreach ($links as $key => [$label, $url, $path]): ?>
+            <a href="<?= base_url($url) ?>" class="staff-nav-link" <?= $staffPage === $key ? 'aria-current="page"' : '' ?>>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="<?= esc($path, 'attr') ?>"/></svg>
+                <span><?= esc($label) ?></span>
+                <?php if ($key === 'sessions' && !empty($showSessionRequests)): ?>
+                <span id="navSessionsBadge" class="staff-nav-count <?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?>"><?= esc($pending_meetings_count ?? 0) ?></span>
+                <?php endif; ?>
+            </a>
+            <?php endforeach; ?>
+        </nav>
+        <?php endforeach; ?>
+    </div>
+    <div class="staff-sidebar-account">
+        <div class="staff-account"><span class="staff-avatar"><?= esc($staffInitial) ?></span><div><strong><?= esc($staffName) ?></strong><span><?= esc($staffRole) ?></span></div></div>
+        <form action="<?= base_url('logout') ?>" method="POST" class="staff-signout">
+            <?= csrf_field() ?>
+            <button type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M9 5H5v14h4M14 8l4 4-4 4M8 12h10"/></svg>Sign out</button>
+        </form>
+    </div>
+</aside>
+<header id="dashboardHeader" class="staff-topbar">
+    <div id="mainNavBar" class="staff-topbar-inner">
+        <button type="button" id="staffMenuButton" class="staff-menu-button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="staffSidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="staff-mobile-brand"><img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM logo" width="28" height="28"><strong>StudentShield</strong></div>
+        <div class="staff-school-name">Saint Vincent Blessed School of Manila</div>
+        <div class="staff-topbar-tools">
+            <div class="staff-clock"><span id="liveDayDate"><?= date('D, j M Y') ?></span><?php if (!empty($showSessionRequests)): ?><span id="liveTime"><?= date('g:i:s A') ?></span><?php endif; ?></div>
+            <?php if (!empty($showSessionRequests)): ?><?= view('partials/staff_session_requests', ['pending_meetings_count' => $pending_meetings_count ?? 0]) ?><?php endif; ?>
+        </div>
+    </div>
+</header>
+<nav class="staff-mobile-bottom-nav" aria-label="Mobile staff pages">
+    <?php foreach ($staffLinks as $key => [$label, $url, $path]): ?>
+    <a href="<?= base_url($url) ?>" <?= $staffPage === $key ? 'aria-current="page"' : '' ?>>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="<?= esc($path, 'attr') ?>"/></svg>
+        <span><?= esc($label) ?></span>
+    </a>
+    <?php endforeach; ?>
+</nav>
+<script src="<?= base_url('js/staff-layout.js?v=' . filemtime(FCPATH . 'js/staff-layout.js')) ?>" defer></script>

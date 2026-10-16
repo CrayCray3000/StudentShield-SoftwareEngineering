@@ -53,49 +53,14 @@
         .thead-green { background: #096328; color: white; }
         .thead-green th { color: rgba(255,255,255,0.92); font-weight: 600; letter-spacing: 0.05em; font-size: 0.75rem; }
     </style>
+    <link rel="stylesheet" href="<?= base_url('css/staff-layout.css?v=' . filemtime(FCPATH . 'css/staff-layout.css')) ?>">
 </head>
-<body class="school-staff-page min-h-screen">
+<body class="school-staff-page staff-layout min-h-screen">
 
-    <!-- Navbar -->
-    <nav class="glass-header text-white sticky top-0 z-50">
-        <div class="container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
-            <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0"
-                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
-                <div class="truncate">
-                    <h1 class="text-base sm:text-2xl font-bold tracking-tight font-heading leading-tight truncate">StudentShield</h1>
-                    <span class="text-[#EAB308] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">Super Admin Panel</span>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-3">
-                <!-- Role Badge -->
-                <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-semibold">Super Admin</span>
+    <?= view('partials/staff_navigation', ['staffPage' => 'audit-logs', 'staffPageLabel' => 'Audit Logs']) ?>
 
-                <a href="/admin/dashboard" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors border-l border-white/20 ml-2">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-                    Dashboard
-                </a>
-                <a href="/admin/users" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                    Users
-                </a>
-                <a href="/admin/audit-logs" class="flex items-center gap-2 text-sm font-medium text-[#EAB308] bg-white/10 px-3 py-2 rounded-lg transition-colors">
-                    <svg class="h-4 w-4 text-[#EAB308]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    Audit Logs
-                </a>
-                <form action="/logout" method="POST" class="inline"><?= csrf_field() ?><button type="submit" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg transition-colors border-l border-white/20 ml-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    Logout
-                </button></form>
-            </div>
-        </div>
-    </nav>
-
-    <main class="container mx-auto px-6 py-8">
-        <div class="flex items-center justify-between mb-8">
+    <main id="staffMain" class="staff-main container mx-auto px-6 py-8">
+        <div class="staff-page-heading flex items-center justify-between mb-8">
             <div>
                 <h2 class="text-2xl font-heading font-bold text-gray-900">System Audit Logs</h2>
                 <p class="text-gray-600 text-sm mt-1">Track staff accountability, report verifications, and system actions.</p>
@@ -109,13 +74,13 @@
                     Action History
                 </h2>
             </div>
-            <div class="px-6 py-3 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
+            <div class="staff-filter-bar px-6 py-3 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
                 <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-sm relative">
                     <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     <input type="text" id="searchLogs" placeholder="Search actor or action..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-1 focus:ring-[#0B5E2E]/20 transition-all">
                 </div>
-                <div class="flex items-center gap-2 flex-wrap">
-                    <select id="filterCategoryLogs" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E]">
+                <div class="staff-filter-controls flex items-center gap-2 flex-wrap">
+                    <select id="filterCategoryLogs" aria-label="Filter audit category" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E]">
                         <option value="all">All Categories</option>
                         <option value="INCIDENT">Incident</option>
                         <option value="VENT">Vent</option>
@@ -123,7 +88,7 @@
                         <option value="STUDENT">Student</option>
                         <option value="USER">User</option>
                     </select>
-                    <input type="date" id="filterDateLogs" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] text-gray-600">
+                    <input type="date" id="filterDateLogs" aria-label="Filter audit date" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] text-gray-600">
                     <button type="button" id="clearFiltersLogs" class="text-xs font-semibold text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg border border-gray-200 transition-colors">✕ Clear</button>
                 </div>
             </div>
@@ -141,10 +106,10 @@
                     <tbody class="divide-y divide-gray-100">
                         <?php foreach ($logs as $log): ?>
                         <tr class="hover:bg-gray-50/50 transition-colors" data-category="<?= strtoupper($log['entity_type']) ?>" data-date="<?= date('Y-m-d', strtotime($log['created_at'])) ?>">
-                            <td class="px-6 py-4 text-xs text-gray-500 whitespace-nowrap">
+                            <td data-label="Time" class="px-6 py-4 text-xs text-gray-500 whitespace-nowrap">
                                 <?= date('M d, Y h:i A', strtotime($log['created_at'])) ?>
                             </td>
-                            <td class="px-6 py-4">
+                            <td data-label="Actor" class="px-6 py-4">
                                 <div class="flex items-center gap-3">
                                     <div class="h-8 w-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0">
                                         <?= strtoupper(substr($log['actor_name'] ?? 'U', 0, 1)) ?>
@@ -163,7 +128,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
+                            <td data-label="Summary" class="px-6 py-4">
                                 <?php 
                                     $actionStr = str_replace('_', ' ', $log['action']);
                                     $summary = ucfirst(strtolower($actionStr)) . " (ID: " . $log['entity_id'] . ")";
@@ -185,7 +150,7 @@
                                     echo "<p class='text-sm text-gray-800'>{$summary}</p>";
                                 ?>
                             </td>
-                            <td class="px-6 py-4">
+                            <td data-label="Category" class="px-6 py-4">
                                 <?php 
                                     $entity = strtoupper($log['entity_type']);
                                     $bgClass = 'bg-gray-100 text-gray-700';

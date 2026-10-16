@@ -111,67 +111,14 @@
             #toastContainer { left: 16px; right: 16px; top: 16px; }
         }
     </style>
+    <link rel="stylesheet" href="<?= base_url('css/staff-layout.css?v=' . filemtime(FCPATH . 'css/staff-layout.css')) ?>">
 </head>
-<body class="school-staff-page min-h-screen flex flex-col">
+<body class="school-staff-page staff-layout min-h-screen flex flex-col">
 
-    <!-- Navbar -->
-    <nav class="glass-header text-white sticky top-0 z-50">
-        <div class="registration-header container mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex justify-between items-center">
-            <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
-                <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0">
-                <div class="truncate">
-                    <h1 class="text-base sm:text-xl font-bold tracking-tight leading-tight truncate">StudentShield</h1>
-                    <span class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">
-                        <?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> · Pending Registrations
-                    </span>
-                </div>
-            </div>
-
-            <div class="registration-nav custom-scrollbar flex items-center gap-3">
-                <!-- Role Badge -->
-                <?php if (session()->get('role') == 2): ?>
-                    <span class="hidden lg:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-semibold">Super Admin</span>
-                <?php else: ?>
-                    <span class="hidden lg:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
-                <?php endif; ?>
-
-                <!-- Nav Links -->
-                <a href="/admin/dashboard" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                    Dashboard
-                </a>
-
-                <?php if (session()->get('role') == 2): ?>
-                    <a href="/admin/users" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                        Users
-                    </a>
-                    <a href="/admin/audit-logs" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg transition-colors">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                        Audit Logs
-                    </a>
-                <?php endif; ?>
-
-                <!-- Active page indicator -->
-                <span class="flex items-center gap-2 text-sm font-bold text-[#EAB308] bg-white/10 px-3 py-2 rounded-lg border border-[#EAB308]/30">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-                    Registrations
-                </span>
-
-                <form action="<?= base_url('logout') ?>" method="POST" class="inline"><?= csrf_field() ?>
-                    <button type="submit" class="flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 px-4 py-2 rounded-lg transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        Logout
-                    </button>
-                </form>
-            </div>
-        </div>
-    </nav>
+    <?= view('partials/staff_navigation', ['staffPage' => 'registrations', 'staffPageLabel' => 'Registrations']) ?>
 
     <!-- Main Content -->
-    <main class="registration-main container mx-auto px-4 sm:px-6 py-8 flex-1">
+    <main id="staffMain" class="staff-main registration-main container mx-auto px-4 sm:px-6 py-8 flex-1">
 
         <!-- Page Header -->
         <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up">

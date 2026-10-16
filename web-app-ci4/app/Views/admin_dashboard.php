@@ -492,205 +492,23 @@ $pageDescriptions = [
             .school-staff-page #meetingDropdown { position: absolute; left: auto; right: 0; top: calc(100% + 12px); width: 384px; }
         }
     </style>
+    <link rel="stylesheet" href="<?= base_url('css/staff-layout.css?v=' . filemtime(FCPATH . 'css/staff-layout.css')) ?>">
 </head>
 
-<body class="school-staff-page font-sans antialiased text-gray-800 min-h-screen flex flex-col relative">
+<body class="school-staff-page staff-layout font-sans antialiased text-gray-800 min-h-screen flex flex-col relative">
 
-    <!-- Sticky Unified Header: Both Brand Navbar and Section Strip scroll together smoothly -->
-    <header id="dashboardHeader" class="sticky top-0 z-40 transition-all duration-200">
-        <!-- Brand Navbar -->
-        <nav class="glass-header text-white transition-all duration-200" id="mainNavBar">
-            <div id="navContainer" class="container mx-auto px-3 sm:px-6 py-2 sm:py-3.5 flex justify-between items-center transition-all duration-200 max-w-full">
-                <div class="flex items-center gap-2 sm:gap-4 min-w-0">
-                    <img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM Logo"
-                        class="dash-logo-img h-8 w-8 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain flex-shrink-0 transition-all duration-200"
-                    onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23F2C300\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\'/></svg>';">
-
-                <div class="truncate min-w-0">
-                    <h1 class="text-sm sm:text-2xl font-bold tracking-tight leading-tight truncate">StudentShield</h1>
-                    <span
-                        class="text-[#F2C300] text-[10px] sm:text-xs font-semibold tracking-wider sm:tracking-widest uppercase block truncate">
-                        <span class="sm:hidden"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?></span>
-                        <span class="hidden sm:inline"><?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> Dashboard</span>
-                    </span>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                <!-- Live Philippine Clock -->
-                <div class="hidden md:flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/15">
-                    <svg class="w-4 h-4 text-[#F2C300] flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div class="flex flex-col leading-tight">
-                        <span id="liveDayDate"
-                            class="text-[10px] font-bold text-[#FACC15] uppercase tracking-wider"><?= date('l, M j, Y') ?></span>
-                        <span id="liveTime"
-                            class="text-xs font-semibold text-white/90 tabular-nums"><?= date('g:i:s A') ?></span>
-                    </div>
-                </div>
-
-                <!-- Pending Meeting Requests (Live Polling Bell) -->
-                <div class="relative" id="meetingNotifWrapper">
-                    <button id="meetingBellBtn" onclick="toggleMeetingDropdown()"
-                        class="staff-header-action relative flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-full border border-white/15 transition-all duration-200 focus:outline-none"
-                        aria-label="Session requests" aria-controls="meetingDropdown" aria-expanded="false">
-                        <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                        <span class="text-xs font-semibold text-white/90 hidden sm:inline ml-1.5">Sessions</span>
-                        <span id="meetingBadge"
-                            class="<?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?> absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-[#22c55e] text-white text-[10px] font-bold shadow-lg animate-pulse">
-                            <?= esc($pending_meetings_count ?? 0) ?>
-                        </span>
-                    </button>
-
-                    <div id="meetingDropdown" class="meeting-dropdown hidden" aria-labelledby="meetingDropdownTitle">
-                        <div class="meeting-dropdown-heading">
-                            <div>
-                                <h2 id="meetingDropdownTitle">Session requests</h2>
-                                <span id="dropdownCount" class="text-xs text-gray-500"></span>
-                            </div>
-                            <button type="button" class="meeting-close" onclick="closeMeetingDropdown()" aria-label="Close session requests">×</button>
-                        </div>
-                        <div id="meetingRequestsList" class="max-h-72 overflow-y-auto divide-y divide-gray-100">
-                            <div class="meeting-empty" id="noRequestsMsg">No pending requests</div>
-                        </div>
-                        <div class="meeting-dropdown-footer">
-                            <span id="lastCheckedLabel">Checking requests…</span>
-                            <a href="<?= base_url('admin/sessions') ?>">View all sessions</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Role Badge -->
-                <?php if (session()->get('role') == 2): ?>
-                    <span
-                        class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/30 text-[#FACC15] text-xs font-bold tracking-wide">⭐
-                        Super Admin</span>
-                <?php else: ?>
-                    <span
-                        class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-white/70 text-xs font-semibold">Counselor</span>
-                <?php endif; ?>
-
-                <!-- Direct Sign Out Button (Prominent for Shared Computers) -->
-                <form action="<?= base_url('logout') ?>" method="POST" class="inline">
-                    <?= csrf_field() ?>
-                    <button type="submit"
-                        class="staff-header-action flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/25 text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm"
-                        title="Sign out" aria-label="Sign out">
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        <span class="hidden sm:inline">Sign Out</span>
-                    </button>
-                </form>
-
-                <!-- Navigation Menu Dropdown (role-aware) -->
-                <div class="relative" id="navMenuWrapper">
-                    <button onclick="toggleNavMenu()" id="navMenuBtn"
-                        class="staff-header-action flex items-center justify-center p-2 sm:px-3 sm:py-1.5 bg-white/10 hover:bg-white/20 rounded-lg border border-white/15 transition-all duration-200 focus:outline-none"
-                        aria-label="Open navigation menu" aria-controls="navMenuDropdown" aria-expanded="false">
-                        <svg class="w-4 h-4 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <span class="text-xs font-semibold text-white/90 hidden sm:inline ml-1.5">Menu</span>
-                    </button>
-                    <div id="navMenuDropdown"
-                        class="hidden fixed right-3 top-16 w-56 sm:absolute sm:right-0 sm:top-full sm:mt-2 sm:w-52 bg-[#0f2416] border border-white/20 rounded-2xl shadow-2xl z-50 overflow-hidden py-1">
-                        <!-- Shared: Registrations -->
-                        <a href="/admin/pending-registrations"
-                            class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
-                            <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                            </svg>
-                            Registrations
-                        </a>
-                        <?php if (session()->get('role') == 2): ?>
-                            <!-- Super Admin only -->
-                            <div class="mx-4 my-1 border-t border-white/10"></div>
-                            <a href="/admin/users"
-                                class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
-                                <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                                Manage Users
-                            </a>
-                            <a href="/admin/audit-logs"
-                                class="flex items-center gap-3 px-4 py-2.5 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors">
-                                <svg class="w-4 h-4 text-[#F2C300]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                Audit Logs
-                            </a>
-                        <?php endif; ?>
-                        <div class="mx-4 my-1 border-t border-white/10"></div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Secondary Section Navigation Strip -->
-    <div id="sectionNavStrip" class="section-nav-strip">
-        <div class="container mx-auto px-3 sm:px-6 max-w-full">
-            <div class="flex items-center justify-between gap-2 w-full min-w-0">
-                <nav class="section-tabs-scroller flex-1 min-w-0" aria-label="Staff pages">
-                    <a href="<?= base_url('admin/vents') ?>" class="dash-tab <?= $dashboardPage === 'vents' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'vents' ? 'page' : 'false' ?>">
-                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h5M21 12a9 9 0 01-9 9H3l2-4a9 9 0 1116-5z"/>
-                        </svg>
-                        <span>Vents</span>
-                    </a>
-                    <a href="<?= base_url('admin/incidents') ?>" class="dash-tab <?= $dashboardPage === 'incidents' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'incidents' ? 'page' : 'false' ?>">
-                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                        </svg>
-                        <span>Incidents</span>
-                    </a>
-                    <a href="<?= base_url('admin/sessions') ?>" class="dash-tab <?= $dashboardPage === 'sessions' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'sessions' ? 'page' : 'false' ?>">
-                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                        </svg>
-                        <span>Sessions</span>
-                        <span id="navSessionsBadge" class="tab-badge <?= ($pending_meetings_count ?? 0) > 0 ? '' : 'hidden' ?>"><?= esc($pending_meetings_count ?? 0) ?></span>
-                    </a>
-                    <a href="<?= base_url('admin/alerts') ?>" class="dash-tab <?= $dashboardPage === 'alerts' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'alerts' ? 'page' : 'false' ?>">
-                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                        </svg>
-                        <span>Alerts</span>
-                    </a>
-                    <a href="<?= base_url('admin/analytics') ?>" class="dash-tab <?= $dashboardPage === 'analytics' ? 'is-active' : '' ?>" aria-current="<?= $dashboardPage === 'analytics' ? 'page' : 'false' ?>">
-                        <svg class="w-3.5 h-3.5 tab-icon flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                        </svg>
-                        <span>Analytics</span>
-                    </a>
-                </nav>
-                <div class="hidden lg:flex items-center gap-2 text-[11px] font-semibold text-emerald-900/60 uppercase tracking-wider flex-shrink-0">
-                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Live Portal</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+    <?= view('partials/staff_navigation', [
+        'staffPage' => $dashboardPage,
+        'staffPageLabel' => $pageLabels[$dashboardPage],
+        'showSessionRequests' => true,
+        'pending_meetings_count' => $pending_meetings_count ?? 0,
+    ]) ?>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-3 sm:px-6 max-w-full flex-1 animate-fade-in pt-4 sm:pt-6">
+    <main id="staffMain" class="staff-main container mx-auto px-3 sm:px-6 max-w-full flex-1 animate-fade-in pt-4 sm:pt-6">
 
         <!-- Welcome Metric Row -->
-        <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up"
+        <div class="staff-page-intro mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 animate-slide-up"
             style="animation-delay: 0.1s">
             <div>
                 <h2 class="text-xl sm:text-2xl font-bold text-[#235D3A] flex items-center gap-2">
@@ -706,7 +524,7 @@ $pageDescriptions = [
                 </div>
             </div>
             <?php if (in_array($dashboardPage, ['vents', 'analytics'], true)): ?>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full md:w-auto">
+            <div class="staff-metrics grid grid-cols-2 sm:grid-cols-3 gap-3 w-full md:w-auto">
                 <div class="stat-card green-accent flex items-center gap-3 p-3.5 sm:p-5">
                     <div class="h-9 w-9 rounded-lg bg-[#235D3A]/10 flex items-center justify-center flex-shrink-0">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#235D3A]" fill="none" viewBox="0 0 24 24"
@@ -748,7 +566,7 @@ $pageDescriptions = [
                     </div>
                     <div class="flex flex-col min-w-0">
                         <span
-                            class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Sessions</span>
+                            class="text-[9px] sm:text-[10px] text-gray-600 font-semibold uppercase tracking-wider truncate">Session requests</span>
                         <span class="text-xl sm:text-2xl font-bold text-emerald-700 leading-tight"
                             id="stat-sessions"><?= esc($pending_meetings_count ?? 0) ?></span>
                     </div>
@@ -761,64 +579,46 @@ $pageDescriptions = [
         <?php if ($dashboardPage === 'vents'): ?>
         <div id="section-vents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col"
             style="animation-delay: 0.2s">
-            <!-- Table Header Bar -->
-            <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
-                <h2 class="text-lg font-bold flex items-center gap-3">
-                    <svg class="h-5 w-5 text-[#235D3A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    Live Intelligence Feed
-                </h2>
-                <div class="flex items-center gap-4">
-                    <div
-                        class="flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 live-dot"></span>
-                        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">Live
-                            Syncing</span>
-                    </div>
-                </div>
-            </div>
-
             <!-- Table Container -->
             <div class="overflow-x-auto custom-scrollbar flex flex-col">
                 <div
-                    class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
+                    class="staff-filter-bar px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
                     <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-sm relative">
                         <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                        <input type="text" id="searchVents" placeholder="Search entries, names, or risk levels..."
+                        <input type="text" id="searchVents" aria-label="Search entries, names, or risk levels" placeholder="Search entries, names, or risk levels..."
                             class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#235D3A] focus:ring-1 focus:ring-[#235D3A]/20 transition-all">
                     </div>
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <select id="filterStatusVents"
+                    <div class="staff-filter-controls flex items-center gap-2 flex-wrap">
+                        <select id="filterStatusVents" aria-label="Filter entry status"
                             class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#235D3A]">
                             <option value="all">All Statuses</option>
                             <option value="resolved">Resolved</option>
                             <option value="unresolved">Action Required</option>
                             <option value="archived">Archived Records</option>
                         </select>
-                        <input type="date" id="filterDateVents"
+                        <input type="date" id="filterDateVents" aria-label="Filter entry date"
                             class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#235D3A] text-gray-600">
                     </div>
                     <button type="button" onclick="submitBulkDeleteVents()"
                         class="text-xs font-bold text-[#235D3A] bg-[#235D3A]/5 hover:bg-[#235D3A]/10 px-4 py-2 rounded-lg border border-[#235D3A]/20 transition-colors shadow-sm delete-btn-vents hidden">
                         📦 Archive Selected
                     </button>
+                    <span id="feedUpdatedAt" class="staff-feed-updated text-xs text-gray-500" role="status">Loading entries…</span>
                 </div>
-                <table class="w-full text-left border-collapse mobile-card-table">
+                <table class="staff-vents-table w-full text-left border-collapse mobile-card-table">
                     <thead>
                         <tr class="thead-green text-xs uppercase tracking-wider">
-                            <th class="px-4 py-4 w-10 text-center"><input type="checkbox" id="selectAllVents"
+                            <th class="px-4 py-4 w-10 text-center"><input type="checkbox" id="selectAllVents" aria-label="Select all entries"
                                     class="rounded border-white/40 text-[#F2C300]"></th>
-                            <th class="px-6 py-4">Timestamp</th>
                             <th class="px-6 py-4">Student</th>
                             <th class="px-6 py-4 w-1/3">NLP Extract</th>
                             <th class="px-6 py-4 text-center">Risk Indicator</th>
                             <th class="px-6 py-4 text-center">Threat Level</th>
+                            <th class="px-6 py-4">Timestamp</th>
                             <th class="px-6 py-4 text-center">Action</th>
                         </tr>
                     </thead>
@@ -862,7 +662,7 @@ $pageDescriptions = [
 
             <div class="overflow-x-auto custom-scrollbar flex flex-col">
                 <div
-                    class="px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
+                    class="staff-filter-bar px-6 py-2 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
                     <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-sm relative">
                         <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -873,15 +673,15 @@ $pageDescriptions = [
                             placeholder="Search reporters, accused, or descriptions..."
                             class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] focus:ring-1 focus:ring-[#E04B3F]/20 transition-all">
                     </div>
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <select id="filterStatusIncidents"
+                    <div class="staff-filter-controls flex items-center gap-2 flex-wrap">
+                        <select id="filterStatusIncidents" aria-label="Filter incident status"
                             class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F]">
                             <option value="all">All Statuses</option>
                             <option value="resolved">Resolved</option>
                             <option value="unresolved">Action Required</option>
                             <option value="archived">Archived Records</option>
                         </select>
-                        <input type="date" id="filterDateIncidents"
+                        <input type="date" id="filterDateIncidents" aria-label="Filter incident date"
                             class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#E04B3F] text-gray-600">
                     </div>
                     <button type="button" onclick="submitBulkDeleteIncidents()"
@@ -1321,6 +1121,8 @@ $pageDescriptions = [
                 url: API_URL + (showArchivedVents ? "?archived=1" : ""),
                 dataType: 'json',
                 success: function (data) {
+                    const feedStatus = document.getElementById('feedUpdatedAt');
+                    if (feedStatus) feedStatus.textContent = 'Updated ' + new Date().toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
                     let currentDataString = JSON.stringify(data);
                     if (currentDataString === previousVentsDataString) return;
                     previousVentsDataString = currentDataString;
@@ -1371,14 +1173,14 @@ $pageDescriptions = [
                             const animDelay = isFirstLoadVents ? `style="animation-delay: ${index * 0.05}s"` : '';
                             const animClass = isFirstLoadVents ? 'animate-slide-up opacity-0' : '';
 
-                            const rawDate = dateObj.toISOString().split('T')[0]; const ventStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${ventStatus}" data-date="${rawDate}" class="transition-all duration-300 transform hover:-translate-y-[1px] ${bgColor} ${animClass}" ${animDelay}>
+                            const contactDetails = `                                        ${vent.adviser_name ? `<span class="text-[11px] text-gray-600 font-bold block mb-1">Adviser: <span class="font-normal text-gray-600">${escapeHtml(vent.adviser_name)}</span></span>` : ''}
+                                        ${vent.parent_phone ? `<span class="text-[10px] text-gray-500 block pt-0.5 border-t border-gray-200 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
+                                        ${vent.parent_email ? `<span class="text-[10px] text-gray-500 block">✉️ ${escapeHtml(vent.parent_email)}</span>` : ''}`;
+
+                            const rawDate = dateObj.toISOString().split('T')[0]; const ventStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${ventStatus}" data-date="${rawDate}" data-risk="${escapeHtml(vent.risk_level)}" class="transition-all duration-300 transform hover:-translate-y-[1px] ${bgColor} ${animClass}" ${animDelay}>
                             ${vent.risk_level === 'CRITICAL' && !isResolved ? `` : ''}
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center relative z-10">
-                                <input type="checkbox" name="vent_ids[]" value="${vent.id}" class="vent-checkbox rounded border-gray-300 text-primary h-4 w-4">
-                            </td>
-                            <td data-label="Timestamp" class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-semibold text-gray-800">${timeStr}</div>
-                                <div class="text-xs text-gray-600">${dayName}, ${dateStr}</div>
+                                <label class="staff-entry-select"><input type="checkbox" name="vent_ids[]" value="${vent.id}" aria-label="Select entry by ${escapeHtml(vent.name)}" class="vent-checkbox rounded border-gray-300 text-primary h-4 w-4"></label>
                             </td>
                             <td data-label="Student" class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center cursor-pointer group" onclick="event.stopPropagation(); openStudentProfile(${vent.user_id})">
@@ -1388,15 +1190,13 @@ $pageDescriptions = [
                                     <div>
                                         <span class="text-sm font-medium text-gray-900 block group-hover:text-primary transition-colors hover:underline">${escapeHtml(vent.name)}</span>
                                         ${vent.section ? `<span class="text-[11px] text-gray-600 font-bold block mt-0.5">Section: <span class="font-normal text-gray-600">${escapeHtml(vent.section)}</span></span>` : ''}
-                                        ${vent.adviser_name ? `<span class="text-[11px] text-gray-600 font-bold block mb-1">Adviser: <span class="font-normal text-gray-600">${escapeHtml(vent.adviser_name)}</span></span>` : ''}
-                                        ${vent.parent_phone ? `<span class="text-[10px] text-gray-500 block pt-0.5 border-t border-gray-200 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
-                                        ${vent.parent_email ? `<span class="text-[10px] text-gray-500 block">✉️ ${escapeHtml(vent.parent_email)}</span>` : ''}
+                                        ${vent.student_id ? `<span class="staff-student-number">${escapeHtml(vent.student_id)}</span>` : ''}
+                                        ${contactDetails.trim() ? `<details class="staff-student-details" onclick="event.stopPropagation()"><summary>Student details</summary><div>${contactDetails}</div></details>` : ''}
                                     </div>
                                 </div>
                             </td>
                             <td data-label="NLP Extract" class="px-6 py-4 cursor-pointer group" onclick="openVentModal(${vent.id})">
                                 <p class="text-sm text-gray-600 italic line-clamp-2">"${escapeHtml(textSnippet)}"</p>
-                                <span class="text-[10px] text-[#235D3A] font-bold mt-1 inline-block opacity-0 group-hover:opacity-100 transition-opacity">READ FULL ↗</span>
                             </td>
                             <td data-label="Risk Indicator" class="px-6 py-4 whitespace-nowrap text-center">
                                 ${(() => {
@@ -1422,7 +1222,16 @@ $pageDescriptions = [
                                     ${escapeHtml(vent.risk_level)}
                                 </span>
                             </td>
+                            <td data-label="Timestamp" class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-semibold text-gray-800">${timeStr}</div>
+                                <div class="text-xs text-gray-600">${dayName}, ${dateStr}</div>
+                            </td>
                             <td data-label="Action" class="px-6 py-4 whitespace-nowrap text-center">
+                                <div class="staff-action-row">
+                                <button type="button" class="staff-review-button" onclick="openVentModal(${vent.id})">Review entry</button>
+                                <details class="staff-entry-actions">
+                                    <summary aria-label="More actions for entry by ${escapeHtml(vent.name)}"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg></summary>
+                                    <div class="staff-entry-action-menu">
                                 ${!isResolved && !showArchivedVents ? `
                                     <form action="<?= base_url('admin/vent/resolve/') ?>${vent.id}" method="POST" class="block w-full mb-1">
                                         <?= csrf_field() ?>
@@ -1436,7 +1245,7 @@ $pageDescriptions = [
                                         Resolved
                                     </span>
                                 ` : '')}
-                                
+
                                 ${showArchivedVents ? `
                                 <form action="<?= base_url('admin/vent/restore/') ?>${vent.id}" method="POST" class="block w-full">
                                     <?= csrf_field() ?>
@@ -1452,6 +1261,9 @@ $pageDescriptions = [
                                     </button>
                                 </form>
                                 `}
+                                    </div>
+                                </details>
+                                </div>
                             </td>
                         </tr>`;
                         });
@@ -1467,6 +1279,8 @@ $pageDescriptions = [
                     collapseRows('ventsTableBody', 5, 7, 'section-vents');
                 },
                 error: function (xhr) {
+                    const feedStatus = document.getElementById('feedUpdatedAt');
+                    if (feedStatus) feedStatus.textContent = xhr.status === 401 ? 'Session expired — sign in again' : 'Could not refresh entries';
                     if (xhr.status === 401) {
                         console.warn('Session expired. Please refresh and log in again.');
                     } else {
@@ -1593,9 +1407,9 @@ $pageDescriptions = [
                                         Resolved
                                     </span>
                                 ` : ''}
-                                
+
                                 <hr class="border-gray-200 my-0.5">
-                                
+
                                 ${showArchivedIncidents ? `
                                 <form action="<?= base_url('admin/incident/restore/') ?>${incident.id}" method="POST">
                                     <?= csrf_field() ?>
@@ -1895,7 +1709,7 @@ $pageDescriptions = [
             if (localStorage.getItem('incidentsFilterStatus')) $('#filterStatusIncidents').val(localStorage.getItem('incidentsFilterStatus'));
             if (localStorage.getItem('incidentsFilterDate')) $('#filterDateIncidents').val(localStorage.getItem('incidentsFilterDate'));
 
-            $('#searchVents').on('keyup', applyVentsFilter);
+            $('#searchVents').on('input', applyVentsFilter);
             $('#filterStatusVents').on('change', function () {
                 let val = $(this).val();
                 localStorage.setItem('ventsFilterStatus', val);
@@ -1913,7 +1727,7 @@ $pageDescriptions = [
                 applyVentsFilter();
             });
 
-            $('#searchIncidents').on('keyup', applyIncidentsFilter);
+            $('#searchIncidents').on('input', applyIncidentsFilter);
             $('#filterStatusIncidents').on('change', function () {
                 let val = $(this).val();
                 localStorage.setItem('incidentsFilterStatus', val);
@@ -2002,28 +1816,6 @@ $pageDescriptions = [
             document.getElementById('bulkDeleteIncidentsForm').submit();
         }
 
-        /* ── Nav Menu Dropdown ─────────────────────────────────────── */
-        let navMenuOpen = false;
-        window.toggleNavMenu = function () {
-            navMenuOpen = !navMenuOpen;
-            const menuDropdown = document.getElementById('navMenuDropdown');
-            if (menuDropdown) menuDropdown.classList.toggle('hidden', !navMenuOpen);
-            document.getElementById('navMenuBtn').setAttribute('aria-expanded', String(navMenuOpen));
-            // Close meeting dropdown if open to avoid mobile collisions
-            if (navMenuOpen && window.closeMeetingDropdown) {
-                window.closeMeetingDropdown();
-            }
-        };
-        document.addEventListener('click', function (e) {
-            const wrapper = document.getElementById('navMenuWrapper');
-            const menuDropdown = document.getElementById('navMenuDropdown');
-            if (wrapper && !wrapper.contains(e.target) && navMenuOpen) {
-                navMenuOpen = false;
-                if (menuDropdown) menuDropdown.classList.add('hidden');
-                document.getElementById('navMenuBtn').setAttribute('aria-expanded', 'false');
-            }
-        });
-
         /* ── Meeting Request Bell & Sessions Section ────────────────── */
         (function () {
             const POLL_INTERVAL = 15000; // 15 s
@@ -2039,7 +1831,7 @@ $pageDescriptions = [
 
             function positionMeetingDropdown() {
                 const dropdown = document.getElementById('meetingDropdown');
-                dropdown.style.top = window.innerWidth < 640
+                dropdown.style.top = window.innerWidth < 768
                     ? (document.getElementById('mainNavBar').getBoundingClientRect().bottom + 8) + 'px' : '';
             }
             window.addEventListener('resize', positionMeetingDropdown);
@@ -2055,13 +1847,7 @@ $pageDescriptions = [
                 if (dropdown) dropdown.classList.toggle('hidden', !dropdownOpen);
                 document.getElementById('meetingBellBtn').setAttribute('aria-expanded', String(dropdownOpen));
                 positionMeetingDropdown();
-                // Close nav menu if open to avoid mobile collisions
-                if (dropdownOpen && navMenuOpen) {
-                    navMenuOpen = false;
-                    const menuDropdown = document.getElementById('navMenuDropdown');
-                    if (menuDropdown) menuDropdown.classList.add('hidden');
-                document.getElementById('navMenuBtn').setAttribute('aria-expanded', 'false');
-                }
+                if (dropdownOpen) window.closeStaffNavigation?.();
                 if (dropdownOpen) fetchMeetings();
             };
 
@@ -2296,13 +2082,7 @@ $pageDescriptions = [
         })();
     </script>
 
-    <script>
-        const dashboardHeader = document.getElementById('dashboardHeader');
-        document.querySelector('.dash-tab[aria-current="page"]')?.scrollIntoView({ block: 'nearest', inline: 'center' });
-        window.addEventListener('scroll', () => {
-            dashboardHeader.classList.toggle('is-scrolled', window.scrollY > 50);
-        }, { passive: true });
-    </script>
+
 </body>
 
 </html>
