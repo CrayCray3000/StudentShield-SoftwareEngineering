@@ -65,8 +65,8 @@
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m10.3 3.9-8 14a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0ZM12 9v4m0 4h.01" /></svg>
                         Incident Report
                     </span>
-                    <h2>Report an incident</h2>
-                    <p>Tell us what happened so your guidance counselor can review it.</p>
+                    <h2>Tell us what happened.</h2>
+                    <p>Your guidance counselor will review your report and help with the next steps.</p>
                 </header>
 
                 <!-- Flash Messages -->
@@ -131,7 +131,7 @@
                                 <svg class="w-3 h-3 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Include who was involved, what happened, where and when it occurred.
                             </p>
-                            <textarea id="incident_details" name="incident_details" aria-describedby="incidentHelp" maxlength="2000" class="w-full flex-1 min-h-[140px] px-5 py-4 textarea-field rounded-2xl outline-none resize-none text-gray-900 placeholder-gray-400/60 leading-[1.6] text-[15px] shadow-sm font-medium" placeholder="Take your time describing what happened..." required></textarea>
+                            <textarea id="incident_details" name="incident_details" aria-describedby="incidentHelp" maxlength="2000" class="w-full flex-1 min-h-[140px] px-5 py-4 textarea-field rounded-2xl outline-none resize-none text-gray-900 placeholder-gray-400/60 leading-[1.6] text-[15px] shadow-sm font-medium" placeholder="Describe the incident in your own words…" required></textarea>
                         </div>
                         
                         <div class="report-evidence">
@@ -160,23 +160,23 @@
                     </button>
                     
                     </div>
-                    <p class="report-review-note">Your guidance counselor can review this report.</p>
+                    <p class="report-review-note">Drafts are saved on this device.</p>
                 </form>
 
                 </div>
                 <aside class="vent-support report-support" aria-label="Reporting guidance">
                     <section class="report-guidance-card">
-                        <h2>What to include</h2>
+                        <h2>A few details can help</h2>
+                        <p>Sharing clear and complete details helps your guidance counselor understand what happened and provide the right support.</p>
                         <ul class="report-guidance-list">
-                            <li>Who was involved</li>
-                            <li>Where and when it happened</li>
-                            <li>What was said or done</li>
+                            <li><span class="report-tip-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m1-16a3 3 0 0 1 0 6m3 10v-3a6 6 0 0 0-3-5"/></svg></span><strong>Who was involved</strong><span>Include the people who were involved (e.g., names or descriptions).</span></li>
+                            <li><span class="report-tip-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><strong>Where and when</strong><span>Tell us where it happened and when (date and time, if you know).</span></li>
+                            <li><span class="report-tip-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><strong>What happened</strong><span>Describe what happened in your own words.</span></li>
                         </ul>
-                        <p class="report-guidance-note">Share the details you remember. You can attach evidence if you have it.</p>
-                    </section>
-                    <section class="report-guidance-card">
-                        <h2>What happens next?</h2>
-                        <p>Your guidance counselor can review your report and follow up.</p>
+                        <div class="report-guidance-note">
+                            <h2>What happens next?</h2>
+                            <p>Your report will be reviewed by your guidance counselor. They may contact you for more information and will help with the next steps.</p>
+                        </div>
                         <div class="report-urgent">
                             <h3>Need urgent support?</h3>
                             <details class="vent-crisis-details">

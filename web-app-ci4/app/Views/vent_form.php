@@ -66,8 +66,8 @@
                         Safe Space
                         <svg class="vent-section-chevron" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>
                     </span>
-                    <h2>How are you feeling today?</h2>
-                    <p>Take your time. Write what’s on your mind, and choose any feelings that fit.</p>
+                    <h2>A space to say how you feel.</h2>
+                    <p>Write at your own pace. Your guidance counselor can help you take the next step.</p>
                     
                 </header>
 
@@ -167,13 +167,13 @@
                 </div>
                 <aside class="vent-support" id="meet-section" aria-label="Student support">
                     <div class="vent-support-intro">
-                        <h2>You don’t have to figure it out alone.</h2>
-                        <p>Your guidance counselor can review your entry and help you take the next step.</p>
+                        <h2>You can take your time.</h2>
+                        <p>It’s okay to share a little or a lot. What matters is that you’re taking a step toward feeling better.</p>
                     </div>
                     <section class="vent-session-support" aria-labelledby="ventTalkHeading">
                         <h2 id="ventTalkHeading">Prefer to talk?</h2>
+                        <p class="vent-talk-description">You can also meet with your guidance counselor through a video session.</p>
                         <?= view('partials/student_meet_card', ['ventStyle' => true]) ?>
-                    </section>
                     <section class="vent-urgent-support" aria-labelledby="ventUrgentHeading">
                         <h2 id="ventUrgentHeading">Need urgent support?</h2>
                         <p>Find immediate support through the crisis helpline.</p>
@@ -184,6 +184,7 @@
                                 <p>Hotline: <a href="tel:1553">1553</a> · <a href="tel:09178998727">0917-899-8727</a></p>
                             </div>
                         </details>
+                    </section>
                     </section>
                 </aside>
                 </div>
@@ -225,9 +226,7 @@
         const moodToggle = document.getElementById('moodToggle');
         const moodSelections = document.getElementById('moodSelections');
         const moodButtons = [...document.querySelectorAll('.mood-btn')];
-        const inlineFeelings = window.matchMedia('(min-width: 1200px)');
-        const syncFeelings = () => { moodDisclosure.open = inlineFeelings.matches; };
-        inlineFeelings.addEventListener('change', syncFeelings);
+        const syncFeelings = () => { moodDisclosure.open = false; };
         syncFeelings();
         function renderMoodPicker(announce = false) {
             const selected = moodButtons.filter(button => button.classList.contains('active'));
@@ -270,7 +269,6 @@
                 : 'No feelings selected';
         }
         function closeMoodPicker() {
-            if (inlineFeelings.matches) return;
             moodDisclosure.open = false;
             moodToggle.focus();
         }
@@ -282,7 +280,7 @@
             }
         });
         document.addEventListener('click', event => {
-            if (!inlineFeelings.matches && moodDisclosure.open && !moodDisclosure.contains(event.target) && !moodSelections.contains(event.target)) {
+            if (moodDisclosure.open && !moodDisclosure.contains(event.target) && !moodSelections.contains(event.target)) {
                 syncFeelings();
             }
         });
