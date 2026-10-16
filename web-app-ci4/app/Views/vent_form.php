@@ -53,6 +53,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('css/student-forms.css?v=7') ?>">
     <link rel="stylesheet" href="<?= base_url('css/student-vent.css?v=' . filemtime(FCPATH . 'css/student-vent.css')) ?>">
+    <link rel="stylesheet" href="<?= base_url('css/safe-space.css?v=' . filemtime(FCPATH . 'css/safe-space.css')) ?>">
 </head>
 <body class="student-form-page student-form-page--vent student-workspace-page antialiased min-h-screen">
 
@@ -61,6 +62,7 @@
         <div class="student-form-body">
                 <!-- Page heading stays ahead of the form on every screen size. -->
                 <header class="student-page-header">
+                    <div class="vent-heading-copy">
                     <span class="student-section-label">
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 12a9 9 0 0 1-9 9H3l2-4a9 9 0 1 1 16-5Z" /></svg>
                         Safe Space
@@ -68,7 +70,8 @@
                     </span>
                     <h2>A space to say how you feel.</h2>
                     <p>Write at your own pace. Your guidance counselor can help you take the next step.</p>
-                    
+                    </div>
+                    <img class="vent-heading-illustration" src="<?= base_url('images/safe-space-writing.webp') ?>" alt="" aria-hidden="true" width="2018" height="779" decoding="async">
                 </header>
 
                 <!-- Flash Messages -->
@@ -168,11 +171,10 @@
                 <aside class="vent-support" id="meet-section" aria-label="Student support">
                     <div class="vent-support-intro">
                         <h2>You can take your time.</h2>
-                        <p>It’s okay to share a little or a lot. What matters is that you’re taking a step toward feeling better.</p>
+                        <p>Share as much or as little as you feel comfortable with.</p>
                     </div>
                     <section class="vent-session-support" aria-labelledby="ventTalkHeading">
                         <h2 id="ventTalkHeading">Prefer to talk?</h2>
-                        <p class="vent-talk-description">You can also meet with your guidance counselor through a video session.</p>
                         <?= view('partials/student_meet_card', ['ventStyle' => true]) ?>
                     <section class="vent-urgent-support" aria-labelledby="ventUrgentHeading">
                         <h2 id="ventUrgentHeading">Need urgent support?</h2>

@@ -5,7 +5,7 @@
     <div class="meet-card-header">
         <div class="meet-icon-wrap">
             <?php if ($ventStyle ?? false): ?>
-            <svg class="counselor-portrait" aria-hidden="true" width="100" height="100" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="49" fill="#E6F2E9"/><path d="M25 90V45C25 12 75 12 75 45V90" fill="#354239"/><path d="M16 97c2-22 15-31 34-31s32 9 34 31" fill="currentColor"/><path d="m38 68 12 27 12-27" fill="#FFF4C7"/><path d="M43 57h14v18c-4 5-10 5-14 0" fill="#EBC4A0"/><ellipse cx="50" cy="44" rx="18" ry="23" fill="#F4D5B6"/><path d="M30 42c-2-27 40-31 41 0-10-1-18-8-22-17-3 9-11 15-19 17" fill="#354239"/><path d="m34 72-5 13 10 1-4 11m31-25 5 13-10 1 4 11" stroke="#235D3A" stroke-width="2"/></svg>
+            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="5" width="14" height="14" rx="3"/><path d="m17 9 5-3v12l-5-3z"/></svg>
             <?php else: ?>
             <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="14" height="14" rx="4" fill="#FBBC04"/><path d="M17 9 22 6v12l-5-3V9Z" fill="#34A853"/><path d="M2 14h5v5H6a4 4 0 0 1-4-4v-1Z" fill="#4285F4"/></svg>
             <?php endif; ?>
