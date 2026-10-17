@@ -6,6 +6,7 @@ class StudentDashboardController extends BaseController
 {
     public function index()
     {
+        if (!$this->hasRole(0)) return $this->forbidden();
         $userId = session()->get('user_id');
         $db = \Config\Database::connect();
 

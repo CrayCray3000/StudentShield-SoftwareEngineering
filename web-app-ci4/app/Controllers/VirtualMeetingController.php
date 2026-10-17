@@ -2,11 +2,10 @@
 namespace App\Controllers;
 
 use App\Libraries\GoogleMeetSessions;
-use CodeIgniter\Controller;
 use Config\Database;
 use DomainException;
 
-class VirtualMeetingController extends Controller
+class VirtualMeetingController extends BaseController
 {
     protected function meetings(): GoogleMeetSessions
     {
@@ -43,6 +42,7 @@ class VirtualMeetingController extends Controller
         if (!$this->authorized([0])) return $this->denied();
         return $this->result(function () {
             $this->meetings()->request((int) session()->get('user_id'));
+            $this->logAudit('REQUEST_SESSION', 'student', (int) session()->get('user_id'));
             return ['message' => 'Session requested.'];
         });
     }
@@ -50,12 +50,15 @@ class VirtualMeetingController extends Controller
     public function cancelRequest()
     {
         if (!$this->authorized([0])) return $this->denied();
-        return $this->result(function () { $this->meetings()->cancelRequest((int) session()->get('user_id')); });
+        return $this->result(function () {
+            $this->meetings()->cancelRequest((int) session()->get('user_id'));
+            $this->logAudit('CANCEL_SESSION_REQUEST', 'student', (int) session()->get('user_id'));
+        });
     }
 
     public function getPendingRequest($studentId = null)
     {
-        if (!$this->authorized([1, 2])) return $this->denied();
+        if (!$this->authorized([1])) return $this->denied();
         return $this->result(function () use ($studentId) {
             $state = $this->meetings()->status((int) $studentId);
             $active = $state['active'];
@@ -67,12 +70,13 @@ class VirtualMeetingController extends Controller
 
     public function start($studentId = null)
     {
-        if (!$this->authorized([1, 2])) return $this->denied();
+        if (!$this->authorized([1])) return $this->denied();
         return $this->result(function () use ($studentId) {
             // The counselor creates the Google Meet in Google Workspace and confirms its admission settings.
             // StudentShield stores one newly created URL per counseling session; it does not create Meet spaces via OAuth.
             $meeting = $this->meetings()->publish((int) $studentId, (int) session()->get('user_id'),
                 (string) $this->request->getPost('meet_link'), $this->request->getPost('host_confirmed') === '1');
+            $this->logAudit('PUBLISH_SESSION', 'meeting', (int) $meeting['id']);
             return ['meeting_id' => $meeting['id'], 'join_url' => base_url('meeting/join/' . $meeting['id']),
                 'message' => 'Google Meet published for this student.'];
         });
@@ -80,9 +84,10 @@ class VirtualMeetingController extends Controller
 
     public function end($studentId = null)
     {
-        if (!$this->authorized([1, 2])) return $this->denied();
+        if (!$this->authorized([1])) return $this->denied();
         return $this->result(function () use ($studentId) {
             $this->meetings()->end((int) $studentId, (int) session()->get('user_id'));
+            $this->logAudit('CLOSE_SESSION_ACCESS', 'student', (int) $studentId);
             return ['message' => 'StudentShield access closed. End the call for everyone in Google Meet too.'];
         });
     }
@@ -99,7 +104,7 @@ class VirtualMeetingController extends Controller
 
     public function join($meetingId = null)
     {
-        if (!$this->authorized([0, 1, 2])) return $this->denied();
+        if (!$this->authorized([0, 1])) return $this->denied();
         try {
             $link = $this->meetings()->join((int) $meetingId, (int) session()->get('user_id'), (int) session()->get('role'));
             return redirect()->to($link)->setHeader('Cache-Control', 'no-store')->setHeader('Referrer-Policy', 'no-referrer');

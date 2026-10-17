@@ -1,304 +1,111 @@
 <?php
-
 namespace App\Controllers;
 
 class UserController extends BaseController
 {
-    /**
-     * Display the User Management page (Super Admin only).
-     */
     public function index()
     {
-        if ((int) session()->get('role') !== 2) {
-            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
-        }
-
-        $db = \Config\Database::connect();
-        $users = $db->table('users')
-            ->select('users.id, users.name, users.role, 
-                      students.student_id, students.section, students.adviser_name, students.grade_level,
-                      COALESCE(students.parent_phone, counselors.counselor_phone, admins.phone) AS parent_phone,
-                      COALESCE(students.parent_email, counselors.counselor_email, admins.email) AS parent_email')
-            ->join('students', 'students.user_id = users.id', 'left')
-            ->join('counselors', 'counselors.user_id = users.id', 'left')
-            ->join('admins', 'admins.user_id = users.id', 'left')
-            ->orderBy('users.role', 'DESC')
-            ->orderBy('users.name', 'ASC')
-            ->get()->getResultArray();
-
-        return view('manage_users', ['users' => $users]);
+        if (!$this->hasRole(2)) return $this->forbidden();
+        // Account identifiers only; student profiles and guardian contacts are counselor-only.
+        $users = \Config\Database::connect()->table('users')->select("id, CASE WHEN role = 0 THEN NULL ELSE name END AS name, role, access_disabled, registration_status, created_at", false)
+            ->orderBy('role', 'DESC')->orderBy('name')->get()->getResultArray();
+        return view('manage_accounts', ['users' => $users]);
     }
 
-    /**
-     * Create a new user.
-     */
     public function create()
     {
-        if ((int) session()->get('role') !== 2) {
-            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
-        }
-
-        try {
-            $db = \Config\Database::connect();
-            $name        = trim($this->request->getPost('name'));
-            $role        = (int) $this->request->getPost('role');
-            $studentIdInput = trim($this->request->getPost('student_id') ?? '');
-            $studentId   = ($studentIdInput === '') ? null : $studentIdInput;
-            $parentEmail = trim($this->request->getPost('parent_email') ?? '');
-            $parentPhone = trim($this->request->getPost('parent_phone') ?? '');
-            $section     = trim($this->request->getPost('section') ?? '');
-            $adviserName = trim($this->request->getPost('adviser_name') ?? '');
-            $passcode    = $this->request->getPost('passcode') ?? '';
-
-            if (empty($name)) {
-                return redirect()->back()->with('error', 'Name is required.');
-            }
-            
-            if ($role === 0) {
-                if (empty($studentId)) {
-                    return redirect()->back()->with('error', 'Student ID is required for students.');
-                }
-                if (empty($section)) {
-                    return redirect()->back()->with('error', 'Section is required for students.');
-                }
-                if (empty($adviserName)) {
-                    return redirect()->back()->with('error', 'Adviser Name is required for students.');
-                }
-            }
-
-            // Check duplicate name
-            $existing = $db->table('users')->where('name', $name)->get()->getRow();
-            if ($existing) {
-                return redirect()->back()->with('error', 'A user with that name already exists.');
-            }
-
-            // Hash password for counselors & super admins
-            $hashedPasscode = '';
-            if ($role >= 1) {
-                if (empty($passcode)) {
-                    return redirect()->back()->with('error', 'Password is required for staff accounts.');
-                }
-                $hashedPasscode = password_hash($passcode, PASSWORD_BCRYPT);
-            } else {
-                // Students also get a hashed password
-                if (!empty($passcode)) {
-                    $hashedPasscode = password_hash($passcode, PASSWORD_BCRYPT);
-                }
-            }
-
-            $db->table('users')->insert([
-                'name'          => $name,
-                'role'          => $role,
-                'password_hash' => $hashedPasscode,
-            ]);
-            $newUserId = $db->insertID();
-
-            if ($role === 0) {
-                $db->table('students')->insert([
-                    'user_id'      => $newUserId,
-                    'student_id'   => $studentId,
-                    'parent_phone' => $parentPhone,
-                    'parent_email' => $parentEmail,
-                    'section'      => $section,
-                    'adviser_name' => $adviserName,
-                    'grade_level'  => null,
-                ]);
-            } elseif ($role === 1) {
-                $db->table('counselors')->insert([
-                    'user_id'          => $newUserId,
-                    'counselor_email' => $parentEmail,
-                    'counselor_phone' => $parentPhone,
-                ]);
-            } elseif ($role === 2) {
-                $db->table('admins')->insert([
-                    'user_id' => $newUserId,
-                    'email'   => $parentEmail,
-                    'phone'   => $parentPhone,
-                ]);
-            }
-
-            $this->logAudit('CREATE_USER', 'user', $newUserId);
-
-            return redirect()->to('/admin/users')->with('success', "User \"{$name}\" created successfully.");
-        } catch (\Exception $e) {
-            log_message('error', 'UserController::create failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to create user. Please check the database and try again.');
-        }
+        if (!$this->hasRole(2)) return $this->forbidden();
+        return $this->save();
     }
 
-    /**
-     * Update an existing user.
-     */
     public function update($id)
     {
-        if ((int) session()->get('role') !== 2) {
-            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
+        if (!$this->hasRole(2)) return $this->forbidden();
+        return $this->save((int) $id);
+    }
+
+    private function save(?int $id = null)
+    {
+        $db = \Config\Database::connect();
+        $old = $id ? $db->table('users')->where('id', $id)->get()->getRowArray() : null;
+        if ($id && !$old) return $this->response->setStatusCode(404);
+        $name = trim((string) $this->request->getPost('name'));
+        if ($old && (int) $old['role'] === 0) $name = $old['name'];
+        $rawRole = (string) $this->request->getPost('role');
+        $password = (string) $this->request->getPost('passcode');
+        $email = trim((string) $this->request->getPost('email'));
+        if (!in_array($rawRole, ['0', '1', '2', '3'], true) || $name === '' || mb_strlen($name) > 255
+            || ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL))) {
+            return redirect()->to('/admin/users')->with('error', 'Enter a valid account name, role and staff email.');
         }
-
+        if (($id === null || $password !== '') && strlen($password) < 8) {
+            return redirect()->to('/admin/users')->with('error', 'Use a password of at least 8 characters.');
+        }
+        $role = (int) $rawRole;
+        if ($id === (int) session()->get('user_id') && $role !== 2) return redirect()->to('/admin/users')->with('error', 'You cannot demote your own account.');
+        $duplicate = $db->table('users')->where('name', $name);
+        if ($id) $duplicate->where('id !=', $id);
+        if ($duplicate->countAllResults()) return redirect()->to('/admin/users')->with('error', 'Account name already exists.');
+        $data = ['name' => $name, 'role' => $role, 'remember_token' => null,
+            'auth_version' => (int) ($old['auth_version'] ?? 0) + 1, 'updated_at' => date('Y-m-d H:i:s')];
+        if ($password !== '') $data['password_hash'] = password_hash($password, PASSWORD_BCRYPT);
+        if (!$old || ((int) $old['role'] !== $role && $role === 0)) {
+            $data['registration_status'] = $role === 0 ? 'pending' : 'approved';
+            $data['is_active'] = $role === 0 ? 0 : 1;
+        }
         try {
-            $db = \Config\Database::connect();
-
-            // Prevent editing yourself out of super admin
-            $currentUser = (int) session()->get('user_id');
-            $targetRole = (int) $this->request->getPost('role');
-            if ($id == $currentUser && $targetRole !== 2) {
-                return redirect()->back()->with('error', 'You cannot demote your own account.');
-            }
-
-            $studentIdInput = trim($this->request->getPost('student_id') ?? '');
-            $parentEmail = trim($this->request->getPost('parent_email') ?? '');
-            $parentPhone = trim($this->request->getPost('parent_phone') ?? '');
-            $section = trim($this->request->getPost('section') ?? '');
-            $adviserName = trim($this->request->getPost('adviser_name') ?? '');
-
-            if ($targetRole === 0) {
-                if (empty($section)) {
-                    return redirect()->back()->with('error', 'Section is required for students.');
-                }
-                if (empty($adviserName)) {
-                    return redirect()->back()->with('error', 'Adviser Name is required for students.');
-                }
-            }
-
-            $userUpdate = [
-                'name' => trim($this->request->getPost('name')),
-                'role' => $targetRole,
-            ];
-
-            // Only update password if provided
-            $newPasscode = $this->request->getPost('passcode');
-            if (!empty($newPasscode)) {
-                $userUpdate['password_hash'] = password_hash($newPasscode, PASSWORD_BCRYPT);
-            }
-
-            // Check subclass record existence BEFORE starting the transaction
-            // to avoid CI4 query builder state issues with countAllResults() inside transStart()
-            $studentExists  = $db->table('students')->where('user_id', $id)->countAllResults() > 0;
-            $counselorExists = $db->table('counselors')->where('user_id', $id)->countAllResults() > 0;
-            $adminExists    = $db->table('admins')->where('user_id', $id)->countAllResults() > 0;
-
             $db->transStart();
-
-            $db->table('users')->where('id', $id)->update($userUpdate);
-
-            // Delete profile records in other subclass tables to keep data clean
-            if ($targetRole !== 0) $db->table('students')->where('user_id', $id)->delete();
-            if ($targetRole !== 1) $db->table('counselors')->where('user_id', $id)->delete();
-            if ($targetRole !== 2) $db->table('admins')->where('user_id', $id)->delete();
-
-            // Upsert core profile fields into the appropriate subclass table
-            if ($targetRole === 0) {
-                $studentData = [
-                    'student_id'   => ($studentIdInput === '') ? null : $studentIdInput,
-                    'parent_phone' => $parentPhone,
-                    'parent_email' => $parentEmail,
-                    'section'      => $section,
-                    'adviser_name' => $adviserName,
-                ];
-                if ($studentExists) {
-                    $db->table('students')->where('user_id', $id)->update($studentData);
-                } else {
-                    $studentData['user_id']    = $id;
-                    $studentData['grade_level'] = null;
-                    $db->table('students')->insert($studentData);
+            if ($id) $db->table('users')->where('id', $id)->update($data);
+            else { $db->table('users')->insert($data); $id = (int) $db->insertID(); }
+            if ($role === 0) {
+                if (!$db->table('students')->where('user_id', $id)->countAllResults()) $db->table('students')->insert(['user_id' => $id, 'student_id' => 'SS-' . $id]);
+            } else {
+                $table = $role === 1 ? 'counselors' : 'admins';
+                $contacts = $role === 1 ? ['counselor_email' => $email] : ['email' => $email];
+                if ($db->table($table)->where('user_id', $id)->countAllResults()) {
+                    if ($email !== '') $db->table($table)->where('user_id', $id)->update($contacts);
                 }
-            } elseif ($targetRole === 1) {
-                $counselorData = [
-                    'counselor_email' => $parentEmail,
-                    'counselor_phone' => $parentPhone,
-                ];
-                if ($counselorExists) {
-                    $db->table('counselors')->where('user_id', $id)->update($counselorData);
-                } else {
-                    $counselorData['user_id'] = $id;
-                    $db->table('counselors')->insert($counselorData);
-                }
-            } elseif ($targetRole === 2) {
-                $adminData = [
-                    'email' => $parentEmail,
-                    'phone' => $parentPhone,
-                ];
-                if ($adminExists) {
-                    $db->table('admins')->where('user_id', $id)->update($adminData);
-                } else {
-                    $adminData['user_id'] = $id;
-                    $db->table('admins')->insert($adminData);
-                }
+                else $db->table($table)->insert(['user_id' => $id] + $contacts);
             }
-
+            // Role changes retain existing student history; this screen never reads profile fields.
             $db->transComplete();
-
-            if ($db->transStatus() === false) {
-                throw new \Exception('Database transaction failed.');
-            }
-
-            $this->logAudit('UPDATE_USER', 'user', (int)$id);
-
-            return redirect()->to('/admin/users')->with('success', 'User updated successfully.');
-        } catch (\Exception $e) {
-            log_message('error', '[UserController::update] ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to update user. Please check the database and try again.');
+            if (!$db->transStatus()) throw new \RuntimeException('Account transaction failed');
+            $this->logAudit(!$old ? 'CREATE_USER' : ((int) $old['role'] !== $role ? 'ROLE_CHANGED' : ($password !== '' ? 'PASSWORD_RESET' : 'UPDATE_USER')), 'user', $id);
+            if ($id === (int) session()->get('user_id')) session()->set('auth_version', $data['auth_version']);
+            return redirect()->to('/admin/users')->with('success', 'Account saved. Student accounts require counselor approval.');
+        } catch (\Throwable $e) {
+            log_message('error', 'Account update failed: {message}', ['message' => $e->getMessage()]);
+            return redirect()->to('/admin/users')->with('error', 'Account could not be saved.');
         }
     }
 
-    /**
-     * Delete a user.
-     */
+    public function access($id)
+    {
+        if (!$this->hasRole(2)) return $this->forbidden();
+        if ((int) $id === (int) session()->get('user_id')) return $this->response->setStatusCode(409)->setJSON(['message' => 'You cannot disable your own account.']);
+        $disabled = $this->request->getPost('disabled');
+        if (!in_array($disabled, ['0', '1'], true)) return $this->response->setStatusCode(422);
+        $db = \Config\Database::connect();
+        $user = $db->table('users')->where('id', (int) $id)->get()->getRowArray();
+        if (!$user) return $this->response->setStatusCode(404);
+        // Enabling system access never approves a pending or rejected student registration.
+        $db->table('users')->where('id', (int) $id)->update(['access_disabled' => (int) $disabled,
+            'remember_token' => null, 'auth_version' => (int) $user['auth_version'] + 1]);
+        $this->logAudit($disabled === '1' ? 'ACCOUNT_DISABLED' : 'ACCOUNT_ENABLED', 'user', (int) $id);
+        return redirect()->to('/admin/users')->with('success', 'Account access updated.');
+    }
+
     public function delete($id)
     {
-        if ((int) session()->get('role') !== 2) {
-            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
-        }
-
-        if ($id == session()->get('user_id')) {
-            return redirect()->back()->with('error', 'You cannot delete your own account.');
-        }
-
-        $db = \Config\Database::connect();
-        $user = $db->table('users')->where('id', $id)->get()->getRow();
-
-        if (!$user) {
-            return redirect()->back()->with('error', 'User not found.');
-        }
-
-        $db->table('users')->where('id', $id)->delete();
-        $this->logAudit('DELETE_USER', 'user', (int)$id);
-
-        return redirect()->to('/admin/users')->with('success', "User \"{$user->name}\" deleted.");
+        if (!$this->hasRole(2)) return $this->forbidden();
+        return $this->response->setStatusCode(405)->setJSON(['message' => 'Use account deactivation to retain records.']);
     }
 
-    /**
-     * Unlock a student's reporting privileges after a disciplinary meeting.
-     * Resets the is_locked flag and clears all false report strikes.
-     */
     public function unlock($id)
     {
-        $role = (int) session()->get('role');
-        if ($role !== 1 && $role !== 2) {
-            return redirect()->to('/admin/dashboard')->with('error', 'Access denied.');
-        }
-
-        $db = \Config\Database::connect();
-        $user = $db->table('users')->where('id', $id)->get()->getRow();
-
-        if (!$user) {
-            return redirect()->back()->with('error', 'User not found.');
-        }
-
-        // Reset the lock flag
-        $db->table('users')->where('id', $id)->update([
-            'is_locked' => 0,
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
-
-        // Reset all rejected_fake reports back to reviewed (so strikes are cleared)
-        $db->table('bully_reports')
-            ->where('reporter_student_id', $id)
-            ->where('status', 'rejected_fake')
-            ->update(['status' => 'strike_cleared']);
-
-        $this->logAudit('UNLOCK_ACCOUNT', 'user', (int)$id);
-
-        return redirect()->to('/admin/users')->with('success', "Student \"{$user->name}\" has been unlocked. Reporting privileges restored.");
+        if (!$this->hasRole(2)) return $this->forbidden();
+        \Config\Database::connect()->table('users')->where('id', (int) $id)->update(['is_locked' => 0]);
+        $this->logAudit('UNLOCK_ACCOUNT', 'user', (int) $id);
+        return redirect()->to('/admin/users')->with('success', 'Account reporting lock cleared.');
     }
 }

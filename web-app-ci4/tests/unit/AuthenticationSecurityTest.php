@@ -187,7 +187,9 @@ final class AuthenticationSecurityTest extends CIUnitTestCase
             'otp_attempts'   => 0,
         ]);
 
-        $controller = new \App\Controllers\AuthController();
+        $controller = new class extends \App\Controllers\AuthController {
+            protected function otpAccount(int $id): ?array { return ['id' => $id, 'role' => 1, 'is_active' => 1, 'auth_version' => 1]; }
+        };
         $controller->initController(
             $this->createPostRequest('admin/verify-otp', '192.168.1.50', false, ['otp' => '654321']),
             Services::response(),
@@ -252,10 +254,15 @@ final class AuthenticationSecurityTest extends CIUnitTestCase
 
     public function testAuthFilterServerEnforcedIdleTimeout(): void
     {
-        $filter = new AuthFilter();
+        $filter = new class extends AuthFilter {
+            protected function account(int $id): ?array {
+                return ['id' => $id, 'name' => 'Test account', 'role' => (int) session()->get('role'), 'is_active' => 1, 'registration_status' => 'approved', 'auth_version' => 1];
+            }
+        };
 
         // Set logged-in session with last_activity older than 15 minutes (900 seconds)
         session()->set([
+            'auth_version' => 1,
             'isLoggedIn'    => true,
             'user_id'       => 10,
             'name'          => 'Idle Student',
@@ -276,10 +283,15 @@ final class AuthenticationSecurityTest extends CIUnitTestCase
 
     public function testAuthFilterAllowsActiveSessionWithinIdleTimeout(): void
     {
-        $filter = new AuthFilter();
+        $filter = new class extends AuthFilter {
+            protected function account(int $id): ?array {
+                return ['id' => $id, 'name' => 'Test account', 'role' => (int) session()->get('role'), 'is_active' => 1, 'registration_status' => 'approved', 'auth_version' => 1];
+            }
+        };
 
         // Active session within 15-minute window
         session()->set([
+            'auth_version' => 1,
             'isLoggedIn'    => true,
             'user_id'       => 10,
             'name'          => 'Active Student',
@@ -301,9 +313,14 @@ final class AuthenticationSecurityTest extends CIUnitTestCase
 
     public function testAuthFilterBlocksStudentAccessToAdminRoutes(): void
     {
-        $filter = new AuthFilter();
+        $filter = new class extends AuthFilter {
+            protected function account(int $id): ?array {
+                return ['id' => $id, 'name' => 'Test account', 'role' => (int) session()->get('role'), 'is_active' => 1, 'registration_status' => 'approved', 'auth_version' => 1];
+            }
+        };
 
         session()->set([
+            'auth_version' => 1,
             'isLoggedIn'    => true,
             'user_id'       => 50,
             'name'          => 'Sneaky Student',
@@ -318,16 +335,21 @@ final class AuthenticationSecurityTest extends CIUnitTestCase
 
         $response = $filter->before($req);
 
-        // Student accessing admin dashboard must be redirected to /student/vent
+        // Student access is rejected by backend authorization.
         $this->assertNotNull($response);
-        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame(403, $response->getStatusCode());
     }
 
     public function testAuthFilterBlocksCounselorAccessToSuperAdminRoutes(): void
     {
-        $filter = new AuthFilter();
+        $filter = new class extends AuthFilter {
+            protected function account(int $id): ?array {
+                return ['id' => $id, 'name' => 'Test account', 'role' => (int) session()->get('role'), 'is_active' => 1, 'registration_status' => 'approved', 'auth_version' => 1];
+            }
+        };
 
         session()->set([
+            'auth_version' => 1,
             'isLoggedIn'    => true,
             'user_id'       => 60,
             'name'          => 'Counselor User',
@@ -342,9 +364,9 @@ final class AuthenticationSecurityTest extends CIUnitTestCase
 
         $response = $filter->before($req);
 
-        // Counselor accessing /admin/users must be redirected
+        // Counselors cannot access account management.
         $this->assertNotNull($response);
-        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame(403, $response->getStatusCode());
     }
 
     public function testAdminControllerEvidenceGuardsAgainstUnauthenticatedAndStudents(): void

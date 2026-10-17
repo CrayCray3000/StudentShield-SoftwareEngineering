@@ -1,157 +1,74 @@
 <?php
-
 namespace App\Filters;
 
+use App\Libraries\AuditTrail;
+use App\Libraries\RoleAccess;
+use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Filters\FilterInterface;
-use CodeIgniter\HTTP\IncomingRequest;
 
 class AuthFilter implements FilterInterface
 {
+    protected function account(int $id): ?array
+    {
+        return \Config\Database::connect()->table('users')->where('id', $id)->get()->getRowArray();
+    }
+
     public function before(RequestInterface $request, $arguments = null)
     {
+        $path = trim($request->getUri()->getPath(), '/');
+        $staff = preg_match('#^(admin|counselor|principal)(/|$)#', $path) === 1;
+        $json = str_contains($path, '/api/') || $request->isAJAX() || str_contains($request->getHeaderLine('Accept'), 'json');
         if (!session()->get('isLoggedIn')) {
-            // First check if they have a remember-me cookie for students
-            if (isset($_COOKIE['student_remember'])) {
-                $cookieData = base64_decode($_COOKIE['student_remember']);
-                if (strpos($cookieData, ':') !== false) {
-                    list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
-                    $db = \Config\Database::connect();
-                    $user = $db->table('users')->where('id', $cookieUserId)->where('role', 0)->get()->getRowArray();
-                    
-                    if ($user && password_verify($cookieToken, $user['remember_token'])) {
-                        // Restore Session
-                        session()->regenerate();
-                        session()->set([
-                            'user_id'    => $user['id'],
-                            'name'       => $user['name'],
-                            'role'       => (int) $user['role'],
-                            'role_name'  => 'student',
-                            'isLoggedIn' => true,
-                        ]);
-                        // Only auto-redirect if they were trying to access /login directly
-                        $uriStr = $request->getUri()->getPath();
-                        if ($uriStr === 'login' || $uriStr === '/' || $uriStr === '') {
-                             return redirect()->to('/student/vent');
-                        }
-                        return; // Let them continue to wherever they were going!
-                    }
-                }
-            }
-
-            // Only auto-login from admin cookie when navigating to admin routes.
-            // This prevents the admin session from hijacking the student portal.
-            $uriPath = $request->getUri()->getPath();
-            $isAdminRoute = (strpos($uriPath, 'admin') !== false || strpos($uriPath, 'counselor') !== false);
-
-            if ($isAdminRoute && isset($_COOKIE['admin_trusted_device'])) {
-                $cookieData = base64_decode($_COOKIE['admin_trusted_device']);
-                if (strpos($cookieData, ':') !== false) {
-                    list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
-                    $db = \Config\Database::connect();
-                    $user = $db->table('users')->where('id', $cookieUserId)->whereIn('role', [1, 2])->get()->getRowArray();
-                    
-                    if ($user && password_verify($cookieToken, $user['remember_token'])) {
-                        // Restore Session
-                        $roleNames = [1 => 'counselor', 2 => 'super_admin'];
-                        session()->regenerate();
-                        session()->set([
-                            'user_id'    => $user['id'],
-                            'name'       => $user['name'],
-                            'role'       => (int) $user['role'],
-                            'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
-                            'isLoggedIn' => true,
-                        ]);
-                        if ($uriPath === 'admin/login' || $uriPath === 'admin/otp') {
-                             return redirect()->to('/admin/dashboard');
-                        }
-                        return; // Let them continue to their admin destination
-                    }
-                }
-            }
-
-            $uriStr = $request->getUri()->getPath();
-
-            // For AJAX/fetch requests, return JSON instead of an HTML redirect
-            // This prevents silent failures where fetch().then(r=>r.json()) throws a SyntaxError
-            if ($request instanceof IncomingRequest && $request->isAJAX()) {
-                return service('response')
-                    ->setStatusCode(401)
-                    ->setJSON(['status' => 'error', 'message' => 'Session expired. Please refresh the page and log in again.']);
-            }
-
-            if (strpos($uriStr, 'admin') !== false || strpos($uriStr, 'counselor') !== false) {
-                return redirect()->to('/admin/login')->with('error', 'Please log in as Staff to access the dashboard.');
-            }
-            // Exclude the login page itself to prevent infinite redirects
-            if ($uriStr !== 'login' && $uriStr !== '/' && $uriStr !== '') {
-                return redirect()->to('/login')->with('error', 'Please log in to access StudentShield.');
-            }
-        }
-
-        // ── SERVER-ENFORCED IDLE TIMEOUT (15 MINUTES = 900 SECONDS) ──
-        $lastActivity = session()->get('last_activity');
-        $idleTimeout = 900; // 15 minutes inactivity limit for shared school computers
-
-        if ($lastActivity && (time() - (int)$lastActivity) > $idleTimeout) {
-            $userRole = (int) session()->get('role');
-            $userId   = session()->get('user_id');
-
-            // Audit log timeout event
-            if ($userId) {
+            $cookie = $_COOKIE[$staff ? 'admin_trusted_device' : 'student_remember'] ?? '';
+            $parts = explode(':', (string) base64_decode($cookie, true), 2);
+            if (count($parts) === 2 && ctype_digit($parts[0])) {
                 try {
-                    $db = \Config\Database::connect();
-                    if ($db->tableExists('audit_logs')) {
-                        $db->table('audit_logs')->insert([
-                            'user_id'     => $userId,
-                            'action'      => 'SESSION_IDLE_TIMEOUT',
-                            'entity_type' => 'system',
-                            'entity_id'   => $userId,
-                            'details'     => 'Session terminated due to 15-minute inactivity.',
-                            'created_at'  => date('Y-m-d H:i:s')
-                        ]);
+                    $user = $this->account((int) $parts[0]);
+                    if ($user && RoleAccess::enabled($user) && ($staff ? (int) $user['role'] > 0 : (int) $user['role'] === 0)
+                        && !empty($user['remember_token']) && password_verify($parts[1], $user['remember_token'])) {
+                        session()->regenerate();
+                        session()->set(['user_id' => $user['id'], 'name' => $user['name'], 'role' => (int) $user['role'],
+                            'auth_version' => (int) ($user['auth_version'] ?? 1), 'isLoggedIn' => true, 'last_activity' => time()]);
+                        AuditTrail::record('TRUSTED_DEVICE_LOGIN', 'system', (int) $user['id']);
                     }
-                } catch (\Throwable $e) {}
+                } catch (\Throwable $e) { log_message('error', 'Remembered account lookup failed.'); }
             }
-
+        }
+        if (!session()->get('isLoggedIn')) {
+            if ($json) return service('response')->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Please log in again.']);
+            return redirect()->to($staff ? '/admin/login' : '/login');
+        }
+        $last = (int) session()->get('last_activity');
+        if ($last && time() - $last > 900) {
+            AuditTrail::record('SESSION_IDLE_TIMEOUT', 'system', (int) session()->get('user_id'));
             session()->destroy();
-
-            if ($request instanceof IncomingRequest && $request->isAJAX()) {
-                return service('response')
-                    ->setStatusCode(401)
-                    ->setJSON(['status' => 'error', 'message' => 'Session expired due to inactivity. Please log in again.']);
+            if ($json) return service('response')->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Session expired due to inactivity. Please log in again.']);
+            return redirect()->to($staff ? '/admin/login' : '/login');
+        }
+        // Revalidate on every protected request: deactivation and role changes revoke existing sessions.
+        try { $user = $this->account((int) session()->get('user_id')); }
+        catch (\Throwable $e) {
+            return service('response')->setStatusCode(503)->setJSON(['status' => 'error', 'message' => 'Account verification unavailable.']);
+        }
+        if (!$user || !RoleAccess::enabled($user) || (int) $user['role'] !== (int) session()->get('role')
+            || (int) ($user['auth_version'] ?? 1) !== (int) session()->get('auth_version')) {
+            session()->destroy();
+            return service('response')->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Account access changed. Please log in again.']);
+        }
+        session()->set(['last_activity' => time(), 'name' => $user['name']]);
+        service('response')->setHeader('Cache-Control', 'private, no-store');
+        if (!RoleAccess::allows((int) $user['role'], $path)) {
+            if ((int) session()->get('denial_logged_at') < time() - 60) {
+                AuditTrail::record('ACCESS_DENIED', 'system', (int) $user['id']);
+                session()->set('denial_logged_at', time());
             }
-
-            $redirectUrl = ($userRole === 1 || $userRole === 2) ? '/admin/login' : '/login';
-            return redirect()->to($redirectUrl)->with('error', 'Session expired due to inactivity. Please log in again.');
-        }
-
-        // Keep last_activity current on valid user activity
-        session()->set('last_activity', time());
-
-        $role = session()->get('role');
-        $uriStr = $request->getUri()->getPath();
-
-        // Prevent Students from accessing Admin/Counselor Dashboards
-        $trimmedUri = ltrim($uriStr, '/');
-        if ($role == 0 && (str_starts_with($trimmedUri, 'admin') || str_starts_with($trimmedUri, 'counselor'))) {
-            return redirect()->to('/student/vent')->with('error', 'Unauthorized access. You are a student.');
-        }
-
-        // Prevent Counselors from accessing Student Portal pages (student/vent, student/dashboard)
-        if ($role == 1 && str_starts_with($trimmedUri, 'student/')) {
-            return redirect()->to('/admin/dashboard')->with('error', 'Staff must use the Dashboard portal.');
-        }
-
-        // Prevent Counselors from accessing Super Admin Management functions
-        if ($role == 1 && (str_starts_with($trimmedUri, 'admin/users') || str_starts_with($trimmedUri, 'admin/audit-logs'))) {
-            return redirect()->to('/admin/dashboard')->with('error', 'Unauthorized. Super Admin access required.');
+            return service('response')->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Your role cannot access this resource.']);
         }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-    // Do nothing
+        $response->setHeader('Cache-Control', 'private, no-store');
     }
 }

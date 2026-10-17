@@ -13,11 +13,14 @@ class AdminController extends BaseController
     }
         private function guardStaffAccess(): bool
     {
-        return (bool) (session()->get('isLoggedIn') && in_array((int) session()->get('role'), [1, 2], true));
+        return (bool) (session()->get('isLoggedIn') && (int) session()->get('role') === 1);
     }
 
     public function dashboard(string $page = 'vents')
     {
+        if (session()->get('isLoggedIn') && in_array((int) session()->get('role'), [2, 3], true)) {
+            return redirect()->to(\App\Libraries\RoleAccess::home((int) session()->get('role')));
+        }
         if (!$this->guardStaffAccess()) {
             return redirect()->to('/admin/login');
         }
@@ -48,7 +51,7 @@ class AdminController extends BaseController
      */
     public function getPendingMeetings()
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || (int) session()->get('role') !== 1) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized'])->setStatusCode(401);
         }
 
@@ -78,8 +81,8 @@ class AdminController extends BaseController
      */
     public function auditLogs()
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
-            return redirect()->to('/admin/login');
+        if (!session()->get('isLoggedIn') || (int) session()->get('role') !== 2) {
+            return $this->forbidden();
         }
 
         $db = \Config\Database::connect();
@@ -89,7 +92,7 @@ class AdminController extends BaseController
         if ($db->tableExists('audit_logs')) {
             $auditModel = new \App\Models\AuditLogModel();
             $logs = $auditModel
-                ->select('audit_logs.*, users.name as actor_name, users.role as actor_role')
+                ->select("audit_logs.id, audit_logs.action, audit_logs.entity_type, audit_logs.entity_id, audit_logs.created_at, audit_logs.ip_address, users.role AS actor_role, CASE WHEN users.role = 0 THEN 'Student account' ELSE users.name END AS actor_name", false)
                 ->join('users', 'users.id = audit_logs.user_id', 'left')
                 ->orderBy('audit_logs.created_at', 'DESC')
                 ->paginate(50);
@@ -105,7 +108,7 @@ class AdminController extends BaseController
 
     public function fetchVents()
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || (int) session()->get('role') !== 1) {
             return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
         }
 
@@ -144,7 +147,7 @@ class AdminController extends BaseController
 
     public function resolveVent($id)
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $db = \Config\Database::connect();
         $db->table('vent_logs')->where('id', $id)->update(['status' => 'Reviewed']);
         $this->logAudit('RESOLVE', 'vent', (int) $id);
@@ -153,7 +156,7 @@ class AdminController extends BaseController
 
     public function deleteVent($id)
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $db = \Config\Database::connect();
         // Soft Delete: set deleted_at timestamp instead of permanent removal
         $db->table('vent_logs')->where('id', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
@@ -163,15 +166,13 @@ class AdminController extends BaseController
 
     public function deleteMultipleVents()
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $ids = $this->request->getPost('vent_ids');
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();
             // Soft Delete: set deleted_at timestamp instead of permanent removal
             $db->table('vent_logs')->whereIn('id', $ids)->update(['deleted_at' => date('Y-m-d H:i:s')]);
-            foreach ($ids as $id) {
-                $this->logAudit('BULK_SOFT_DELETE', 'vent', (int) $id);
-            }
+            $this->logAudit('BULK_SOFT_DELETE', 'vent', 0);
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Vents archived (soft-deleted).");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No vents selected for deletion.");
@@ -179,7 +180,7 @@ class AdminController extends BaseController
 
     public function restoreVent($id)
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $db = \Config\Database::connect();
         $db->table('vent_logs')->where('id', $id)->update(['deleted_at' => null]);
         $this->logAudit('RESTORE', 'vent', (int) $id);
@@ -188,14 +189,12 @@ class AdminController extends BaseController
 
     public function restoreMultipleVents()
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $ids = $this->request->getPost('vent_ids');
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();
             $db->table('vent_logs')->whereIn('id', $ids)->update(['deleted_at' => null]);
-            foreach ($ids as $id) {
-                $this->logAudit('BULK_RESTORE', 'vent', (int) $id);
-            }
+            $this->logAudit('BULK_RESTORE', 'vent', 0);
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Vents unarchived and restored.");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No vents selected for restoration.");
@@ -203,7 +202,7 @@ class AdminController extends BaseController
 
     public function fetchIncidents()
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || (int) session()->get('role') !== 1) {
             return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
         }
 
@@ -241,7 +240,7 @@ class AdminController extends BaseController
 
     public function resolveIncident($id)
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update(['status' => 'resolved']);
         $this->logAudit('RESOLVE', 'incident', (int) $id);
@@ -258,7 +257,7 @@ class AdminController extends BaseController
      */
     public function verifyIncident($id)
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $db = \Config\Database::connect();
 
         // Update status to verified
@@ -321,7 +320,7 @@ class AdminController extends BaseController
      */
     public function rejectIncident($id)
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $db = \Config\Database::connect();
 
         // Fetch the report to identify the reporter
@@ -400,7 +399,7 @@ class AdminController extends BaseController
      */
     public function undoIncident($id)
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update([
             'status' => 'pending_review',
@@ -469,7 +468,7 @@ class AdminController extends BaseController
 
     public function deleteIncident($id)
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $db = \Config\Database::connect();
         // Soft Delete
         $db->table('bully_reports')->where('id', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
@@ -479,15 +478,13 @@ class AdminController extends BaseController
 
     public function deleteMultipleIncidents()
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $ids = $this->request->getPost('incident_ids');
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();
             // Soft Delete
             $db->table('bully_reports')->whereIn('id', $ids)->update(['deleted_at' => date('Y-m-d H:i:s')]);
-            foreach ($ids as $id) {
-                $this->logAudit('BULK_SOFT_DELETE', 'incident', (int) $id);
-            }
+            $this->logAudit('BULK_SOFT_DELETE', 'incident', 0);
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Incident Reports archived (soft-deleted).");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No incidents selected for deletion.");
@@ -495,7 +492,7 @@ class AdminController extends BaseController
 
     public function restoreIncident($id)
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $db = \Config\Database::connect();
         $db->table('bully_reports')->where('id', $id)->update(['deleted_at' => null]);
         $this->logAudit('RESTORE', 'incident', (int) $id);
@@ -504,14 +501,12 @@ class AdminController extends BaseController
 
     public function restoreMultipleIncidents()
     {
-        if (!$this->guardStaffAccess()) return redirect()->to('/admin/login');
+        if (!$this->guardStaffAccess()) return $this->forbidden();
         $ids = $this->request->getPost('incident_ids');
         if (!empty($ids) && is_array($ids)) {
             $db = \Config\Database::connect();
             $db->table('bully_reports')->whereIn('id', $ids)->update(['deleted_at' => null]);
-            foreach ($ids as $id) {
-                $this->logAudit('BULK_RESTORE', 'incident', (int) $id);
-            }
+            $this->logAudit('BULK_RESTORE', 'incident', 0);
             return redirect()->to('/admin/dashboard')->with('message', count($ids) . " Incident Reports unarchived and restored.");
         }
         return redirect()->to('/admin/dashboard')->with('error', "No incidents selected for restoration.");
@@ -519,7 +514,7 @@ class AdminController extends BaseController
 
     public function fetchAlertLogs()
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || (int) session()->get('role') !== 1) {
             return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
         }
 
@@ -545,7 +540,7 @@ class AdminController extends BaseController
 
     public function evidence($fileName)
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || (int) session()->get('role') !== 1) {
             return $this->response->setStatusCode(401)->setBody('Unauthorized');
         }
 
@@ -564,7 +559,7 @@ class AdminController extends BaseController
 
     public function getStudentProfile($id)
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || (int) session()->get('role') !== 1) {
             return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
         }
 
@@ -572,14 +567,13 @@ class AdminController extends BaseController
 
         // 1. Fetch User Data
         $user = $db->table('users')
-            ->select('users.*, 
+            ->select('users.id, users.name, users.role, users.is_locked, users.created_at,
                       students.student_id, students.section, students.adviser_name, students.grade_level,
-                      COALESCE(students.parent_phone, counselors.counselor_phone, admins.phone) AS parent_phone,
-                      COALESCE(students.parent_email, counselors.counselor_email, admins.email) AS parent_email')
+                      students.parent_phone,
+                      students.parent_email')
             ->join('students', 'students.user_id = users.id', 'left')
-            ->join('counselors', 'counselors.user_id = users.id', 'left')
-            ->join('admins', 'admins.user_id = users.id', 'left')
             ->where('users.id', $id)
+            ->where('users.role', 0)
             ->get()->getRowArray();
         if (!$user) {
             return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
@@ -660,19 +654,21 @@ class AdminController extends BaseController
      */
     public function pendingRegistrations()
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
+        if (!session()->get('isLoggedIn') || (int) session()->get('role') !== 1) {
             return redirect()->to('/admin/login');
         }
 
         $db = \Config\Database::connect();
 
+        $registrationStatus = (string) ($this->request->getGet('status') ?? 'pending');
+        if (!in_array($registrationStatus, ['pending', 'approved', 'rejected'], true)) return $this->response->setStatusCode(422);
         $pendingUsers = [];
         try {
             $pendingUsers = $db->table('users')
-                ->select('users.id as user_id, users.name, users.created_at, students.student_id, students.grade_level, students.section, students.parent_phone, students.parent_email')
+                ->select('users.id as user_id, users.name, users.created_at, students.student_id, students.lrn, students.grade_level, students.section, students.parent_phone, students.parent_email')
                 ->join('students', 'students.user_id = users.id', 'left')
                 ->where('users.role', 0)
-                ->where('users.is_active', 0)
+                ->where('users.registration_status', $registrationStatus)
                 ->orderBy('users.created_at', 'ASC')
                 ->get()->getResultArray();
         } catch (\Throwable $e) {
@@ -681,7 +677,7 @@ class AdminController extends BaseController
         }
 
         return view('admin_pending_registrations', [
-            'pendingUsers' => $pendingUsers
+            'pendingUsers' => $pendingUsers, 'registrationStatus' => $registrationStatus
         ]);
     }
 
@@ -690,61 +686,27 @@ class AdminController extends BaseController
      */
     public function approveStudent($userId)
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
-            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
-                return $this->response->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
-            }
-            return redirect()->to('/admin/login');
-        }
-
-        $db = \Config\Database::connect();
-
-        try {
-            $db->table('users')->where('id', (int)$userId)->update(['is_active' => 1]);
-            $this->logAudit('STUDENT_APPROVED', 'system', (int)$userId);
-
-            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
-                return $this->response->setJSON(['status' => 'success', 'message' => 'Student account approved successfully.']);
-            }
-            return redirect()->to('/admin/pending-registrations')->with('success', 'Student account has been approved and activated successfully.');
-        } catch (\Throwable $e) {
-            log_message('error', 'AdminController::approveStudent failed: ' . $e->getMessage());
-            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
-                return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'Could not approve student: ' . $e->getMessage()]);
-            }
-            return redirect()->to('/admin/pending-registrations')->with('error', 'Could not approve student: ' . $e->getMessage());
-        }
+        return $this->decideRegistration((int) $userId, 'approved');
     }
 
-    /**
-     * Reject / Delete a pending student account.
-     */
     public function rejectStudent($userId)
     {
-        if (!session()->get('isLoggedIn') || !in_array((int) session()->get('role'), [1, 2])) {
-            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
-                return $this->response->setStatusCode(401)->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
-            }
-            return redirect()->to('/admin/login');
-        }
+        return $this->decideRegistration((int) $userId, 'rejected');
+    }
 
+    private function decideRegistration(int $id, string $status)
+    {
+        if (!$this->hasRole(1)) return $this->forbidden();
+        if (strtoupper($this->request->getMethod()) !== 'POST') return $this->response->setStatusCode(405);
         $db = \Config\Database::connect();
-
-        try {
-            $db->table('students')->where('user_id', (int)$userId)->delete();
-            $db->table('users')->where('id', (int)$userId)->delete();
-            $this->logAudit('STUDENT_REGISTRATION_REJECTED', 'system', (int)$userId);
-
-            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
-                return $this->response->setJSON(['status' => 'success', 'message' => 'Pending registration has been removed.']);
-            }
-            return redirect()->to('/admin/pending-registrations')->with('success', 'Pending registration has been rejected and removed.');
-        } catch (\Throwable $e) {
-            log_message('error', 'AdminController::rejectStudent failed: ' . $e->getMessage());
-            if ($this->request->isAJAX() || strpos($this->request->getHeaderLine('Accept'), 'json') !== false) {
-                return $this->response->setStatusCode(500)->setJSON(['status' => 'error', 'message' => 'Could not remove registration.']);
-            }
-            return redirect()->to('/admin/pending-registrations')->with('error', 'Could not remove registration.');
+        $db->table('users')->where('id', $id)->where('role', 0)->where('registration_status', 'pending')
+            ->update(['registration_status' => $status, 'is_active' => $status === 'approved' ? 1 : 0,
+                'remember_token' => null, 'updated_at' => date('Y-m-d H:i:s')]);
+        if ($db->affectedRows() !== 1) return $this->response->setStatusCode(409)->setJSON(['status' => 'error', 'message' => 'Registration is no longer pending.']);
+        $this->logAudit($status === 'approved' ? 'STUDENT_APPROVED' : 'STUDENT_REGISTRATION_REJECTED', 'user', $id);
+        if ($this->request->isAJAX() || str_contains($this->request->getHeaderLine('Accept'), 'json')) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Registration ' . $status . '.']);
         }
+        return redirect()->to('/admin/pending-registrations')->with('success', 'Registration ' . $status . '.');
     }
 }

@@ -49,19 +49,16 @@ abstract class BaseController extends Controller
      */
     protected function logAudit(string $action, string $entityType, int $entityId): void
     {
-        try {
-            $db = \Config\Database::connect();
-            $db->table('audit_logs')->insert([
-                'user_id'     => session()->get('user_id'),
-                'action'      => $action,
-                'entity_type' => $entityType,
-                'entity_id'   => $entityId,
-                'ip_address'  => $this->request->getIPAddress(),
-                'user_agent'  => $this->request->getUserAgent()->getAgentString(),
-                'created_at'  => date('Y-m-d H:i:s'),
-            ]);
-        } catch (\Exception $e) {
-            log_message('error', 'Audit log failed: ' . $e->getMessage());
-        }
+        \App\Libraries\AuditTrail::record($action, $entityType, $entityId);
+    }
+
+    protected function hasRole(int $role): bool
+    {
+        return session()->get('isLoggedIn') && session()->get('role') !== null && (int) session()->get('role') === $role;
+    }
+
+    protected function forbidden()
+    {
+        return $this->response->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Access denied.']);
     }
 }

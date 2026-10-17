@@ -1,3 +1,4 @@
+<?php $registrationStatus = $registrationStatus ?? 'pending'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -127,15 +128,19 @@
                     <svg class="w-7 h-7 text-[#F2C300] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                     </svg>
-                    Pending Student Registrations
+                    Student Registrations
                 </h2>
-                <p class="text-gray-500 text-sm mt-1">Review and approve new student accounts awaiting activation.</p>
+                <p class="text-gray-500 text-sm mt-1">Review pending requests and retained registration decisions.</p>
             </div>
             <div class="flex items-center gap-3">
-                <div class="flex items-center gap-2 bg-amber-50 px-4 py-2.5 rounded-xl border border-amber-200">
-                    <span class="w-2 h-2 rounded-full bg-amber-400 live-dot"></span>
-                    <span class="text-xs font-bold text-amber-700 uppercase tracking-widest">
-                        <?= count($pendingUsers) ?> Pending
+                <?php
+                    $hdrBadge = $registrationStatus === 'approved' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : ($registrationStatus === 'rejected' ? 'bg-rose-50 text-rose-800 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200');
+                    $hdrDot = $registrationStatus === 'approved' ? 'bg-emerald-500' : ($registrationStatus === 'rejected' ? 'bg-rose-500' : 'bg-amber-400');
+                ?>
+                <div class="flex items-center gap-2 <?= $hdrBadge ?> px-4 py-2.5 rounded-xl border">
+                    <span class="w-2 h-2 rounded-full <?= $hdrDot ?> live-dot"></span>
+                    <span class="text-xs font-bold uppercase tracking-widest">
+                        <?= count($pendingUsers) ?> <?= esc(ucfirst($registrationStatus)) ?>
                     </span>
                 </div>
             </div>
@@ -162,11 +167,26 @@
                     <svg class="h-5 w-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                     </svg>
-                    Students Awaiting Approval
+                    <?= esc(ucfirst($registrationStatus)) ?> Student Registrations
                 </h3>
                 <span class="text-xs text-gray-500 font-medium">Accounts are inactive until approved</span>
             </div>
 
+            <div class="staff-filter-bar px-6 py-3 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-3">
+                <form method="get" class="flex gap-2.5 items-center flex-wrap">
+                    <label for="registrationStatus" class="text-xs font-semibold text-gray-600">Status:</label>
+                    <select id="registrationStatus" name="status" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-2 focus:ring-[#0B5E2E]/20 bg-white font-medium cursor-pointer transition-all">
+                        <?php foreach (['pending' => 'Pending Review', 'approved' => 'Approved Accounts', 'rejected' => 'Rejected Requests'] as $statusVal => $statusLabel): ?>
+                            <option value="<?= $statusVal ?>" <?= $registrationStatus === $statusVal ? 'selected' : '' ?>><?= esc($statusLabel) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="submit" class="text-xs font-semibold text-white bg-[#096328] hover:bg-[#075826] active:bg-[#05441d] px-3.5 py-1.5 min-h-[36px] rounded-lg border border-[#096328] transition-colors cursor-pointer shadow-sm">View</button>
+                </form>
+                <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-xs relative ml-auto">
+                    <svg class="w-4 h-4 text-gray-400 absolute left-3 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    <input type="text" id="searchRegistrations" aria-label="Search registrations" placeholder="Filter by name, ID, section..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-2 focus:ring-[#0B5E2E]/20 transition-all">
+                </div>
+            </div>
             <div class="overflow-x-auto custom-scrollbar">
                 <?php if (empty($pendingUsers)): ?>
                     <div class="flex flex-col items-center justify-center py-20 px-6 text-center">
@@ -175,11 +195,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
-                        <h4 class="text-lg font-bold text-gray-700 mb-1">All Clear!</h4>
-                        <p class="text-gray-500 text-sm max-w-sm">No pending student registrations at this time. New registrations will appear here when students sign up.</p>
+                        <h4 class="text-lg font-bold text-gray-700 mb-1">No matching registrations</h4>
+                        <p class="text-gray-500 text-sm max-w-sm">No <?= esc($registrationStatus) ?> student registrations match this view.</p>
                     </div>
                 <?php else: ?>
-                    <table class="registration-table w-full text-left border-collapse" aria-label="Pending student registrations">
+                    <table class="registration-table w-full text-left border-collapse" aria-label="Student registrations">
                         <thead>
                             <tr class="thead-green text-xs uppercase tracking-wider">
                                 <th class="px-6 py-4">#</th>
@@ -209,7 +229,7 @@
                                     </div>
                                 </td>
                                 <td data-label="Student ID" class="px-6 py-4">
-                                    <span class="text-sm font-mono font-medium text-gray-700"><?= esc($student['student_id'] ?? '—') ?></span>
+                                    <span class="text-sm font-mono font-medium text-gray-700"><?= esc($student['student_id'] ?? '—') ?></span><span class="block text-xs text-gray-600 mt-1">LRN: <?= esc($student['lrn'] ?? 'Not provided') ?></span>
                                 </td>
                                 <td data-label="Grade &amp; Section" class="px-6 py-4">
                                     <div class="text-sm text-gray-800">
@@ -246,12 +266,17 @@
                                     <div class="text-xs text-gray-400"><?= date('g:i A', strtotime($student['created_at'])) ?></div>
                                 </td>
                                 <td data-label="Status" class="registration-status px-6 py-4 text-center">
-                                    <span class="badge-pending inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                                        Pending
+                                    <?php
+                                        $rowBadge = $registrationStatus === 'approved' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : ($registrationStatus === 'rejected' ? 'bg-rose-50 text-rose-800 border-rose-200' : 'badge-pending');
+                                        $rowDot = $registrationStatus === 'approved' ? 'bg-emerald-500' : ($registrationStatus === 'rejected' ? 'bg-rose-500' : 'bg-amber-400');
+                                    ?>
+                                    <span class="<?= $rowBadge ?> inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border">
+                                        <span class="w-1.5 h-1.5 rounded-full <?= $rowDot ?>"></span>
+                                        <?= esc(ucfirst($registrationStatus)) ?>
                                     </span>
                                 </td>
                                 <td data-label="Action" class="registration-actions px-6 py-4 text-center">
+                                    <?php if ($registrationStatus === 'pending'): ?>
                                     <div class="flex items-center justify-center gap-2">
                                         <button type="button" onclick="handleAction('approve', <?= $uid ?>, '<?= esc(addslashes($student['name'])) ?>', this)" class="approve-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide shadow-sm cursor-pointer">
                                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -266,9 +291,11 @@
                                             <span>Reject</span>
                                         </button>
                                     </div>
+                                    <?php else: ?><span class="text-sm text-gray-500">Decision recorded</span><?php endif; ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
+                            <tr id="noRegistrationsFound" style="display:none;"><td colspan="8" class="px-6 py-12 text-center text-gray-500 font-medium">No registrations match your search filter.</td></tr>
                         </tbody>
                     </table>
                 <?php endif; ?>
@@ -286,7 +313,7 @@
             <div>
                 <p class="text-blue-800 text-sm font-semibold">Approval Policy</p>
                 <p class="text-blue-700 text-xs mt-0.5 leading-relaxed">
-                    Students registered through the portal cannot log in until approved. Approving an account activates it immediately and logs the action in the system audit trail. Both the Guidance Counselor and Super Admin may approve registrations.
+                    Students registered through the portal cannot log in until approved. Approving an account activates it immediately and logs the action in the system audit trail. Only authorized Guidance Counselors may approve or reject registrations. Rejected registrations are retained without granting access.
                 </p>
             </div>
         </div>
@@ -372,6 +399,24 @@
                 // Fallback: direct browser navigation if fetch is blocked
                 window.location.href = endpoint;
             }
+        }
+
+        const searchRegInput = document.getElementById('searchRegistrations');
+        if (searchRegInput) {
+            searchRegInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                const rows = document.querySelectorAll('.registration-table tbody tr:not(#noRegistrationsFound)');
+                let visible = 0;
+                rows.forEach(row => {
+                    const match = !query || row.innerText.toLowerCase().includes(query);
+                    row.style.display = match ? '' : 'none';
+                    if (match) visible++;
+                });
+                const emptyRow = document.getElementById('noRegistrationsFound');
+                if (emptyRow) {
+                    emptyRow.style.display = (visible === 0 && rows.length > 0) ? '' : 'none';
+                }
+            });
         }
     </script>
     <?= view('partials/session_idle_modal') ?>

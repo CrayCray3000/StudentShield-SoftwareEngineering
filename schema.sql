@@ -4,9 +4,12 @@ CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    role TINYINT(1) DEFAULT 0 COMMENT '0=Student, 1=Counselor, 2=Super Admin',
+    role TINYINT(1) DEFAULT 0 COMMENT '0=Student, 1=Counselor, 2=Super Admin, 3=Principal',
     remember_token VARCHAR(255) NULL,
     is_active TINYINT(1) NOT NULL DEFAULT 0,
+    registration_status VARCHAR(12) NOT NULL DEFAULT 'approved',
+    access_disabled TINYINT(1) NOT NULL DEFAULT 0,
+    auth_version INT NOT NULL DEFAULT 1,
     is_locked TINYINT(1) NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
@@ -15,6 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS students (
     user_id INT PRIMARY KEY,
     student_id VARCHAR(50) UNIQUE,
+    lrn VARCHAR(12) NULL UNIQUE,
     parent_phone VARCHAR(50),
     parent_email VARCHAR(255),
     section VARCHAR(100),

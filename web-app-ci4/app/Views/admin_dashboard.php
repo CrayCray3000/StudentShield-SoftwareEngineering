@@ -18,7 +18,7 @@ $pageDescriptions = [
     <link rel="shortcut icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudentShield - <?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> — <?= esc($pageLabels[$dashboardPage]) ?></title>
+    <title>StudentShield - <?= session()->get('role') == 2 ? 'Super Admin' : 'Counselor' ?> — <?= esc($dashboardPage === 'vents' ? 'Student wellness' : $pageLabels[$dashboardPage]) ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <?= view('partials/school_brand', ['studentPalette' => true]) ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -516,7 +516,7 @@ $pageDescriptions = [
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    <?= esc($pageLabels[$dashboardPage]) ?>
+                    <?= esc($dashboardPage === 'vents' ? 'Student wellness' : $pageLabels[$dashboardPage]) ?>
                 </h2>
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
                     <p class="text-gray-600 text-xs sm:text-sm"><?= esc($pageDescriptions[$dashboardPage]) ?></p>
@@ -844,12 +844,12 @@ $pageDescriptions = [
     </main>
 
     <!-- Universal Detail Modal -->
-    <div id="detailModal" class="fixed inset-0 hidden items-center justify-center p-4 sm:p-8" style="z-index: 99999;">
+    <div id="detailModal" class="fixed inset-0 hidden items-center justify-center p-4 sm:p-6" style="z-index: 99999;" role="dialog" aria-modal="true" aria-label="Entry Details">
         <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" id="detailBackdrop"
             onclick="closeDetailModal()"></div>
         <div
-            class="bg-white p-6 sm:p-8 max-w-2xl w-[95%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[75vh] border border-[#e5ebe5]">
-            <div class="flex justify-between items-start mb-4 shrink-0">
+            class="bg-white max-w-2xl w-[96%] rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 flex flex-col max-h-[90dvh] border border-[#e5ebe5] overflow-hidden">
+            <div class="p-5 sm:p-7 flex flex-col min-h-0 flex-1 overflow-y-auto custom-scrollbar"><div class="flex justify-between items-start mb-4 shrink-0">
                 <div>
                     <div id="modalBadge"
                         class="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest mb-2 border">
@@ -906,7 +906,7 @@ $pageDescriptions = [
                 </div>
             </div>
 
-            <div class="mt-6 pt-4 border-t border-gray-200 flex justify-end shrink-0">
+            </div><div class="px-5 sm:px-7 py-4 border-t border-gray-200 flex justify-end shrink-0 bg-white">
                 <button onclick="closeDetailModal()"
                     class="px-6 py-3 bg-primary hover:bg-primary-darker text-white text-sm font-bold rounded-xl transition-colors shadow-sm">Confirm
                     & Close</button>
@@ -1762,26 +1762,7 @@ $pageDescriptions = [
             setInterval(fetchLiveIncidents, 30000);
             setInterval(fetchAlertLogs, 30000);
 
-            // Live Philippine Clock — seeded from server (Manila timezone guaranteed)
-            const serverTimestamp = <?= (time() + 28800) * 1000 ?>; // +8 hours for Manila time (PHT) in ms
-            const clientLoadTime = Date.now();
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-            function updateClock() {
-                const elapsed = Date.now() - clientLoadTime;
-                const phNow = new Date(serverTimestamp + elapsed);
-                const dayDate = days[phNow.getUTCDay()] + ', ' + months[phNow.getUTCMonth()] + ' ' + phNow.getUTCDate() + ', ' + phNow.getUTCFullYear();
-                const h = phNow.getUTCHours();
-                const ampm = h >= 12 ? 'PM' : 'AM';
-                const h12 = h % 12 || 12;
-                const m = String(phNow.getUTCMinutes()).padStart(2, '0');
-                const s = String(phNow.getUTCSeconds()).padStart(2, '0');
-                document.getElementById('liveDayDate').textContent = dayDate;
-                document.getElementById('liveTime').textContent = h12 + ':' + m + ':' + s + ' ' + ampm;
-            }
-            updateClock();
-            setInterval(updateClock, 1000);
         });
 
         function submitBulkDeleteVents() {
@@ -2080,6 +2061,13 @@ $pageDescriptions = [
                 this.style.transform = 'translateY(0) scale(1)';
             });
         })();
+
+        // Escape key closes detail modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'Escape') return;
+            const dm = document.getElementById('detailModal');
+            if (dm && !dm.classList.contains('hidden')) closeDetailModal();
+        });
     </script>
 
 

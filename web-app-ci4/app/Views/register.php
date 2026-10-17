@@ -9,7 +9,7 @@
     <title>Student Portal - Registration</title>
     <link rel="preload" as="image" href="<?= base_url('images/logo.png?v=6') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <?= view('partials/school_brand') ?>
+    <?= view('partials/school_brand', ['studentPalette' => true]) ?>
     <script>
         tailwind.config = {
             theme: {
@@ -155,7 +155,7 @@
         }
     </style>
 </head>
-<body class="school-auth-page bg-student min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
+<body class="student-registration bg-student min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
 
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div id="spotlight-overlay" class="spotlight absolute inset-0 z-10"></div>
@@ -213,6 +213,11 @@
                     </div>
                 </div>
 
+                <div class="space-y-1.5">
+                    <label for="lrn" class="block text-sm sm:text-base font-bold text-white/80 ml-1 uppercase tracking-wider">Learner Reference Number (LRN)</label>
+                    <input type="text" name="lrn" id="lrn" required inputmode="numeric" pattern="[0-9]{12}" minlength="12" maxlength="12" value="<?= set_value('lrn') ?>" aria-describedby="lrnHelp" class="w-full px-4 py-3 input-dark rounded-xl text-[16px] font-bold outline-none" placeholder="Enter your 12-digit LRN">
+                    <p id="lrnHelp" class="text-xs text-white/80 ml-1">Use the LRN on your school record or report card.</p>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
                     <div class="space-y-1.5">
                         <label for="grade_level" class="block text-sm sm:text-base font-bold text-white/80 ml-1 uppercase tracking-wider">Grade Level</label>

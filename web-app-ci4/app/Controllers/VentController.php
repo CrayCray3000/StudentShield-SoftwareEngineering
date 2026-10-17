@@ -9,11 +9,13 @@ class VentController extends BaseController
 {
     public function index()
     {
+        if (!$this->hasRole(0)) return $this->forbidden();
         return view('vent_form');
     }
 
     public function submit()
     {
+        if (!$this->hasRole(0)) return $this->forbidden();
         try {
         $text = $this->request->getPost('vent_text');
         $userId = session()->get('user_id');
@@ -193,6 +195,7 @@ class VentController extends BaseController
         }
 
         $db->table('vent_logs')->insert($insertData);
+        $this->logAudit('CREATE_VENT', 'vent', (int) $db->insertID());
 
         $hideFromParents = $this->request->getPost('hide_from_parents') === '1';
 

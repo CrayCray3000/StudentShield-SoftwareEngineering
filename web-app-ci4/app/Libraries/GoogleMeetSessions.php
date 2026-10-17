@@ -106,7 +106,7 @@ class GoogleMeetSessions
         // remains necessary because a forwarded Google URL can bypass this redirect.
         $row = $this->db->table('virtual_meetings')->where('id', $meetingId)->get()->getRowArray();
         $allowed = $row && (($role === 0 && (int) $row['student_id'] === $userId)
-            || (in_array($role, [1, 2], true) && (int) $row['counselor_id'] === $userId));
+            || ($role === 1 && (int) $row['counselor_id'] === $userId));
         if (!$allowed || !$this->isOpen($row)) throw new DomainException('This session is unavailable or is not assigned to you.');
         return self::normalizeLink($row['meet_link']);
     }

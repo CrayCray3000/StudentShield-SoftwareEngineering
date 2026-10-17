@@ -21,8 +21,8 @@ class AuthController extends BaseController
     {
         if (session()->get('isLoggedIn')) {
             $role = (int) session()->get('role');
-            if ($role === 1 || $role === 2) {
-                return redirect()->to('/admin/dashboard');
+            if (in_array($role, [1, 2, 3], true)) {
+                return redirect()->to(\App\Libraries\RoleAccess::home((int) session()->get('role')));
             } else {
                 session()->destroy();
                 return redirect()->to('/admin/login');
@@ -35,19 +35,20 @@ class AuthController extends BaseController
             if (strpos($cookieData, ':') !== false) {
                 list($cookieUserId, $cookieToken) = explode(':', $cookieData, 2);
                 $db = \Config\Database::connect();
-                $user = $db->table('users')->where('id', $cookieUserId)->whereIn('role', [1, 2])->get()->getRowArray();
+                $user = $db->table('users')->where('id', $cookieUserId)->whereIn('role', [1, 2, 3])->get()->getRowArray();
                 
-                if ($user && password_verify($cookieToken, $user['remember_token'])) {
-                    $roleNames = [1 => 'counselor', 2 => 'super_admin'];
+                if ($user && \App\Libraries\RoleAccess::enabled($user) && password_verify($cookieToken, $user['remember_token'] ?? '')) {
+                    $roleNames = [1 => 'counselor', 2 => 'super_admin', 3 => 'principal'];
                     session()->regenerate();
                     session()->set([
                         'user_id'    => $user['id'],
                         'name'       => $user['name'],
                         'role'       => (int) $user['role'],
                         'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
+                        'auth_version' => (int) ($user['auth_version'] ?? 1),
                         'isLoggedIn' => true,
                     ]);
-                    return redirect()->to('/admin/dashboard');
+                    return redirect()->to(\App\Libraries\RoleAccess::home((int) session()->get('role')));
                 }
             }
         }
@@ -79,8 +80,8 @@ class AuthController extends BaseController
         if ($user && password_verify($password, $pwHash)) {
             
             // Approval-Based Registration Check
-            if (isset($user['is_active']) && $user['is_active'] == 0) {
-                return redirect()->back()->with('error', 'Your account is still pending approval by the guidance office.');
+            if (!\App\Libraries\RoleAccess::enabled($user)) {
+                return redirect()->back()->with('error', 'Your account is not approved or is disabled. Please contact the guidance office.');
             }
 
             // Remember Me Feature
@@ -105,7 +106,8 @@ class AuthController extends BaseController
                 'name'       => $user['name'],
                 'role'       => (int) $user['role'],
                 'role_name'  => 'student',
-                'isLoggedIn' => true,
+                'auth_version' => (int) ($user['auth_version'] ?? 1),
+                        'isLoggedIn' => true,
                 'last_activity' => time(),
             ]);
             $this->logAudit('USER_LOGIN', 'system', $user['id']);
@@ -115,7 +117,7 @@ class AuthController extends BaseController
     }
 
     /**
-     * Counselors (role=1) & Super Admins (role=2) login with name + password.
+     * Counselors, Super Admins and Principals use the staff password and OTP workflow.
      */
     public function authenticateAdmin()
     {
@@ -131,13 +133,13 @@ class AuthController extends BaseController
             return redirect()->back()->with('error', 'Please fill in all fields.');
         }
 
-        // Find user by name AND must be counselor (role=1) or super_admin (role=2)
+        // Only staff roles may authenticate through this portal.
         $user = $db->table('users')
-            ->select('users.*, COALESCE(counselors.counselor_email, admins.email) AS parent_email, COALESCE(counselors.counselor_phone, admins.phone) AS parent_phone')
+            ->select('users.*, CASE WHEN users.role = 1 THEN counselors.counselor_email ELSE admins.email END AS parent_email, CASE WHEN users.role = 1 THEN counselors.counselor_phone ELSE admins.phone END AS parent_phone', false)
             ->join('counselors', 'counselors.user_id = users.id', 'left')
             ->join('admins', 'admins.user_id = users.id', 'left')
             ->where('users.name', $name)
-            ->whereIn('users.role', [1, 2])
+            ->whereIn('users.role', [1, 2, 3])
             ->get()->getRowArray();
 
         // Always verify password to ensure constant-time response (timing attack mitigation)
@@ -149,8 +151,8 @@ class AuthController extends BaseController
         $pwHash = $user['password_hash'] ?? $user['passcode'] ?? '$2y$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ012';
         $passwordValid = password_verify($password, $pwHash);
 
-        if ($user && $passwordValid) {
-            $roleNames = [1 => 'counselor', 2 => 'super_admin'];
+        if ($user && $passwordValid && \App\Libraries\RoleAccess::enabled($user)) {
+            $roleNames = [1 => 'counselor', 2 => 'super_admin', 3 => 'principal'];
 
             // ── LAYER 5: TRUSTED DEVICE BYPASS ──
             if (isset($_COOKIE['admin_trusted_device'])) {
@@ -165,11 +167,12 @@ class AuthController extends BaseController
                             'name'       => $user['name'],
                             'role'       => (int) $user['role'],
                             'role_name'  => $roleNames[(int)$user['role']] ?? 'counselor',
-                            'isLoggedIn' => true,
+                            'auth_version' => (int) ($user['auth_version'] ?? 1),
+                        'isLoggedIn' => true,
                             'last_activity' => time(),
                         ]);
                         $this->logAudit('USER_LOGIN', 'system', $user['id']);
-                        return redirect()->to('/admin/dashboard');
+                        return redirect()->to(\App\Libraries\RoleAccess::home((int) session()->get('role')));
                     }
                 }
             }
@@ -182,6 +185,7 @@ class AuthController extends BaseController
                 'temp_user_id'   => $user['id'],
                 'temp_name'      => $user['name'],
                 'temp_role'      => (int) $user['role'],
+                'temp_auth_version' => (int) ($user['auth_version'] ?? 1),
                 'temp_role_name' => $roleNames[(int)$user['role']] ?? 'counselor',
                 'otp'            => $otp,
                 'otp_expires'    => time() + 300, // 5 minutes strict expiration
@@ -264,6 +268,13 @@ class AuthController extends BaseController
             return redirect()->back()->with('error', "Invalid verification code. {$remaining} attempt(s) remaining.");
         }
 
+        $verifiedAccount = $this->otpAccount((int) session()->get('temp_user_id'));
+        if (!$verifiedAccount || !\App\Libraries\RoleAccess::enabled($verifiedAccount)
+            || (int) $verifiedAccount['role'] !== (int) session()->get('temp_role')
+            || (int) ($verifiedAccount['auth_version'] ?? 1) !== (int) (session()->get('temp_auth_version') ?? 1)) {
+            $this->clearOtpSession();
+            return redirect()->to('/admin/login')->with('error', 'Account access changed. Please log in again.');
+        }
         // Official Authentication Authorization!
         // Check Trust Device
         if ($this->request->getPost('trust_device') == '1') {
@@ -297,13 +308,14 @@ class AuthController extends BaseController
             'name'          => $name,
             'role'          => $role,
             'role_name'     => $roleName,
+            'auth_version' => (int) ($verifiedAccount['auth_version'] ?? 1),
             'isLoggedIn'    => true,
             'last_activity' => time(),
         ]);
 
         $this->logAudit('USER_LOGIN', 'system', $userId);
 
-        return redirect()->to('/admin/dashboard');
+        return redirect()->to(\App\Libraries\RoleAccess::home((int) session()->get('role')));
     }
 
     /**
@@ -332,7 +344,7 @@ class AuthController extends BaseController
         $userId = session()->get('temp_user_id');
         $db = \Config\Database::connect();
         $user = $db->table('users')
-            ->select('users.*, COALESCE(counselors.counselor_email, admins.email) AS parent_email')
+            ->select('users.*, CASE WHEN users.role = 1 THEN counselors.counselor_email ELSE admins.email END AS parent_email', false)
             ->join('counselors', 'counselors.user_id = users.id', 'left')
             ->join('admins', 'admins.user_id = users.id', 'left')
             ->where('users.id', $userId)
@@ -402,7 +414,7 @@ class AuthController extends BaseController
         $this->clearOtpSession();
         session()->destroy();
         
-        if ($role === 1 || $role === 2) {
+        if (in_array($role, [1, 2, 3], true)) {
             return redirect()->to('/admin/login');
         }
         return redirect()->to('/login');
@@ -411,11 +423,16 @@ class AuthController extends BaseController
     /**
      * Clears all temporary two-factor authentication session variables.
      */
+    protected function otpAccount(int $id): ?array
+    {
+        return \Config\Database::connect()->table('users')->where('id', $id)->get()->getRowArray();
+    }
+
     private function clearOtpSession(): void
     {
         session()->remove([
             'otp', 'otp_expires', 'otp_attempts', 'temp_user_id',
-            'temp_name', 'temp_role', 'temp_role_name',
+            'temp_name', 'temp_role', 'temp_role_name', 'temp_auth_version',
             'otp_resend_count', 'otp_resend_time', 'otp_masked_email'
         ]);
     }
@@ -522,9 +539,14 @@ class AuthController extends BaseController
     {
         helper(['form', 'url']);
         $db = \Config\Database::connect();
-        $db->transStart();
-
         $name = trim((string) $this->request->getPost('name'));
+        $lrn = trim((string) $this->request->getPost('lrn'));
+        if (!preg_match('/\A[0-9]{12}\z/', $lrn)) {
+            return redirect()->back()->withInput()->with('error', 'Enter a valid 12-digit LRN.');
+        }
+        if ($db->table('students')->where('lrn', $lrn)->countAllResults() > 0) {
+            return redirect()->back()->withInput()->with('error', 'That LRN is already registered. Please contact the guidance office.');
+        }
         $gradeLevel = trim((string) $this->request->getPost('grade_level'));
         $section = trim((string) $this->request->getPost('section'));
         $parentContact = trim((string) $this->request->getPost('parent_contact'));
@@ -577,12 +599,14 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('error', 'That name is already registered.');
         }
 
+        $db->transStart();
         // Insert into users table
         $db->table('users')->insert([
             'name' => $name,
             'role' => 0, // Student
             'password_hash' => password_hash($password, PASSWORD_BCRYPT),
-            'is_active' => 0 // Pending approval
+            'is_active' => 0, // Pending approval
+            'registration_status' => 'pending'
         ]);
 
         $userId = $db->insertID();
@@ -591,6 +615,7 @@ class AuthController extends BaseController
         $db->table('students')->insert([
             'user_id' => $userId,
             'student_id' => $studentId,
+            'lrn' => $lrn,
             'grade_level' => $gradeLevel,
             'section' => $section,
             'parent_phone' => $parentPhone,
@@ -603,7 +628,7 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('error', 'Registration failed. Please try again.');
         }
 
-        $this->logAudit('USER_REGISTERED', 'system', $userId);
+        \App\Libraries\AuditTrail::record('USER_REGISTERED', 'user', (int) $userId, (int) $userId);
 
         return redirect()->to('/login')->with('success', 'Registration successful! Your account is pending approval by the guidance office.');
     }

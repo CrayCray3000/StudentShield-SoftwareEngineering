@@ -8,6 +8,7 @@ class BullyReportController extends BaseController
 {
     public function index()
     {
+        if (!$this->hasRole(0)) return $this->forbidden();
         // Block locked students from accessing the bullying report form
         $userId = session()->get('user_id');
         if ($userId) {
@@ -23,6 +24,7 @@ class BullyReportController extends BaseController
 
     public function submit()
     {
+        if (!$this->hasRole(0)) return $this->forbidden();
         if (!$this->request->is('post')) return redirect()->to('/report/bullying');
 
         // Block locked students from submitting reports
@@ -144,6 +146,8 @@ class BullyReportController extends BaseController
             log_message('error', 'DB Exception: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Submission failed due to a system error. Please try again.');
         }
+
+        $this->logAudit('CREATE_INCIDENT', 'incident', (int) $insertId);
 
         // --- Stage 1: Instant Counselor Alert (Report Intake) ---
         // Parent alerts are NOT sent here. They fire only after counselor verification (Stage 2)

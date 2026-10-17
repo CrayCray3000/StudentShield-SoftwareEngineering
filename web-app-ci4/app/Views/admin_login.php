@@ -215,7 +215,7 @@
         <form action="<?= base_url('admin/login/authenticate') ?>" method="post" class="space-y-4 sm:space-y-5">
             <?= csrf_field() ?>
             <div>
-                <label for="name" class="block text-[11px] sm:text-xs font-semibold text-white/80 mb-1.5 sm:mb-2 ml-1 uppercase tracking-wider">Admin ID</label>
+                <label for="name" class="block text-[11px] sm:text-xs font-semibold text-white/80 mb-1.5 sm:mb-2 ml-1 uppercase tracking-wider">Staff account</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 sm:pl-4 flex items-center pointer-events-none">
                         <svg class="h-[18px] w-[18px] sm:h-5 sm:w-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">

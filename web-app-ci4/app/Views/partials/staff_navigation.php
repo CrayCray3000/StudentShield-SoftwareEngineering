@@ -1,7 +1,7 @@
 <?php
 $staffPage = $staffPage ?? 'vents';
 $staffPageLabel = $staffPageLabel ?? 'Vents';
-$staffRole = (int) session()->get('role') === 2 ? 'Super Admin' : 'Counselor';
+$staffRole = \App\Libraries\RoleAccess::NAMES[(int) session()->get('role')] ?? 'Staff';
 $staffName = (string) (session()->get('name') ?: $staffRole);
 $staffInitial = mb_strtoupper(mb_substr($staffName, 0, 1));
 $staffLinks = [
@@ -12,14 +12,20 @@ $staffLinks = [
     'analytics' => ['Analytics', 'admin/analytics', 'M3 21h18M5 17V9h3v8M11 17V5h3v12M17 17V2h3v15'],
 ];
 $staffAdminLinks = [];
-if ((int) session()->get('role') === 2) {
-    $staffAdminLinks['users'] = ['Users', 'admin/users', 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M16 3a4 4 0 010 8M22 21v-2a4 4 0 00-3-3.9M13 7a4 4 0 11-8 0 4 4 0 018 0z'];
-}
-$staffAdminLinks['registrations'] = ['Registrations', 'admin/pending-registrations', 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M20 8v6M17 11h6M13 7a4 4 0 11-8 0 4 4 0 018 0z'];
-if ((int) session()->get('role') === 2) {
-    $staffAdminLinks['audit-logs'] = ['Audit Logs', 'admin/audit-logs', 'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M8 13h8M8 17h6'];
+if ((int) session()->get('role') === 1) {
+    $staffAdminLinks['registrations'] = ['Registrations', 'admin/pending-registrations', 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M20 8v6M17 11h6'];
+} elseif ((int) session()->get('role') === 2) {
+    $staffLinks = [
+        'users' => ['Accounts', 'admin/users', 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M13 7a4 4 0 11-8 0 4 4 0 018 0M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'],
+        'audit-logs' => ['Audit Logs', 'admin/audit-logs', 'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M8 13h8M8 17h6'],
+    ];
+    $showSessionRequests = false;
+} elseif ((int) session()->get('role') === 3) {
+    $staffLinks = ['principal' => ['School overview', 'principal/dashboard', 'M3 21h18M5 17V9h3v8M11 17V5h3v12M17 17V2h3v15']];
+    $showSessionRequests = false;
 }
 ?>
+<link rel="stylesheet" href="<?= base_url('css/staff-filters.css?v=' . filemtime(FCPATH . 'css/staff-filters.css')) ?>">
 <a class="staff-skip-link" href="#staffMain">Skip to content</a>
 <button type="button" id="staffBackdrop" class="staff-backdrop" aria-label="Close navigation" tabindex="-1" hidden></button>
 <aside id="staffSidebar" class="staff-sidebar" aria-label="Staff navigation" tabindex="-1">
@@ -30,6 +36,7 @@ if ((int) session()->get('role') === 2) {
     </div>
     <div class="staff-sidebar-scroll">
         <?php foreach (['Workspace' => $staffLinks, 'Administration' => $staffAdminLinks] as $group => $links): ?>
+        <?php if (empty($links)) continue; ?>
         <p class="staff-nav-label <?= $group === 'Workspace' ? 'staff-workspace-navigation' : '' ?>"><?= esc($group) ?></p>
         <nav class="<?= $group === 'Workspace' ? 'staff-workspace-navigation' : '' ?>" aria-label="<?= $group === 'Workspace' ? 'Staff pages' : 'Administration' ?>">
             <?php foreach ($links as $key => [$label, $url, $path]): ?>
@@ -60,12 +67,12 @@ if ((int) session()->get('role') === 2) {
         <div class="staff-mobile-brand"><img src="<?= base_url('images/logo.png?v=6') ?>" alt="SVBSM logo" width="28" height="28"><strong>StudentShield</strong></div>
         <div class="staff-school-name">Saint Vincent Blessed School of Manila</div>
         <div class="staff-topbar-tools">
-            <div class="staff-clock"><span id="liveDayDate"><?= date('D, j M Y') ?></span><?php if (!empty($showSessionRequests)): ?><span id="liveTime"><?= date('g:i:s A') ?></span><?php endif; ?></div>
+            <div class="staff-clock"><span id="liveDayDate"><?= date('D, j M Y') ?></span><span id="liveTime"><?= date('g:i:s A') ?></span></div>
             <?php if (!empty($showSessionRequests)): ?><?= view('partials/staff_session_requests', ['pending_meetings_count' => $pending_meetings_count ?? 0]) ?><?php endif; ?>
         </div>
     </div>
 </header>
-<nav class="staff-mobile-bottom-nav" aria-label="Mobile staff pages">
+<nav class="staff-mobile-bottom-nav" aria-label="Mobile staff pages" style="--staff-nav-count: <?= count($staffLinks) ?>">
     <?php foreach ($staffLinks as $key => [$label, $url, $path]): ?>
     <a href="<?= base_url($url) ?>" <?= $staffPage === $key ? 'aria-current="page"' : '' ?>>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="<?= esc($path, 'attr') ?>"/></svg>

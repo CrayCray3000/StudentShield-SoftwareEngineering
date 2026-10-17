@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Favicon -->
@@ -463,7 +463,7 @@
                     <form id="noteForm" onsubmit="submitNote(event)" class="space-y-4">
                         <div>
                             <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Note Type</label>
-                            <select id="noteType" class="mt-1 w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-1 focus:ring-emerald-700 outline-none">
+                            <select id="noteType" class="mt-1 w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-700/30 focus:border-emerald-700 outline-none">
                                 <option value="general">General Documentation</option>
                                 <option value="observation">Behavioral Observation</option>
                                 <option value="intervention">Action Taken / Intervention</option>
@@ -517,18 +517,19 @@
     </div>
 
     <!-- Status Change Modal (No-print) -->
-    <div id="statusModal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-6 w-[90%] max-w-md shadow-2xl border border-gray-200">
+    <div id="statusModal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4" onclick="if(event.target===this)closeStatusModal()" role="dialog" aria-modal="true" aria-label="Update Case Status">
+        <div class="bg-white rounded-2xl w-[92%] max-w-md shadow-2xl border border-gray-200 max-h-[90dvh] overflow-y-auto">
+            <div class="p-6">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold font-heading text-emerald-950">Update Case Management Status</h3>
-                <button onclick="closeStatusModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                <button onclick="closeStatusModal()" aria-label="Close" class="p-2 min-w-[40px] min-h-[40px] text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-xl transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-emerald-700">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </div>
             <form onsubmit="submitStatus(event)" class="space-y-4">
                 <div>
                     <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">New Status</label>
-                    <select id="newStatusSelect" class="mt-1 w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-1 focus:ring-emerald-700 outline-none">
+                    <select id="newStatusSelect" class="mt-1 w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-700/30 focus:border-emerald-700 outline-none">
                         <option value="active_monitoring">Active Monitoring</option>
                         <option value="intervention_ongoing">Intervention Ongoing</option>
                         <option value="parent_consultation_required">Parent Consultation Required</option>
@@ -546,6 +547,7 @@
                     Update Status & Log Case Event
                 </button>
             </form>
+            </div>
         </div>
     </div>
 
@@ -560,7 +562,7 @@
                     Open a Google Meet session
                 </h3>
                 <button type="button" onclick="hideGoogleMeetDialog()" class="text-gray-400 hover:text-white transition" aria-label="Close">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </div>
             <form id="googleMeetForm" class="p-5 space-y-4" onsubmit="publishGoogleMeet(event)">
@@ -1216,6 +1218,15 @@
 
         // Bootstrap load
         window.addEventListener('DOMContentLoaded', loadCaseData);
+
+        // Escape key closes any open modal on this page
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'Escape') return;
+            const statusModal = document.getElementById('statusModal');
+            const meetModal  = document.getElementById('googleMeetModal');
+            if (statusModal && !statusModal.classList.contains('hidden')) closeStatusModal();
+            else if (meetModal && !meetModal.classList.contains('hidden')) hideGoogleMeetDialog();
+        });
     </script>
     <?= view('partials/session_idle_modal') ?>
     <!-- ── Floating Scroll-to-Top Button ── -->

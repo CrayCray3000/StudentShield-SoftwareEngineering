@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Favicon -->
@@ -63,7 +63,7 @@
         <div class="staff-page-heading flex items-center justify-between mb-8">
             <div>
                 <h2 class="text-2xl font-heading font-bold text-gray-900">System Audit Logs</h2>
-                <p class="text-gray-600 text-sm mt-1">Track staff accountability, report verifications, and system actions.</p>
+                <p class="text-gray-600 text-sm mt-1">Account and security activity. IP addresses reflect the connection observed by the server or a configured trusted proxy.</p>
             </div>
         </div>
 
@@ -71,16 +71,17 @@
             <div class="section-header flex justify-between items-center sm:flex-row flex-col gap-4">
                 <h2 class="text-lg font-bold flex items-center gap-3">
                     <svg class="h-5 w-5 text-[#0B5E2E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    Action History
+                    <span>Action History</span>
+                    <span id="visibleCount" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200"><?= count($logs) ?> entries</span>
                 </h2>
             </div>
             <div class="staff-filter-bar px-6 py-3 flex justify-between items-center bg-white border-b border-gray-100 flex-wrap gap-2">
                 <div class="flex items-center gap-2 flex-1 min-w-[200px] max-w-sm relative">
-                    <svg class="w-4 h-4 text-gray-400 absolute left-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    <input type="text" id="searchLogs" placeholder="Search actor or action..." class="w-full pl-9 pr-4 py-1.5 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-1 focus:ring-[#0B5E2E]/20 transition-all">
+                    <svg class="w-4 h-4 text-gray-400 absolute left-3 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    <input type="text" id="searchLogs" aria-label="Search logs" placeholder="Search actor, action or IP..." class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-2 focus:ring-[#0B5E2E]/20 transition-all">
                 </div>
                 <div class="staff-filter-controls flex items-center gap-2 flex-wrap">
-                    <select id="filterCategoryLogs" aria-label="Filter audit category" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E]">
+                    <select id="filterCategoryLogs" aria-label="Filter audit category" class="text-sm px-3 py-2 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-2 focus:ring-[#0B5E2E]/20 bg-white cursor-pointer transition-all">
                         <option value="all">All Categories</option>
                         <option value="INCIDENT">Incident</option>
                         <option value="VENT">Vent</option>
@@ -88,8 +89,8 @@
                         <option value="STUDENT">Student</option>
                         <option value="USER">User</option>
                     </select>
-                    <input type="date" id="filterDateLogs" aria-label="Filter audit date" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] text-gray-600">
-                    <button type="button" id="clearFiltersLogs" class="text-xs font-semibold text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg border border-gray-200 transition-colors">✕ Clear</button>
+                    <input type="date" id="filterDateLogs" aria-label="Filter audit date" class="text-sm px-3 py-2 border border-gray-200 rounded-lg outline-none focus:border-[#0B5E2E] focus:ring-2 focus:ring-[#0B5E2E]/20 text-gray-700 bg-white cursor-pointer transition-all">
+                    <button type="button" id="clearFiltersLogs" class="text-xs font-semibold text-gray-600 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 px-3.5 py-2 min-h-[38px] rounded-lg border border-gray-200 transition-colors cursor-pointer">✕ Clear</button>
                 </div>
             </div>
             
@@ -101,11 +102,12 @@
                             <th class="px-6 py-4 border-b border-gray-200">Actor</th>
                             <th class="px-6 py-4 border-b border-gray-200">Summary</th>
                             <th class="px-6 py-4 border-b border-gray-200">Category</th>
+                            <th class="px-6 py-4 border-b border-gray-200">IP address</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <?php foreach ($logs as $log): ?>
-                        <tr class="hover:bg-gray-50/50 transition-colors" data-category="<?= strtoupper($log['entity_type']) ?>" data-date="<?= date('Y-m-d', strtotime($log['created_at'])) ?>">
+                        <tr class="hover:bg-gray-50/50 transition-colors" data-category="<?= esc(strtoupper($log['entity_type']), 'attr') ?>" data-date="<?= date('Y-m-d', strtotime($log['created_at'])) ?>">
                             <td data-label="Time" class="px-6 py-4 text-xs text-gray-500 whitespace-nowrap">
                                 <?= date('M d, Y h:i A', strtotime($log['created_at'])) ?>
                             </td>
@@ -119,7 +121,7 @@
                                         <p class="text-xs text-gray-500">
                                             <?php 
                                                 if (isset($log['actor_role'])) {
-                                                    echo $log['actor_role'] == 2 ? 'Super Admin' : ($log['actor_role'] == 1 ? 'Counselor' : 'Student');
+                                                    echo esc(\App\Libraries\RoleAccess::NAMES[(int) $log['actor_role']] ?? 'Unknown');
                                                 } else {
                                                     echo 'Unknown Role';
                                                 }
@@ -130,24 +132,10 @@
                             </td>
                             <td data-label="Summary" class="px-6 py-4">
                                 <?php 
-                                    $actionStr = str_replace('_', ' ', $log['action']);
-                                    $summary = ucfirst(strtolower($actionStr)) . " (ID: " . $log['entity_id'] . ")";
-                                    
-                                    if ($log['action'] == 'VERIFY_AND_ALERT' || $log['action'] == 'VERIFY_INCIDENT') {
-                                        $summary = "<span class='text-emerald-700 font-semibold'>Verified Bullying Report #{$log['entity_id']}</span>";
-                                    } elseif ($log['action'] == 'REJECT_FAKE') {
-                                        $summary = "<span class='text-red-600 font-semibold'>Rejected Fake Report #{$log['entity_id']}</span>";
-                                    } elseif ($log['action'] == 'RESOLVE') {
-                                        $summary = "<span class='text-blue-600 font-semibold'>Resolved Vent Log #{$log['entity_id']}</span>";
-                                    } elseif ($log['action'] == 'SOFT_DELETE') {
-                                        $summary = "<span class='text-gray-500 font-semibold'>Archived Vent Log #{$log['entity_id']}</span>";
-                                    } elseif ($log['action'] == 'USER_LOGIN') {
-                                        $summary = "<span class='text-indigo-600 font-semibold'>Logged into the system</span>";
-                                    } elseif ($log['action'] == 'USER_LOGOUT') {
-                                        $summary = "<span class='text-gray-500 font-semibold'>Logged out of the system</span>";
-                                    }
-                                    
-                                    echo "<p class='text-sm text-gray-800'>{$summary}</p>";
+                                    $entityId = (int) $log['entity_id'];
+                                    $actionStr = ucfirst(strtolower(str_replace('_', ' ', $log['action'])));
+                                    $summary = $actionStr . ($entityId ? ' (reference #' . $entityId . ')' : '');
+                                    echo "<p class='text-sm text-gray-800'>" . esc($summary) . "</p>";
                                 ?>
                             </td>
                             <td data-label="Category" class="px-6 py-4">
@@ -166,13 +154,15 @@
                                     }
                                 ?>
                                 <span class="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider <?= $bgClass ?>">
-                                    <?= $entity ?>
+                                    <?= esc($entity) ?>
                                 </span>
                             </td>
+                            <td data-label="IP address" class="px-6 py-4 text-sm text-gray-700"><code><?= esc(($log['ip_address'] ?? '') ?: 'Not recorded') ?></code></td>
                         </tr>
                         <?php endforeach; ?>
+                        <tr id="noLogsFound" style="display:none;"><td colspan="5" class="px-6 py-12 text-center text-gray-500 font-medium">No matching audit logs found.</td></tr>
                         <?php if (empty($logs)): ?>
-                        <tr><td colspan="4" class="px-6 py-12 text-center text-gray-500">No audit logs found.</td></tr>
+                        <tr><td colspan="5" class="px-6 py-12 text-center text-gray-500">No audit logs found.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -180,16 +170,16 @@
             
             <?php if (isset($pager) && $pager->getPageCount() > 1): ?>
             <style>
-                .pagination { display: flex; list-style: none; padding: 0; margin: 0; gap: 0.25rem; }
-                .pagination li a, .pagination li span { padding: 0.5rem 0.75rem; border: 1px solid #e5ebe5; border-radius: 0.375rem; font-size: 0.875rem; color: #4b5563; text-decoration: none; background: white; }
-                .pagination li.active a, .pagination li.active span { background-color: #096328; color: white; border-color: #096328; }
-                .pagination li a:hover { background-color: #f9fafb; }
+                .pagination { display: flex; list-style: none; padding: 0; margin: 0; gap: 0.375rem; flex-wrap: wrap; }
+                .pagination li a, .pagination li span { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 0.875rem; border: 1px solid #CFD9D4; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; color: #3D4943; text-decoration: none; background: white; transition: all 0.15s ease; }
+                .pagination li.active a, .pagination li.active span { background-color: #096328; color: white; border-color: #096328; font-weight: 700; box-shadow: 0 2px 6px rgba(9,99,40,0.25); }
+                .pagination li a:hover { background-color: #F4F7F5; border-color: #096328; color: #096328; }
             </style>
             <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between flex-wrap gap-4">
                 <span class="text-sm text-gray-500">
                     Showing <?= ($pager->getCurrentPage() - 1) * 50 + 1 ?> to <?= min($pager->getCurrentPage() * 50, $pager->getTotal()) ?> of <?= $pager->getTotal() ?> entries
                 </span>
-                <div class="flex items-center">
+                <div class="flex items-center overflow-x-auto max-w-full py-1">
                     <?= $pager->links() ?>
                 </div>
             </div>
@@ -199,14 +189,14 @@
 
     <script>
         function applyAuditFilters() {
-            const search = document.getElementById('searchLogs').value.toLowerCase();
+            const search = document.getElementById('searchLogs').value.toLowerCase().trim();
             const category = document.getElementById('filterCategoryLogs').value;
             const dateVal = document.getElementById('filterDateLogs').value;
-            const rows = document.querySelectorAll('#logsTable tbody tr');
+            const rows = document.querySelectorAll('#logsTable tbody tr:not(#noLogsFound)');
             let visibleCount = 0;
 
             rows.forEach(row => {
-                const matchSearch = row.innerText.toLowerCase().includes(search);
+                const matchSearch = !search || row.innerText.toLowerCase().includes(search);
                 const matchCategory = category === 'all' || row.getAttribute('data-category') === category;
                 const matchDate = !dateVal || row.getAttribute('data-date') === dateVal;
 
@@ -218,12 +208,17 @@
                 }
             });
 
+            const noLogs = document.getElementById('noLogsFound');
+            if (noLogs) {
+                noLogs.style.display = (visibleCount === 0 && rows.length > 0) ? '' : 'none';
+            }
+
             // Update visible count badge
             const badge = document.getElementById('visibleCount');
-            if (badge) badge.textContent = visibleCount + ' result' + (visibleCount !== 1 ? 's' : '');
+            if (badge) badge.textContent = visibleCount + ' entry' + (visibleCount !== 1 ? 's' : '');
         }
 
-        document.getElementById('searchLogs').addEventListener('keyup', applyAuditFilters);
+        document.getElementById('searchLogs').addEventListener('input', applyAuditFilters);
         document.getElementById('filterCategoryLogs').addEventListener('change', applyAuditFilters);
         document.getElementById('filterDateLogs').addEventListener('change', applyAuditFilters);
         document.getElementById('clearFiltersLogs').addEventListener('click', function() {

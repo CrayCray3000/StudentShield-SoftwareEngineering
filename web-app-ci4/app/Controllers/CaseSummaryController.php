@@ -18,11 +18,11 @@ class CaseSummaryController extends BaseController
     }
 
     /**
-     * Guard: ensure only counselors/admins can access (roles 1 & 2).
+     * Guard: clinical student records are counselor-only (role 1).
      */
     private function guardAccess(): bool
     {
-        return session()->get('isLoggedIn') && in_array((int) session()->get('role'), [1, 2]);
+        return session()->get('isLoggedIn') && in_array((int) session()->get('role'), [1]);
     }
 
     /**
@@ -503,6 +503,7 @@ class CaseSummaryController extends BaseController
                       students.grade_level, students.parent_phone, students.parent_email')
             ->join('students', 'students.user_id = users.id', 'left')
             ->where('users.id', $studentId)
+            ->where('users.role', 0)
             ->get()->getRowArray();
 
 

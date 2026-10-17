@@ -6,13 +6,15 @@
         -webkit-backdrop-filter: blur(4px);
     }
 </style>
-<div id="studentProfileModal" class="fixed inset-0 z-[100] hidden items-center justify-center modal-backdrop">
+<div id="studentProfileModal" class="fixed inset-0 z-[100] hidden items-center justify-center modal-backdrop" role="dialog" aria-modal="true" aria-label="Student Wellness Profile">
+    <!-- Backdrop click to close -->
+    <div class="absolute inset-0" onclick="closeStudentProfile()" aria-hidden="true"></div>
     <div
-        class="bg-[#FAFDFB] rounded-2xl p-0 w-[95%] max-w-4xl shadow-[0_20px_70px_-10px_rgba(0,0,0,0.5)] flex flex-col max-h-[90vh] overflow-hidden border border-gray-200">
+        class="bg-[#FAFDFB] rounded-2xl p-0 w-[95%] max-w-4xl shadow-[0_20px_70px_-10px_rgba(0,0,0,0.5)] flex flex-col max-h-[90dvh] overflow-hidden border border-gray-200 relative z-10">
 
         <!-- Header Profile Info -->
         <div
-        class="school-profile-banner bg-primary text-white px-8 py-6 flex shrink-0 justify-between items-start border-b-4 border-[#EAB308]">
+        class="school-profile-banner bg-primary text-white px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 flex shrink-0 flex-wrap justify-between items-start gap-3 border-b-4 border-[#EAB308]">
             <div class="flex gap-4 items-center">
                 <div
                     class="h-16 w-16 bg-white/10 rounded-full flex items-center justify-center border-2 border-white/20 text-2xl font-bold font-heading shadow-inner">
@@ -41,16 +43,17 @@
                     </div>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <a id="spViewCaseSummaryBtn" href="#" 
-                   class="px-4 py-2 bg-[#EAB308] hover:bg-[#D9AA2E] text-slate-900 font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 shadow-sm">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="flex items-center gap-2 shrink-0">
+                <a id="spViewCaseSummaryBtn" href="#"
+                   class="px-3 py-2 min-h-[38px] bg-[#EAB308] hover:bg-[#D9AA2E] text-slate-900 font-bold rounded-xl text-xs transition-colors flex items-center gap-1.5 shadow-sm whitespace-nowrap">
+                    <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    View Case Summary
+                    <span class="hidden sm:inline">View Case Summary</span>
+                    <span class="sm:hidden">Case</span>
                 </a>
-                <button onclick="closeStudentProfile()"
-                    class="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-colors text-white/80 hover:text-white">
+                <button onclick="closeStudentProfile()" aria-label="Close profile"
+                    class="p-2.5 min-w-[44px] min-h-[44px] bg-white/10 hover:bg-white/25 active:bg-white/30 rounded-xl transition-colors text-white/80 hover:text-white flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/40">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -239,6 +242,16 @@
             studentRiskChart = null;
         }
     }
+
+    // Escape key closes modal
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            var modal = document.getElementById('studentProfileModal');
+            if (modal && !modal.classList.contains('hidden')) {
+                closeStudentProfile();
+            }
+        }
+    });
 
     function renderWellnessChart(timelineData) {
         // Destroy any previous chart instance

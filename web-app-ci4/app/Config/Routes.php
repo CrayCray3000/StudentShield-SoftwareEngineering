@@ -5,6 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+$routes->setAutoRoute(false);
+
 $routes->get('/', 'AuthController::studentLoginView');
 $routes->get('/login', 'AuthController::studentLoginView');
 $routes->match(['GET', 'POST'], '/login/authenticate', 'AuthController::authenticateStudent');
@@ -82,13 +84,19 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
 
     // Registration Approval Routes
     $routes->get('/admin/pending-registrations', 'AdminController::pendingRegistrations');
-    $routes->match(['get', 'post'], '/admin/approve-student/(:num)', 'AdminController::approveStudent/$1');
-    $routes->match(['get', 'post'], '/admin/reject-student/(:num)', 'AdminController::rejectStudent/$1');
+    $routes->post('/admin/approve-student/(:num)', 'AdminController::approveStudent/$1');
+    $routes->post('/admin/reject-student/(:num)', 'AdminController::rejectStudent/$1');
 
     $routes->get('/report/bullying', 'BullyReportController::index');
     $routes->post('/report/bullying/submit', 'BullyReportController::submit');
     $routes->get('/report-bullying', 'BullyReportController::index');
     $routes->post('/report-bullying/submit', 'BullyReportController::submit');
+
+    // Executive analytics returns aggregates only; auth also checks the role by route.
+    $routes->get('/principal/dashboard', 'PrincipalController::index');
+    $routes->get('/principal/api/analytics', 'PrincipalController::analytics');
+    $routes->get('/principal/reports/export', 'PrincipalController::export');
+    $routes->post('/admin/users/access/(:num)', 'UserController::access/$1');
 
     // Student Routes
     $routes->get('/student/dashboard', 'StudentDashboardController::index');
