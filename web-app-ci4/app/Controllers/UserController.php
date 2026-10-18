@@ -47,7 +47,7 @@ class UserController extends BaseController
         if ($id) $duplicate->where('id !=', $id);
         if ($duplicate->countAllResults()) return redirect()->to('/admin/users')->with('error', 'Account name already exists.');
         $data = ['name' => $name, 'role' => $role, 'remember_token' => null,
-            'auth_version' => (int) ($old['auth_version'] ?? 0) + 1, 'updated_at' => date('Y-m-d H:i:s')];
+            'auth_version' => (int) ($old['auth_version'] ?? 0) + 1];
         if ($password !== '') $data['password_hash'] = password_hash($password, PASSWORD_BCRYPT);
         if (!$old || ((int) $old['role'] !== $role && $role === 0)) {
             $data['registration_status'] = $role === 0 ? 'pending' : 'approved';
@@ -56,7 +56,11 @@ class UserController extends BaseController
         try {
             $db->transStart();
             if ($id) $db->table('users')->where('id', $id)->update($data);
-            else { $db->table('users')->insert($data); $id = (int) $db->insertID(); }
+            else {
+                if (!$db->table('users')->insert($data)) throw new \RuntimeException('Account insert failed');
+                $id = (int) $db->insertID();
+                if ($id < 1) throw new \RuntimeException('Account ID not generated');
+            }
             if ($role === 0) {
                 if (!$db->table('students')->where('user_id', $id)->countAllResults()) $db->table('students')->insert(['user_id' => $id, 'student_id' => 'SS-' . $id]);
             } else {
@@ -74,6 +78,7 @@ class UserController extends BaseController
             if ($id === (int) session()->get('user_id')) session()->set('auth_version', $data['auth_version']);
             return redirect()->to('/admin/users')->with('success', 'Account saved. Student accounts require counselor approval.');
         } catch (\Throwable $e) {
+            $db->transRollback();
             log_message('error', 'Account update failed: {message}', ['message' => $e->getMessage()]);
             return redirect()->to('/admin/users')->with('error', 'Account could not be saved.');
         }

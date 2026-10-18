@@ -76,6 +76,33 @@ final class RoleSeparationTest extends CIUnitTestCase
         return $controller;
     }
 
+    public function testStaffProfileIsOwnAccountOnlyWithNoSettingsOrHelp(): void
+    {
+        foreach ([1, 2, 3] as $role) {
+            $this->login($role);
+            $this->assertTrue(RoleAccess::allows($role, 'staff/profile'));
+            $this->assertFalse(RoleAccess::allows($role, 'staff/help'));
+            $this->assertFalse(RoleAccess::allows($role, 'staff/settings'));
+            $html = $this->controller(\App\Controllers\StaffAccountController::class, 'staff/profile')->profile();
+            $this->assertStringNotContainsString('PRIVATE_STUDENT_', $html);
+            $this->assertStringNotContainsString('/staff/settings', $html);
+            $this->assertStringNotContainsString('/staff/help', $html);
+        }
+        $this->login(0);
+        $this->assertFalse(RoleAccess::allows(0, 'staff/profile'));
+        $this->assertSame(403, $this->controller(\App\Controllers\StaffAccountController::class, 'staff/profile')->profile()->getStatusCode());
+    }
+
+    public function testCreateAccountWorksWithoutOptionalUpdatedAtColumn(): void
+    {
+        $this->rbacDb->query('ALTER TABLE users DROP COLUMN updated_at');
+        $this->login(2);
+        $this->controller(UserController::class, 'admin/users/create', ['name' => 'New Counselor', 'role' => '1', 'passcode' => 'ExamplePassword!9', 'email' => 'staff@example.test'])->create();
+        $user = $this->rbacDb->table('users')->where('name', 'New Counselor')->get()->getRowArray();
+        $this->assertNotNull($user, 'Super Admin must be able to create an account without optional timestamp columns');
+        $this->assertSame('staff@example.test', $this->rbacDb->table('counselors')->where('user_id', $user['id'])->get()->getRowArray()['counselor_email']);
+    }
+
     public function testRegistrationRequiresUniqueTwelveDigitLrnAndKeepsLeadingZero(): void
     {
         $post = ['name' => 'Registration fixture', 'lrn' => '012345678901', 'grade_level' => '8', 'section' => 'A', 'parent_contact' => 'guardian@example.test', 'password' => 'Example!234A', 'password_confirm' => 'Example!234A', 'terms' => '1'];

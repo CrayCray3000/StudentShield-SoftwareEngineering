@@ -1,0 +1,44 @@
+.account-page .account-page-heading { display:flex; justify-content:space-between; gap:20px; align-items:center; margin-bottom:28px; }
+.account-page .account-page-heading p { margin-bottom:0; }
+.account-page .account-back { color:#526259; font-size:13px; text-decoration:none; }
+.account-page a:hover { text-decoration:underline; text-underline-offset:4px; }
+.account-page .account-page-grid { display:grid; grid-template-columns:minmax(220px,.8fr) minmax(0,2fr); gap:24px; max-width:1160px; align-items:start; }
+.account-page .account-page-content { display:grid; gap:20px; min-width:0; }
+.account-page .account-surface { background:#fff; border:1px solid #d8e3db; border-radius:12px; padding:26px; min-width:0; }
+.account-page .account-identity { background:#edf5ef; border:1px solid #d4e5d9; border-radius:12px; padding:28px 24px; overflow-wrap:anywhere; }
+.account-page .account-monogram { display:grid; place-items:center; width:64px; height:64px; border-radius:16px; background:#0f8a3a; color:white; font-size:28px; font-weight:700; margin-bottom:20px; }
+.account-page .account-identity h2 { font-size:22px; margin-bottom:8px; }
+.account-page .account-role-label { font-size:13px; color:#0b7533; font-weight:600; }
+.account-page .identity-rule { height:1px; background:#d4e1d8; margin:24px 0; }
+.account-page .account-identity p { font-size:13px; margin-bottom:6px; }
+.account-page .account-identity a { display:inline-block; margin-top:22px; color:#0b7533; font-size:13px; font-weight:600; }
+.account-page .account-section-title { display:flex; gap:12px; justify-content:space-between; align-items:baseline; margin-bottom:22px; }
+.account-page .account-section-title h2 { margin:0; }
+.account-page .account-section-title > span { color:#61756b; font-size:12px; }
+.account-page .account-detail-list { margin:0; }
+.account-page .account-detail-list > div { display:grid; grid-template-columns:1fr 1.3fr; gap:18px; padding:16px 0; border-bottom:1px solid #e6ebe8; }
+.account-page .account-detail-list > div:first-child { padding-top:0; }
+.account-page .account-detail-list dt { color:#526259; font-size:13px; }
+.account-page .account-detail-list dd { margin:0; font-size:14px; font-weight:600; overflow-wrap:anywhere; }
+.account-page .account-surface-note { padding-top:18px; color:#526259; font-size:13px; }
+.account-page .account-surface-note a { display:block; margin-top:10px; color:#0b7533; font-weight:600; }
+.account-page .account-access-note { display:flex; gap:12px; color:#526259; font-size:13px; line-height:1.7; }
+.account-page .account-access-note svg { width:22px; height:22px; color:#0f8a3a; flex-shrink:0; }
+.account-page .settings-grid, .account-page .help-grid { grid-template-columns:minmax(0,1.6fr) minmax(220px,1fr); max-width:1080px; }
+.account-page .staff-password-form { max-width:none; gap:18px; }
+.account-page .password-form-divider { height:1px; background:#e2e8e5; margin:2px 0; }
+.account-page .password-hint { font-size:12px; margin:-12px 0 0; }
+.account-page .password-form-actions { display:flex; align-items:center; gap:24px; border-top:1px solid #e2e8e5; padding-top:20px; margin-top:6px; }
+.account-page .password-form-actions a { font-size:14px; color:#526259; }
+.account-page .account-security-aside { padding:24px 8px; }
+.account-page .account-security-aside > svg { width:32px; height:32px; color:#0f8a3a; margin-bottom:16px; }
+.account-page .account-security-aside h2 { font-size:18px; }
+.account-page .account-security-aside h3 { font-size:14px; font-weight:600; margin:0 0 8px; }
+.account-page .account-security-aside ul { padding-left:18px; margin:16px 0; list-style:disc; color:#526259; font-size:14px; }
+.account-page .account-security-aside li { padding:5px 0; }
+.account-page .account-security-aside a, .account-page .help-topics a { color:#0b7533; font-size:13px; font-weight:600; }
+.account-page .help-topics details { border-top:1px solid #e2e8e5; }
+.account-page .help-topics summary { min-height:64px; font-size:14px; }
+.account-page .help-topics details > div { padding:0 24px 22px 0; }
+@media(max-width:800px) { .account-page .account-page-grid, .account-page .settings-grid, .account-page .help-grid { grid-template-columns:minmax(0,1fr); gap:16px; } .account-page .account-page-heading { align-items:flex-start; flex-direction:column; gap:12px; margin-bottom:20px; } .account-page .account-surface { padding:20px; } .account-page .account-security-aside { padding:16px 8px; } }
+@media(max-width:400px) { .account-page .account-detail-list > div { grid-template-columns:minmax(0,1fr); gap:4px; } .account-page .account-section-title { flex-direction:column; gap:4px; } }

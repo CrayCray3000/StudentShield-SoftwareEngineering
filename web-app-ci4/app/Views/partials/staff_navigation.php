@@ -52,6 +52,10 @@ if ((int) session()->get('role') === 1) {
         <?php endforeach; ?>
     </div>
     <div class="staff-sidebar-account">
+        <nav class="staff-utility-nav" aria-label="Your account">
+        <?php foreach (['profile' => ['Profile', 'M12 12a4 4 0 100-8 4 4 0 000 8M5 21v-2a7 7 0 0114 0v2']] as $key => [$label, $path]): ?>
+            <a class="staff-utility-link" href="<?= base_url('staff/' . $key) ?>" <?= $staffPage === $key ? 'aria-current="page"' : '' ?>><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="<?= esc($path, 'attr') ?>"/></svg><?= esc($label) ?></a>
+        <?php endforeach; ?></nav>
         <div class="staff-account"><span class="staff-avatar"><?= esc($staffInitial) ?></span><div><strong><?= esc($staffName) ?></strong><span><?= esc($staffRole) ?></span></div></div>
         <form action="<?= base_url('logout') ?>" method="POST" class="staff-signout">
             <?= csrf_field() ?>
