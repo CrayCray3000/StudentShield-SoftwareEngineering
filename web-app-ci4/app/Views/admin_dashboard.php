@@ -1074,6 +1074,8 @@ $pageDescriptions = [
                 .replace(/'/g, "&#039;");
         }
 
+        let ventsRequestVersion = 0;
+        let incidentsRequestVersion = 0;
         let showArchivedVents = false;
         let showArchivedIncidents = false;
 
@@ -1115,12 +1117,25 @@ $pageDescriptions = [
             }
         }
 
+        function refreshTable(tbodyId, html) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+            const selected = new Set([...tbody.querySelectorAll('input[type="checkbox"]:checked')].map(input => input.value));
+            const open = new Set([...tbody.querySelectorAll('tr[data-entry-id]')].flatMap(row => [...row.querySelectorAll('details')].map((detail, index) => detail.open ? row.dataset.entryId + ':' + index : null).filter(Boolean)));
+            tbody.innerHTML = html;
+            tbody.querySelectorAll('input[type="checkbox"]').forEach(input => { input.checked = selected.has(input.value); });
+            tbody.querySelectorAll('tr[data-entry-id]').forEach(row => row.querySelectorAll('details').forEach((detail, index) => { detail.open = open.has(row.dataset.entryId + ':' + index); }));
+        }
+
         function fetchLiveVents() {
             if (!document.getElementById('ventsTableBody') && !document.getElementById('riskPieChart')) return;
+            const requestVersion = ++ventsRequestVersion;
+            const archived = showArchivedVents;
             $.ajax({
-                url: API_URL + (showArchivedVents ? "?archived=1" : ""),
+                url: API_URL + (archived ? "?archived=1" : ""),
                 dataType: 'json',
                 success: function (data) {
+                    if (requestVersion !== ventsRequestVersion || archived !== showArchivedVents) return;
                     const feedStatus = document.getElementById('feedUpdatedAt');
                     if (feedStatus) feedStatus.textContent = 'Updated ' + new Date().toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
                     let currentDataString = JSON.stringify(data);
@@ -1177,7 +1192,7 @@ $pageDescriptions = [
                                         ${vent.parent_phone ? `<span class="text-[10px] text-gray-500 block pt-0.5 border-t border-gray-200 mt-1">📞 ${escapeHtml(vent.parent_phone)}</span>` : ''}
                                         ${vent.parent_email ? `<span class="text-[10px] text-gray-500 block">✉️ ${escapeHtml(vent.parent_email)}</span>` : ''}`;
 
-                            const rawDate = dateObj.toISOString().split('T')[0]; const ventStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${ventStatus}" data-date="${rawDate}" data-risk="${escapeHtml(vent.risk_level)}" class="transition-all duration-300 transform hover:-translate-y-[1px] ${bgColor} ${animClass}" ${animDelay}>
+                            const rawDate = dateObj.toISOString().split('T')[0]; const ventStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-entry-id="${vent.id}" data-status="${ventStatus}" data-date="${rawDate}" data-risk="${escapeHtml(vent.risk_level)}" class="transition-all duration-300 transform hover:-translate-y-[1px] ${bgColor} ${animClass}" ${animDelay}>
                             ${vent.risk_level === 'CRITICAL' && !isResolved ? `` : ''}
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center relative z-10">
                                 <label class="staff-entry-select"><input type="checkbox" name="vent_ids[]" value="${vent.id}" aria-label="Select entry by ${escapeHtml(vent.name)}" class="vent-checkbox rounded border-gray-300 text-primary h-4 w-4"></label>
@@ -1269,7 +1284,7 @@ $pageDescriptions = [
                         });
                     }
 
-                    document.getElementById('ventsTableBody').innerHTML = html;
+                    refreshTable('ventsTableBody', html);
 
                     updateCharts(data);
                     isFirstLoadVents = false;
@@ -1278,6 +1293,7 @@ $pageDescriptions = [
                     applyVentsFilter();
                 },
                 error: function (xhr) {
+                    if (requestVersion !== ventsRequestVersion || archived !== showArchivedVents) return;
                     const feedStatus = document.getElementById('feedUpdatedAt');
                     if (feedStatus) feedStatus.textContent = xhr.status === 401 ? 'Session expired — sign in again' : 'Could not refresh entries';
                     if (xhr.status === 401) {
@@ -1295,10 +1311,13 @@ $pageDescriptions = [
 
         function fetchLiveIncidents() {
             if (!document.getElementById('incidentsTableBody')) return;
+            const requestVersion = ++incidentsRequestVersion;
+            const archived = showArchivedIncidents;
             $.ajax({
-                url: INCIDENTS_API_URL + (showArchivedIncidents ? "?archived=1" : ""),
+                url: INCIDENTS_API_URL + (archived ? "?archived=1" : ""),
                 dataType: 'json',
                 success: function (data) {
+                    if (requestVersion !== incidentsRequestVersion || archived !== showArchivedIncidents) return;
                     let currentDataString = JSON.stringify(data);
                     if (currentDataString === previousIncidentsDataString) return;
                     previousIncidentsDataString = currentDataString;
@@ -1339,7 +1358,7 @@ $pageDescriptions = [
 
                             let evidenceBadge = incident.evidence_file ? `<span class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">📎 Evidence Attached</span>` : '';
 
-                            const rawDate = dateObj.toISOString().split('T')[0]; const incidentStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-status="${incidentStatus}" data-date="${rawDate}" class="transition-colors duration-200 ${bgColor}">
+                            const rawDate = dateObj.toISOString().split('T')[0]; const incidentStatus = isResolved ? "resolved" : "unresolved"; html += `<tr data-entry-id="${incident.id}" data-status="${incidentStatus}" data-date="${rawDate}" class="transition-colors duration-200 ${bgColor}">
                             <td data-label="Select" class="px-4 py-4 whitespace-nowrap text-center">
                                 <input type="checkbox" name="incident_ids[]" value="${incident.id}" class="incident-checkbox rounded border-gray-300 text-primary h-4 w-4">
                             </td>
@@ -1430,14 +1449,14 @@ $pageDescriptions = [
                         });
                     }
 
-                    document.getElementById('incidentsTableBody').innerHTML = html;
+                    refreshTable('incidentsTableBody', html);
 
                     toggleDeleteBtn('.incident-checkbox', '.delete-btn-incidents');
                     applyIncidentsFilter();
-                    collapseRows('incidentsTableBody', 5, 8, 'section-incidents');
 
                 },
                 error: function (xhr) {
+                    if (requestVersion !== incidentsRequestVersion || archived !== showArchivedIncidents) return;
                     if (xhr.status === 401) {
                         console.warn('Session expired. Please refresh and log in again.');
                     } else {
@@ -1465,10 +1484,10 @@ $pageDescriptions = [
             const rows = Array.from(tbody.querySelectorAll('tr:not(.show-all-row)')).filter(row => !row.hidden);
             if (rows.length <= maxRows) return; // nothing to collapse
 
-            let expanded = false;
+            let expanded = tbody.dataset.expanded === 'true';
 
             rows.forEach((r, i) => {
-                if (i >= maxRows) r.classList.add('tbl-row-hidden');
+                if (i >= maxRows) r.classList.toggle('tbl-row-hidden', !expanded);
             });
 
             const toggleRow = document.createElement('tr');
@@ -1476,13 +1495,14 @@ $pageDescriptions = [
             toggleRow.innerHTML = `<td colspan="${colSpan}" class="px-6 py-3 text-center">
                 <button class="text-xs font-bold text-[#235D3A] flex items-center gap-1.5 mx-auto" id="toggle-${tbodyId}">
                     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    Show all ${rows.length} records
+                    ${expanded ? 'Collapse' : 'Show all ' + rows.length + ' records'}
                 </button>
             </td>`;
             tbody.appendChild(toggleRow);
 
             toggleRow.querySelector('button').addEventListener('click', function () {
                 expanded = !expanded;
+                tbody.dataset.expanded = String(expanded);
                 rows.forEach((r, i) => {
                     if (i >= maxRows) r.classList.toggle('tbl-row-hidden', !expanded);
                 });
@@ -1703,7 +1723,7 @@ $pageDescriptions = [
                     this.hidden = !(matchesSearch && matchesStatus && matchesDate);
                     this.style.removeProperty('display');
                 });
-                collapseRows('incidentsTableBody', 5, 7, 'section-incidents');
+                collapseRows('incidentsTableBody', 5, 8, 'section-incidents');
             };
 
             // Restore filter state from localStorage if exists
