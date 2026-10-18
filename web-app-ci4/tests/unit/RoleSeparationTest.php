@@ -76,16 +76,15 @@ final class RoleSeparationTest extends CIUnitTestCase
         return $controller;
     }
 
-    public function testStaffProfileIsOwnAccountOnlyWithNoSettingsOrHelp(): void
+    public function testStaffProfileIsOwnAccountOnlyWithNoHelp(): void
     {
         foreach ([1, 2, 3] as $role) {
             $this->login($role);
             $this->assertTrue(RoleAccess::allows($role, 'staff/profile'));
             $this->assertFalse(RoleAccess::allows($role, 'staff/help'));
-            $this->assertFalse(RoleAccess::allows($role, 'staff/settings'));
+            $this->assertTrue(RoleAccess::allows($role, 'staff/settings'));
             $html = $this->controller(\App\Controllers\StaffAccountController::class, 'staff/profile')->profile();
             $this->assertStringNotContainsString('PRIVATE_STUDENT_', $html);
-            $this->assertStringNotContainsString('/staff/settings', $html);
             $this->assertStringNotContainsString('/staff/help', $html);
         }
         $this->login(0);

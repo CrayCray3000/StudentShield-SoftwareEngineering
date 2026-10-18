@@ -10,6 +10,7 @@ class StaffAccountController extends BaseController
     {
         return session()->get('isLoggedIn') && in_array((int) session()->get('role'), [1, 2, 3], true);
     }
+    public function settings() { if (!$this->allowed()) return $this->forbidden(); return view('staff_preferences'); }
     public function profile() { return $this->page('profile'); }
     private function page(string $page)
     {

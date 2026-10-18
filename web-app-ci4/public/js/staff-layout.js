@@ -1,4 +1,16 @@
 (() => {
+    const motionPreference = document.getElementById('staffReduceMotion');
+    const syncMotion = () => {
+        let reduced = false;
+        try { reduced = localStorage.getItem('staffReduceMotion') === 'true'; } catch (_) {}
+        document.body.classList.toggle('staff-reduce-motion', reduced);
+        if (motionPreference) motionPreference.checked = reduced;
+    };
+    syncMotion();
+    motionPreference?.addEventListener('change', () => {
+        try { localStorage.setItem('staffReduceMotion', String(motionPreference.checked)); } catch (_) {}
+        document.body.classList.toggle('staff-reduce-motion', motionPreference.checked);
+    });
     const date = document.getElementById('liveDayDate');
     const time = document.getElementById('liveTime');
     const dateFormat = new Intl.DateTimeFormat('en-PH', {timeZone: 'Asia/Manila', weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'});
@@ -11,6 +23,11 @@
     const closeButton = document.getElementById('staffSidebarClose');
     const backdrop = document.getElementById('staffBackdrop');
     if (!sidebar || !trigger) return;
+    const accountMenu = document.getElementById('staffAccountMenu');
+    document.addEventListener('click', event => { if (accountMenu && !accountMenu.contains(event.target)) accountMenu.open = false; });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && accountMenu?.open) { accountMenu.open = false; accountMenu.querySelector('summary').focus(); event.stopImmediatePropagation(); }
+    });
     const desktop = window.matchMedia('(min-width: 1100px)');
     let previousFocus;
 
@@ -18,6 +35,7 @@
         const wasOpen = document.body.classList.contains('staff-navigation-open');
         document.body.classList.remove('staff-navigation-open');
         trigger.setAttribute('aria-expanded', 'false');
+        if (accountMenu) accountMenu.open = false;
         backdrop.hidden = true;
         sidebar.inert = !desktop.matches;
         sidebar.removeAttribute('role');
@@ -45,7 +63,7 @@
         if (!document.body.classList.contains('staff-navigation-open')) return;
         if (event.key === 'Escape') { event.preventDefault(); window.closeStaffNavigation(); }
         if (event.key !== 'Tab') return;
-        const focusable = [...sidebar.querySelectorAll('a[href], button')].filter(el => el.getClientRects().length);
+        const focusable = [...sidebar.querySelectorAll('a[href], button, summary')].filter(el => el.getClientRects().length);
         const first = focusable[0], last = focusable[focusable.length - 1];
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }

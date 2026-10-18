@@ -19,7 +19,7 @@ final class RoleAccess
     public static function allows(int $role, string $path): bool
     {
         $path = trim($path, '/');
-        if (in_array($path, ['staff/profile'], true)) return in_array($role, [1, 2, 3], true);
+        if (in_array($path, ['staff/profile', 'staff/settings'], true)) return in_array($role, [1, 2, 3], true);
         if ($path === 'admin/dashboard') return in_array($role, [1, 2, 3], true); // Dispatches to the role's home.
         if (preg_match('#^admin/(users(?:/(?:create|(?:update|delete|unlock|access)/[0-9]+))?|audit-logs)$#', $path)) return $role === 2;
         if (preg_match('#^principal/(dashboard|api/analytics|reports/export)$#', $path)) return $role === 3;

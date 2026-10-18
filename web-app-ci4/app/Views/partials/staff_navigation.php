@@ -52,15 +52,17 @@ if ((int) session()->get('role') === 1) {
         <?php endforeach; ?>
     </div>
     <div class="staff-sidebar-account">
-        <nav class="staff-utility-nav" aria-label="Your account">
-        <?php foreach (['profile' => ['Profile', 'M12 12a4 4 0 100-8 4 4 0 000 8M5 21v-2a7 7 0 0114 0v2']] as $key => [$label, $path]): ?>
-            <a class="staff-utility-link" href="<?= base_url('staff/' . $key) ?>" <?= $staffPage === $key ? 'aria-current="page"' : '' ?>><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="<?= esc($path, 'attr') ?>"/></svg><?= esc($label) ?></a>
-        <?php endforeach; ?></nav>
-        <div class="staff-account"><span class="staff-avatar"><?= esc($staffInitial) ?></span><div><strong><?= esc($staffName) ?></strong><span><?= esc($staffRole) ?></span></div></div>
-        <form action="<?= base_url('logout') ?>" method="POST" class="staff-signout">
-            <?= csrf_field() ?>
-            <button type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M9 5H5v14h4M14 8l4 4-4 4M8 12h10"/></svg>Sign out</button>
-        </form>
+        <details id="staffAccountMenu" class="staff-account-menu">
+            <summary class="staff-account" aria-label="Account options for <?= esc($staffName, 'attr') ?>"><span class="staff-avatar"><?= esc($staffInitial) ?></span><span class="staff-account-name"><strong><?= esc($staffName) ?></strong><span><?= esc($staffRole) ?></span></span><svg class="staff-account-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8 14l4-4 4 4"/></svg></summary>
+            <div class="staff-account-popover">
+                <a class="staff-utility-link" href="<?= base_url('staff/profile') ?>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 12a4 4 0 100-8 4 4 0 000 8M5 21v-2a7 7 0 0114 0v2"/></svg>Profile</a>
+                <a class="staff-utility-link" href="<?= base_url('staff/settings') ?>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg>Settings</a>
+                <form action="<?= base_url('logout') ?>" method="POST" class="staff-signout">
+                    <?= csrf_field() ?>
+                    <button type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M9 5H5v14h4M14 8l4 4-4 4M8 12h10"/></svg>Sign out</button>
+                </form>
+            </div>
+        </details>
     </div>
 </aside>
 <header id="dashboardHeader" class="staff-topbar">
