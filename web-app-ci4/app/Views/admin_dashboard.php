@@ -1276,7 +1276,6 @@ $pageDescriptions = [
 
                     toggleDeleteBtn('.vent-checkbox', '.delete-btn-vents');
                     applyVentsFilter();
-                    collapseRows('ventsTableBody', 5, 7, 'section-vents');
                 },
                 error: function (xhr) {
                     const feedStatus = document.getElementById('feedUpdatedAt');
@@ -1463,7 +1462,7 @@ $pageDescriptions = [
             tbody.querySelectorAll('.show-all-row').forEach(r => r.remove());
             tbody.querySelectorAll('tr.tbl-row-hidden').forEach(r => r.classList.remove('tbl-row-hidden'));
 
-            const rows = Array.from(tbody.querySelectorAll('tr:not(.show-all-row)'));
+            const rows = Array.from(tbody.querySelectorAll('tr:not(.show-all-row)')).filter(row => !row.hidden);
             if (rows.length <= maxRows) return; // nothing to collapse
 
             let expanded = false;
@@ -1680,13 +1679,15 @@ $pageDescriptions = [
                 let statusValue = $('#filterStatusVents').val();
                 let dateValue = $('#filterDateVents').val();
 
-                $('#ventsTableBody tr').filter(function () {
+                $('#ventsTableBody tr[data-status]').each(function () {
                     let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
                     let matchesStatus = statusValue === 'all' || statusValue === 'archived' || $(this).attr('data-status') === statusValue;
                     let matchesDate = !dateValue || $(this).attr('data-date') === dateValue;
 
-                    $(this).toggle(matchesSearch && matchesStatus && matchesDate);
+                    this.hidden = !(matchesSearch && matchesStatus && matchesDate);
+                    this.style.removeProperty('display');
                 });
+                collapseRows('ventsTableBody', 5, 7, 'section-vents');
             };
 
             window.applyIncidentsFilter = function () {
@@ -1694,13 +1695,15 @@ $pageDescriptions = [
                 let statusValue = $('#filterStatusIncidents').val();
                 let dateValue = $('#filterDateIncidents').val();
 
-                $('#incidentsTableBody tr').filter(function () {
+                $('#incidentsTableBody tr[data-status]').each(function () {
                     let matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
                     let matchesStatus = statusValue === 'all' || statusValue === 'archived' || $(this).attr('data-status') === statusValue;
                     let matchesDate = !dateValue || $(this).attr('data-date') === dateValue;
 
-                    $(this).toggle(matchesSearch && matchesStatus && matchesDate);
+                    this.hidden = !(matchesSearch && matchesStatus && matchesDate);
+                    this.style.removeProperty('display');
                 });
+                collapseRows('incidentsTableBody', 5, 7, 'section-incidents');
             };
 
             // Restore filter state from localStorage if exists

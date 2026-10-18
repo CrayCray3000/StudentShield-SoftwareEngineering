@@ -281,3 +281,6 @@ body.staff-layout { --staff-sidebar-width: 240px; background: #f4f7f5; backgroun
 .staff-account-popover .staff-utility-link:hover, .staff-account-popover .staff-signout button:hover { background:#edf5ef; }
 
 .staff-reduce-motion *, .staff-reduce-motion *::before, .staff-reduce-motion *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+
+/* Hiding rows must never override their native table/grid layout when restored. */
+.staff-layout .mobile-card-table tr[hidden], .staff-layout .mobile-card-table tr.tbl-row-hidden { display:none !important; }
