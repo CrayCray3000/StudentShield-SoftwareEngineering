@@ -837,6 +837,7 @@ $pageDescriptions = [
             </div>
         </div>
 
+        <?= view('partials/risk_level_guide') ?>
         <?php endif; ?>
 
     </main>

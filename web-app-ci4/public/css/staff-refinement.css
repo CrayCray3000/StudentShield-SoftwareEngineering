@@ -97,6 +97,7 @@
 .staff-layout .principal-workspace .analytics-grid .role-panel { margin-top:16px; }
 .staff-layout .principal-workspace .risk-guide { margin-top:16px; padding:20px 22px; background:#fff; border:1px solid var(--workspace-line); border-radius:10px; }
 .staff-layout .risk-guide h3 { font-size:17px; font-weight:800; margin:0 0 16px; }
+.staff-layout #staffMain > .risk-guide { margin-top:20px; padding:20px 22px; background:#fff; border:1px solid var(--workspace-line); border-radius:10px; }
 .staff-layout .risk-guide dl { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; }
 .staff-layout .risk-guide dt { display:flex; align-items:center; flex-wrap:wrap; gap:7px; font-size:13px; font-weight:700; }
 .staff-layout .risk-guide dt > span:last-child { color:#52665a; font-size:12px; font-weight:400; font-variant-numeric:tabular-nums; }
