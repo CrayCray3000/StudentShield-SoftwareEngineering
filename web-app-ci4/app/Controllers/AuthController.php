@@ -157,6 +157,27 @@ class AuthController extends BaseController
         if ($user && $passwordValid && \App\Libraries\RoleAccess::enabled($user)) {
             $roleNames = [1 => 'counselor', 2 => 'super_admin', 3 => 'principal'];
 
+            // Temporary production pause: OTP resumes automatically after 24 hours.
+            // An explicit environment setting can end or extend the pause.
+            $otpSetting = env('staffLogin.otpEnabled', null);
+            $otpPaused = $otpSetting === false
+                || ($otpSetting === null && time() < strtotime('2026-10-22T15:52:00+00:00'));
+            if ($otpPaused) {
+                $this->clearOtpSession();
+                session()->regenerate();
+                session()->set([
+                    'user_id'       => $user['id'],
+                    'name'          => $user['name'],
+                    'role'          => (int) $user['role'],
+                    'role_name'     => $roleNames[(int) $user['role']] ?? 'counselor',
+                    'auth_version'  => (int) ($user['auth_version'] ?? 1),
+                    'isLoggedIn'    => true,
+                    'last_activity' => time(),
+                ]);
+                $this->logAudit('USER_LOGIN', 'system', $user['id']);
+                return redirect()->to(\App\Libraries\RoleAccess::home((int) $user['role']));
+            }
+
             // ── LAYER 5: TRUSTED DEVICE BYPASS ──
             if (isset($_COOKIE['admin_trusted_device'])) {
                 $cookieData = base64_decode($_COOKIE['admin_trusted_device']);

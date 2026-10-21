@@ -20,6 +20,7 @@ final class RoleSeparationTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $_ENV['staffLogin.otpEnabled'] = 'true';
         helper(['url', 'form']);
         $this->rbacDb = Database::connect(['DBDriver' => 'SQLite3', 'database' => ':memory:', 'DBPrefix' => '', 'DBDebug' => true], false);
         $property = new \ReflectionProperty(Database::class, 'instances');
@@ -48,6 +49,7 @@ final class RoleSeparationTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
+        unset($_ENV['staffLogin.otpEnabled']);
         session()->destroy();
         $property = new \ReflectionProperty(Database::class, 'instances'); $property->setAccessible(true); $property->setValue(null, $this->connections);
         parent::tearDown();
@@ -386,6 +388,24 @@ final class RoleSeparationTest extends CIUnitTestCase
                 $this->assertSame($role, (int) session()->get('temp_role'));
             }
         }
+    }
+
+    public function testStaffLoginCanTemporarilySkipOtpAfterValidPassword(): void
+    {
+        $_ENV['staffLogin.otpEnabled'] = 'false';
+        $this->rbacDb->table('users')->where('id', 1)->update(['password_hash' => password_hash('StaffPassword!9', PASSWORD_DEFAULT)]);
+
+        $response = $this->controller(SharedLoginNoMailController::class, 'admin/login/authenticate', ['name' => 'Staff 1', 'password' => 'StaffPassword!9'])->authenticateAdmin();
+        $this->assertStringEndsWith(RoleAccess::home(1), $response->getHeaderLine('Location'));
+        $this->assertTrue((bool) session()->get('isLoggedIn'));
+        $this->assertSame(1, (int) session()->get('user_id'));
+        $this->assertFalse(session()->has('otp'));
+
+        session()->remove(['isLoggedIn', 'user_id', 'role', 'role_name', 'auth_version']);
+        $response = $this->controller(SharedLoginNoMailController::class, 'admin/login/authenticate', ['name' => 'Staff 1', 'password' => 'wrong-password'])->authenticateAdmin();
+        $this->assertSame(302, $response->getStatusCode());
+        $this->assertFalse((bool) session()->get('isLoggedIn'));
+        $this->assertFalse(session()->has('otp'));
     }
 
     public function testSharedLoginRejectsDisabledAndPendingStudents(): void
