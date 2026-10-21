@@ -5,8 +5,8 @@
     <link rel="icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
     <link rel="shortcut icon" type="image/png" href="<?= base_url('images/logo.png?v=3') ?>">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Student Portal - Secure Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentShield - Sign in</title>
     <link rel="preload" as="image" href="<?= base_url('images/logo.png?v=6') ?>">
     <script src="https://cdn.tailwindcss.com"></script>
         <script>
@@ -14,8 +14,8 @@
             theme: {
                 extend: {
                     fontFamily: { 
-                        sans: ['Inter', 'sans-serif'], 
-                        heading: ['Outfit', 'sans-serif'] 
+                        sans: ['Nunito', 'sans-serif'],
+                        heading: ['Nunito', 'sans-serif']
                     },
                     colors: {
                         white: '#FBFDFB', // Anti-glare soft white
@@ -48,7 +48,7 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         /* Responsive scaling */
@@ -56,8 +56,8 @@
         @media (max-width: 1280px) { html { font-size: 14px; } }
         @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
         
-        body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
-        h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
+        body { font-family: 'Nunito', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
+        h1, h2, h3, .font-heading { font-family: 'Nunito', sans-serif; }
 
         .bg-student {
             background:
@@ -232,6 +232,7 @@
             *, ::before, ::after { animation: none !important; transition: none !important; }
         }
     </style>
+<link rel="stylesheet" href="<?= base_url('css/unified-login.css?v=' . filemtime(FCPATH . 'css/unified-login.css')) ?>">
 </head>
 <body class="student-login bg-student min-h-[100dvh] w-full flex flex-col items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto" onmousemove="updateSpotlight(event)">
 
@@ -290,8 +291,8 @@
                     <p class="text-white/90 font-semibold text-[12px] sm:text-[14px] tracking-wide">St. Vincent Blessed School of Manila, Inc.</p>
                 </div>
                 
-                <h1 class="text-[1.65em] sm:text-[2rem] font-heading font-extrabold tracking-tight text-white mb-1 leading-tight">Student <span class="text-gold">Portal</span></h1>
-                <p class="text-white/70 font-medium text-[13px] sm:text-[15px]">Sign in to your private dashboard</p>
+                <h1 class="text-[1.65em] sm:text-[2rem] font-heading font-extrabold tracking-tight text-white mb-1 leading-tight">Student<span class="text-gold">Shield</span></h1>
+                <p class="text-white/70 font-medium text-[13px] sm:text-[15px]">One sign-in for your school workspace</p>
                 
                 <!-- WCAG AA fix: solid dark bg + white text for ≥4.5:1 contrast -->
                 <div class="login-security inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-black/60 border border-white/20 shadow-sm">
@@ -317,19 +318,20 @@
                 <?= csrf_field() ?>
                 
                 <div class="space-y-1.5 sm:space-y-2">
-                    <label for="name" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Student Name</label>
+                    <label for="name" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Student ID / LRN or staff account</label>
                     <div class="relative group/input">
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-gold">
                             <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
                         </div>
-                        <input type="text" name="name" id="name" required autocomplete="name"
+                        <input type="text" name="identifier" id="name" required autocomplete="username" aria-describedby="identifierHint"
                                class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[16px] font-bold outline-none"
-                               placeholder="Your registered name">
+                               placeholder="ID, LRN or staff account">
                     </div>
                 </div>
 
+                <p id="identifierHint" class="login-identifier-hint">Students: Student ID or 12-digit LRN. Staff: account name or email.</p>
                 <div class="space-y-1.5 sm:space-y-2">
-                    <label for="password" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Secure Passcode</label>
+                    <label for="password" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Password</label>
                     <div class="relative group/input">
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-gold">
                             <i class="fas fa-lock text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
@@ -357,14 +359,14 @@
                 </div>
 
                 <button type="submit" id="submitBtn" class="submit-btn w-full font-black py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-[1.25rem] focus:outline-none focus:ring-4 focus:ring-gold/30 flex items-center justify-center gap-2 sm:gap-3 h-[52px] sm:h-[60px] mt-6 sm:mt-8 group/btn">
-                    <span id="btnText" class="font-heading text-[16px] sm:text-[18px] tracking-wide pt-0.5 text-primary-light mix-blend-multiply">Access Portal</span>
+                    <span id="btnText" class="font-heading text-[16px] sm:text-[18px] tracking-wide pt-0.5 text-primary-light mix-blend-multiply">Sign in</span>
                     <i id="btnIcon" class="fas fa-arrow-right text-primary-light mix-blend-multiply text-[13px] sm:text-sm group-hover/btn:translate-x-1.5 group-hover/btn:scale-110 transition-all duration-300"></i>
                     <svg id="btnSpinner" class="animate-spin h-5 w-5 text-primary-light mix-blend-multiply hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
 
                 <div class="text-center mt-4 sm:mt-5">
                     <p class="text-white/70 text-[13px]">
-                        Don't have an account?
+                        New student?
                         <a href="<?= base_url('register') ?>" class="inline-block py-2 px-1 text-gold-light hover:text-gold font-bold underline underline-offset-2 transition-colors duration-200 min-h-[44px]">Register here</a>
                     </p>
                 </div>

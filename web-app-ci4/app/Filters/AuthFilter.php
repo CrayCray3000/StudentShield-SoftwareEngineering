@@ -63,6 +63,9 @@ class AuthFilter implements FilterInterface
                 AuditTrail::record('ACCESS_DENIED', 'system', (int) $user['id']);
                 session()->set('denial_logged_at', time());
             }
+            if (!$json && strtolower($request->getMethod()) === 'get') {
+                return redirect()->to(RoleAccess::home((int) $user['role']));
+            }
             return service('response')->setStatusCode(403)->setJSON(['status' => 'error', 'message' => 'Your role cannot access this resource.']);
         }
     }

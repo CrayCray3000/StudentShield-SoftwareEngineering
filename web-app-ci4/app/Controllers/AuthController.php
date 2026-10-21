@@ -9,10 +9,7 @@ class AuthController extends BaseController
     {
         if (session()->get('isLoggedIn')) {
             $role = (int) session()->get('role');
-            // Only auto-redirect students who are already logged in.
-            // If an admin/counselor navigates here, let them see the student
-            // login page so they can switch accounts on the same device.
-            if ($role === 0) return redirect()->to('/student/dashboard');
+            return redirect()->to(\App\Libraries\RoleAccess::home($role));
         }
         return view('login');
     }
@@ -21,12 +18,7 @@ class AuthController extends BaseController
     {
         if (session()->get('isLoggedIn')) {
             $role = (int) session()->get('role');
-            if (in_array($role, [1, 2, 3], true)) {
-                return redirect()->to(\App\Libraries\RoleAccess::home((int) session()->get('role')));
-            } else {
-                session()->destroy();
-                return redirect()->to('/admin/login');
-            }
+            return redirect()->to(\App\Libraries\RoleAccess::home($role));
         }
 
         // ── AUTO-LOGIN VIA TRUSTED DEVICE COOKIE ──
@@ -53,11 +45,11 @@ class AuthController extends BaseController
             }
         }
 
-        return view('admin_login');
+        return view('login');
     }
 
     /**
-     * Students login with name + password (kept as-is).
+     * Shared student ID/LRN and staff sign-in; staff verification is preserved.
      */
     public function authenticateStudent()
     {
@@ -66,15 +58,20 @@ class AuthController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        $name = trim((string) $this->request->getPost('name'));
+        $name = trim((string) ($this->request->getPost('identifier') ?? $this->request->getPost('name')));
         $password = (string) $this->request->getPost('password');
 
         if (empty($name) || empty($password)) {
             return redirect()->back()->with('error', 'Please fill in all fields.');
         }
 
-        // Find student by name (role = 0)
-        $user = $db->table('users')->where(['name' => $name, 'role' => 0])->get()->getRowArray();
+        $matches = $db->table('users')->select('users.*')
+            ->join('students', 'students.user_id = users.id')
+            ->where('users.role', 0)->groupStart()->where('students.student_id', $name)
+            ->orWhere('students.lrn', $name)->groupEnd()->limit(2)->get()->getResultArray();
+        if (!$matches) return $this->authenticateAdmin();
+        if (count($matches) !== 1) return redirect()->to('/login')->with('error', 'Invalid credentials provided.');
+        $user = $matches[0];
 
         $pwHash = $user['password_hash'] ?? $user['passcode'] ?? '$2y$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ012';
         if ($user && password_verify($password, $pwHash)) {
@@ -126,7 +123,7 @@ class AuthController extends BaseController
         }
 
         $db = \Config\Database::connect();
-        $name = trim((string) $this->request->getPost('name'));
+        $name = trim((string) ($this->request->getPost('identifier') ?? $this->request->getPost('name')));
         $password = (string) $this->request->getPost('password');
 
         if (empty($name) || empty($password)) {
@@ -138,9 +135,10 @@ class AuthController extends BaseController
             ->select('users.*, CASE WHEN users.role = 1 THEN counselors.counselor_email ELSE admins.email END AS parent_email, CASE WHEN users.role = 1 THEN counselors.counselor_phone ELSE admins.phone END AS parent_phone', false)
             ->join('counselors', 'counselors.user_id = users.id', 'left')
             ->join('admins', 'admins.user_id = users.id', 'left')
-            ->where('users.name', $name)
             ->whereIn('users.role', [1, 2, 3])
-            ->get()->getRowArray();
+            ->groupStart()->where('users.name', $name)->orWhere('counselors.counselor_email', $name)->orWhere('admins.email', $name)->groupEnd()
+            ->limit(2)->get()->getResultArray();
+        $user = count($user) === 1 ? $user[0] : null;
 
         // Always verify password to ensure constant-time response (timing attack mitigation)
         // Account existence is evaluated after password_verify to avoid timing differences
@@ -440,7 +438,7 @@ class AuthController extends BaseController
     /**
      * Reusable helper to dispatch OTP verification email via SMTP and log the attempt.
      */
-    private function sendOtpEmail(array $user, string $recipientEmail, string $otp): bool
+    protected function sendOtpEmail(array $user, string $recipientEmail, string $otp): bool
     {
         $emailSent = false;
         try {
@@ -529,7 +527,7 @@ class AuthController extends BaseController
     public function studentRegisterView()
     {
         if (session()->get('isLoggedIn')) {
-            return redirect()->to('/student/dashboard');
+            return redirect()->to(\App\Libraries\RoleAccess::home((int) session()->get('role')));
         }
         helper(['form', 'url']);
         return view('register');

@@ -105,3 +105,10 @@
         font-size: 1rem !important; /* 16px prevents iOS Safari zoom & ensures crisp readability */
     }
 }
+
+/* Rounded student typography; staff data stays in the established reading face. */
+body.school-student-page { font-family: 'Nunito', sans-serif; }
+body.school-student-page :is(button, input, select, textarea, .font-sans, .font-heading),
+body.student-registration :is(button, input, select, textarea, .font-sans, .font-heading) { font-family: 'Nunito', sans-serif; }
+body.school-staff-page :is(h1, h2, h3, h4, .font-heading) { font-family: 'Nunito', sans-serif; }
+body.school-staff-page :is(table, input, select, textarea) { font-family: 'Inter', sans-serif; }

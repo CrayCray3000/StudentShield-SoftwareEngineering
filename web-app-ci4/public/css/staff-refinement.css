@@ -1,0 +1,84 @@
+/* Shared staff workspace refinements. Navigation and risk colors retain their meaning. */
+.staff-layout #staffMain .basic-student-profile { grid-column:1 / -1; margin:0; }
+.staff-layout #staffMain .basic-student-profile summary { background:transparent; border:0; padding:4px 0; min-height:36px; }
+.staff-layout #staffMain .basic-profile-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px; margin:12px 0; }
+.staff-layout #staffMain .basic-profile-fields dt { font-size:12px; color:#526259; }
+.staff-layout #staffMain .basic-profile-fields dd { font-size:14px; font-weight:600; overflow-wrap:anywhere; }
+.staff-layout .risk-guide { border-top:1px solid #d8e3db; margin-top:20px; padding-top:16px; }
+.staff-layout .risk-guide h3 { font-size:14px; font-weight:700; margin-bottom:10px; }
+.staff-layout .risk-guide dl { display:grid; gap:12px; }
+.staff-layout .risk-guide dt { display:flex; align-items:center; gap:7px; font-size:13px; font-weight:600; }
+.staff-layout .risk-guide dt > span:last-child { margin-left:auto; color:#526259; font-size:12px; font-variant-numeric:tabular-nums; }
+.staff-layout .risk-guide dd { font-size:12px; color:#526259; margin:3px 0 0 15px; line-height:1.5; }
+.staff-layout .risk-guide p { font-size:12px; margin:14px 0 0; }
+.staff-layout .risk-key { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.staff-layout .risk-key.low { background:#0f8a3a; }
+.staff-layout .risk-key.medium { background:#2a5db0; }
+.staff-layout .risk-key.high { background:#f59e0b; }
+.staff-layout .risk-key.critical { background:#e04b3f; }
+.staff-layout #staffMain { --workspace-green:#0f8a3a; --workspace-line:#d8e3db; }
+.staff-layout #staffMain ::selection { background:#dcefe1; color:#173e25; }
+.staff-layout #staffMain :is(input,textarea) { caret-color:#0f8a3a; }
+.staff-layout #staffMain > header,
+.staff-layout #staffMain > .staff-page-intro { padding-bottom:20px; margin-bottom:22px; border-bottom:1px solid #d8e3db; }
+.staff-layout #staffMain > header h1,
+.staff-layout #staffMain .staff-page-intro h2 { font-size:clamp(24px,2.2vw,30px); letter-spacing:-.025em; line-height:1.25; }
+.staff-layout #staffMain > header p { margin-bottom:0; max-width:78ch; }
+.staff-layout #staffMain .staff-metrics .stat-card { min-height:82px; padding:14px 18px; box-shadow:none; }
+.staff-layout #staffMain .staff-filter-bar { background:#fff; padding-block:12px; }
+.staff-layout #staffMain .filter-quick { background:#fff; gap:8px; }
+.staff-layout #staffMain .filter-quick button { border-radius:6px; }
+.staff-layout #staffMain .filter-quick button[aria-pressed="true"] { background:#e6f3e9; border-color:#a8ccb4; color:#075c28; }
+.staff-layout #staffMain :is(.aggregate-table,.staff-vents-table) { font-variant-numeric:tabular-nums; }
+.staff-layout #staffMain .role-panel > h2 { padding-bottom:12px; border-bottom:1px solid #e1e9e3; }
+.staff-layout #staffMain .account-row { padding:18px 12px; }
+.staff-layout #staffMain .account-row:hover { background:#f6faf7; }
+.staff-layout #staffMain .account-row strong { font-size:16px; }
+.staff-layout #staffMain .account-row details summary { background:#fff; }
+.staff-layout #staffMain .accounts-directory-heading { padding-bottom:14px; border-bottom:1px solid #e1e9e3; }
+.staff-layout #staffMain .accounts-directory-heading #accountResultCount { padding:4px 10px; border-radius:6px; background:#edf5ef; color:#275738; }
+.staff-layout .principal-workspace .analytics-filter-panel { border-radius:8px; margin-top:16px; }
+.staff-layout .principal-workspace .analytics-filter-panel > summary { min-height:48px; padding:8px 14px; gap:10px; }
+.staff-layout .principal-workspace .filter-symbol { width:28px; height:28px; border-radius:6px; }
+.staff-layout .principal-workspace .analytics-filter-panel > summary::after { margin-left:4px; }
+.staff-layout .principal-workspace .analytics-filter-panel .analytics-filters { padding:14px; gap:12px; grid-template-columns:repeat(5,minmax(0,1fr)); }
+.staff-layout .principal-workspace .analytics-filters label { gap:4px; font-size:12px; }
+.staff-layout .principal-workspace .analytics-filters :is(input,select,button,.role-button) { min-height:38px; padding:7px 10px; font-size:13px; }
+.staff-layout .principal-workspace .analytics-actions { padding-top:12px; margin:0; gap:8px; }
+.staff-layout .principal-workspace .metric-grid { gap:0; border:1px solid #d8e3db; border-radius:8px; background:#fff; overflow:hidden; }
+.staff-layout .principal-workspace .metric { border:0; border-radius:0; border-right:1px solid #e1e9e3; box-shadow:none; min-height:100px; }
+.staff-layout .principal-workspace .metric:nth-child(4n) { border-right:0; }
+.staff-layout .principal-workspace .metric:nth-child(n+5) { border-top:1px solid #e1e9e3; background:#f3f8f4; min-height:78px; }
+.staff-layout .principal-workspace .metric strong { font-variant-numeric:tabular-nums; }
+.staff-layout .principal-workspace .analytics-counting-note { margin-top:6px; }
+.staff-layout .principal-workspace .analytics-counting-note summary { justify-content:flex-start; font-size:12px; gap:12px; min-height:36px; }
+.staff-layout .principal-workspace .analytics-counting-note p { max-width:85ch; }
+.staff-layout .principal-workspace .analytics-charts { align-items:start; }
+.staff-layout .profile-edit-form { display:grid; gap:14px; }
+.staff-layout .profile-edit-form .profile-field-hint { font-size:12px; margin:-8px 0 0; color:#526259; }
+.staff-layout .profile-edit-form .profile-optional { font-weight:400; }
+.staff-layout .profile-edit-form .account-detail-list { padding:8px 14px; background:#f3f8f4; border-radius:6px; }
+.staff-layout .profile-edit-form .account-detail-list > div { padding:10px 0; }
+.staff-layout .profile-edit-form .account-detail-list > div:last-child { border:0; }
+.staff-layout .profile-save-actions { display:flex; flex-wrap:wrap; gap:10px; border-top:1px solid #e1e9e3; padding-top:18px; }
+@media(max-width:1200px) {
+ .staff-layout .principal-workspace .analytics-filter-panel .analytics-filters { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media(max-width:700px) {
+ .staff-layout .account-page .account-identity { display:grid; grid-template-columns:44px minmax(0,1fr); column-gap:12px; padding:18px; }
+ .staff-layout .account-page .account-monogram { grid-row:1 / 3; width:44px; height:44px; font-size:22px; margin:0; border-radius:10px; }
+ .staff-layout .account-page .account-identity h2 { font-size:18px; margin:0; }
+ .staff-layout .account-page .account-role-label { grid-column:2; }
+ .staff-layout .account-page .account-identity .identity-rule { grid-column:1 / -1; width:100%; margin:14px 0; }
+ .staff-layout .account-page .account-identity > :is(p,strong) { grid-column:1 / -1; }
+ .staff-layout #staffMain > header,.staff-layout #staffMain > .staff-page-intro { padding-bottom:16px; margin-bottom:16px; }
+ .staff-layout .principal-workspace .analytics-filter-panel .analytics-filters { grid-template-columns:repeat(2,minmax(0,1fr)); padding:12px; }
+ .staff-layout .principal-workspace .analytics-filters :is(input,select,button,.role-button) { min-height:44px; }
+ .staff-layout .principal-workspace .metric:nth-child(2n) { border-right:0; }
+ .staff-layout .principal-workspace .metric:nth-child(n+3) { border-top:1px solid #e1e9e3; }
+ .staff-layout .principal-workspace .analytics-filter-panel > summary > span:not(.filter-symbol) { margin-left:38px; }
+ .staff-layout .profile-save-actions > button { flex:1; }
+}
+@media(max-width:420px) {
+ .staff-layout .principal-workspace .analytics-filter-panel .analytics-filters { grid-template-columns:minmax(0,1fr); }
+}

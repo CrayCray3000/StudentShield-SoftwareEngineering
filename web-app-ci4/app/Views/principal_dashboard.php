@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="<?= base_url('css/staff-layout.css?v=' . filemtime(FCPATH . 'css/staff-layout.css')) ?>"><link rel="stylesheet" href="<?= base_url('css/role-workspaces.css?v=' . filemtime(FCPATH . 'css/role-workspaces.css')) ?>">
 </head><body class="school-staff-page staff-layout role-workspace">
 <?= view('partials/staff_navigation', ['staffPage' => 'principal', 'staffPageLabel' => 'School overview']) ?>
-<main id="staffMain" class="staff-main role-main">
+<main id="staffMain" class="staff-main role-main principal-workspace">
 <header><h1>School overview</h1><p>School-level trends for administrative planning. <?= esc($f['start']) ?> – <?= esc($f['end']) ?> · Philippine time</p></header>
-<details class="analytics-filter-panel" id="analyticsFilterPanel" open><summary>Refine report <span><?= esc($f['start']) ?> – <?= esc($f['end']) ?></span></summary>
+<details class="analytics-filter-panel" id="analyticsFilterPanel"><summary>Refine report <span><?= esc($f['start']) ?> – <?= esc($f['end']) ?></span></summary>
 <form method="get" class="role-panel analytics-filters" aria-label="Analytics filters">
 <label>Period<select name="period" id="analyticsPeriod"><?php foreach (['today' => 'Today', 'yesterday' => 'Yesterday', 'last7' => 'Last 7 days', 'last30' => 'Last 30 days', 'week' => 'This week', 'month' => 'This month', 'custom' => 'Custom date range'] as $value => $label): ?><option value="<?= $value ?>" <?= $f['period'] === $value ? 'selected' : '' ?>><?= esc($label) ?></option><?php endforeach; ?></select></label>
 <label>Start date<input type="date" name="start" value="<?= esc($f['start'], 'attr') ?>" max="<?= esc($f['today'], 'attr') ?>"></label>
@@ -34,7 +34,15 @@
 <section class="role-panel"><h2><?= esc($label) ?></h2>
 <?php if (!$groups[$key]): ?><p>No matching events in this period.</p><?php else: $max = max(1, ...array_column($groups[$key], 'total')); ?>
 <?php foreach ($groups[$key] as $row): ?><div class="bar-row <?= $key === 'risk' ? 'risk-' . esc($row['label'], 'attr') : '' ?>"><span><?= esc($row['label'] ?: 'Not classified') ?></span><div class="bar-track" aria-hidden="true"><div class="bar-fill" style="width:<?= round($row['total'] * 100 / $max, 2) ?>%"></div></div><strong><?= $row['total'] ?></strong></div><?php endforeach; endif; ?>
-<?php if ($key === 'risk'): ?><p>Risk classifications apply to Safe Space entries. Bullying reports are not assigned these risk levels.</p><?php endif; ?>
+<?php if ($key === 'risk'): ?>
+<div class="risk-guide" aria-label="Risk level guide"><h3>Understanding risk levels</h3>
+<dl>
+<div><dt><span class="risk-key low"></span>Low <span>1–30%</span></dt><dd>Lower screening concern; routine review.</dd></div>
+<div><dt><span class="risk-key medium"></span>Medium <span>31–60%</span></dt><dd>Signs of distress; counselor follow-up may be needed.</dd></div>
+<div><dt><span class="risk-key high"></span>High <span>61–85%</span></dt><dd>Elevated concern; prioritized counselor triage.</dd></div>
+<div><dt><span class="risk-key critical"></span>Critical <span>86–100%</span></dt><dd>Urgent concern; immediate counselor and eligible guardian notification attempts.</dd></div>
+</dl><p>These are system screening bands, not diagnoses or probabilities of harm. Counselor review determines the response. Bullying reports do not receive these risk levels.</p></div>
+<?php endif; ?>
 </section><?php endforeach; ?></div>
 <div class="analytics-grid">
 <?php $chartGroups = ['category' => 'Events by category', 'grade' => 'Events by grade level', 'section' => 'Events by section']; ?>
@@ -45,6 +53,12 @@
 <?php if ($key === 'risk'): ?><p>Risk classifications apply to Safe Space entries. Bullying reports are not assigned these risk levels.</p><?php endif; ?>
 </section><?php endforeach; ?></div>
 </main>
-<script>const filterPanel = document.getElementById('analyticsFilterPanel'); const phoneFilters = matchMedia('(max-width: 700px)'); filterPanel.open = !phoneFilters.matches; phoneFilters.addEventListener('change', () => { filterPanel.open = !phoneFilters.matches; }); document.querySelectorAll('input[type="date"]').forEach(input => input.addEventListener('change', () => { document.getElementById('analyticsPeriod').value = 'custom'; }));</script>
+<script>
+const period = document.getElementById('analyticsPeriod');
+const dates = [...document.querySelectorAll('.analytics-filters input[type="date"]')];
+const syncDates = () => dates.forEach(input => { input.closest('label').hidden = period.value !== 'custom'; input.disabled = period.value !== 'custom'; });
+period.addEventListener('change', syncDates);
+syncDates();
+</script>
 <?= view('partials/session_idle_modal') ?>
 </body></html>

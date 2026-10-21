@@ -24,16 +24,13 @@ $pageDescriptions = [
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif']
+                        heading: ['Nunito', 'sans-serif']
                     },
                     colors: {
                         white: '#FBFDFB', // Anti-glare soft white
@@ -180,7 +177,7 @@ $pageDescriptions = [
         h4,
         h5,
         h6 {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Nunito', sans-serif;
         }
 
         /* Custom Scrollbar */

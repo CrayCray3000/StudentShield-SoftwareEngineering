@@ -20,7 +20,18 @@ $description = ['profile' => 'Your identity and access within StudentShield.', '
 <div class="account-page-grid">
 <section class="account-identity"><div class="account-monogram" aria-hidden="true"><?= esc($initial) ?></div><h2><?= esc($account['name']) ?></h2><span class="account-role-label"><?= esc($roleName) ?></span><div class="identity-rule"></div><p>School workspace</p><strong>StudentShield</strong><p>Saint Vincent Blessed School of Manila</p></section>
 <div class="account-page-content">
-<section class="account-surface"><div class="account-section-title"><h2>Account details</h2><span>Personal account</span></div><dl class="account-detail-list"><div><dt>Account name</dt><dd><?= esc($account['name']) ?></dd></div><div><dt>Account number</dt><dd>#<?= (int) $account['id'] ?></dd></div><div><dt>Assigned role</dt><dd><?= esc($roleName) ?></dd></div></dl><div class="account-surface-note"><?php if ($role === 2): ?>You can update your account name through Accounts. Your own account cannot be demoted or disabled.<a href="<?= base_url('admin/users') ?>">Manage accounts &rarr;</a><?php else: ?>Contact your Super Admin if your account name or assigned role needs updating.<?php endif; ?></div></section>
+<section class="account-surface"><div class="account-section-title"><h2>Personal details</h2><span>Account #<?= (int) $account['id'] ?></span></div>
+<form method="post" action="<?= base_url('staff/profile') ?>" class="profile-edit-form">
+<?= csrf_field() ?>
+<label for="profileName">Account name<input id="profileName" name="name" autocomplete="name" required maxlength="255" value="<?= esc($account['name'], 'attr') ?>" aria-describedby="profileNameHint"></label>
+<p id="profileNameHint" class="profile-field-hint">This is also the name you use to sign in.</p>
+<label for="profilePhone"><span>Phone number <span class="profile-optional">(optional)</span></span><input id="profilePhone" name="phone" type="tel" autocomplete="tel" maxlength="20" value="<?= esc($account['phone'] ?? '', 'attr') ?>"></label>
+<dl class="account-detail-list"><div><dt>Assigned role</dt><dd><?= esc($roleName) ?></dd></div><div><dt>Sign-in email</dt><dd><?= esc(($account['email'] ?? '') ?: 'Not set') ?></dd></div></dl>
+<p class="profile-field-hint">Contact your account administrator to update your sign-in email or role.</p>
+<label for="profilePassword">Current password<input id="profilePassword" name="current_password" type="password" autocomplete="current-password" required aria-describedby="profilePasswordHint"></label>
+<p id="profilePasswordHint" class="profile-field-hint">Confirm your password to save these changes.</p>
+<div class="profile-save-actions"><button type="submit">Save profile</button><button type="reset" class="secondary">Reset changes</button></div>
+</form></section>
 <section class="account-surface"><h2>Your workspace access</h2><p><?= $role === 2 ? 'Account management and system audit activity.' : ($role === 1 ? 'Student case review, consultations and registration decisions.' : 'School-level analytics and aggregate report exports.') ?></p><div class="account-access-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3l8 4v6c0 5-8 8-8 8s-8-3-8-8V7zM8 12l3 3 5-6"/></svg><span>Access follows your assigned role. Student clinical details are restricted to the guidance office.</span></div></section>
 </div></div>
 <?php endif; ?>

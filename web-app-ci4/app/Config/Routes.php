@@ -36,6 +36,7 @@ $routes->get('/counselor/(:any)', static function ($path) {
 $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/staff/settings', 'StaffAccountController::settings');
     $routes->get('/staff/profile', 'StaffAccountController::profile');
+    $routes->post('/staff/profile', 'StaffAccountController::updateProfile');
     $routes->get('/admin/dashboard', 'AdminController::dashboard');
     foreach (['vents', 'incidents', 'sessions', 'alerts', 'analytics'] as $page) {
         $routes->get('/admin/' . $page, 'AdminController::dashboard/' . $page);

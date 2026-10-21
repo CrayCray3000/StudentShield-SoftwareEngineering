@@ -15,7 +15,7 @@
                 extend: {
                     fontFamily: { 
                         sans: ['Inter', 'sans-serif'], 
-                        heading: ['Outfit', 'sans-serif'] 
+                        heading: ['Nunito', 'sans-serif']
                     },
                     colors: {
                         white: '#FBFDFB',
@@ -27,10 +27,9 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background: #FAFDF5; }
-        h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
+        h1, h2, h3, .font-heading { font-family: 'Nunito', sans-serif; }
         .glass-header {
             background: linear-gradient(160deg, #0D7B34 0%, #096328 60%, #075826 100%);
             border-bottom: 3px solid #EAB308;

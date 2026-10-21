@@ -284,3 +284,6 @@ body.staff-layout { --staff-sidebar-width: 240px; background: #f4f7f5; backgroun
 
 /* Hiding rows must never override their native table/grid layout when restored. */
 .staff-layout .mobile-card-table tr[hidden], .staff-layout .mobile-card-table tr.tbl-row-hidden { display:none !important; }
+
+/* Staff headings share the student identity; body and data typography stay Inter. */
+body.staff-layout #staffMain :is(h1, h2, h3, h4) { font-family: 'Nunito', sans-serif; }

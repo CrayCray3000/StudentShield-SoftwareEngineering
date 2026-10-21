@@ -26,6 +26,7 @@ if ((int) session()->get('role') === 1) {
 }
 ?>
 <link rel="stylesheet" href="<?= base_url('css/staff-filters.css?v=' . filemtime(FCPATH . 'css/staff-filters.css')) ?>">
+<link rel="stylesheet" href="<?= base_url('css/staff-refinement.css?v=' . filemtime(FCPATH . 'css/staff-refinement.css')) ?>">
 <a class="staff-skip-link" href="#staffMain">Skip to content</a>
 <button type="button" id="staffBackdrop" class="staff-backdrop" aria-label="Close navigation" tabindex="-1" hidden></button>
 <aside id="staffSidebar" class="staff-sidebar" aria-label="Staff navigation" tabindex="-1">

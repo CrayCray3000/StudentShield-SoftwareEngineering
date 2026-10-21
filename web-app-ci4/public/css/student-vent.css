@@ -1,12 +1,12 @@
 /* Safe Space keeps the school's colors and puts writing ahead of support options. */
 .student-workspace-page { --form-background: #f5f8f5; --form-text: #203d2c; --form-border: #a5b7ab; --form-divider: #d8e3db; }
 .student-workspace-page *, .student-workspace-page *::before, .student-workspace-page *::after { box-sizing: border-box; }
-.student-workspace-page h1, .student-workspace-page h2, .student-workspace-page h3 { font-family: Inter, sans-serif; }
+.student-workspace-page h1, .student-workspace-page h2, .student-workspace-page h3 { font-family: Nunito, sans-serif; }
 .vent-header { background: var(--school-green); color: white; border-bottom: 3px solid #f2c300; }
 .vent-header-inner { display: flex; align-items: center; gap: 24px; max-width: 1280px; min-height: 84px; margin: auto; padding: 12px 28px; }
 .vent-brand { display: flex; align-items: center; gap: 12px; margin-right: auto; min-width: 0; text-decoration: none; color: white; }
 .vent-brand img { width: 48px; height: 48px; object-fit: contain; flex-shrink: 0; }
-.vent-brand strong { display: block; font: 700 23px/1.25 Inter, sans-serif; letter-spacing: -.7px; }
+.vent-brand strong { display: block; font: 700 23px/1.25 Nunito, sans-serif; letter-spacing: -.7px; }
 .vent-brand > span > span { display: block; margin-top: 3px; font-size: 11px; color: #fff4c7; }
 .student-workspace-page .vent-header .student-form-nav { display: flex; margin: 0; gap: 12px; }
 .student-workspace-page .vent-header .nav-control { color: white; background: transparent; border: 0; padding-inline: 10px; font-size: 13px; }
@@ -60,7 +60,7 @@
 .vent-support-intro { padding-left: 16px; border-left: 4px solid #f2c300; }
 .vent-session-support, .vent-urgent-support { border-top: 1px solid var(--form-divider); padding-top: 24px; }
 .student-workspace-page .student-meet-card { padding: 0; border: 0; border-radius: 0; background: transparent; }
-.student-workspace-page .meet-card-title { font-family: Inter, sans-serif; font-size: 14px; }
+.student-workspace-page .meet-card-title { font-family: Nunito, sans-serif; font-size: 14px; }
 .student-workspace-page .meet-card-header { margin-bottom: 16px; }
 .student-workspace-page .meet-btn { min-height: 44px; border-radius: 7px; background: transparent; }
 .student-workspace-page .meet-btn--request:hover, .student-workspace-page .meet-btn--join { background: var(--form-primary); }
@@ -91,7 +91,7 @@
     .vent-workspace { grid-template-columns: minmax(0, 2.3fr) minmax(300px, 1fr); gap: 24px; }
     .student-workspace-page .student-page-header { margin-bottom: 24px; max-width: none; padding-inline: 0; }
     .student-workspace-page .student-section-label { font-size: 16px; margin-bottom: 8px; }
-    .student-workspace-page .student-page-header h2 { font-family: Inter, sans-serif; font-size: clamp(32px, 2.8vw, 46px); font-weight: 800; line-height: 1.2; letter-spacing: -1.2px; color: var(--form-text); }
+    .student-workspace-page .student-page-header h2 { font-family: Nunito, sans-serif; font-size: clamp(32px, 2.8vw, 46px); font-weight: 800; line-height: 1.2; letter-spacing: -1.2px; color: var(--form-text); }
     .student-workspace-page .student-page-header p { font-size: 17px; max-width: none; margin-top: 10px; }
     .student-workspace-page .student-entry-form { padding: 24px; gap: 22px; }
     .student-workspace-page .field-heading { margin-bottom: 16px; }
@@ -114,7 +114,7 @@
     .vent-support-intro p { padding-left: 32px; }
     .vent-session-support { min-height: 250px; }
     .vent-urgent-support { min-height: 224px; }
-    .vent-support h2 { font-family: Inter, sans-serif; font-size: clamp(24px, 1.8vw, 29px); font-weight: 750; line-height: 1.25; color: var(--form-text); margin-bottom: 18px; }
+    .vent-support h2 { font-family: Nunito, sans-serif; font-size: clamp(24px, 1.8vw, 29px); font-weight: 750; line-height: 1.25; color: var(--form-text); margin-bottom: 18px; }
     .vent-support p { font-size: 17px; line-height: 1.6; }
     .student-workspace-page .meet-card-header { gap: 20px; margin-block: 4px 24px; }
     .student-workspace-page .meet-icon-wrap { width: 50px; height: 50px; border: 0; border-radius: 12px; background: #e1f0e7; color: #00843b; }

@@ -92,6 +92,48 @@ final class RoleSeparationTest extends CIUnitTestCase
         $this->assertSame(403, $this->controller(\App\Controllers\StaffAccountController::class, 'staff/profile')->profile()->getStatusCode());
     }
 
+    public function testStaffCanUpdateOnlyTheirOwnNameAndPhone(): void
+    {
+        foreach ([1, 2, 3] as $role) {
+            $this->login($role);
+            $this->rbacDb->table('users')->where('id', $role)->update(['password_hash' => password_hash('ProfilePassword!9', PASSWORD_DEFAULT)]);
+            $this->controller(\App\Controllers\StaffAccountController::class, 'staff/profile', [
+                'name' => 'Updated Staff ' . $role, 'phone' => '09123456789', 'current_password' => 'ProfilePassword!9',
+                'user_id' => 10, 'role' => 2, 'email' => 'attacker@example.test',
+            ])->updateProfile();
+            $user = $this->rbacDb->table('users')->where('id', $role)->get()->getRowArray();
+            $this->assertSame('Updated Staff ' . $role, $user['name']);
+            $this->assertSame($role, (int) $user['role']);
+            $this->assertSame($user['name'], session()->get('name'));
+            $contact = $this->rbacDb->table($role === 1 ? 'counselors' : 'admins')->where('user_id', $role)->get()->getRowArray();
+            $this->assertSame('09123456789', $contact[$role === 1 ? 'counselor_phone' : 'phone']);
+            $this->assertNotSame('attacker@example.test', $contact[$role === 1 ? 'counselor_email' : 'email']);
+        }
+        $this->assertSame('PRIVATE_STUDENT_10', $this->rbacDb->table('users')->where('id', 10)->get()->getRowArray()['name']);
+    }
+
+    public function testProfileRejectsWrongPasswordDuplicateNameAndStudentRole(): void
+    {
+        $this->login(1);
+        $this->rbacDb->table('users')->where('id', 1)->update(['password_hash' => password_hash('ProfilePassword!9', PASSWORD_DEFAULT)]);
+        foreach ([['New name', 'wrong'], ['Staff 2', 'ProfilePassword!9'], ['', 'ProfilePassword!9']] as [$name, $password]) {
+            $this->controller(\App\Controllers\StaffAccountController::class, 'staff/profile', ['name' => $name, 'current_password' => $password])->updateProfile();
+            $this->assertSame('Staff 1', $this->rbacDb->table('users')->where('id', 1)->get()->getRowArray()['name']);
+        }
+        $this->login(0);
+        $this->assertSame(403, $this->controller(\App\Controllers\StaffAccountController::class, 'staff/profile')->updateProfile()->getStatusCode());
+    }
+
+    public function testSuperAdminReceivesOnlyMaskedLrn(): void
+    {
+        $this->rbacDb->table('students')->where('user_id', 10)->update(['lrn' => '123456789012']);
+        $this->login(2);
+        $html = $this->controller(UserController::class, 'admin/users')->index();
+        $this->assertStringContainsString('9012', $html);
+        $this->assertStringNotContainsString('123456789012', $html);
+        $this->assertStringNotContainsString('private@example.test', $html);
+    }
+
     public function testCreateAccountWorksWithoutOptionalUpdatedAtColumn(): void
     {
         $this->rbacDb->query('ALTER TABLE users DROP COLUMN updated_at');
@@ -203,8 +245,10 @@ final class RoleSeparationTest extends CIUnitTestCase
         $this->login(2);
         $html = $this->controller(UserController::class, 'admin/users')->index();
         $this->assertStringNotContainsString('private@example', $html);
-        $this->assertStringNotContainsString('PRIVATE_ID_', $html);
-        $this->assertStringNotContainsString('PRIVATE_STUDENT_', $html);
+        $this->assertStringContainsString('PRIVATE_ID_', $html);
+        $this->assertStringContainsString('PRIVATE_STUDENT_', $html);
+        $this->assertStringNotContainsString('PRIVATE_TEXT', $html);
+        $this->assertStringNotContainsString('PRIVATE_INCIDENT', $html);
         foreach ([2, 3] as $role) {
             $this->login($role);
             $nav = view('partials/staff_navigation');
@@ -295,6 +339,55 @@ final class RoleSeparationTest extends CIUnitTestCase
         foreach ([0, 1, 2, 3] as $role) $this->assertFalse(RoleAccess::allows($role, 'admin/unknown-private-resource'));
     }
 
+    public function testBrowserOnWrongDashboardReturnsToOwnWorkspace(): void
+    {
+        foreach ([1, 2, 3] as $role) {
+            $this->login($role);
+            $request = $this->request('student/dashboard');
+            $request->setHeader('Accept', 'text/html');
+            $response = (new AuthFilter())->before($request);
+            $this->assertSame(302, $response->getStatusCode());
+            $this->assertStringEndsWith(RoleAccess::home($role), $response->getHeaderLine('Location'));
+        }
+    }
+
+    public function testSharedLoginAcceptsStudentIdAndLeadingZeroLrn(): void
+    {
+        $this->rbacDb->table('users')->where('id', 10)->update(['password_hash' => password_hash('LoginPassword!9', PASSWORD_DEFAULT)]);
+        $this->rbacDb->table('students')->where('user_id', 10)->update(['lrn' => '012345678901']);
+        foreach (['PRIVATE_ID_10', '012345678901'] as $identifier) {
+            session()->destroy();
+            $response = $this->controller(\App\Controllers\AuthController::class, 'login/authenticate', ['identifier' => $identifier, 'password' => 'LoginPassword!9'])->authenticateStudent();
+            $this->assertStringEndsWith('/student/dashboard', $response->getHeaderLine('Location'));
+            $this->assertSame(10, (int) session()->get('user_id'));
+            $this->assertSame(0, (int) session()->get('role'));
+        }
+    }
+
+    public function testSharedLoginSendsEveryStaffRoleThroughOtp(): void
+    {
+        foreach ([1, 2, 3] as $role) {
+            session()->destroy();
+            $this->rbacDb->table('users')->where('id', $role)->update(['password_hash' => password_hash('StaffPassword!9', PASSWORD_DEFAULT)]);
+            $this->rbacDb->table($role === 1 ? 'counselors' : 'admins')->insert(['user_id' => $role, $role === 1 ? 'counselor_email' : 'email' => 'staff' . $role . '@example.test']);
+            foreach (['Staff ' . $role, 'staff' . $role . '@example.test'] as $identifier) {
+                session()->destroy();
+                $response = $this->controller(SharedLoginNoMailController::class, 'login/authenticate', ['identifier' => $identifier, 'password' => 'StaffPassword!9'])->authenticateStudent();
+                $this->assertStringEndsWith('/admin/otp', $response->getHeaderLine('Location'));
+                $this->assertFalse((bool) session()->get('isLoggedIn'));
+                $this->assertSame($role, (int) session()->get('temp_role'));
+            }
+        }
+    }
+
+    public function testSharedLoginRejectsDisabledAndPendingStudents(): void
+    {
+        $this->rbacDb->table('users')->where('id', 12)->update(['password_hash' => password_hash('LoginPassword!9', PASSWORD_DEFAULT)]);
+        $response = $this->controller(\App\Controllers\AuthController::class, 'login/authenticate', ['identifier' => 'PRIVATE_ID_12', 'password' => 'LoginPassword!9'])->authenticateStudent();
+        $this->assertFalse((bool) session()->get('isLoggedIn'));
+        $this->assertSame(302, $response->getStatusCode());
+    }
+
     public function testStaffLoginQueryRejectsWrongPasswordWithoutSqlError(): void
     {
         foreach ([1, 2, 3] as $role) {
@@ -313,4 +406,9 @@ final class RoleSeparationTest extends CIUnitTestCase
         $this->assertStringEndsWith('/admin/login', $response->getHeaderLine('Location'));
         $this->assertFalse(session()->has('otp'));
     }
+}
+
+class SharedLoginNoMailController extends \App\Controllers\AuthController
+{
+    protected function sendOtpEmail(array $user, string $recipientEmail, string $otp): bool { return false; }
 }

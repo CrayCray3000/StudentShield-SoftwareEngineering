@@ -20,8 +20,8 @@
 <button type="submit">Create account</button>
 </form></details>
 <section class="role-panel" aria-label="Account directory">
-<div class="accounts-directory-heading"><h2>Account directory</h2><span id="accountResultCount" role="status"><?= count($users) ?> accounts</span></div>
-<div class="accounts-search-line"><label for="accountSearch">Search accounts<input type="search" id="accountSearch" placeholder="Search account name or role"></label>
+<div class="accounts-directory-heading"><h2>Account directory</h2><span id="accountResultCount" role="status"><?= count($users) ?> <?= count($users) === 1 ? 'account' : 'accounts' ?></span></div>
+<div class="accounts-search-line"><label for="accountSearch">Search accounts<input type="search" id="accountSearch" placeholder="Search name, student ID or role"></label>
 <details class="account-filter-panel"><summary>Filters</summary><div class="account-toolbar">
 <label>Role<select id="accountRole"><option value="">All roles</option><?php foreach (\App\Libraries\RoleAccess::NAMES as $value => $label): ?><option value="<?= $value ?>"><?= esc($label) ?></option><?php endforeach; ?></select></label>
 <label>Account access<select id="accountAccess"><option value="">All access statuses</option><option value="0">Enabled</option><option value="1">Disabled</option></select></label>
@@ -33,7 +33,7 @@
     $roleLabel = \App\Libraries\RoleAccess::NAMES[$role] ?? 'Unknown';
     $roleBadgeClass = $role === 2 ? 'badge-admin' : ($role === 3 ? 'badge-principal' : ($role === 1 ? 'badge-counselor' : 'badge-student'));
 ?>
-<article class="account-row" data-role="<?= $role ?>" data-disabled="<?= (int) $user['access_disabled'] ?>" data-account="<?= esc(strtolower($user['name'] . ' ' . $roleLabel), 'attr') ?>">
+<article class="account-row" data-role="<?= $role ?>" data-disabled="<?= (int) $user['access_disabled'] ?>" data-account="<?= esc(strtolower($user['name'] . ' ' . $roleLabel . ' ' . ($user['student_id'] ?? '')), 'attr') ?>">
 <div>
     <strong><?= esc($user['name']) ?></strong>
     <p>
@@ -56,7 +56,19 @@
 <?php if ((int) $user['id'] !== (int) session()->get('user_id')): ?>
 <form method="post" action="<?= base_url('admin/users/access/' . (int) $user['id']) ?>" class="account-access"><?= csrf_field() ?><input type="hidden" name="disabled" value="<?= $user['access_disabled'] ? '0' : '1' ?>"><button type="submit" class="secondary"><?= $user['access_disabled'] ? 'Enable account' : 'Disable account' ?></button></form>
 <?php endif; ?>
-</details></article>
+</details>
+<?php if ($role === 0): ?>
+<details class="basic-student-profile"><summary>View basic profile</summary>
+<dl class="basic-profile-fields">
+<?php foreach (['student_id' => 'Student ID', 'grade_level' => 'Grade level', 'section' => 'Section', 'adviser_name' => 'Adviser', 'created_at' => 'Registered'] as $field => $label): ?>
+<div><dt><?= esc($label) ?></dt><dd><?= esc(($user[$field] ?? '') ?: 'Not set') ?></dd></div>
+<?php endforeach; ?>
+<div><dt>LRN</dt><dd><?= !empty($user['lrn_suffix']) ? '••••••••' . esc($user['lrn_suffix']) : 'Not set' ?></dd></div>
+</dl>
+<p>Basic identification only. Student entries, case records and guardian contacts are restricted to the guidance office.</p>
+</details>
+<?php endif; ?>
+</article>
 <?php endforeach; ?>
 <div id="noAccountsFound" class="hidden text-center py-8 text-gray-500 text-sm">No accounts match your search query.</div>
 </div></section></main>

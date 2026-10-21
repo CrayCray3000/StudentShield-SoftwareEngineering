@@ -89,22 +89,6 @@
         });
     });
 
-    const period = document.getElementById('analyticsPeriod');
-    const accountRole = document.getElementById('accountRole');
-    function shortcuts(select, labels, target, ariaLabel, submit) {
-        if (!select || !target) return;
-        const group = document.createElement('div'); group.className = 'filter-quick'; group.setAttribute('role', 'group'); group.setAttribute('aria-label', ariaLabel);
-        labels.forEach(([value, label]) => {
-            const button = document.createElement('button'); button.type = 'button'; button.textContent = label; button.dataset.value = value;
-            button.addEventListener('click', () => { select.value = value; select.dispatchEvent(new Event('change', {bubbles:true})); if (submit) select.form.requestSubmit(); });
-            group.append(button);
-        });
-        target.before(group);
-        const sync = () => group.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.value === select.value)));
-        select.addEventListener('change', sync); sync();
-    }
-    shortcuts(period, [['today','Today'],['last7','7 days'],['last30','30 days'],['month','This month']], document.getElementById('analyticsFilterPanel'), 'Reporting period', true);
-
     document.querySelectorAll('.analytics-filter-panel > summary, .account-filter-panel > summary').forEach(summary => {
         const icon = document.createElement('span'); icon.className = 'filter-symbol'; icon.setAttribute('aria-hidden', 'true');
         icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg>';

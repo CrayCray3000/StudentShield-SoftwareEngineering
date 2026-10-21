@@ -16,8 +16,8 @@
             theme: {
                 extend: {
                     fontFamily: { 
-                        sans: ['Inter', 'sans-serif'], 
-                        heading: ['Outfit', 'sans-serif'] 
+                        sans: ['Nunito', 'sans-serif'],
+                        heading: ['Nunito', 'sans-serif']
                     },
                     colors: {
                         white: '#FBFDFB', // Anti-glare soft white
@@ -50,7 +50,6 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
     <style>
         .glass-card {
             background: padding-box linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));

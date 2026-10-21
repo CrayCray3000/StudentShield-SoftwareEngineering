@@ -15,8 +15,8 @@
             theme: {
                 extend: {
                     fontFamily: { 
-                        sans: ['Inter', 'sans-serif'], 
-                        heading: ['Outfit', 'sans-serif'] 
+                        sans: ['Nunito', 'sans-serif'],
+                        heading: ['Nunito', 'sans-serif']
                     },
                     colors: {
                         white: '#FBFDFB', 
@@ -48,15 +48,14 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         @media (max-width: 1440px) { html { font-size: 15px; } }
         @media (max-width: 1280px) { html { font-size: 14px; } }
         @media (max-width: 768px) { html { font-size: 16px; } } /* Reset for mobile */
         
-        body { font-family: 'Inter', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
-        h1, h2, h3, .font-heading { font-family: 'Outfit', sans-serif; }
+        body { font-family: 'Nunito', sans-serif; background-color: #0F8A3A; overflow-x: hidden; }
+        h1, h2, h3, .font-heading { font-family: 'Nunito', sans-serif; }
 
         .bg-student {
             background:

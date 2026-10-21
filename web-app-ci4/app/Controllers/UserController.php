@@ -6,9 +6,12 @@ class UserController extends BaseController
     public function index()
     {
         if (!$this->hasRole(2)) return $this->forbidden();
-        // Account identifiers only; student profiles and guardian contacts are counselor-only.
-        $users = \Config\Database::connect()->table('users')->select("id, CASE WHEN role = 0 THEN NULL ELSE name END AS name, role, access_disabled, registration_status, created_at", false)
-            ->orderBy('role', 'DESC')->orderBy('name')->get()->getResultArray();
+        // Explicit basic-profile allowlist. Never load guardian contacts or clinical records here.
+        $users = \Config\Database::connect()->table('users')
+            ->select('users.id, users.name, users.role, users.access_disabled, users.registration_status, users.created_at, students.student_id, students.grade_level, students.section, students.adviser_name')
+            ->select('SUBSTR(students.lrn, -4) AS lrn_suffix', false)
+            ->join('students', 'students.user_id = users.id AND users.role = 0', 'left')
+            ->orderBy('users.role', 'DESC')->orderBy('users.name')->get()->getResultArray();
         return view('manage_accounts', ['users' => $users]);
     }
 

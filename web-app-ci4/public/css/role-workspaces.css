@@ -1,8 +1,8 @@
 .role-workspace { margin: 0; background: #f5f8f5; color: #212825; font: 15px/1.6 Inter, Arial, sans-serif; }
 .role-workspace * { box-sizing: border-box; }
 .role-main { padding: 28px; max-width: 1800px; }
-.role-main h1 { margin: 0; font-size: clamp(24px, 3vw, 32px); font-weight: 800; font-family: Outfit, Inter, sans-serif; color: #173e25; line-height: 1.25; letter-spacing: -.5px; }
-.role-main h2 { margin: 0 0 16px; font-size: 18px; font-weight: 700; font-family: Outfit, Inter, sans-serif; color: #1f3527; letter-spacing: -.3px; }
+.role-main h1 { margin: 0; font-size: clamp(24px, 3vw, 32px); font-weight: 800; font-family: Nunito, Inter, sans-serif; color: #173e25; line-height: 1.25; letter-spacing: -.5px; }
+.role-main h2 { margin: 0 0 16px; font-size: 18px; font-weight: 700; font-family: Nunito, Inter, sans-serif; color: #1f3527; letter-spacing: -.3px; }
 .role-main p { margin: 6px 0 18px; color: #526259; font-size: 14px; }
 .role-panel { padding: 24px; margin-top: 24px; background: white; border: 1px solid #d8e3db; border-radius: 14px; min-width: 0; box-shadow: 0 2px 6px rgba(22, 60, 35, 0.04); transition: border-color .15s ease, box-shadow .15s ease; }
 .role-panel:hover { border-color: #c7d6cb; }
@@ -67,7 +67,7 @@
 .metric { border: 1px solid #d8e3db; border-radius: 12px; background: white; padding: 20px 22px; box-shadow: 0 1px 3px rgba(22, 60, 35, 0.04); transition: border-color .15s ease, box-shadow .15s ease; display: flex; flex-direction: column; justify-content: space-between; }
 .metric:hover { border-color: #a8bfb1; box-shadow: 0 4px 12px rgba(15, 138, 58, 0.08); }
 .metric > span:first-child { font-size: 12px; font-weight: 500; color: #61756b; line-height: 1.4; display: block; }
-.metric strong { display: block; font-size: 30px; font-weight: 700; color: #0b7533; font-family: Outfit, Inter, sans-serif; line-height: 1.2; margin: 6px 0 2px; }
+.metric strong { display: block; font-size: 30px; font-weight: 700; color: #0b7533; font-family: Nunito, Inter, sans-serif; line-height: 1.2; margin: 6px 0 2px; }
 .metric > span:last-child { font-size: 11px; color: #82958b; display: block; }
 
 /* Analytics Charts & Panels */

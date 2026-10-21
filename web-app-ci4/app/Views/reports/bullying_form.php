@@ -14,8 +14,8 @@
             theme: {
                 extend: {
                     fontFamily: { 
-                        sans: ['Inter', 'sans-serif'], 
-                        heading: ['Outfit', 'sans-serif'] 
+                        sans: ['Nunito', 'sans-serif'],
+                        heading: ['Nunito', 'sans-serif']
                     },
                     colors: {
                         white: '#FFFFFF', // Anti-glare soft white
@@ -49,7 +49,6 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= base_url('css/student-forms.css?v=4') ?>">
     <link rel="stylesheet" href="<?= base_url('css/student-vent.css?v=' . filemtime(FCPATH . 'css/student-vent.css')) ?>">
     <link rel="stylesheet" href="<?= base_url('css/student-report.css?v=' . filemtime(FCPATH . 'css/student-report.css')) ?>">

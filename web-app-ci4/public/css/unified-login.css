@@ -1,0 +1,24 @@
+/* One readable sign-in surface for students and staff. */
+html:has(.student-login) { font-size:16px; }
+body.student-login { padding:20px 16px; font-family:'Nunito',sans-serif; }
+.student-login .login-shell { width:100%; max-width:540px; }
+.student-login .student-card { padding:28px 32px; border-radius:22px; }
+.student-login .login-heading h1 { font-size:36px; font-weight:800; letter-spacing:-.025em; }
+.student-login .login-identity p { font-size:15px; }
+.student-login .login-heading > p { font-size:17px; }
+.student-login .login-form { gap:18px; }
+.student-login .login-form label[for="name"],
+.student-login .login-form label[for="password"] { font-size:16px; line-height:1.45; text-transform:none; letter-spacing:0; color:#fff; }
+.student-login .login-form .input-dark { font-size:18px; font-weight:600; min-height:54px; }
+.student-login .login-identifier-hint { color:#fff; font-size:14px; line-height:1.55; }
+.student-login .login-form label[for="remember"] > div { font-size:15px; }
+.student-login .login-form label[for="remember"] > div > span:last-child { font-size:13px; color:#fff; }
+.student-login .login-form > div:last-child p { font-size:16px; }
+.student-login .submit-btn #btnText { font-size:20px; font-weight:800; letter-spacing:0; }
+.student-login .login-security span:last-child { font-size:12px; }
+@media(max-width:600px) {
+ .student-login .student-card { padding:24px 20px; border-radius:18px; }
+ .student-login .login-heading h1 { font-size:32px; }
+ .student-login .login-form .input-dark { font-size:16px; }
+ .student-login .login-heading > p { font-size:16px; }
+}
