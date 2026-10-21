@@ -576,6 +576,7 @@ $pageDescriptions = [
         <?php if ($dashboardPage === 'vents'): ?>
         <div id="section-vents" class="dashboard-card overflow-hidden animate-slide-up flex flex-col"
             style="animation-delay: 0.2s">
+            <div class="queue-heading"><div><h3>Wellness entries</h3><p>Review entries and keep track of follow-ups.</p></div><span class="queue-caption">Counselor workspace</span></div>
             <!-- Table Container -->
             <div class="overflow-x-auto custom-scrollbar flex flex-col">
                 <div
@@ -612,9 +613,9 @@ $pageDescriptions = [
                             <th class="px-4 py-4 w-10 text-center"><input type="checkbox" id="selectAllVents" aria-label="Select all entries"
                                     class="rounded border-white/40 text-[#F2C300]"></th>
                             <th class="px-6 py-4">Student</th>
-                            <th class="px-6 py-4 w-1/3">NLP Extract</th>
-                            <th class="px-6 py-4 text-center">Risk Indicator</th>
-                            <th class="px-6 py-4 text-center">Threat Level</th>
+                            <th class="px-6 py-4 w-1/3">Entry preview</th>
+                            <th class="px-6 py-4 text-center">Screening score</th>
+                            <th class="px-6 py-4 text-center">Risk level</th>
                             <th class="px-6 py-4">Timestamp</th>
                             <th class="px-6 py-4 text-center">Action</th>
                         </tr>
@@ -979,13 +980,15 @@ $pageDescriptions = [
                 gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.1, stops: [0, 90, 100] }
             },
             dataLabels: { enabled: false },
-            stroke: { curve: 'smooth', width: 3 },
+            stroke: { curve: 'straight', width: 3 },
+            markers: { size: 5, strokeWidth: 2, strokeColors: '#ffffff', hover: { size: 7 } },
+            tooltip: { enabled: true, shared: false, intersect: false, y: { formatter: value => value + (value === 1 ? ' entry' : ' entries') } },
             xaxis: {
                 categories: ['6d', '5d', '4d', '3d', '2d', '1d', 'Today'],
                 axisBorder: { show: false },
                 axisTicks: { show: false }
             },
-            yaxis: { show: false },
+            yaxis: { show: true, min: 0, forceNiceScale: true, decimalsInFloat: 0, title: { text: 'Entries' }, labels: { formatter: value => Number.isInteger(value) ? String(value) : '' } },
             grid: {
                 borderColor: 'rgba(0,0,0,0.05)',
                 strokeDashArray: 4,
@@ -1030,8 +1033,8 @@ $pageDescriptions = [
                 for (let i = 6; i >= 0; i--) {
                     let d = new Date(today);
                     d.setDate(d.getDate() - i);
-                    let label = d.toLocaleDateString('en-US', { weekday: 'short' });
-                    cachedDateLabels.push(i === 0 ? 'Today' : label);
+                    let label = d.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' });
+                    cachedDateLabels.push(label);
                 }
                 areaChart.updateOptions({ xaxis: { categories: cachedDateLabels } });
             }

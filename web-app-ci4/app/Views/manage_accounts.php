@@ -7,7 +7,7 @@
 </head><body class="school-staff-page staff-layout role-workspace">
 <?= view('partials/staff_navigation', ['staffPage' => 'users', 'staffPageLabel' => 'System accounts']) ?>
 <main id="staffMain" class="staff-main role-main accounts-workspace">
-<header class="accounts-heading"><div><h1>System accounts</h1><p>Manage accounts, roles and access.</p></div><button type="button" id="createAccountToggle" aria-controls="accountCreatePanel" aria-expanded="false" hidden>+ Create account</button></header>
+<header class="accounts-heading"><div class="workspace-title"><span class="workspace-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2m20 0v-2a4 4 0 00-3-3.87M16 3a4 4 0 010 8"/><circle cx="9" cy="7" r="4"/></svg></span><div><h1>System accounts</h1><p>Manage accounts, roles and access.</p></div></div><button type="button" id="createAccountToggle" aria-controls="accountCreatePanel" aria-expanded="false" hidden>+ Create account</button></header>
 <?php foreach (['success', 'error'] as $key): if ($message = session()->getFlashdata($key)): ?><p role="status" class="role-notice"><?= esc($message) ?></p><?php endif; endforeach; ?>
 <details id="accountCreatePanel" class="role-panel account-create"><summary>Create an account</summary>
 <form method="post" action="<?= base_url('admin/users/create') ?>" class="account-fields">
@@ -19,7 +19,7 @@
 <p>New Student accounts remain pending until a Counselor approves them. Student profile and guardian details are managed by the guidance office.</p>
 <button type="submit">Create account</button>
 </form></details>
-<section class="role-panel" aria-label="Account directory">
+<section class="role-panel directory-panel" aria-label="Account directory">
 <div class="accounts-directory-heading"><h2>Account directory</h2><span id="accountResultCount" role="status"><?= count($users) ?> <?= count($users) === 1 ? 'account' : 'accounts' ?></span></div>
 <div class="accounts-search-line"><label for="accountSearch">Search accounts<input type="search" id="accountSearch" placeholder="Search name, student ID or role"></label>
 <details class="account-filter-panel"><summary>Filters</summary><div class="account-toolbar">
@@ -34,7 +34,7 @@
     $roleBadgeClass = $role === 2 ? 'badge-admin' : ($role === 3 ? 'badge-principal' : ($role === 1 ? 'badge-counselor' : 'badge-student'));
 ?>
 <article class="account-row" data-role="<?= $role ?>" data-disabled="<?= (int) $user['access_disabled'] ?>" data-account="<?= esc(strtolower($user['name'] . ' ' . $roleLabel . ' ' . ($user['student_id'] ?? '')), 'attr') ?>">
-<div>
+<div class="directory-identity"><span class="directory-avatar" aria-hidden="true"><?= esc(mb_strtoupper(mb_substr($user['name'], 0, 1))) ?></span><div>
     <strong><?= esc($user['name']) ?></strong>
     <p>
         <span>Account #<?= (int) $user['id'] ?></span> · 
@@ -44,8 +44,8 @@
             · <span class="status-badge <?= strtolower($user['registration_status']) === 'approved' ? 'badge-approved' : (strtolower($user['registration_status']) === 'pending' ? 'badge-pending' : 'badge-rejected') ?>">Registration: <?= esc(ucfirst($user['registration_status'])) ?></span>
         <?php endif; ?>
     </p>
-</div>
-<details><summary>Edit access</summary>
+</div></div>
+<details class="account-access-editor"><summary>Edit access</summary>
 <form method="post" action="<?= base_url('admin/users/update/' . (int) $user['id']) ?>" class="account-fields">
 <?= csrf_field() ?>
 <?php if ($role !== 0): ?><label>Account name<input name="name" value="<?= esc($user['name'], 'attr') ?>" maxlength="255" required></label><?php endif; ?>

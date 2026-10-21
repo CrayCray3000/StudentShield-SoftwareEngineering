@@ -364,6 +364,14 @@ final class RoleSeparationTest extends CIUnitTestCase
         }
     }
 
+    public function testExistingStudentsCanStillUseRegisteredName(): void
+    {
+        $this->rbacDb->table('users')->where('id', 10)->update(['password_hash' => password_hash('LoginPassword!9', PASSWORD_DEFAULT)]);
+        $response = $this->controller(\App\Controllers\AuthController::class, 'login/authenticate', ['identifier' => 'PRIVATE_STUDENT_10', 'password' => 'LoginPassword!9'])->authenticateStudent();
+        $this->assertStringEndsWith('/student/dashboard', $response->getHeaderLine('Location'));
+        $this->assertSame(10, (int) session()->get('user_id'));
+    }
+
     public function testSharedLoginSendsEveryStaffRoleThroughOtp(): void
     {
         foreach ([1, 2, 3] as $role) {

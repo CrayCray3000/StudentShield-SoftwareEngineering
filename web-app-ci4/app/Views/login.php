@@ -329,7 +329,7 @@
                     </div>
                 </div>
 
-                <p id="identifierHint" class="login-identifier-hint">Students: Student ID or 12-digit LRN. Staff: account name or email.</p>
+                <p id="identifierHint" class="login-identifier-hint">Students: ID, 12-digit LRN or registered name. Staff: account name or email.</p>
                 <div class="space-y-1.5 sm:space-y-2">
                     <label for="password" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Password</label>
                     <div class="relative group/input">

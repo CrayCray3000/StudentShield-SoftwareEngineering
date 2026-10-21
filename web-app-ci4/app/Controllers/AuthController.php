@@ -69,6 +69,11 @@ class AuthController extends BaseController
             ->join('students', 'students.user_id = users.id')
             ->where('users.role', 0)->groupStart()->where('students.student_id', $name)
             ->orWhere('students.lrn', $name)->groupEnd()->limit(2)->get()->getResultArray();
+        // Preserve existing name-based student sign-in. Explicit ID/LRN matches take priority.
+        if (!$matches) {
+            $matches = $db->table('users')->where('role', 0)->where('name', $name)
+                ->limit(2)->get()->getResultArray();
+        }
         if (!$matches) return $this->authenticateAdmin();
         if (count($matches) !== 1) return redirect()->to('/login')->with('error', 'Invalid credentials provided.');
         $user = $matches[0];
