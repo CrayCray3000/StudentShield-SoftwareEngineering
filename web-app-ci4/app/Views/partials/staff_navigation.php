@@ -13,7 +13,7 @@ $staffLinks = [
 ];
 $staffAdminLinks = [];
 if ((int) session()->get('role') === 1) {
-    $staffAdminLinks['registrations'] = ['Registrations', 'admin/pending-registrations', 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M20 8v6M17 11h6'];
+    $staffAdminLinks['registrations'] = ['Registrations', 'admin/pending-registrations', 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M13 7a4 4 0 11-8 0 4 4 0 018 0M20 8v6M17 11h6'];
 } elseif ((int) session()->get('role') === 2) {
     $staffLinks = [
         'users' => ['Accounts', 'admin/users', 'M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M13 7a4 4 0 11-8 0 4 4 0 018 0M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75'],
