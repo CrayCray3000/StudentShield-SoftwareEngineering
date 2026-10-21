@@ -4,6 +4,7 @@
 <?= view('partials/school_brand') ?>
 <link rel="stylesheet" href="<?= base_url('css/staff-layout.css?v=' . filemtime(FCPATH . 'css/staff-layout.css')) ?>">
 <link rel="stylesheet" href="<?= base_url('css/role-workspaces.css?v=' . filemtime(FCPATH . 'css/role-workspaces.css')) ?>">
+<link rel="stylesheet" href="<?= base_url('css/accounts-directory.css?v=' . filemtime(FCPATH . 'css/accounts-directory.css')) ?>">
 </head><body class="school-staff-page staff-layout role-workspace">
 <?= view('partials/staff_navigation', ['staffPage' => 'users', 'staffPageLabel' => 'System accounts']) ?>
 <main id="staffMain" class="staff-main role-main accounts-workspace">
@@ -19,32 +20,42 @@
 <p>New Student accounts remain pending until a Counselor approves them. Student profile and guardian details are managed by the guidance office.</p>
 <button type="submit">Create account</button>
 </form></details>
+<div class="accounts-master-detail">
 <section class="role-panel directory-panel" aria-label="Account directory">
 <div class="accounts-directory-heading"><h2>Account directory</h2><span id="accountResultCount" role="status"><?= count($users) ?> <?= count($users) === 1 ? 'account' : 'accounts' ?></span></div>
+<div class="account-role-tabs" aria-label="Filter accounts by role" hidden>
+<?php foreach (['' => 'All', 0 => 'Students', 1 => 'Counselors', 2 => 'Admins', 3 => 'Principal'] as $value => $label): ?>
+<button type="button" data-role-filter="<?= $value ?>" aria-pressed="<?= $value === '' ? 'true' : 'false' ?>"><?= $label ?><span><?= count(array_filter($users, static fn ($user) => $value === '' || (int) $user['role'] === (int) $value)) ?></span></button>
+<?php endforeach; ?></div>
 <div class="accounts-search-line"><label for="accountSearch">Search accounts<input type="search" id="accountSearch" placeholder="Search name, student ID or role"></label>
 <details class="account-filter-panel"><summary>Filters</summary><div class="account-toolbar">
 <label>Role<select id="accountRole"><option value="">All roles</option><?php foreach (\App\Libraries\RoleAccess::NAMES as $value => $label): ?><option value="<?= $value ?>"><?= esc($label) ?></option><?php endforeach; ?></select></label>
 <label>Account access<select id="accountAccess"><option value="">All access statuses</option><option value="0">Enabled</option><option value="1">Disabled</option></select></label>
 </div></details></div>
-<div class="account-list">
+<div class="account-list" role="table" aria-label="System accounts">
+<div class="account-column-headings" role="row"><span role="columnheader">Name</span><span role="columnheader">Role</span><span role="columnheader">Access</span><span role="columnheader">Details</span></div>
 <?php foreach ($users as $user): 
     $user['name'] = $user['name'] ?? ('Student account #' . (int) $user['id']); 
     $role = (int) $user['role'];
     $roleLabel = \App\Libraries\RoleAccess::NAMES[$role] ?? 'Unknown';
     $roleBadgeClass = $role === 2 ? 'badge-admin' : ($role === 3 ? 'badge-principal' : ($role === 1 ? 'badge-counselor' : 'badge-student'));
 ?>
-<article class="account-row" data-role="<?= $role ?>" data-disabled="<?= (int) $user['access_disabled'] ?>" data-account="<?= esc(strtolower($user['name'] . ' ' . $roleLabel . ' ' . ($user['student_id'] ?? '')), 'attr') ?>">
-<div class="directory-identity"><span class="directory-avatar" aria-hidden="true"><?= esc(mb_strtoupper(mb_substr($user['name'], 0, 1))) ?></span><div>
+<article class="account-row" role="row" data-name="<?= esc($user['name'], 'attr') ?>" data-role="<?= $role ?>" data-disabled="<?= (int) $user['access_disabled'] ?>" data-account="<?= esc(strtolower($user['name'] . ' ' . $roleLabel . ' ' . ($user['student_id'] ?? '')), 'attr') ?>">
+<div class="directory-identity" role="cell"><span class="directory-avatar" aria-hidden="true"><?= esc(mb_strtoupper(mb_substr($user['name'], 0, 1))) ?></span><div>
     <strong><?= esc($user['name']) ?></strong>
     <p>
-        <span>Account #<?= (int) $user['id'] ?></span> · 
-        <span class="role-badge <?= $roleBadgeClass ?>"><?= esc($roleLabel) ?></span> · 
-        <span class="status-badge <?= $user['access_disabled'] ? 'badge-disabled' : 'badge-enabled' ?>"><?= $user['access_disabled'] ? 'Disabled' : 'Enabled' ?></span>
-        <?php if ($role === 0 && !empty($user['registration_status'])): ?>
-            · <span class="status-badge <?= strtolower($user['registration_status']) === 'approved' ? 'badge-approved' : (strtolower($user['registration_status']) === 'pending' ? 'badge-pending' : 'badge-rejected') ?>">Registration: <?= esc(ucfirst($user['registration_status'])) ?></span>
-        <?php endif; ?>
+        <span><?= esc(($user['student_id'] ?? '') ?: ('Account #' . (int) $user['id'])) ?></span>
     </p>
 </div></div>
+<div role="cell" class="directory-role"><span class="role-badge <?= $roleBadgeClass ?>"><?= esc($roleLabel) ?></span></div>
+<div role="cell" class="directory-status">
+        <span class="status-badge <?= $user['access_disabled'] ? 'badge-disabled' : 'badge-enabled' ?>"><?= $user['access_disabled'] ? 'Disabled' : 'Enabled' ?></span>
+        <?php if ($role === 0 && !empty($user['registration_status'])): ?>
+            <small><?= esc(ucfirst($user['registration_status'])) ?> registration</small>
+        <?php endif; ?>
+</div>
+<div role="cell" class="directory-actions">
+<button type="button" class="account-inspect-button secondary" hidden aria-controls="accountInspector" aria-expanded="false" aria-label="View details for <?= esc($user['name'], 'attr') ?>">View <span aria-hidden="true">→</span></button>
 <details class="account-access-editor"><summary>Edit access</summary>
 <form method="post" action="<?= base_url('admin/users/update/' . (int) $user['id']) ?>" class="account-fields">
 <?= csrf_field() ?>
@@ -68,10 +79,15 @@
 <p>Basic identification only. Student entries, case records and guardian contacts are restricted to the guidance office.</p>
 </details>
 <?php endif; ?>
+</div>
 </article>
 <?php endforeach; ?>
 <div id="noAccountsFound" class="hidden text-center py-8 text-gray-500 text-sm">No accounts match your search query.</div>
-</div></section></main>
+</div><div class="directory-pagination" hidden><span id="accountPageLabel"></span><div><button type="button" id="accountPrevious" class="secondary">Previous</button><button type="button" id="accountNext" class="secondary">Next</button></div></div></section>
+<aside id="accountInspector" class="role-panel account-inspector" aria-label="Account details" hidden>
+<div class="inspector-heading"><h2>Account details</h2><button type="button" id="closeAccountInspector" class="secondary" aria-label="Close account details">×</button></div>
+<div id="accountInspectorIdentity"></div><div id="accountInspectorContent"></div>
+</aside></div></main>
 <script>
 const createToggle = document.getElementById('createAccountToggle');
 const createPanel = document.getElementById('accountCreatePanel');
@@ -85,21 +101,7 @@ createPanel.addEventListener('toggle', () => {
     createToggle.setAttribute('aria-expanded', String(createPanel.open));
     createToggle.textContent = createPanel.open ? 'Close account form' : '+ Create account';
 });
-function filterAccounts() {
-    const query = document.getElementById('accountSearch').value.toLowerCase().trim();
-    const role = document.getElementById('accountRole').value;
-    const access = document.getElementById('accountAccess').value;
-    let matches = 0;
-    document.querySelectorAll('[data-account]').forEach(row => {
-        const isMatch = (!query || row.dataset.account.includes(query)) && (!role || row.dataset.role === role) && (!access || row.dataset.disabled === access);
-        row.hidden = !isMatch;
-        if (isMatch) matches++;
-    });
-    document.getElementById('accountResultCount').textContent = matches + (matches === 1 ? ' account' : ' accounts');
-    const noResults = document.getElementById('noAccountsFound');
-    if (noResults) noResults.classList.toggle('hidden', matches > 0);
-}
-['accountSearch', 'accountRole', 'accountAccess'].forEach(id => document.getElementById(id).addEventListener(id === 'accountSearch' ? 'input' : 'change', filterAccounts));
 </script>
+<script src="<?= base_url('js/accounts-directory.js?v=' . filemtime(FCPATH . 'js/accounts-directory.js')) ?>" defer></script>
 <?= view('partials/session_idle_modal') ?>
 </body></html>

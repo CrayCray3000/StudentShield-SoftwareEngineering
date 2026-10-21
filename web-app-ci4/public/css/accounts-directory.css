@@ -1,0 +1,82 @@
+/* Accounts uses the original school palette and shared navigation. */
+.staff-layout #staffMain.accounts-workspace { --directory-accent:#0f8a3a; }
+.staff-layout #staffMain.accounts-workspace .accounts-master-detail { display:grid; grid-template-columns:minmax(0,1fr); gap:20px; align-items:start; }
+.staff-layout #staffMain.accounts-workspace.has-account-selection .accounts-master-detail { grid-template-columns:minmax(0,1fr) 330px; }
+.staff-layout #staffMain.accounts-workspace .directory-panel { border-radius:14px; overflow:hidden; box-shadow:0 6px 22px -16px #173e2540; }
+.staff-layout #staffMain.accounts-workspace .accounts-directory-heading { padding:20px 22px 0; margin-bottom:12px; }
+.staff-layout #staffMain.accounts-workspace .account-role-tabs { display:flex; overflow-x:auto; gap:4px; padding:0 18px; border-bottom:1px solid #dce7df; }
+.staff-layout #staffMain.accounts-workspace .account-role-tabs button { flex-shrink:0; position:relative; background:transparent; border:0; border-radius:0; color:#526259; min-height:48px; padding:10px 12px; font-size:13px; gap:7px; }
+.staff-layout #staffMain.accounts-workspace .account-role-tabs button span { background:#eef3ef; padding:1px 6px; border-radius:5px; font-size:11px; font-variant-numeric:tabular-nums; }
+.staff-layout #staffMain.accounts-workspace .account-role-tabs button[aria-pressed="true"] { color:#075c28; }
+.staff-layout #staffMain.accounts-workspace .account-role-tabs button[aria-pressed="true"]::after { content:''; position:absolute; bottom:0; left:12px; right:12px; height:3px; background:#d9aa2e; border-radius:3px 3px 0 0; }
+.staff-layout #staffMain.accounts-workspace .accounts-search-line { display:flex; align-items:end; padding:16px 22px; gap:12px; background:#fbfdfb; }
+.staff-layout #staffMain.accounts-workspace .accounts-search-line > label { flex:1; max-width:480px; min-width:0; }
+.staff-layout #staffMain.accounts-workspace .accounts-search-line input { min-height:42px; font-size:13px; background:white; }
+.staff-layout #staffMain.accounts-workspace .account-filter-panel { flex-shrink:0; background:white; margin-left:auto; }
+.staff-layout #staffMain.accounts-workspace .account-filter-panel > summary { min-height:42px; gap:10px; }
+.staff-layout #staffMain.accounts-workspace .account-filter-panel > .account-toolbar { width:260px; max-width:calc(100vw - 48px); }
+.staff-layout #staffMain.accounts-workspace .account-list { margin:0; }
+.staff-layout #staffMain.accounts-workspace :is(.account-column-headings,.account-row) { display:grid; grid-template-columns:minmax(150px,1.7fr) minmax(90px,1fr) minmax(105px,1fr) 68px; align-items:center; column-gap:14px; }
+.staff-layout #staffMain.accounts-workspace .account-column-headings { padding:12px 22px; font-size:12px; font-weight:600; background:#edf5ef; color:#365940; border-bottom:1px solid #dce7df; }
+.staff-layout #staffMain.accounts-workspace .account-row { padding:14px 22px; margin:0; min-height:76px; border-bottom:1px solid #e5ece7; transition:background .15s; }
+.staff-layout #staffMain.accounts-workspace .account-row:hover { background:#f6faf7; }
+.staff-layout #staffMain.accounts-workspace .account-row.is-selected { background:#eaf4ed; box-shadow:inset 0 1px #c9dfcf,inset 0 -1px #c9dfcf; }
+.staff-layout #staffMain.accounts-workspace .directory-identity { min-width:0; gap:10px; }
+.staff-layout #staffMain.accounts-workspace .directory-identity > div { min-width:0; }
+.staff-layout #staffMain.accounts-workspace .directory-identity strong { font-size:14px; margin:0 0 3px; line-height:1.4; overflow-wrap:anywhere; }
+.staff-layout #staffMain.accounts-workspace .directory-identity p { margin:0; font-size:12px; color:#61756b; }
+.staff-layout #staffMain.accounts-workspace .directory-avatar { width:36px; height:36px; border-radius:50%; font-size:14px; background:#deeee3; color:#0b7533; }
+.staff-layout #staffMain.accounts-workspace .account-row[data-role="2"] .directory-avatar { background:#fff1ca; color:#78590f; }
+.staff-layout #staffMain.accounts-workspace .account-row[data-role="1"] .directory-avatar { background:#e4edf8; color:#244b77; }
+.staff-layout #staffMain.accounts-workspace .directory-status { display:flex; flex-direction:column; align-items:start; gap:4px; }
+.staff-layout #staffMain.accounts-workspace .directory-status small { color:#61756b; font-size:10px; }
+.staff-layout #staffMain.accounts-workspace .directory-status .status-badge { background:transparent; border:0; padding:0; color:#176535; font-size:12px; }
+.staff-layout #staffMain.accounts-workspace .directory-status .status-badge::before { content:''; display:inline-block; width:7px; height:7px; border-radius:50%; background:currentColor; margin-right:6px; }
+.staff-layout #staffMain.accounts-workspace .directory-status .badge-disabled { color:#6b7280; }
+.staff-layout #staffMain.accounts-workspace .account-inspect-button { min-height:36px; padding:6px 9px; font-size:12px; gap:5px; }
+.staff-layout #staffMain.accounts-workspace.directory-enhanced .directory-actions > details { display:none; }
+.staff-layout #staffMain.accounts-workspace .directory-pagination { padding:16px 22px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; font-size:12px; color:#526259; background:#fbfdfb; }
+.staff-layout #staffMain.accounts-workspace .directory-pagination > div { display:flex; gap:8px; }
+.staff-layout #staffMain.accounts-workspace .directory-pagination button { min-height:36px; padding:6px 10px; font-size:12px; }
+.staff-layout #staffMain.accounts-workspace button:disabled { opacity:.45; cursor:default; }
+.staff-layout #staffMain.accounts-workspace .account-inspector { margin:0; padding:22px; position:sticky; top:90px; border-radius:14px; box-shadow:0 6px 22px -16px #173e2540; }
+.staff-layout #staffMain.accounts-workspace .inspector-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:22px; }
+.staff-layout #staffMain.accounts-workspace .inspector-heading h2 { margin:0; font-size:19px; }
+.staff-layout #staffMain.accounts-workspace .inspector-heading button { min-width:36px; min-height:36px; padding:0; font-size:22px; border:0; background:#f0f5f1; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorIdentity { display:flex; flex-wrap:wrap; gap:10px; padding-bottom:18px; border-bottom:1px solid #e0e9e3; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorIdentity .directory-identity { width:100%; margin-bottom:6px; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorIdentity .directory-avatar { width:48px; height:48px; font-size:20px; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorIdentity .directory-identity strong { font-size:18px; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorIdentity .directory-status small { display:none; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent details { border:0; padding:0; background:transparent; margin:20px 0 0; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent summary { cursor:pointer; list-style:none; min-height:36px; padding:0; margin:0 0 14px; font-size:14px; font-weight:700; color:#173e25; background:transparent; border:0; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent summary::after { display:none; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent .basic-profile-fields { grid-template-columns:1fr; gap:10px; }
+.staff-layout #staffMain.accounts-workspace .basic-profile-fields > div { display:flex; justify-content:space-between; gap:16px; }
+.staff-layout #staffMain.accounts-workspace .basic-profile-fields dd { text-align:right; font-size:12px; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent p { font-size:11px; line-height:1.6; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent .account-fields { grid-template-columns:1fr; gap:12px; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent label { font-size:12px; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent :is(input,select) { min-height:40px; padding:8px 10px; font-size:13px; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent .account-access { padding-top:16px; border-top:1px solid #e0e9e3; }
+.staff-layout #staffMain.accounts-workspace #accountInspectorContent button { width:100%; }
+@media(max-width:1250px) {
+ .staff-layout #staffMain.accounts-workspace.has-account-selection .accounts-master-detail { grid-template-columns:minmax(0,1fr); }
+ .staff-layout #staffMain.accounts-workspace .account-inspector { position:static; grid-row:1; }
+ .staff-layout #staffMain.accounts-workspace #accountInspectorContent .account-fields { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:650px) {
+ .staff-layout #staffMain.accounts-workspace .accounts-search-line { padding:14px; gap:10px; }
+ .staff-layout #staffMain.accounts-workspace .account-column-headings { display:none; }
+ .staff-layout #staffMain.accounts-workspace .account-row { grid-template-columns:minmax(0,1fr) auto; padding:16px 14px; gap:10px; }
+ .staff-layout #staffMain.accounts-workspace .directory-identity { grid-column:1; }
+ .staff-layout #staffMain.accounts-workspace .directory-actions { grid-column:2; grid-row:1 / 3; }
+ .staff-layout #staffMain.accounts-workspace .directory-role { grid-column:1; padding-left:46px; }
+ .staff-layout #staffMain.accounts-workspace .directory-status { grid-column:1; padding-left:46px; flex-direction:row; align-items:center; flex-wrap:wrap; }
+ .staff-layout #staffMain.accounts-workspace .account-inspector { padding:18px; }
+ .staff-layout #staffMain.accounts-workspace #accountInspectorContent .account-fields { grid-template-columns:1fr; }
+ .staff-layout #staffMain.accounts-workspace .account-role-tabs { padding-inline:8px; }
+ .staff-layout #staffMain.accounts-workspace .directory-pagination { padding:14px; }
+ .staff-layout #staffMain.accounts-workspace .account-filter-panel > .account-toolbar { position:absolute; }
+}
+@media(pointer:coarse) { .staff-layout #staffMain.accounts-workspace :is(.account-inspect-button,.directory-pagination button) { min-height:44px; } }

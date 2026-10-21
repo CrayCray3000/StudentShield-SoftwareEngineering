@@ -12,10 +12,8 @@ foreach ($rows as $i => $row) {
     $points[] = round(count($rows) === 1 ? 500 : $i * 1000 / $last, 2) . ',' . round(200 - $row['total'] * 200 / $ceiling, 2);
 }
 $ticks = [];
-// Label sparse event days themselves; otherwise use evenly spaced date ticks.
-$eventDays = array_keys(array_filter($rows, static fn ($row) => $row['total'] > 0));
-if (count($eventDays) <= 5) $ticks = array_merge([0, count($rows) - 1], $eventDays);
-else for ($i = 0; $i <= 5; $i++) $ticks[] = (int) round($i * (count($rows) - 1) / 5);
+// Keep dates evenly spaced; individual event dates remain available on the points.
+for ($i = 0; $i <= 4; $i++) $ticks[] = (int) round($i * (count($rows) - 1) / 4);
 $ticks = array_unique($ticks);
 sort($ticks);
 ?>

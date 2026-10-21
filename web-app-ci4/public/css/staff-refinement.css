@@ -72,10 +72,12 @@
 .staff-layout .principal-workspace .analytics-filter-panel > summary { min-height:50px; padding:8px 16px; gap:10px; }
 .staff-layout .principal-workspace .analytics-filter-panel > summary::after { margin-left:4px; }
 .staff-layout .principal-workspace .filter-symbol { width:30px; height:30px; border-radius:7px; }
-.staff-layout .principal-workspace .analytics-filter-panel .analytics-filters { padding:16px; gap:12px; grid-template-columns:repeat(5,minmax(0,1fr)); background:#f7faf8; }
+.staff-layout .principal-workspace .analytics-filter-panel .analytics-filters { gap:8px 12px; grid-template-columns:repeat(5,minmax(0,1fr)); background:#f7faf8; }
+.staff-layout #staffMain.principal-workspace .analytics-filter-panel .analytics-filters { padding:12px 16px; }
 .staff-layout .principal-workspace .analytics-filters label { gap:5px; font-size:12px; }
-.staff-layout .principal-workspace .analytics-filters :is(input,select,button,.role-button) { min-height:40px; padding:8px 10px; font-size:13px; }
-.staff-layout .principal-workspace .analytics-actions { padding-top:14px; margin:0; gap:10px; }
+.staff-layout .principal-workspace .analytics-filters :is(input,select,button,.role-button) { min-height:36px; padding:6px 10px; font-size:13px; }
+.staff-layout .principal-workspace .analytics-actions { padding-top:8px; margin:0; gap:8px; }
+@media (pointer:coarse) { .staff-layout .principal-workspace .analytics-filters :is(input,select,button,.role-button) { min-height:44px; } }
 .staff-layout .principal-workspace .metric-grid { gap:12px; border:0; border-radius:0; background:transparent; overflow:visible; margin-top:20px; }
 .staff-layout .principal-workspace .metric { border:1px solid var(--workspace-line); border-radius:10px; background:#fff; min-height:126px; padding:18px 20px; box-shadow:none; }
 .staff-layout .principal-workspace .metric:nth-child(4) { background:#fffaf0; border-color:#e8dba8; }
@@ -86,7 +88,7 @@
 .staff-layout .principal-workspace .analytics-help { display:flex; flex-wrap:wrap; gap:4px 24px; padding:8px 2px 0; }
 .staff-layout .principal-workspace .analytics-counting-note { margin:0; font-size:12px; flex:1; min-width:220px; }
 .staff-layout .principal-workspace .analytics-counting-note summary { min-height:38px; font-size:12px; justify-content:flex-start; gap:10px; }
-.staff-layout .principal-workspace .analytics-charts { grid-template-columns:minmax(0,1.65fr) minmax(0,1fr); gap:16px; align-items:stretch; }
+.staff-layout .principal-workspace .analytics-charts { grid-template-columns:minmax(0,1.65fr) minmax(0,1fr); gap:16px; align-items:start; }
 .staff-layout .principal-workspace .analytics-charts .role-panel { margin-top:16px; }
 .staff-layout .principal-workspace .analytics-charts .trend-chart { height:210px; }
 .staff-layout .principal-workspace .bar-track { height:10px; }
