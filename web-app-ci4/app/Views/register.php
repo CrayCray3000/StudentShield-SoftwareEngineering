@@ -327,19 +327,19 @@
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity opacity-0" id="termsBackdrop" onclick="closeTermsModal()"></div>
         
         <!-- Modal Content Box -->
-        <div class="bg-[#0f2c1b] border border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col relative z-10 transform scale-95 opacity-0 transition-all duration-300 overflow-hidden" id="termsContentBox">
+        <div class="bg-[#0B7533] border border-white/30 rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col relative z-10 transform scale-95 opacity-0 transition-all duration-300 overflow-hidden" id="termsContentBox">
             <!-- Sticky Header -->
-            <div class="p-4 sm:p-6 border-b border-white/10 flex items-center justify-between sticky top-0 z-20 bg-[#0f2c1b]/95 backdrop-blur-md shrink-0">
+            <div class="p-4 sm:p-6 border-b border-white/20 flex items-center justify-between sticky top-0 z-20 bg-[#0F8A3A] shrink-0">
                 <h2 class="text-lg sm:text-2xl font-heading font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-shield-alt text-gold"></i> Terms & Data Privacy
+                    <i class="fas fa-shield-alt text-[#FFF4C7]"></i> Terms & Data Privacy
                 </h2>
-                <button type="button" onclick="closeTermsModal()" class="w-9 h-9 rounded-full bg-white/5 hover:bg-red-500/20 text-white/70 hover:text-red-400 flex items-center justify-center transition-colors min-h-[36px] min-w-[36px]">
+                <button type="button" onclick="closeTermsModal()" aria-label="Close terms and data privacy" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors min-h-[36px] min-w-[36px]">
                     <i class="fas fa-times text-base"></i>
                 </button>
             </div>
             
             <!-- Scrollable Body -->
-            <div class="p-4 sm:p-6 overflow-y-auto flex-1 custom-scrollbar text-white/80 space-y-4 text-sm sm:text-base leading-relaxed">
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 custom-scrollbar text-white space-y-4 text-sm sm:text-base leading-relaxed">
                 <p>Welcome to Student Shield! By registering an account, you agree to the following terms regarding your usage and how we handle your data.</p>
                 
                 <h3 id="terms-section-terms" class="text-gold font-semibold text-base sm:text-lg mt-4">1. Purpose of the Portal</h3>
@@ -361,8 +361,8 @@
             </div>
 
             <!-- Sticky Footer (Always Visible Confirmation Button) -->
-            <div class="p-3.5 sm:p-5 border-t border-white/10 bg-[#0a1f13]/95 backdrop-blur-md sticky bottom-0 z-20 flex justify-end shrink-0">
-                <button type="button" onclick="closeTermsModal()" class="bg-gold hover:bg-gold-light text-black font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl transition-colors min-h-[44px] shadow-lg">
+            <div class="p-3.5 sm:p-5 border-t border-white/20 bg-[#09662C] sticky bottom-0 z-20 flex justify-end shrink-0">
+                <button type="button" onclick="closeTermsModal()" class="bg-gold hover:bg-gold-light text-[#173E25] font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-xl transition-colors min-h-[44px] shadow-lg">
                     I Understand
                 </button>
             </div>
@@ -370,6 +370,10 @@
     </div>
     
     <style>
+        #termsContentBox h3 { color: #FFF4C7; }
+        #termsContentBox :is(button,a):focus-visible { outline:3px solid #FFF4C7; outline-offset:3px; }
+        #termsContentBox .custom-scrollbar { scrollbar-color:rgba(255,255,255,.5) #0B7533; }
+        #termsContentBox .custom-scrollbar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.5); }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
