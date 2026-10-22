@@ -318,18 +318,17 @@
                 <?= csrf_field() ?>
                 
                 <div class="space-y-1.5 sm:space-y-2">
-                    <label for="name" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Student ID / LRN or staff account</label>
+                    <label for="name" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Username</label>
                     <div class="relative group/input">
                         <div class="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors group-focus-within/input:text-gold">
                             <i class="fas fa-user text-white/40 group-focus-within/input:text-gold transition-colors text-[16px] sm:text-[18px]"></i>
                         </div>
-                        <input type="text" name="identifier" id="name" required autocomplete="username" aria-describedby="identifierHint"
+                        <input type="text" name="identifier" id="name" required autocomplete="username"
                                class="w-full pl-11 sm:pl-14 pr-4 sm:pr-12 py-3.5 sm:py-4 input-dark rounded-xl sm:rounded-[1.25rem] text-[16px] font-bold outline-none"
-                               placeholder="ID, LRN or staff account">
+                               placeholder="Username">
                     </div>
                 </div>
 
-                <p id="identifierHint" class="login-identifier-hint">Students: ID, 12-digit LRN or registered name. Staff: account name or email.</p>
                 <div class="space-y-1.5 sm:space-y-2">
                     <label for="password" class="block text-[12px] sm:text-[13px] font-bold text-white/80 ml-1 uppercase tracking-wider">Password</label>
                     <div class="relative group/input">
